@@ -16,7 +16,8 @@ import frc.robot.Constants;
 
 public class Hook extends SubsystemBase {
 
-
+	private WPI_TalonFX left = new WPI_TalonFX(Constants.FrontClimbersMotorLeft);
+	private WPI_TalonFX right = new WPI_TalonFX(Constants.FrontClimbersMotorRight);
   /*
 	 * Talon FX has 2048 units per revolution
 	 * 
