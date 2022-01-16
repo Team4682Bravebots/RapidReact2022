@@ -10,21 +10,13 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kForward;
 import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kReverse;
 
-import edu.wpi.first.hal.simulation.DIODataJNI;
 import edu.wpi.first.wpilibj.Compressor;
 
 
 public class pnuematics extends SubsystemBase {
   private final Compressor compressor = new Compressor(0);
   private final DoubleSolenoid Solenoid = new DoubleSolenoid(0,1);
-  private final DoubleSolenoid popperSolenoid = new DoubleSolenoid(2,3); 
 
-  public void solenoidPopOut(){
-    popperSolenoid.set(kForward);
-  }
-  public void solenoidPopIn(){
-    popperSolenoid.set(kReverse);
-  }
   
   public void solenoidIntakeArmForward() {
     Solenoid.set(kForward);

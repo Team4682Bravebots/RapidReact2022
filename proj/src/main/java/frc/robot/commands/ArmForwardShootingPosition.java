@@ -4,32 +4,34 @@
 
 package frc.robot.commands;
 
-import java.util.concurrent.TimeUnit;
-
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.arm;
 
-public class popper extends CommandBase {
-  /** Creates a new popper. */
-  public popper() {
+public class armPos1 extends CommandBase {
+  public arm armSubsystem;
+  boolean done;
+
+  public armPos1(arm armSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.m_pnuematics);
-
+    this.armSubsystem = armSubsystem;
+    addRequirements(armSubsystem);
   }
-
-  
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    RobotContainer.m_pnuematics.solenoidPopIn();
-    RobotContainer.m_pnuematics.solenoidPopOut();
+    armSubsystem.setArmPosition(Constants.armPos1);
+
+   // armSubsystem.isFinished(done, Constants.armDefualt);
+   System.out.println(armSubsystem.getPosition());
+
+
   }
 
   // Called once the command ends or is interrupted.
