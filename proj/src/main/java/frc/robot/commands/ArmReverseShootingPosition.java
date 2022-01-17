@@ -1,46 +1,59 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
+// ************************************************************
+// Bischop Blanchet Robotics
+// Historic home of the 'BraveBots'
+// FRC - Rapid React - 2022
+// File: ArmReverseShootingPosition.java
+// Intent: Move the arm into the reverse shooting position.
+// ************************************************************
 
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.RobotContainer;
-import frc.robot.subsystems.arm;
+import frc.robot.subsystems.*;
 
-public class armPos1 extends CommandBase {
-  public arm armSubsystem;
+public class ArmReverseShootingPosition extends CommandBase
+{
+
+  private Arm armSubsystem;
   boolean done;
 
-  public armPos1(arm armSubsystem) {
+  // ctor
+  public ArmReverseShootingPosition(Arm arm)
+  {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.armSubsystem = armSubsystem;
+    this.armSubsystem = arm;
     addRequirements(armSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize()
+  {
+    done = false;
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    armSubsystem.setArmPosition(Constants.armPos1);
+  public void execute()
+  {
+    armSubsystem.setArmPosition(Constants.armDefualt);
+    //RobotContainer.m_arm.setArmPosition(0);
 
-   // armSubsystem.isFinished(done, Constants.armDefualt);
-   System.out.println(armSubsystem.getPosition());
-
-
+    //  armSubsystem.isFinished(done, Constants.armDefualt);
+    System.out.println(armSubsystem.getPosition());
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted)
+  {
+  }
 
   // Returns true when the command should end.
   @Override
-  public boolean isFinished() {
+  public boolean isFinished()
+  {
     return false;
   }
 }

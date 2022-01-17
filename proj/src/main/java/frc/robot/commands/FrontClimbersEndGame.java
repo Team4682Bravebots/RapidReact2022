@@ -1,15 +1,26 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
+// ************************************************************
+// Bischop Blanchet Robotics
+// Historic home of the 'BraveBots'
+// FRC - Rapid React - 2022
+// File: FrontClimbersEndGame.java
+// Intent: Move the climbers through their end of game sequence.
+// ************************************************************
 
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.FrontClimbers;
 
-public class FrontClimbersEndGame extends CommandBase {
-  /** Creates a new HookEndGame. */
-  public FrontClimbersEndGame() {
+public class FrontClimbersEndGame extends CommandBase
+{
+ 
+  private FrontClimbers frontClimbersSubsystem;
+
+  // ctor
+  public FrontClimbersEndGame(FrontClimbers frontClimbers)
+  {
+    frontClimbersSubsystem = frontClimbers;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -19,13 +30,9 @@ public class FrontClimbersEndGame extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-
-    //RobotContainer.m_FrontClimbers.setInverted();
-    RobotContainer.m_frontclimbers.setClimberPostion(0);
-
-
-
+  public void execute()
+  {
+    frontClimbersSubsystem.setClimberPostion(0);
   }
 
   // Called once the command ends or is interrupted.
@@ -34,8 +41,8 @@ public class FrontClimbersEndGame extends CommandBase {
 
   // Returns true when the command should end.
   @Override
-  public boolean isFinished() {
+  public boolean isFinished()
+  {
     return false;
   }
 }
-

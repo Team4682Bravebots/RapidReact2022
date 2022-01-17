@@ -1,6 +1,10 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
+// ************************************************************
+// Bischop Blanchet Robotics
+// Historic home of the 'BraveBots'
+// FRC - Rapid React - 2022
+// File: Arm.java
+// Intent: Forms model for the Arm subsystem.
+// ************************************************************
 
 package frc.robot.subsystems;
 
@@ -19,93 +23,91 @@ import com.fasterxml.jackson.databind.node.BooleanNode;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class arm extends SubsystemBase {
+public class Arm extends SubsystemBase
+{
+  // two matched motors - one for each climber side
+  private WPI_TalonFX left = new WPI_TalonFX(Constants.frontClimbersMotorLeftCanId);
+  private WPI_TalonFX right = new WPI_TalonFX(Constants.frontClimbersMotorRightCanId);
 
+  // ctr
+  public Arm()
+  {
+    left.configFactoryDefault();  
+    left.configSelectedFeedbackSensor(
+      TalonFXFeedbackDevice.IntegratedSensor,
+      Constants.kPIDLoopIdx,
+      Constants.kTimeoutMs);
 
-  private final WPI_TalonFX motor = new WPI_TalonFX(Constants.armPort);
+    left.setSensorPhase(false);
+    left.setInverted(false);
 
-  /*
-   * Talon FX has 2048 units per revolution
-   * 
-   * https://phoenix-documentation.readthedocs.io/en/latest/ch14_MCSensor.html#
-   * sensor-resolution
-   */
-  final int kUnitsPerRevolution = 2048; /* this is constant for Talon FX */
-
-  /** Creates a new climberS1. */
-  public arm() {
-
-    motor.configFactoryDefault();
+    left.configNeutralDeadband(0.001, Constants.kTimeoutMs);
     
-    motor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, Constants.kPIDLoopIdx,
-    Constants.kTimeoutMs);
+    left.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, Constants.kTimeoutMs);
+    left.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, Constants.kTimeoutMs);
 
-    motor.setSensorPhase(false);
-    motor.setInverted(false);
+    /* Set the peak and nominal outputs */
+		left.configNominalOutputForward(0, Constants.kTimeoutMs);
+		left.configNominalOutputReverse(0, Constants.kTimeoutMs);
+		left.configPeakOutputForward(1, Constants.kTimeoutMs);
+		left.configPeakOutputReverse(-1, Constants.kTimeoutMs);
 
-    motor.configNeutralDeadband(0.001, Constants.kTimeoutMs);
+    left.selectProfileSlot(Constants.kSlotIdx, Constants.kPIDLoopIdx);
+    left.config_kF(Constants.kSlotIdx, Constants.kGains.kF, Constants.kTimeoutMs);
+    left.config_kP(Constants.kSlotIdx, Constants.kGains.kP, Constants.kTimeoutMs);
+    left.config_kI(Constants.kSlotIdx, Constants.kGains.kI, Constants.kTimeoutMs);
+    left.config_kD(Constants.kSlotIdx, Constants.kGains.kD, Constants.kTimeoutMs);
 
-    
-    motor.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, Constants.kTimeoutMs);
-    motor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, Constants.kTimeoutMs);
+    left.setNeutralMode(NeutralMode.Brake);
 
-    		/* Set the peak and nominal outputs */
-		motor.configNominalOutputForward(0, Constants.kTimeoutMs);
-		motor.configNominalOutputReverse(0, Constants.kTimeoutMs);
-		motor.configPeakOutputForward(1, Constants.kTimeoutMs);
-		motor.configPeakOutputReverse(-1, Constants.kTimeoutMs);
+    left.configMotionCruiseVelocity(15000, Constants.kTimeoutMs);
+    left.configMotionAcceleration(6000, Constants.kTimeoutMs);
 
-    motor.selectProfileSlot(Constants.kSlotIdx, Constants.kPIDLoopIdx);
-    motor.config_kF(Constants.kSlotIdx, Constants.kGains.kF, Constants.kTimeoutMs);
-    motor.config_kP(Constants.kSlotIdx, Constants.kGains.kP, Constants.kTimeoutMs);
-    motor.config_kI(Constants.kSlotIdx, Constants.kGains.kI, Constants.kTimeoutMs);
-    motor.config_kD(Constants.kSlotIdx, Constants.kGains.kD, Constants.kTimeoutMs);
-
-    motor.setNeutralMode(NeutralMode.Brake);
-
-    motor.configMotionCruiseVelocity(15000, Constants.kTimeoutMs);
-    motor.configMotionAcceleration(6000, Constants.kTimeoutMs);
-
-    // current limit enabled | Limit(amp) | Trigger Threshold(amp) | Trigger
-    // Threshold Time(s) */
-    motor.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(false, 20, 25, 1.0));
-
+    left.configStatorCurrentLimit(
+      new StatorCurrentLimitConfiguration(
+        true, // enabled | 
+        20, // Limit(amp) |
+        25, // Trigger Threshold(amp) |
+        1.0)); // Trigger Threshold Time(s)
     // left.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
-
   }
 
   @Override
-  public void periodic() {
+  public void periodic()
+  {
     // This method will be called once per scheduler run
   }
 
-  public double getPosition() {
-    double selSenPos = motor.getSelectedSensorPosition();
+  public double getPosition()
+  {
+    double selSenPos = left.getSelectedSensorPosition();
     return selSenPos;
   }
 
-  public double getVelocity() {
-    double selSenVel = motor.getSelectedSensorVelocity();
+  public double getVelocity()
+  {
+    double selSenVel = left.getSelectedSensorVelocity();
     return selSenVel;
   }
 
-  public void setArmPosition(double targetPos) {
-    motor.set(TalonFXControlMode.MotionMagic, targetPos);
+  public void setArmPosition(double targetPos)
+  {
+    left.set(TalonFXControlMode.MotionMagic, targetPos);
   }
   
   //public void isFinished(boolean done, double targetPos){
-   //if(motor.getSelectedSensorPosition() >= targetPos + 100 || motor.getSelectedSensorPosition() <=targetPos - 100){
+   //if(left.getSelectedSensorPosition() >= targetPos + 100 || left.getSelectedSensorPosition() <=targetPos - 100){
      //done = true;
     //} else { done = false; }
   //}
 
-
-  public void setInverted() {
-    motor.setInverted(true);
+  public void setInverted()
+  {
+    left.setInverted(true);
   }
 
-  public void zeroSensors() {
-    motor.setSelectedSensorPosition(0);
+  public void zeroSensors()
+  {
+    left.setSelectedSensorPosition(0);
   }
- 
 }

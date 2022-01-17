@@ -1,32 +1,20 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
+// ************************************************************
+// Bischop Blanchet Robotics
+// Historic home of the 'BraveBots'
+// FRC - Rapid React - 2022
+// File: RobotContainer.java
+// Intent: The primary implementation of the robot using the command
+// subsystem framework popularized in FRC.
+// ************************************************************
 
 package frc.robot;
-
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.armDefualt;
-import frc.robot.commands.armPos1;
-import frc.robot.commands.armPos2;
-import frc.robot.commands.climberS1Defualt;
-import frc.robot.commands.intakeBarf;
-import frc.robot.commands.level;
-import frc.robot.commands.intakeDefualt;
-import frc.robot.commands.popperPop;
-import frc.robot.commands.zeroSensors;
-import frc.robot.commands.popperDefualt;
-import frc.robot.subsystems.arm;
-import frc.robot.subsystems.climberS1;
-import frc.robot.subsystems.climberS2;
-import frc.robot.subsystems.driveTrain;
-import frc.robot.subsystems.intake;
-import frc.robot.subsystems.interfaces;
-import frc.robot.subsystems.pnuematics;
-import frc.robot.subsystems.popper;
+import frc.robot.commands.*;
+import frc.robot.subsystems.*;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -37,14 +25,13 @@ import frc.robot.subsystems.popper;
 public class RobotContainer {
 
   //declaring and init subsystems  
-  public static arm m_arm = new arm();
-  public static pnuematics m_pnuematics  = new pnuematics();
-  public static intake m_intake = new intake();
-  public static driveTrain m_drivetrain = new driveTrain();
-  public static climberS1 m_climbers1 = new climberS1();
-  public static climberS2 m_climbers2 = new climberS2();
-  public static popper m_popper = new popper();
-  public static interfaces m_interfaces = new interfaces();
+  public static Arm m_arm = new Arm();
+  public static DriveTrain m_drivetrain = new DriveTrain();
+  public static FrontClimbers m_frontClimbers = new FrontClimbers();
+  public static Hooks m_hooks = new Hooks();
+  public static Intake m_intake = new Intake();
+  public static Interfaces m_interfaces = new Interfaces();
+  public static Pnuematics m_pnuematics  = new Pnuematics();
 
   //declering hids
   private Joystick driverController;
@@ -61,14 +48,14 @@ public class RobotContainer {
     CommandScheduler.getInstance().registerSubsystem(m_arm);
     //CommandScheduler.getInstance().setDefaultCommand(m_arm, new armDefualt(m_arm));
 
-    CommandScheduler.getInstance().registerSubsystem(m_climbers1);
-    //CommandScheduler.getInstance().setDefaultCommand(m_climbers1, new climberS1Defualt(m_climbers1, m_interfaces));
-
-    CommandScheduler.getInstance().registerSubsystem(m_climbers2);
-    //TODO CommandScheduler.getInstance().setDefaultCommand(m_climbers2, new climberS2Defualt(m_climbers2));
-
     CommandScheduler.getInstance().registerSubsystem(m_drivetrain);
     // CommandScheduler.getInstance().setDefaultCommand(m_drivetrain, new driveCommand(m_drivetrain));
+
+    CommandScheduler.getInstance().registerSubsystem(m_frontClimbers);
+    //CommandScheduler.getInstance().setDefaultCommand(m_frontClimbers, new climberS1Defualt(m_frontClimbers, m_interfaces));
+
+    CommandScheduler.getInstance().registerSubsystem(m_hooks);
+    //CommandScheduler.getInstance().setDefaultCommand(m_hooks, new climberS2Defualt(m_hooks));
 
     CommandScheduler.getInstance().registerSubsystem(m_intake);
     // CommandScheduler.getInstance().setDefaultCommand(m_intake, new intakeDefualt(m_intake, m_pnuematics));
@@ -119,38 +106,31 @@ public class RobotContainer {
 
     //TODO
     //buttonB.whenPressed(new popperPop(m_popper));
-    joystickLeftButton.whenPressed(new zeroSensors(m_arm, m_climbers1, m_climbers2));
-    //buttonB.whenPressed(new zeroSensors(m_arm, m_climbers1, m_climbers2));
+    joystickLeftButton.whenPressed(new RobotInitialize(m_arm, m_frontClimbers, m_hooks));
+    //buttonB.whenPressed(new zeroSensors(m_arm, m_frontClimbers, m_hooks));
 
-    buttonA.whenPressed(new armDefualt(m_arm));
-    buttonX.whenPressed(new armPos1(m_arm));
-    buttonY.whenPressed(new armPos2(m_arm));
+    buttonA.whenPressed(new ArmDefualt(m_arm));
+    buttonX.whenPressed(new ArmReverseShootingPosition(m_arm));
+    buttonY.whenPressed(new ArmForwardShootingPosition(m_arm));
 
     //bumperLeft.whileHeld(new level(m_arm));
-    bumperRight.whileHeld(new climberS1Defualt(m_climbers1));
+    bumperRight.whileHeld(new FrontClimbersDefault(m_frontClimbers));
     
-    bumperLeft.whenPressed(new intakeBarf(m_intake, m_pnuematics, m_interfaces));
+    bumperLeft.whenPressed(new intakeBarf(m_intake, m_interfaces));
 
-   // buttonB.whenPressed(new climberS1Extended());
+    //buttonB.whenPressed(new climberS1Extended());
     //buttonX.whenPressed(new climberS1EndGame());
 
     //bumperLeft.whenPressed(new intakeEat());
     //bumperRight.whenPressed(new intakeDefualt());
-
     //buttonY.whenPressed(new popper());
 
-
-    // D-Pad Stuff \\
-
-    
+    // D-Pad Stuff \\  
     double pov = coDriverController.getPOV();
     System.out.println(pov);
 
-
     // joystick fun stuff \\
     double joystickThrottleValue = driverController.getThrottle();
-
-
   }
 
   

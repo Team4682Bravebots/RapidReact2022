@@ -1,37 +1,40 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
+// ************************************************************
+// Bischop Blanchet Robotics
+// Historic home of the 'BraveBots'
+// FRC - Rapid React - 2022
+// File: Pnuematics.java
+// Intent: Forms model for the Pnuematics subsystem.
+// ************************************************************
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
-import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kForward;
-import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kReverse;
-
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import frc.robot.*;
 
-
-public class pnuematics extends SubsystemBase {
+public class Pnuematics extends SubsystemBase
+{
   private final Compressor compressor = new Compressor(0);
-  private final DoubleSolenoid Solenoid = new DoubleSolenoid(0,1);
+  private final DoubleSolenoid solenoid = new DoubleSolenoid(0,1);
 
-  
-  public void solenoidIntakeArmForward() {
-    Solenoid.set(kForward);
+  public void hookEngage()
+  {
+    solenoid.set(Constants.hookSolenoidEnguage);
   }
 
- 
-  public void solenoidIntakeArmBackward() {
-    Solenoid.set(kReverse);
+  public void hookRelease()
+  {
+    solenoid.set(Constants.hookSolenoidRelease);
   }
 
-  public void compressorOn() {
+  public void compressorOn()
+  {
     compressor.start(); 
   }
 
-  public void compressorOff() {
+  public void compressorOff()
+  {
     compressor.stop();
   }
 }

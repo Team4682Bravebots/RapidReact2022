@@ -1,16 +1,26 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
+// ************************************************************
+// Bischop Blanchet Robotics
+// Historic home of the 'BraveBots'
+// FRC - Rapid React - 2022
+// File: FrontClimbersDefault.java
+// Intent: Return the climbers to their default position.
+// ************************************************************
 
 package frc.robot.commands;
 
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.FrontClimbers;
 
-public class FrontClimbersDefault extends CommandBase {
-  /** Creates a new climberS2EndGame. */
-  public FrontClimbersDefault() {
+public class FrontClimbersDefault extends CommandBase
+{
+ 
+  private FrontClimbers frontClimbersSubsystem;
+
+  // ctor
+  public FrontClimbersDefault(FrontClimbers frontClimbers)
+  {
+    frontClimbersSubsystem = frontClimbers;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -20,10 +30,9 @@ public class FrontClimbersDefault extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-
-    RobotContainer.m_frontclimbers.setClimberPostion(0);
-
+  public void execute()
+  {
+    frontClimbersSubsystem.setClimberPostion(0);
   }
 
   // Called once the command ends or is interrupted.
@@ -32,7 +41,8 @@ public class FrontClimbersDefault extends CommandBase {
 
   // Returns true when the command should end.
   @Override
-  public boolean isFinished() {
+  public boolean isFinished()
+  {
     return false;
   }
 }

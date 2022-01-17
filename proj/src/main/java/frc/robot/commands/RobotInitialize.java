@@ -1,36 +1,38 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
+// ************************************************************
+// Bischop Blanchet Robotics
+// Historic home of the 'BraveBots'
+// FRC - Rapid React - 2022
+// File: RobotInitalize.java
+// Intent: Resets the robot to reference settings.
+// ************************************************************
 
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.arm;
-import frc.robot.subsystems.climberS1;
-import frc.robot.subsystems.climberS2;
+import frc.robot.subsystems.*;
 
-public class zeroSensors extends CommandBase {
+public class RobotInitialize  extends CommandBase {
   /** Creates a new zeroSensors. 
- * @param m_climbers2
- * @param m_climbers1
- * @param m_arm*/
+ * @param frontClimbers
+ * @param hooks
+ * @param arm*/
 
-  public arm m_arm;
-  public climberS1 m_climbers1;
-  public climberS2 m_climbers2;
+  private Arm armSubsystem;
+  private FrontClimbers frontClimbersSubsystem;
+  private Hooks hooksSubsystem;
 
-  public zeroSensors(arm m_arm, climberS1 m_climbers1, climberS2 m_climbers2) {
+  public RobotInitialize(Arm arm, FrontClimbers frontClimbers, Hooks hooks) {
     // Use addRequirements() here to declare subsystem dependencies.
 
-    this.m_arm = m_arm;
-    addRequirements(m_arm);
+    this.armSubsystem = arm;
+    addRequirements(this.armSubsystem);
 
-    this.m_climbers1 = m_climbers1;
-    addRequirements(m_climbers1);
+    this.frontClimbersSubsystem = frontClimbers;
+    addRequirements(this.frontClimbersSubsystem);
 
-    this.m_climbers2 = m_climbers2;
-    addRequirements(m_climbers2);
+    this.hooksSubsystem = hooks;
+    addRequirements(this.hooksSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -39,13 +41,13 @@ public class zeroSensors extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    m_arm.zeroSensors();
+  public void execute()
+  {
+    armSubsystem.zeroSensors();
     //m_climbers1.zeroSensors();
     //m_climbers2.zeroSensors();
     //TODO add anyother sensors 
-
-    System.out.println(m_arm.getPosition());
+    System.out.println(armSubsystem.getPosition());
   }
 
   // Called once the command ends or is interrupted.
@@ -54,7 +56,8 @@ public class zeroSensors extends CommandBase {
 
   // Returns true when the command should end.
   @Override
-  public boolean isFinished() {
+  public boolean isFinished()
+  {
     return false;
   }
 }

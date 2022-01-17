@@ -1,14 +1,25 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
+// ************************************************************
+// Bischop Blanchet Robotics
+// Historic home of the 'BraveBots'
+// FRC - Rapid React - 2022
+// File: DriveCommand.java
+// Intent: The long running command to take in arcade style input 
+// from controller and drive robot accordingly.
+// ************************************************************
 
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.*;
 
-public class driveCommand extends CommandBase {
-  /** Creates a new driveCommand. */
-  public DriveCommand() {
+public class DriveCommand extends CommandBase
+{
+  private DriveTrain driveTrainSubsystem;
+
+  // ctor
+  public DriveCommand(DriveTrain driveTrain)
+  {
+    driveTrainSubsystem = driveTrain;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 

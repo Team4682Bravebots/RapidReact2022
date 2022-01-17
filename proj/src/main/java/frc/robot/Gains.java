@@ -1,3 +1,11 @@
+// ************************************************************
+// Bischop Blanchet Robotics
+// Historic home of the 'BraveBots'
+// FRC - Rapid React - 2022
+// File: Gains.java
+// Intent: A class to hold gains for MotionMagic use.
+// ************************************************************
+
 package frc.robot;
 
 public class Gains {

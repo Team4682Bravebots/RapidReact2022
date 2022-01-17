@@ -1,6 +1,10 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
+// ************************************************************
+// Bischop Blanchet Robotics
+// Historic home of the 'BraveBots'
+// FRC - Rapid React - 2022
+// File: FrontCimbers.java
+// Intent: Forms model for the FrontClimbers subsystem.
+// ************************************************************
 
 package frc.robot.subsystems;
 
@@ -15,11 +19,11 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class FrontClimbers extends SubsystemBase {
-
-
-  private WPI_TalonFX left = new WPI_TalonFX(Constants.FrontClimbersMotorLeft);
-  private WPI_TalonFX right = new WPI_TalonFX(Constants.FrontClimbersMotorRight);
+public class FrontClimbers extends SubsystemBase
+{
+  // two matched motors - one for each climber side
+  private WPI_TalonFX left = new WPI_TalonFX(Constants.frontClimbersMotorLeftCanId);
+  private WPI_TalonFX right = new WPI_TalonFX(Constants.frontClimbersMotorRightCanId);
 
   /*
 	 * Talon FX has 2048 units per revolution
@@ -29,8 +33,8 @@ public class FrontClimbers extends SubsystemBase {
 	final int kUnitsPerRevolution = 2048; /* this is constant for Talon FX */
 
    /** Creates a new FrontClimbers. */
-  public FrontClimbers() {
-
+  public FrontClimbers()
+  {
     left.configFactoryDefault();
 		right.configFactoryDefault(); 
 
@@ -47,38 +51,41 @@ public class FrontClimbers extends SubsystemBase {
 		left.configMotionCruiseVelocity(0.01, 0); 
 		left.configMotionAcceleration(0.01, 0);
 		
-		//current limit                                                       enabled | Limit(amp) | Trigger Threshold(amp) | Trigger Threshold Time(s)  */
-		left.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(      true,       20,                25,                         1.0));
-
+    // current limit
+    left.configStatorCurrentLimit(
+      new StatorCurrentLimitConfiguration(
+        true, // enabled | 
+        20, // Limit(amp) |
+        25, // Trigger Threshold(amp) |
+        1.0)); // Trigger Threshold Time(s)
     //left.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
-
-
-
   }
 
-
   @Override
-  public void periodic() {
+  public void periodic()
+  {
     // This method will be called once per scheduler run
   }
 
-  public double getPosition(){
+  public double getPosition()
+  {
     double selSenPos = left.getSelectedSensorPosition(0);
     return selSenPos;
   }
 
-  public double getVelocity(){
+  public double getVelocity()
+  {
     double selSenVel = left.getSelectedSensorVelocity(0);
     return selSenVel;
   }
 
-  public void setClimberPostion(double targetPos) {
-  left.set(ControlMode.MotionMagic, targetPos);
+  public void setClimberPostion(double targetPos)
+  {
+    left.set(ControlMode.MotionMagic, targetPos);
   }
 
-  public void setInverted() {
+  public void setInverted()
+  {
     left.setInverted(true);
   }
-
-
 }
