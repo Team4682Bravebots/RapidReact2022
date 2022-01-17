@@ -2,21 +2,26 @@
 // Bischop Blanchet Robotics
 // Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
-// File: ArmDefault.java
-// Intent: Return arm to its default position.
+// File: HookRelease.java
+// Intent: Command/operation to release the hooks to to the arm.
 // ************************************************************
 
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.Hooks;
 
-public class intakeEat extends CommandBase {
-  /** Creates a new intakeEat. */
-  public intakeEat() {
+public class HookRelease extends CommandBase
+{
+  private Hooks hooksSubsystem;
+
+  // ctor
+  public HookRelease(Hooks hooks)
+  {
+    hooksSubsystem = hooks;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.m_pnuematics);
-
+    addRequirements(hooksSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -25,9 +30,9 @@ public class intakeEat extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    RobotContainer.m_pnuematics.solenoidIntakeArmForward(); 
-    //run intake morons too
+  public void execute()
+  {
+    // TODO
   }
 
   // Called once the command ends or is interrupted.
@@ -36,7 +41,8 @@ public class intakeEat extends CommandBase {
 
   // Returns true when the command should end.
   @Override
-  public boolean isFinished() {
+  public boolean isFinished()
+  {
     return false;
   }
 }

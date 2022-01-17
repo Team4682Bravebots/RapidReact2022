@@ -24,14 +24,15 @@ import frc.robot.subsystems.*;
  */
 public class RobotContainer {
 
-  //declaring and init subsystems  
-  public static Arm m_arm = new Arm();
-  public static DriveTrain m_drivetrain = new DriveTrain();
-  public static FrontClimbers m_frontClimbers = new FrontClimbers();
-  public static Hooks m_hooks = new Hooks();
-  public static Intake m_intake = new Intake();
-  public static Interfaces m_interfaces = new Interfaces();
-  public static Pnuematics m_pnuematics  = new Pnuematics();
+  // declaring and init subsystems
+  // for more info, see: https://docs.wpilib.org/en/stable/docs/software/commandbased/structuring-command-based-project.html#robotcontainer  
+  private final Arm m_arm = new Arm();
+  private final DriveTrain m_drivetrain = new DriveTrain();
+  private final FrontClimbers m_frontClimbers = new FrontClimbers();
+  private final Hooks m_hooks = new Hooks();
+  private final Intake m_intake = new Intake();
+  private final Interfaces m_interfaces = new Interfaces();
+  private final Pnuematics m_pnuematics  = new Pnuematics();
 
   //declering hids
   private Joystick driverController;
@@ -116,7 +117,7 @@ public class RobotContainer {
     //bumperLeft.whileHeld(new level(m_arm));
     bumperRight.whileHeld(new FrontClimbersDefault(m_frontClimbers));
     
-    bumperLeft.whenPressed(new intakeBarf(m_intake, m_interfaces));
+    bumperLeft.whenPressed(new IntakeShootForwardHigh(m_intake));
 
     //buttonB.whenPressed(new climberS1Extended());
     //buttonX.whenPressed(new climberS1EndGame());
@@ -140,8 +141,13 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  //public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    //return m_autoCommand;
+  /*
+  public Command getAutonomousCommand()
+  {
+    TODO - P0 -lets get this done!
+    return m_autoCommand;
   }
+  */
+
+}
 

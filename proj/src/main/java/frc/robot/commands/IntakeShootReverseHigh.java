@@ -2,8 +2,8 @@
 // Bischop Blanchet Robotics
 // Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
-// File: IntakeDefault.java
-// Intent: Return intake motors and belts to a default position.
+// File: IntakeShootReverseHigh.java
+// Intent: Command/operation to have the intake perform a shot.
 // ************************************************************
 
 package frc.robot.commands;
@@ -11,7 +11,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
 
-public class IntakeDefualt extends CommandBase
+public class IntakeShootReverseHigh extends CommandBase
 {
   private Intake intakeSubsystem;
 
@@ -19,7 +19,7 @@ public class IntakeDefualt extends CommandBase
    * Command that will move the intake to its default position.
    * @param intake the currently active intake subsystem
    */
-  public IntakeDefualt(Intake intake)
+  public IntakeShootReverseHigh(Intake intake)
   {
     this.intakeSubsystem = intake;
     addRequirements(intake);
