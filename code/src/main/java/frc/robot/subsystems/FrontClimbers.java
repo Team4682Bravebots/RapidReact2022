@@ -8,13 +8,12 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
-import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.SparkMaxRelativeEncoder;
+import com.revrobotics.CANSparkMax.*;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -22,9 +21,14 @@ import frc.robot.Constants;
 public class FrontClimbers extends SubsystemBase
 {
   // two matched motors - one for each climber side
-  private WPI_TalonFX left = new WPI_TalonFX(Constants.frontClimbersMotorLeftCanId);
-  private WPI_TalonFX right = new WPI_TalonFX(Constants.frontClimbersMotorRightCanId);
-
+  private CANSparkMax left = new CANSparkMax(Constants.frontClimbersMotorLeftCanId, MotorType.kBrushless);
+  private CANSparkMax right = new CANSparkMax(Constants.frontClimbersMotorRightCanId, MotorType.kBrushless);
+  private SparkMaxPIDController rightPidController;
+  private SparkMaxPIDController leftPidController;
+  private RelativeEncoder rightEncoder;
+  private RelativeEncoder leftEncoder;
+  public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM, maxVel, minVel, maxAcc, allowedErr;
+  
   /*
 	 * Talon FX has 2048 units per revolution
 	 * 
@@ -35,30 +39,60 @@ public class FrontClimbers extends SubsystemBase
    /** Creates a new FrontClimbers. */
   public FrontClimbers()
   {
-    left.configFactoryDefault();
-		right.configFactoryDefault(); 
+    left.restoreFactoryDefaults();
+		right.restoreFactoryDefaults(); 
 
 		right.follow(left);
-		right.setNeutralMode(NeutralMode.Brake);
-		right.configOpenloopRamp(0.2, 0);
+		right.setIdleMode(IdleMode.kBrake);
 
-		left.setNeutralMode(NeutralMode.Brake);
-		left.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
-		left.overrideLimitSwitchesEnable(true);
-		left.config_kP(0, 5, 10);
-		left.config_kD(0, 4000, 10);
-		left.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
-		left.configMotionCruiseVelocity(0.01, 0); 
-		left.configMotionAcceleration(0.01, 0);
-		
-    // current limit
-    left.configStatorCurrentLimit(
-      new StatorCurrentLimitConfiguration(
-        true, // enabled | 
-        20, // Limit(amp) |
-        25, // Trigger Threshold(amp) |
-        1.0)); // Trigger Threshold Time(s)
-    //left.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+    // initialze PID controller and encoder objects
+    leftPidController = left.getPIDController();
+    rightPidController = right.getPIDController();
+    leftEncoder = left.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 1);
+    rightEncoder = left.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 1);
+    leftEncoder.setPosition(0.0);
+    rightEncoder.setPosition(0.0);
+
+    // PID coefficients
+    kP = 5e-5; 
+    kI = 1e-6;
+    kD = 0; 
+    kIz = 0; 
+    kFF = 0.000156; 
+    kMaxOutput = 1; 
+    kMinOutput = -1;
+    maxRPM = 5700;
+
+    // Smart Motion Coefficients
+    maxVel = 2000; // rpm
+    maxAcc = 1500;
+
+    // set PID coefficients
+    leftPidController.setP(kP);
+    leftPidController.setI(kI);
+    leftPidController.setD(kD);
+    leftPidController.setIZone(kIz);
+    leftPidController.setFF(kFF);
+    leftPidController.setOutputRange(kMinOutput, kMaxOutput);
+
+    int smartMotionSlot = 0;
+    leftPidController.setSmartMotionMaxVelocity(maxVel, smartMotionSlot);
+    leftPidController.setSmartMotionMinOutputVelocity(minVel, smartMotionSlot);
+    leftPidController.setSmartMotionMaxAccel(maxAcc, smartMotionSlot);
+    leftPidController.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot);
+    
+    // set PID coefficients
+    rightPidController.setP(kP);
+    rightPidController.setI(kI);
+    rightPidController.setD(kD);
+    rightPidController.setIZone(kIz);
+    rightPidController.setFF(kFF);
+    rightPidController.setOutputRange(kMinOutput, kMaxOutput);
+
+    rightPidController.setSmartMotionMaxVelocity(maxVel, smartMotionSlot);
+    rightPidController.setSmartMotionMinOutputVelocity(minVel, smartMotionSlot);
+    rightPidController.setSmartMotionMaxAccel(maxAcc, smartMotionSlot);
+    rightPidController.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot);
   }
 
   @Override
@@ -69,23 +103,27 @@ public class FrontClimbers extends SubsystemBase
 
   public double getPosition()
   {
-    double selSenPos = left.getSelectedSensorPosition(0);
+    double selSenPos = leftEncoder.getPosition();
+    // TODO
     return selSenPos;
   }
 
   public double getVelocity()
   {
-    double selSenVel = left.getSelectedSensorVelocity(0);
+    double selSenVel = leftEncoder.getVelocity();
+    // TODO
     return selSenVel;
   }
 
   public void setClimberPostion(double targetPos)
   {
-    left.set(ControlMode.MotionMagic, targetPos);
+    leftPidController.setReference(targetPos, ControlType.kSmartMotion);
+    // TODO
   }
 
   public void setInverted()
   {
     left.setInverted(true);
+    // TODO
   }
 }
