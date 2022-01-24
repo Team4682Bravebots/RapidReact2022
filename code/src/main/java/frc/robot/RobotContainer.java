@@ -97,10 +97,10 @@ public class RobotContainer {
     JoystickButton buttonB = new JoystickButton(coDriverController, XboxController.Button.kB.value);
     JoystickButton buttonY = new JoystickButton(coDriverController, XboxController.Button.kY.value);
     JoystickButton buttonX = new JoystickButton(coDriverController, XboxController.Button.kX.value);
-    JoystickButton bumperLeft = new JoystickButton(coDriverController, XboxController.Button.kBumperLeft.value);
-    JoystickButton bumperRight = new JoystickButton(coDriverController, XboxController.Button.kBumperRight.value);
-    JoystickButton joystickLeftButton = new JoystickButton(coDriverController, XboxController.Button.kStickLeft.value);
-    JoystickButton joystickRightButton = new JoystickButton(coDriverController, XboxController.Button.kStickRight.value);
+    JoystickButton bumperLeft = new JoystickButton(coDriverController, XboxController.Button.kLeftBumper.value);
+    JoystickButton bumperRight = new JoystickButton(coDriverController, XboxController.Button.kRightBumper.value);
+    JoystickButton joystickLeftButton = new JoystickButton(coDriverController, XboxController.Button.kLeftStick.value);
+    JoystickButton joystickRightButton = new JoystickButton(coDriverController, XboxController.Button.kRightStick.value);
 
     // example for button commands buttonB.whenPressed(new limeLightTargetX());
     //buttonA.whenPressed(new pnuematicsCmd(solenoidIntakeArmForward));

@@ -11,12 +11,13 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import frc.robot.*;
 
 public class Pnuematics extends SubsystemBase
 {
-  private final Compressor compressor = new Compressor(0);
-  private final DoubleSolenoid solenoid = new DoubleSolenoid(0,1);
+  private final Compressor compressor = new Compressor(PneumaticsModuleType.CTREPCM);
+  private final DoubleSolenoid solenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 0, 1);
 
   public void hookEngage()
   {
@@ -30,11 +31,11 @@ public class Pnuematics extends SubsystemBase
 
   public void compressorOn()
   {
-    compressor.start(); 
+    compressor.enableDigital(); 
   }
 
   public void compressorOff()
   {
-    compressor.stop();
+    compressor.disable();
   }
 }
