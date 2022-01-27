@@ -18,7 +18,7 @@ public class ArmDefualt extends CommandBase {
 
 
   /** Creates a new armDefualt. */
-  public ArmDefualt(arm armSubsystem) {
+  public ArmDefualt(Arm armSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.armSubsystem = armSubsystem;
     addRequirements(armSubsystem);
