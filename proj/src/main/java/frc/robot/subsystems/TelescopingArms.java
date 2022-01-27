@@ -8,23 +8,27 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
-import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
-import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.SparkMaxRelativeEncoder;
+import com.revrobotics.CANSparkMax.*;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class TelescopingArms extends SubsystemBase {
-
-
-  private WPI_TalonFX left = new WPI_TalonFX(Constants.climberS1MotorLeft);
-  private WPI_TalonFX right = new WPI_TalonFX(Constants.climberS1MotorRight);
-
-  double imput;
+public class TelescopingArms extends SubsystemBase
+{
+  // two matched motors - one for each climber side
+  private CANSparkMax left = new CANSparkMax(Constants.telescopingArmsMotorLeftCanId, MotorType.kBrushless);
+  private CANSparkMax right = new CANSparkMax(Constants.telescopingArmsMotorRightCanId, MotorType.kBrushless);
+  private SparkMaxPIDController rightPidController;
+  private SparkMaxPIDController leftPidController;
+  private RelativeEncoder rightEncoder;
+  private RelativeEncoder leftEncoder;
+  public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM, maxVel, minVel, maxAcc, allowedErr;
+  
   /*
 	 * Talon FX has 2048 units per revolution
 	 * 
@@ -32,81 +36,94 @@ public class TelescopingArms extends SubsystemBase {
 	 */
 	final int kUnitsPerRevolution = 2048; /* this is constant for Talon FX */
 
-   /** Creates a new climberS1. */
-  public TelescopingArms() {
+   /** Creates a new FrontClimbers. */
+  public TelescopingArms()
+  {
+    left.restoreFactoryDefaults();
+		right.restoreFactoryDefaults(); 
 
-    left.configFactoryDefault();
-    right.follow(left);
+		right.follow(left);
+		right.setIdleMode(IdleMode.kBrake);
+
+    // initialze PID controller and encoder objects
+    leftPidController = left.getPIDController();
+    rightPidController = right.getPIDController();
+    leftEncoder = left.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 1);
+    rightEncoder = left.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 1);
+    leftEncoder.setPosition(0.0);
+    rightEncoder.setPosition(0.0);
+
+    // PID coefficients
+    kP = 5e-5; 
+    kI = 1e-6;
+    kD = 0; 
+    kIz = 0; 
+    kFF = 0.000156; 
+    kMaxOutput = 1; 
+    kMinOutput = -1;
+    maxRPM = 5700;
+
+    // Smart Motion Coefficients
+    maxVel = 2000; // rpm
+    maxAcc = 1500;
+
+    // set PID coefficients
+    leftPidController.setP(kP);
+    leftPidController.setI(kI);
+    leftPidController.setD(kD);
+    leftPidController.setIZone(kIz);
+    leftPidController.setFF(kFF);
+    leftPidController.setOutputRange(kMinOutput, kMaxOutput);
+
+    int smartMotionSlot = 0;
+    leftPidController.setSmartMotionMaxVelocity(maxVel, smartMotionSlot);
+    leftPidController.setSmartMotionMinOutputVelocity(minVel, smartMotionSlot);
+    leftPidController.setSmartMotionMaxAccel(maxAcc, smartMotionSlot);
+    leftPidController.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot);
     
-    left.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, Constants.kPIDLoopIdx,
-    Constants.kTimeoutMs);
+    // set PID coefficients
+    rightPidController.setP(kP);
+    rightPidController.setI(kI);
+    rightPidController.setD(kD);
+    rightPidController.setIZone(kIz);
+    rightPidController.setFF(kFF);
+    rightPidController.setOutputRange(kMinOutput, kMaxOutput);
 
-    left.setSensorPhase(false);
-    left.setInverted(false);
-
-    left.configNeutralDeadband(0.001, Constants.kTimeoutMs);
-
-    left.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, Constants.kTimeoutMs);
-    left.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, Constants.kTimeoutMs);
-
-    		/* Set the peak and nominal outputs */
-		left.configNominalOutputForward(0, Constants.kTimeoutMs);
-		left.configNominalOutputReverse(0, Constants.kTimeoutMs);
-		left.configPeakOutputForward(1, Constants.kTimeoutMs);
-		left.configPeakOutputReverse(-1, Constants.kTimeoutMs);
-
-    left.selectProfileSlot(Constants.kSlotIdx, Constants.kPIDLoopIdx);
-    left.config_kF(Constants.kSlotIdx, Constants.kGains.kF, Constants.kTimeoutMs);
-    left.config_kP(Constants.kSlotIdx, Constants.kGains.kP, Constants.kTimeoutMs);
-    left.config_kI(Constants.kSlotIdx, Constants.kGains.kI, Constants.kTimeoutMs);
-    left.config_kD(Constants.kSlotIdx, Constants.kGains.kD, Constants.kTimeoutMs);
-
-    left.setNeutralMode(NeutralMode.Brake);
-
-    left.configMotionCruiseVelocity(15000, Constants.kTimeoutMs);
-    left.configMotionAcceleration(6000, Constants.kTimeoutMs);
-
-    // current limit enabled | Limit(amp) | Trigger Threshold(amp) | Trigger
-    // Threshold Time(s) */
-    left.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(false, 20, 25, 1.0));
-
-    // left.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
-
+    rightPidController.setSmartMotionMaxVelocity(maxVel, smartMotionSlot);
+    rightPidController.setSmartMotionMinOutputVelocity(minVel, smartMotionSlot);
+    rightPidController.setSmartMotionMaxAccel(maxAcc, smartMotionSlot);
+    rightPidController.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot);
   }
 
-
   @Override
-  public void periodic() {
+  public void periodic()
+  {
     // This method will be called once per scheduler run
   }
 
-  public double getPosition(){
-    double selSenPos = left.getSelectedSensorPosition(0);
+  public double getPosition()
+  {
+    double selSenPos = leftEncoder.getPosition();
+    // TODO
     return selSenPos;
   }
 
-  public double getVelocity(){
-    double selSenVel = left.getSelectedSensorVelocity(0);
+  public double getVelocity()
+  {
+    double selSenVel = leftEncoder.getVelocity();
+    // TODO
     return selSenVel;
   }
 
-  public void setClimberPostion(double targetPos, int smoothing) {
-
-    left.set(ControlMode.MotionMagic, targetPos);
-    left.configMotionSCurveStrength(smoothing);
+  public void setClimberPostion(double targetPos)
+  {
+    leftPidController.setReference(targetPos, ControlType.kSmartMotion);
+    // TODO
   }
 
-  public void setInverted() {
+  public void setInverted()
+  {
     left.setInverted(true);
+    // TODO
   }
-
-  public void zeroSensors() {
-    left.setSelectedSensorPosition(0);
-  }
-
-  public void setSmoothing(int smoothing){
-    left.configMotionSCurveStrength(smoothing);
-
-  }
-
 }

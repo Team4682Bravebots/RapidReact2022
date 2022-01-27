@@ -21,8 +21,8 @@ import frc.robot.Constants;
 public class BallStorage extends SubsystemBase {
 
 
-  private WPI_TalonFX left = new WPI_TalonFX(Constants.climberS1MotorLeft);
-  private WPI_TalonFX right = new WPI_TalonFX(Constants.climberS1MotorRight);
+  private WPI_TalonFX left = new WPI_TalonFX(Constants.telescopingArmsMotorLeftCanId);
+  private WPI_TalonFX right = new WPI_TalonFX(Constants.telescopingArmsMotorRightCanId);
 
   double imput;
   /*

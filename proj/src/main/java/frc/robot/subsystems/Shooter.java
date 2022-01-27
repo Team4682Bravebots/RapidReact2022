@@ -20,8 +20,8 @@ import frc.robot.Constants;
 public class Shooter extends SubsystemBase {
   
   
-  private WPI_TalonFX motor = new WPI_TalonFX(Constants.ShooterMotorLeft);
-  private WPI_TalonFX right = new WPI_TalonFX(Constants.ShooterMotorRight);
+  private WPI_TalonFX motor = new WPI_TalonFX(Constants.shooterMotorLeftCanId);
+  private WPI_TalonFX right = new WPI_TalonFX(Constants.shooterMotorRightCanId);
 
 	final int kUnitsPerRevolution = 2048; /* this is constant for Talon FX */
 

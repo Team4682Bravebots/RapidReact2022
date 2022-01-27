@@ -15,17 +15,17 @@ import frc.robot.subsystems.TelescopingArms;
 
 
 public class TelescopingArmEndGame extends CommandBase {
-  public TelescopingArms TelescopingArmSubsystem;
+  public TelescopingArms telescopingArmSubsystem;
   public Interfaces interfaceSubsystem;
   double imput;
   int pov;
   int _smoothing;
   int _pov;
 
-  public TelescopingArmEndGame(TelescopingArms TelescopingArmSubsystem, Interfaces interfaceSubsystem) {
+  public TelescopingArmEndGame(TelescopingArms telescopingArmSubsystem, Interfaces interfaceSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.TelescopingArmSubsystem = TelescopingArmSubsystem;
-    addRequirements(TelescopingArmSubsystem);
+    this.telescopingArmSubsystem = telescopingArmSubsystem;
+    addRequirements(telescopingArmSubsystem);
 
     this.interfaceSubsystem = interfaceSubsystem;
     addRequirements(interfaceSubsystem);
@@ -43,7 +43,7 @@ public class TelescopingArmEndGame extends CommandBase {
     int imputToDegree = 2048/360 * 2000;
 
     double targetPos = imput * imputToDegree;
-    double currentPOS = Math.round(TelescopingArmSubsystem.getPosition());
+    double currentPOS = Math.round(telescopingArmSubsystem.getPosition());
 
 
     
@@ -52,31 +52,11 @@ public class TelescopingArmEndGame extends CommandBase {
     
     if(targetPos < currentPOS-300 || targetPos > currentPOS+300){
     
-       TelescopingArmSubsystem.setClimberPostion(targetPos, imputToDegree);
+       telescopingArmSubsystem.setClimberPostion(targetPos);
     }
 
      pov = interfaceSubsystem.getXboxPov();
-
-        if (_pov == pov) {
-			/* no change */
-		} else if (_pov == 180) { // D-Pad down
-			/* Decrease smoothing */
-			_smoothing--;
-			if (_smoothing < 0)
-				_smoothing = 0;
-        TelescopingArmSubsystem.setSmoothing(_smoothing);
-
-			System.out.println("Smoothing is set to: " + _smoothing);
-		} else if (_pov == 0) { // D-Pad up
-			/* Increase smoothing */
-			_smoothing++;
-			if (_smoothing > 8)
-				_smoothing = 8;
-      TelescopingArmSubsystem.setSmoothing(_smoothing);
-			System.out.println("Smoothing is set to: " + _smoothing);
-		}
-		_pov = pov; /* save the pov value for next time */
-
+     // TODO
 
   }
 

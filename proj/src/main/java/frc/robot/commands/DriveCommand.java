@@ -3,7 +3,7 @@
 // Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
 // File: DriveCommand.java
-// Intent: Forms a command to drive the Jaws to a default position.
+// Intent: Forms a command to drive the wheels according to arcade style setup.
 // ************************************************************
 
 package frc.robot.commands;

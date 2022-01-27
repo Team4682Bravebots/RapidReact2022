@@ -12,26 +12,37 @@ package frc.robot;
  * <p>It is advised to statically import this class (or one of its inner classes) wherever the
  * constants are needed, to reduce verbosity.
  */
-public final class Constants {
+public final class Constants
+{
+  // hid ports \\ 
+  public static int portDriverController = 0;
+  public static int portCoDriverController = 1;
 
+  //TODO - P0 - fill in proper CAN bus index for Jaws motors
+  public static int jawsMotorRightCanId = -1;
+  public static int jawsMotorLeftCanId = -1;
 
- // hid ports \\ 
-   public static int portDriverController = 0;
-   public static int portCoDriverController = 1;
+  //TODO - P0 - fill in proper CAN bus index for drive motors
+  public static int driveMotorLeftFrontCanId = -1;
+  public static int driveMotorLeftRearCanId = -1;
+  public static int driveMotorRightFrontCanId = -1;
+  public static int driveMotorRightRearCanId = -1;
 
- //motor ports \\  //TODO 
-	 public static int climberS1MotorLeft = -1;
-   public static int climberS1MotorRight = -1;
+  //TODO - P0 - fill in proper CAN bus index for telescoping arm motors
+  public static int telescopingArmsMotorLeftCanId = -1;
+  public static int telescopingArmsMotorRightCanId = -1;
 
-   public static int climberS2MotorLeft = -1;
-   public static int climberS2MotorRight = -1;
+  //TODO - P0 - fill in proper CAN bus index for telescoping arm motors
+  public static final int shooterMotorLeftCanId = -1;
+  public static final int shooterMotorRightCanId = -1;
 
-   public static int JawsPort = -1;
-   
-   public static final int ShooterMotorLeft = -1;
-   public static final int ShooterMotorRight = -1;
+  // Motor magic numbers
+  public static boolean driveMotorLeftFrontInverted = false;
+  public static boolean driveMotorLeftRearInverted = false;
+  public static boolean driveMotorRightFrontInverted = false;
+  public static boolean driveMotorRightRearInverted = false;
 
-
+   // TODO -  the code below needs work ... make it cleaner 
 
   // Jaws reach points \\
    public static int JawsDefualt = 0;
@@ -48,22 +59,16 @@ public final class Constants {
    public static int s2EndGame = 4062 * 2; //TODO should be just less then double "s2Extended"
 
 
-
   // AngleArm timing \\
   public static final double AngleArmTiming = 0.3;
 
 
-
-
-
-  // substystem motor speeds \\
+   // substystem motor speeds \\
    public static final double ShooterEatSpeed = 0.5;
    public static final double ShooterBarfSpeed = 0.5;
    public static final double ShooterDefualt = 0.5;
 
-
-
- // xbox buttons \\
+    // xbox buttons \\
     public final static int buttonA = 1;
     public final static int buttonB = 2;
     public final static int buttonX = 3; 

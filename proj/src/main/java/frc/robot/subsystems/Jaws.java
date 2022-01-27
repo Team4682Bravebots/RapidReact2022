@@ -21,7 +21,8 @@ import frc.robot.Constants;
 public class Jaws extends SubsystemBase {
 
 
-  private final WPI_TalonFX motor = new WPI_TalonFX(Constants.JawsPort);
+  private final WPI_TalonFX rightMotor = new WPI_TalonFX(Constants.jawsMotorRightCanId);
+  private final WPI_TalonFX leftrightMotor = new WPI_TalonFX(Constants.jawsMotorRightCanId);
 
   /*
    * Talon FX has 2048 units per revolution
@@ -34,40 +35,40 @@ public class Jaws extends SubsystemBase {
   /** Creates a new climberS1. */
   public Jaws() {
 
-    motor.configFactoryDefault();
+    rightMotor.configFactoryDefault();
     
-    motor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, Constants.kPIDLoopIdx,
+    rightMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, Constants.kPIDLoopIdx,
     Constants.kTimeoutMs);
 
-    motor.setSensorPhase(false);
-    motor.setInverted(false);
+    rightMotor.setSensorPhase(false);
+    rightMotor.setInverted(false);
 
-    motor.configNeutralDeadband(0.001, Constants.kTimeoutMs);
+    rightMotor.configNeutralDeadband(0.001, Constants.kTimeoutMs);
 
     
-    motor.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, Constants.kTimeoutMs);
-    motor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, Constants.kTimeoutMs);
+    rightMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, Constants.kTimeoutMs);
+    rightMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, Constants.kTimeoutMs);
 
     		/* Set the peak and nominal outputs */
-		motor.configNominalOutputForward(0, Constants.kTimeoutMs);
-		motor.configNominalOutputReverse(0, Constants.kTimeoutMs);
-		motor.configPeakOutputForward(1, Constants.kTimeoutMs);
-		motor.configPeakOutputReverse(-1, Constants.kTimeoutMs);
+		rightMotor.configNominalOutputForward(0, Constants.kTimeoutMs);
+		rightMotor.configNominalOutputReverse(0, Constants.kTimeoutMs);
+		rightMotor.configPeakOutputForward(1, Constants.kTimeoutMs);
+		rightMotor.configPeakOutputReverse(-1, Constants.kTimeoutMs);
 
-    motor.selectProfileSlot(Constants.kSlotIdx, Constants.kPIDLoopIdx);
-    motor.config_kF(Constants.kSlotIdx, Constants.kGains.kF, Constants.kTimeoutMs);
-    motor.config_kP(Constants.kSlotIdx, Constants.kGains.kP, Constants.kTimeoutMs);
-    motor.config_kI(Constants.kSlotIdx, Constants.kGains.kI, Constants.kTimeoutMs);
-    motor.config_kD(Constants.kSlotIdx, Constants.kGains.kD, Constants.kTimeoutMs);
+    rightMotor.selectProfileSlot(Constants.kSlotIdx, Constants.kPIDLoopIdx);
+    rightMotor.config_kF(Constants.kSlotIdx, Constants.kGains.kF, Constants.kTimeoutMs);
+    rightMotor.config_kP(Constants.kSlotIdx, Constants.kGains.kP, Constants.kTimeoutMs);
+    rightMotor.config_kI(Constants.kSlotIdx, Constants.kGains.kI, Constants.kTimeoutMs);
+    rightMotor.config_kD(Constants.kSlotIdx, Constants.kGains.kD, Constants.kTimeoutMs);
 
-    motor.setNeutralMode(NeutralMode.Brake);
+    rightMotor.setNeutralMode(NeutralMode.Brake);
 
-    motor.configMotionCruiseVelocity(15000, Constants.kTimeoutMs);
-    motor.configMotionAcceleration(6000, Constants.kTimeoutMs);
+    rightMotor.configMotionCruiseVelocity(15000, Constants.kTimeoutMs);
+    rightMotor.configMotionAcceleration(6000, Constants.kTimeoutMs);
 
     // current limit enabled | Limit(amp) | Trigger Threshold(amp) | Trigger
     // Threshold Time(s) */
-    motor.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(false, 20, 25, 1.0));
+    rightMotor.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(false, 20, 25, 1.0));
 
     // left.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
 
@@ -79,32 +80,32 @@ public class Jaws extends SubsystemBase {
   }
 
   public double getPosition() {
-    double selSenPos = motor.getSelectedSensorPosition();
+    double selSenPos = rightMotor.getSelectedSensorPosition();
     return selSenPos;
   }
 
   public double getVelocity() {
-    double selSenVel = motor.getSelectedSensorVelocity();
+    double selSenVel = rightMotor.getSelectedSensorVelocity();
     return selSenVel;
   }
 
   public void setJawsPosition(double targetPos) {
-    motor.set(TalonFXControlMode.MotionMagic, targetPos);
+    rightMotor.set(TalonFXControlMode.MotionMagic, targetPos);
   }
   
   //public void isFinished(boolean done, double targetPos){
-   //if(motor.getSelectedSensorPosition() >= targetPos + 100 || motor.getSelectedSensorPosition() <=targetPos - 100){
+   //if(rightMotor.getSelectedSensorPosition() >= targetPos + 100 || rightMotor.getSelectedSensorPosition() <=targetPos - 100){
      //done = true;
     //} else { done = false; }
   //}
 
 
   public void setInverted() {
-    motor.setInverted(true);
+    rightMotor.setInverted(true);
   }
 
   public void zeroSensors() {
-    motor.setSelectedSensorPosition(0);
+    rightMotor.setSelectedSensorPosition(0);
   }
  
 }
