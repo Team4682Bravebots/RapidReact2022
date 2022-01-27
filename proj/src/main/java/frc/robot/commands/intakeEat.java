@@ -5,14 +5,14 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.intake;
-import frc.robot.subsystems.pnuematics;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Pnuematics;
 
 public class intakeEat extends CommandBase {
-  private pnuematics pnuematicsSubsystem;
-  private intake intakeSubsystem;
+  private Pnuematics pnuematicsSubsystem;
+  private Intake intakeSubsystem;
 
-public intakeEat(intake intakeSubsystem, pnuematics pnuematicsSubsystem) {
+public intakeEat(Intake intakeSubsystem, Pnuematics pnuematicsSubsystem) {
   this.intakeSubsystem = intakeSubsystem;
   addRequirements(intakeSubsystem);
 

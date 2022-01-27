@@ -13,7 +13,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class intake extends SubsystemBase {
+public class Intake extends SubsystemBase {
   
   
   private WPI_TalonFX motor = new WPI_TalonFX(Constants.intakeMotorLeft);
@@ -22,7 +22,7 @@ public class intake extends SubsystemBase {
 	final int kUnitsPerRevolution = 2048; /* this is constant for Talon FX */
 
 /** Creates a new intake. */
-  public intake() {
+  public Intake() {
     motor.configFactoryDefault();
     right.follow(motor);
     right.setInverted(true);

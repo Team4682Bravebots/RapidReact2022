@@ -7,15 +7,15 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.subsystems.popper;
+import frc.robot.subsystems.Popper;
 
-public class popperPop extends CommandBase {
-  private popper popperSubsystem;
+public class PopperPop extends CommandBase {
+  private Popper popperSubsystem;
   private Timer timer = new Timer();
 
   private boolean done;
 
-  public popperPop(popper popperSubsystem) {
+  public PopperPop(Popper popperSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.popperSubsystem = popperSubsystem;
     addRequirements(popperSubsystem);

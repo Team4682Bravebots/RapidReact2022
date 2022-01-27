@@ -11,10 +11,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kForward;
 import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kReverse;
 
-public class popper extends SubsystemBase {
+public class Popper extends SubsystemBase {
   /** Creates a new popper. */
   
-  public popper() {}
+  public Popper() {}
   
   private final DoubleSolenoid popperSolenoid = new DoubleSolenoid(null, 2,3); 
 

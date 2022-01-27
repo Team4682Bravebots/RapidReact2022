@@ -8,9 +8,9 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class interfaces extends SubsystemBase {
+public class Interfaces extends SubsystemBase {
   /** Creates a new interfaces. */
-  public interfaces() {
+  public Interfaces() {
   }
 
   public Joystick coDriverController;
