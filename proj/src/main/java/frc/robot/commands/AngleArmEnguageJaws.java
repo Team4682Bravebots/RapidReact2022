@@ -16,7 +16,6 @@ import frc.robot.subsystems.AngleArms;
 public class AngleArmEnguageJaws extends CommandBase {
   private AngleArms angleArmSubsystem;
   private Timer timer = new Timer();
-
   private boolean done;
 
   public AngleArmEnguageJaws(AngleArms angleArmSubsystem) {
@@ -36,12 +35,11 @@ public class AngleArmEnguageJaws extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    angleArmSubsystem.solenoidPopForward();
+    angleArmSubsystem.enguageJaws();
     if (timer.hasElapsed(Constants.AngleArmTiming)){
-      angleArmSubsystem.solenoidPopBackward();
+      angleArmSubsystem.disenguageChassis();
       done = true;
-    }
-  
+    } 
   }
 
   // Called once the command ends or is interrupted.

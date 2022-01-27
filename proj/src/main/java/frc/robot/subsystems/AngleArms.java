@@ -20,13 +20,27 @@ public class AngleArms extends SubsystemBase {
   
   public AngleArms() {}
   
-  private final DoubleSolenoid AngleArmSolenoid = new DoubleSolenoid(null, 2,3); 
+  private final DoubleSolenoid leftChassisAngleArmSolenoid = new DoubleSolenoid(null, 2,3); 
+  private final DoubleSolenoid rightChassisAngleArmSolenoid = new DoubleSolenoid(null, 2,3); 
+  private final DoubleSolenoid leftJawsAngleArmSolenoid = new DoubleSolenoid(null, 2,3); 
+  private final DoubleSolenoid rightJawsAngleArmSolenoid = new DoubleSolenoid(null, 2,3); 
 
-  public void solenoidPopForward(){
-    AngleArmSolenoid.set(kForward);
+  public void enguageChassis(){
+    leftChassisAngleArmSolenoid.set(kForward);
+    rightChassisAngleArmSolenoid.set(kForward);
   }
-  public void solenoidPopBackward(){
-    AngleArmSolenoid.set(kReverse);
+  public void disenguageChassis(){
+    leftChassisAngleArmSolenoid.set(kReverse);
+    rightChassisAngleArmSolenoid.set(kReverse);
+  }
+
+  public void enguageJaws(){
+    leftJawsAngleArmSolenoid.set(kForward);
+    rightJawsAngleArmSolenoid.set(kForward);
+  }
+  public void disenguageJaws(){
+    leftJawsAngleArmSolenoid.set(kReverse);
+    rightJawsAngleArmSolenoid.set(kReverse);
   }
   
   @Override

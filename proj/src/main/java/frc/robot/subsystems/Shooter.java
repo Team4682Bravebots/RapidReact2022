@@ -8,62 +8,26 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
-import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
-import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
-import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.*;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Shooter extends SubsystemBase {
   
-  
-  private WPI_TalonFX motor = new WPI_TalonFX(Constants.shooterMotorLeftCanId);
-  private WPI_TalonFX right = new WPI_TalonFX(Constants.shooterMotorRightCanId);
+  private CANSparkMax topMotor = new CANSparkMax(Constants.telescopingArmsMotorLeftCanId, MotorType.kBrushless);
+  private CANSparkMax bottomMotor = new CANSparkMax(Constants.telescopingArmsMotorRightCanId, MotorType.kBrushless);
 
-	final int kUnitsPerRevolution = 2048; /* this is constant for Talon FX */
-
-/** Creates a new Shooter. */
+  /** Creates a new Shooter. */
   public Shooter() {
-    motor.configFactoryDefault();
-    right.follow(motor);
-    right.setInverted(true);
-    
-    motor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, Constants.kPIDLoopIdx,
-    Constants.kTimeoutMs);
+    topMotor.restoreFactoryDefaults();
+		bottomMotor.restoreFactoryDefaults(); 
 
-    motor.setSensorPhase(false);
-    motor.setInverted(false);
-
-    motor.configNeutralDeadband(0.001, Constants.kTimeoutMs);
-    
-    motor.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, Constants.kTimeoutMs);
-    motor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, Constants.kTimeoutMs);
-
-    		/* Set the peak and nominal outputs */
-		motor.configNominalOutputForward(0, Constants.kTimeoutMs);
-		motor.configNominalOutputReverse(0, Constants.kTimeoutMs);
-		motor.configPeakOutputForward(1, Constants.kTimeoutMs);
-		motor.configPeakOutputReverse(-1, Constants.kTimeoutMs);
-
-    motor.selectProfileSlot(Constants.kSlotIdx, Constants.kPIDLoopIdx);
-    motor.config_kF(Constants.kSlotIdx, Constants.kGains.kF, Constants.kTimeoutMs);
-    motor.config_kP(Constants.kSlotIdx, Constants.kGains.kP, Constants.kTimeoutMs);
-    motor.config_kI(Constants.kSlotIdx, Constants.kGains.kI, Constants.kTimeoutMs);
-    motor.config_kD(Constants.kSlotIdx, Constants.kGains.kD, Constants.kTimeoutMs);
-
-    //motor.setNeutralMode(NeutralMode.Brake);
-
-    //motor.configMotionCruiseVelocity(30000, Constants.kTimeoutMs);
-    //motor.configMotionAcceleration(30000, Constants.kTimeoutMs);
-
-    // current limit enabled | Limit(amp) | Trigger Threshold(amp) | Trigger
-    // Threshold Time(s) */
-    motor.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(false, 20, 25, 1.0));
-
-    // left.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+		bottomMotor.follow(topMotor);
+    bottomMotor.setInverted(true);
+		bottomMotor.setIdleMode(IdleMode.kCoast);
   }
   
 
@@ -73,16 +37,14 @@ public class Shooter extends SubsystemBase {
   }
 
   public void eat(double speed){
-    motor.set(TalonFXControlMode.PercentOutput, speed);
+    topMotor.set(speed);
   }
 
   public void barf(double speed){
-    motor.set(TalonFXControlMode.PercentOutput, speed * -1 );
-
-
+    topMotor.set(speed * -1.0);
   }
 
   public void defualt(){
-    motor.set(TalonFXControlMode.PercentOutput, Constants.ShooterDefualt);
+    topMotor.set(0.0);
   }
 }
