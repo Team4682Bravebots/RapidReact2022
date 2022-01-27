@@ -20,20 +20,18 @@ public class ZeroSensors extends CommandBase {
  * @param m_Jaws*/
 
   public Jaws m_Jaws;
-  public BallStorage m_climbers1;
-  public TelescopingArms m_climbers2;
+  public TelescopingArms m_telescopingArms;
 
-  public ZeroSensors(Jaws m_Jaws, BallStorage m_climbers1, TelescopingArms m_climbers2) {
+  public ZeroSensors(Jaws m_Jaws, TelescopingArms m_telescopingArms) {
     // Use addRequirements() here to declare subsystem dependencies.
 
     this.m_Jaws = m_Jaws;
     addRequirements(m_Jaws);
 
-    this.m_climbers1 = m_climbers1;
-    addRequirements(m_climbers1);
+    this.m_telescopingArms = m_telescopingArms;
+    addRequirements(m_telescopingArms);
 
-    this.m_climbers2 = m_climbers2;
-    addRequirements(m_climbers2);
+
   }
 
   // Called when the command is initially scheduled.
@@ -47,6 +45,9 @@ public class ZeroSensors extends CommandBase {
     //m_climbers1.zeroSensors();
     //m_climbers2.zeroSensors();
     //TODO add anyother sensors 
+
+    m_Jaws.zeroSensors();
+    m_telescopingArms.zeroSensors();
 
     System.out.println(m_Jaws.getPosition());
   }

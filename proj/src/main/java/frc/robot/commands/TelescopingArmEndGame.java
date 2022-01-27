@@ -39,24 +39,7 @@ public class TelescopingArmEndGame extends CommandBase {
   @Override
   public void execute() {
  
-    imput = Math.round(interfaceSubsystem.getXboxRawAxis(Constants.joystickX) * 10) / 10;
-    int imputToDegree = 2048/360 * 2000;
-
-    double targetPos = imput * imputToDegree;
-    double currentPOS = Math.round(telescopingArmSubsystem.getPosition());
-
-
-    
-    System.out.println(currentPOS);
-    System.out.println("imput" + imput);
-    
-    if(targetPos < currentPOS-300 || targetPos > currentPOS+300){
-    
-       telescopingArmSubsystem.setClimberPostion(targetPos);
-    }
-
-     pov = interfaceSubsystem.getXboxPov();
-     // TODO
+    telescopingArmSubsystem.setClimberPostion(Constants.s1EndGame);
 
   }
 

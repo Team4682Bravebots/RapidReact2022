@@ -115,6 +115,11 @@ public class TelescopingArms extends SubsystemBase
     return selSenVel;
   }
 
+  public void setClimberSpeed(double speed)
+  {
+    right.set(speed);
+  }
+
   public void setClimberPostion(double targetPos)
   {
     leftPidController.setReference(targetPos, ControlType.kSmartMotion);
@@ -125,5 +130,9 @@ public class TelescopingArms extends SubsystemBase
   {
     left.setInverted(true);
     // TODO
+  }
+
+  public void zeroSensors(){
+    //TODO add zero sensors for these 
   }
 }

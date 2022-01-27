@@ -20,6 +20,7 @@ public class AngleArms extends SubsystemBase {
   
   public AngleArms() {}
   
+  //TODO set null to the pnuematics module we use 
   private final DoubleSolenoid leftChassisAngleArmSolenoid = new DoubleSolenoid(null, 2,3); 
   private final DoubleSolenoid rightChassisAngleArmSolenoid = new DoubleSolenoid(null, 2,3); 
   private final DoubleSolenoid leftJawsAngleArmSolenoid = new DoubleSolenoid(null, 2,3); 

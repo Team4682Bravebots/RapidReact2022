@@ -79,6 +79,17 @@ public class DriveTrain extends SubsystemBase
     //rightFront..configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
   }
 
+  public void driveControll(double leftSpeed, double rightSpeed)
+  {
+    //sets motors to imput speeds (sets to conroll motor and conquencly follower motor)
+    leftRear.set(leftSpeed);
+    rightRear.set(rightSpeed);
+  }
+
+  public void defualt(){
+    leftRear.set(0);
+    rightRear.set(0);
+  }
   @Override
   public void periodic()
   {

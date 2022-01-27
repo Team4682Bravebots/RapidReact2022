@@ -2,8 +2,8 @@
 // Bischop Blanchet Robotics
 // Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
-// File: TelescopingArmExtend.java
-// Intent: Forms a command to drive the telescoping arms to their extended position.
+// File: TelescopingArmManual.java
+// Intent: Forms a command to drive the telescoping arms to their retracted position.
 // ************************************************************
 
 package frc.robot.commands;
@@ -14,7 +14,7 @@ import frc.robot.subsystems.Interfaces;
 import frc.robot.subsystems.TelescopingArms;
 
 
-public class TelescopingArmExtend extends CommandBase {
+public class TelescopingArmManual extends CommandBase {
   public TelescopingArms telescopingArmSubsystem;
   public Interfaces interfaceSubsystem;
   double imput;
@@ -22,7 +22,7 @@ public class TelescopingArmExtend extends CommandBase {
   int _smoothing;
   int _pov;
 
-  public TelescopingArmExtend(TelescopingArms telescopingArmSubsystem, Interfaces interfaceSubsystem) {
+  public TelescopingArmManual(TelescopingArms telescopingArmSubsystem, Interfaces interfaceSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.telescopingArmSubsystem = telescopingArmSubsystem;
     addRequirements(telescopingArmSubsystem);
@@ -39,7 +39,26 @@ public class TelescopingArmExtend extends CommandBase {
   @Override
   public void execute() {
  
-   telescopingArmSubsystem.setClimberPostion(Constants.s1Extended);
+    imput = Math.round(interfaceSubsystem.getXboxRawAxis(Constants.joystickX) * 10) / 10;
+    int imputToDegree = 2048/360 * 2000;
+
+    telescopingArmSubsystem.setClimberSpeed(imput);
+
+    /*
+    double targetPos = imput * imputToDegree;
+    double currentPOS = Math.round(telescopingArmSubsystem.getPosition());
+  
+    System.out.println(currentPOS);
+    System.out.println("imput" + imput);
+    
+    if(targetPos < currentPOS-300 || targetPos > currentPOS+300){
+    
+       telescopingArmSubsystem.setClimberPostion(targetPos);
+    }
+
+     pov = interfaceSubsystem.getXboxPov();
+     // TODO
+     */
   }
 
   // Called once the command ends or is interrupted.
