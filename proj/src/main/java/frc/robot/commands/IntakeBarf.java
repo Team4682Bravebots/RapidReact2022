@@ -11,21 +11,21 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Interfaces;
-import frc.robot.subsystems.Pnuematics;
+import frc.robot.subsystems.Pneumatics;
 
 public class IntakeBarf extends CommandBase {
  
   public Intake intakeSubsystem;
-  public Pnuematics pnuematicsSubsystem;
+  public Pneumatics PneumaticsSubsystem;
   public Interfaces interfacesSubsystem;
 
-  public IntakeBarf(Intake intakeSubystem, Pnuematics pnuematicsSubsystem, Interfaces interfacesSubsystem) {
+  public IntakeBarf(Intake intakeSubystem, Pneumatics PneumaticsSubsystem, Interfaces interfacesSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.intakeSubsystem = intakeSubystem;
     addRequirements(intakeSubystem);
 
-    this.pnuematicsSubsystem = pnuematicsSubsystem;
-    addRequirements(pnuematicsSubsystem);
+    this.PneumaticsSubsystem = PneumaticsSubsystem;
+    addRequirements(PneumaticsSubsystem);
 
     this.interfacesSubsystem = interfacesSubsystem;
     addRequirements(interfacesSubsystem);
@@ -40,8 +40,8 @@ public class IntakeBarf extends CommandBase {
   public void execute() {
     intakeSubsystem.barf(interfacesSubsystem.getXboxRawAxis(2));
     System.out.println(interfacesSubsystem.getXboxRawAxis(2));
-    pnuematicsSubsystem.solenoidIntakeArmForward();
-    pnuematicsSubsystem.solenoidIntakeArmForward();
+    PneumaticsSubsystem.solenoidIntakeArmForward();
+    PneumaticsSubsystem.solenoidIntakeArmForward();
   }
 
   // Called once the command ends or is interrupted.
