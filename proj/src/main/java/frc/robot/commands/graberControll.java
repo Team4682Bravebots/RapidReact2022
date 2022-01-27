@@ -6,19 +6,19 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.subsystems.interfaces;
-import frc.robot.subsystems.graber;
+import frc.robot.subsystems.Interfaces;
+import frc.robot.subsystems.Graber;
 
 
 public class graberControll extends CommandBase {
-  public graber graberSubsystem;
-  public interfaces interfaceSubsystem;
+  public Graber graberSubsystem;
+  public Interfaces interfaceSubsystem;
   double imput;
   int pov;
   int _smoothing;
   int _pov;
 
-  public graberControll(graber graberSubsystem, interfaces interfaceSubsystem) {
+  public graberControll(Graber graberSubsystem, Interfaces interfaceSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.graberSubsystem = graberSubsystem;
     addRequirements(graberSubsystem);

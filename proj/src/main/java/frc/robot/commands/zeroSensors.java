@@ -5,9 +5,9 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.arm;
-import frc.robot.subsystems.climberS1;
-import frc.robot.subsystems.graber;
+import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.ClimberS1;
+import frc.robot.subsystems.Graber;
 
 public class ZeroSensors extends CommandBase {
   /** Creates a new zeroSensors. 
@@ -16,10 +16,10 @@ public class ZeroSensors extends CommandBase {
  * @param m_arm*/
 
   public arm m_arm;
-  public climberS1 m_climbers1;
-  public graber m_climbers2;
+  public ClimberS1 m_climbers1;
+  public Graber m_climbers2;
 
-  public ZeroSensors(arm m_arm, climberS1 m_climbers1, graber m_climbers2) {
+  public ZeroSensors(arm m_arm, ClimberS1 m_climbers1, Graber m_climbers2) {
     // Use addRequirements() here to declare subsystem dependencies.
 
     this.m_arm = m_arm;

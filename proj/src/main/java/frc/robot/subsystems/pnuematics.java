@@ -13,7 +13,7 @@ import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kReverse;
 import edu.wpi.first.wpilibj.Compressor;
 
 
-public class pnuematics extends SubsystemBase {
+public class Pnuematics extends SubsystemBase {
   //TODO add the correct pnuematics module 
   private final Compressor compressor = new Compressor(0, null);
   private final DoubleSolenoid Solenoid = new DoubleSolenoid(null, 0,1);

@@ -17,14 +17,14 @@ import frc.robot.commands.climberS1EndGame;
 import frc.robot.commands.climberS1Extended;
 import frc.robot.commands.intakeBarf;
 import frc.robot.commands.intakeEat;
-import frc.robot.subsystems.arm;
-import frc.robot.subsystems.climberS1;
-import frc.robot.subsystems.driveTrain;
-import frc.robot.subsystems.graber;
-import frc.robot.subsystems.intake;
-import frc.robot.subsystems.interfaces;
-import frc.robot.subsystems.pnuematics;
-import frc.robot.subsystems.popper;
+import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.ClimberS1;
+import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Graber;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Interfaces;
+import frc.robot.subsystems.Pnuematics;
+import frc.robot.subsystems.Popper;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -36,14 +36,14 @@ public class RobotContainer {
 
 
   //declaring and init subsystems  
-  public static arm m_arm = new arm();
-  public static pnuematics m_pnuematics  = new pnuematics();
-  public static intake m_intake = new intake();
-  public static driveTrain m_drivetrain = new driveTrain();
-  public static climberS1 m_climbers1 = new climberS1();
-  public static graber m_graber = new graber();
-  public static popper m_popper = new popper();
-  public static interfaces m_interfaces = new interfaces();
+  public static Arm m_arm = new Arm();
+  public static Pnuematics m_pnuematics  = new Pnuematics();
+  public static Intake m_intake = new Intake();
+  public static DriveTrain m_drivetrain = new DriveTrain();
+  public static ClimberS1 m_climbers1 = new ClimberS1();
+  public static Graber m_graber = new Graber();
+  public static Popper m_popper = new Popper();
+  public static Interfaces m_interfaces = new Interfaces();
 
 
   //declering hids

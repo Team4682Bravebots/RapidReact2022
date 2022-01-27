@@ -5,17 +5,17 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.intake;
-import frc.robot.subsystems.interfaces;
-import frc.robot.subsystems.pnuematics;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Interfaces;
+import frc.robot.subsystems.Pnuematics;
 
 public class intakeBarf extends CommandBase {
  
-  public intake intakeSubsystem;
-  public pnuematics pnuematicsSubsystem;
-  public interfaces interfacesSubsystem;
+  public Intake intakeSubsystem;
+  public Pnuematics pnuematicsSubsystem;
+  public Interfaces interfacesSubsystem;
 
-  public intakeBarf(intake intakeSubystem, pnuematics pnuematicsSubsystem, interfaces interfacesSubsystem) {
+  public intakeBarf(Intake intakeSubystem, Pnuematics pnuematicsSubsystem, Interfaces interfacesSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.intakeSubsystem = intakeSubystem;
     addRequirements(intakeSubystem);

@@ -14,7 +14,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class arm extends SubsystemBase {
+public class Arm extends SubsystemBase {
 
 
   private final WPI_TalonFX motor = new WPI_TalonFX(Constants.armPort);
@@ -28,7 +28,7 @@ public class arm extends SubsystemBase {
   final int kUnitsPerRevolution = 2048; /* this is constant for Talon FX */
 
   /** Creates a new climberS1. */
-  public arm() {
+  public Arm() {
 
     motor.configFactoryDefault();
     

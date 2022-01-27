@@ -6,15 +6,15 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.subsystems.arm;
+import frc.robot.subsystems.Arm;
 
 public class armDefualt extends CommandBase {
-  private final arm armSubsystem;
+  private final Arm armSubsystem;
   boolean done;
 
 
   /** Creates a new armDefualt. */
-  public armDefualt(arm armSubsystem) {
+  public armDefualt(Arm armSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.armSubsystem = armSubsystem;
     addRequirements(armSubsystem);
