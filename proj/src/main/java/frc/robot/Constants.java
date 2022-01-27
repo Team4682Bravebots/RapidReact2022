@@ -28,14 +28,14 @@ public final class Constants {
 
    public static int JawsPort = -1;
    
-   public static final int intakeMotorLeft = -1;
-   public static final int intakeMotorRight = -1;
+   public static final int ShooterMotorLeft = -1;
+   public static final int ShooterMotorRight = -1;
 
 
 
   // Jaws reach points \\
    public static int JawsDefualt = 0;
-   public static int JawsIntake = 2048 * 1;//TODO the mathh to find some good points depending on the gearing 
+   public static int JawsShooter = 2048 * 1;//TODO the mathh to find some good points depending on the gearing 
    public static int JawsForwardLowGoal = 2048 * 2;
    
   // climber reach points \\
@@ -49,17 +49,17 @@ public final class Constants {
 
 
 
-  // popper timing \\
-  public static final double popperTiming = 0.3;
+  // AngleArm timing \\
+  public static final double AngleArmTiming = 0.3;
 
 
 
 
 
   // substystem motor speeds \\
-   public static final double intakeEatSpeed = 0.5;
-   public static final double intakeBarfSpeed = 0.5;
-   public static final double intakeDefualt = 0.5;
+   public static final double ShooterEatSpeed = 0.5;
+   public static final double ShooterBarfSpeed = 0.5;
+   public static final double ShooterDefualt = 0.5;
 
 
 

@@ -2,25 +2,25 @@
 // Bischop Blanchet Robotics
 // Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
-// File: IntakeDefault.java
+// File: ShooterDefault.java
 // Intent: Forms a command to drive the Jaws to a default position.
 // ************************************************************
 
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Pneumatics;
 
-public class IntakeDefault extends CommandBase {
+public class ShooterDefault extends CommandBase {
   /** Creates a new solenoidOne. 
- * @param m_intake*/
+ * @param m_Shooter*/
     private Pneumatics PneumaticsSubsystem;
-    private Intake intakeSubsystem;
+    private Shooter ShooterSubsystem;
   
-  public IntakeDefault(Intake intakeSubsystem, Pneumatics PneumaticsSubsystem) {
-    this.intakeSubsystem = intakeSubsystem;
-    addRequirements(intakeSubsystem);
+  public ShooterDefault(Shooter ShooterSubsystem, Pneumatics PneumaticsSubsystem) {
+    this.ShooterSubsystem = ShooterSubsystem;
+    addRequirements(ShooterSubsystem);
 
     this.PneumaticsSubsystem = PneumaticsSubsystem;
     addRequirements(PneumaticsSubsystem);
@@ -35,9 +35,9 @@ public class IntakeDefault extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    PneumaticsSubsystem.solenoidIntakeJawsBackward();
+    PneumaticsSubsystem.solenoidShooterJawsBackward();
     //any motors that need to be turned off
-    intakeSubsystem.defualt();
+    ShooterSubsystem.defualt();
   }
 
   // Called once the command ends or is interrupted.

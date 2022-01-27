@@ -2,8 +2,8 @@
 // Bischop Blanchet Robotics
 // Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
-// File: JawsDefault.java
-// Intent: Forms a command to drive the Jaws to a default position.
+// File: JawsIntake.java
+// Intent: Forms a command to drive the Jaws to the Shooter position.
 // ************************************************************
 
 package frc.robot.commands;
@@ -29,7 +29,7 @@ public class JawsIntake extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    jawsSubsystem.setJawsPosition(Constants.JawsIntake);
+    jawsSubsystem.setJawsPosition(Constants.JawsShooter);
 
    // jawsSubsystem.isFinished(done, Constants.JawsDefualt);
    System.out.println(jawsSubsystem.getPosition());

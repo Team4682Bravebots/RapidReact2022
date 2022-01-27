@@ -2,27 +2,27 @@
 // Bischop Blanchet Robotics
 // Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
-// File: IntakeBarf.java
-// Intent: Forms a command to drive the Jaws to a default position.
+// File: ShooterReverseHighShot.java
+// Intent: Forms a command to shoot the ball at the high goal assuming the reverse position.
 // ************************************************************
 
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Interfaces;
 import frc.robot.subsystems.Pneumatics;
 
-public class IntakeBarf extends CommandBase {
+public class ShooterReverseHighShot extends CommandBase {
  
-  public Intake intakeSubsystem;
+  public Shooter ShooterSubsystem;
   public Pneumatics PneumaticsSubsystem;
   public Interfaces interfacesSubsystem;
 
-  public IntakeBarf(Intake intakeSubystem, Pneumatics PneumaticsSubsystem, Interfaces interfacesSubsystem) {
+  public ShooterReverseHighShot(Shooter ShooterSubystem, Pneumatics PneumaticsSubsystem, Interfaces interfacesSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.intakeSubsystem = intakeSubystem;
-    addRequirements(intakeSubystem);
+    this.ShooterSubsystem = ShooterSubystem;
+    addRequirements(ShooterSubystem);
 
     this.PneumaticsSubsystem = PneumaticsSubsystem;
     addRequirements(PneumaticsSubsystem);
@@ -38,10 +38,10 @@ public class IntakeBarf extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intakeSubsystem.barf(interfacesSubsystem.getXboxRawAxis(2));
+    ShooterSubsystem.barf(interfacesSubsystem.getXboxRawAxis(2));
     System.out.println(interfacesSubsystem.getXboxRawAxis(2));
-    PneumaticsSubsystem.solenoidIntakeJawsForward();
-    PneumaticsSubsystem.solenoidIntakeJawsForward();
+    PneumaticsSubsystem.solenoidShooterJawsForward();
+    PneumaticsSubsystem.solenoidShooterJawsForward();
   }
 
   // Called once the command ends or is interrupted.

@@ -24,11 +24,11 @@ public class RobotContainer {
   //declaring and init subsystems  
   public static Jaws m_jaws = new Jaws();
   public static Pneumatics m_pnuematics  = new Pneumatics();
-  public static Intake m_intake = new Intake();
+  public static Shooter m_Shooter = new Shooter();
   public static DriveTrain m_drivetrain = new DriveTrain();
-  public static ClimberS1 m_climbers1 = new ClimberS1();
-  public static Graber m_graber = new Graber();
-  public static Popper m_popper = new Popper();
+  public static BallStorage m_climbers1 = new BallStorage();
+  public static TelescopingArms m_TelescopingArm = new TelescopingArms();
+  public static AngleArms m_AngleArm = new AngleArms();
   public static Interfaces m_interfaces = new Interfaces();
 
 
@@ -55,20 +55,20 @@ public class RobotContainer {
   CommandScheduler.getInstance().registerSubsystem(m_climbers1);
   //CommandScheduler.getInstance().setDefaultCommand(m_climbers1, new climberS1Defualt(m_climbers1, m_interfaces));
 
-  CommandScheduler.getInstance().registerSubsystem(m_graber);
+  CommandScheduler.getInstance().registerSubsystem(m_TelescopingArm);
   //TODO CommandScheduler.getInstance().setDefaultCommand(m_climbers2, new climberS2Defualt(m_climbers2));
 
   CommandScheduler.getInstance().registerSubsystem(m_drivetrain);
  // CommandScheduler.getInstance().setDefaultCommand(m_drivetrain, new driveCommand(m_drivetrain));
 
-  CommandScheduler.getInstance().registerSubsystem(m_intake);
- // CommandScheduler.getInstance().setDefaultCommand(m_intake, new intakeDefualt(m_intake, m_pnuematics));
+  CommandScheduler.getInstance().registerSubsystem(m_Shooter);
+ // CommandScheduler.getInstance().setDefaultCommand(m_Shooter, new ShooterDefualt(m_Shooter, m_pnuematics));
   
   CommandScheduler.getInstance().registerSubsystem(m_pnuematics);
-  //CommandScheduler.getInstance().setDefaultCommand(m_pnuematics, new popperDefualt(m_pnuematics));
+  //CommandScheduler.getInstance().setDefaultCommand(m_pnuematics, new AngleArmDefualt(m_pnuematics));
 
-  CommandScheduler.getInstance().registerSubsystem(m_popper);
-  //CommandScheduler.getInstance().setDefaultCommand(m_popper, new popperDefualt(m_popper));;
+  CommandScheduler.getInstance().registerSubsystem(m_AngleArm);
+  //CommandScheduler.getInstance().setDefaultCommand(m_AngleArm, new AngleArmDefualt(m_AngleArm));;
 
   CommandScheduler.getInstance().registerSubsystem(m_interfaces);
 
@@ -129,16 +129,16 @@ public class RobotContainer {
 
 //BUTTTON BOARD
 //1 Jaws defualt     JawsDefualt.java 
-//2 Jaws pos 1       JawsIntake.java
+//2 Jaws pos 1       JawsShooter.java
 //3 Jaws pos 2       JawsForwardLowGoal.java
 
 //4 climber defualt   climber lock + climberS1Defualt.java
 //5 climber pos 1     climber unlock + climberS1Extended.java 
 //6 climber pos 2     wait for climb then climberlock + climberS1Endgame.java
 
-//7 eat               JawsIntake + intkaeEat + index eat 
+//7 eat               JawsShooter + intkaeEat + index eat 
 //8 barf              intkaeBard (high speed) + index barf 
-//9 barf low          intakeBarf (low speed) + index barf 
+//9 barf low          ShooterBarf (low speed) + index barf 
 
 //10 grab Jaws in 
 //11 grab Jaws out
@@ -154,15 +154,15 @@ public class RobotContainer {
     button6.whenPressed(new ClimberS1EndGame(m_climbers1));//TODO
 
     button7.whenPressed(new JawsIntake(m_jaws));
-    button7.whenPressed(new IntakeEat(m_intake, m_pnuematics));
+    button7.whenPressed(new ShooterIntake(m_Shooter, m_pnuematics));
    
-    button8.whenPressed(new IntakeBarf(m_intake, m_pnuematics, m_interfaces));
-    button9.whenPressed(new IntakeBarf(m_intake, m_pnuematics, m_interfaces));
+    button8.whenPressed(new ShooterForwardLowShot(m_Shooter, m_pnuematics, m_interfaces));
+    button9.whenPressed(new ShooterForwardLowShot(m_Shooter, m_pnuematics, m_interfaces));
 
-    //button10.whenPressed(new lockJawsToGraber());
-    //button10.whenPressed(new unlockGraber());
+    //button10.whenPressed(new lockJawsToTelescopingArm());
+    //button10.whenPressed(new unlockTelescopingArm());
 
-    //button11.whenPressed(new graberIn());
+    //button11.whenPressed(new TelescopingArmIn());
     //button12.whenPressed(new grabOut());
 
 
@@ -181,17 +181,17 @@ public class RobotContainer {
     //CODRIVER CONTROLLER 
     //left stick Jaws (scedule)
     //right stikc climber (scedule)
-    //left trigger intake (scedule )
+    //left trigger Shooter (scedule )
     //right trigger shoot (scedule)
     //TODO grabber stuff
     /*
-    buttonA.whenPressed(new graberLock());
+    buttonA.whenPressed(new TelescopingArmLock());
     buttonB.whenPressed(new grabberUnlock());
     buttonX.whenPressed(new JawsGrabberLock());
     buttonY.whenPressed(new JawsGrabberUnlovk());
 
     joystickLeftButton.whenPressed(new indexEat());
-    joystickRightButton.whenPressed(new intakeBarf());
+    joystickRightButton.whenPressed(new ShooterBarf());
 
     */
 

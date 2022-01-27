@@ -21,32 +21,32 @@ public class Pneumatics extends SubsystemBase {
   //TODO add the correct pnuematics module 
   private final Compressor compressor = new Compressor(0, null);
   private final DoubleSolenoid Solenoid = new DoubleSolenoid(null, 0,1);
-  private final DoubleSolenoid graber = new DoubleSolenoid(null, 2,3);
+  private final DoubleSolenoid TelescopingArm = new DoubleSolenoid(null, 2,3);
 
   
-  public void solenoidIntakeJawsForward() {
+  public void solenoidShooterJawsForward() {
     Solenoid.set(kForward);
   }
 
  
-  public void solenoidIntakeJawsBackward() {
+  public void solenoidShooterJawsBackward() {
     Solenoid.set(kReverse);
   }
 
-  public void graberLock(){
-    graber.set(kForward);
+  public void TelescopingArmLock(){
+    TelescopingArm.set(kForward);
   }
 
-  public void graberUnlock(){
-    graber.set(kReverse);
+  public void TelescopingArmUnlock(){
+    TelescopingArm.set(kReverse);
   }
 
-  public void JawsToGraberLock(){
-    graber.set(kForward);
+  public void JawsToTelescopingArmLock(){
+    TelescopingArm.set(kForward);
   }
 
-  public void JawsToGraberUnlock(){
-    graber.set(kReverse);
+  public void JawsToTelescopingArmUnlock(){
+    TelescopingArm.set(kReverse);
   }
 
   public void compressorOn() {

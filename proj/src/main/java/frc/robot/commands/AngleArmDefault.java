@@ -9,15 +9,15 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Popper;
+import frc.robot.subsystems.AngleArms;
 
-public class PopperDefault extends CommandBase {
-  private Popper popperSubsystem;
+public class AngleArmDefault extends CommandBase {
+  private AngleArms AngleArmSubsystem;
 
-  public PopperDefault(Popper popperSubsystem) {
+  public AngleArmDefault(AngleArms AngleArmSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.popperSubsystem = popperSubsystem;
-    addRequirements(popperSubsystem);
+    this.AngleArmSubsystem = AngleArmSubsystem;
+    addRequirements(AngleArmSubsystem);
   }
 
   
@@ -31,7 +31,7 @@ public class PopperDefault extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    popperSubsystem.solenoidPopBackward();
+    AngleArmSubsystem.solenoidPopBackward();
   }
 
   // Called once the command ends or is interrupted.

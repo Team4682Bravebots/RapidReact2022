@@ -2,8 +2,8 @@
 // Bischop Blanchet Robotics
 // Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
-// File: Popper.java
-// Intent: Forms a subsystem that controls movements by the Jaws.
+// File: AngleArm.java
+// Intent: Forms a subsystem that controls the AngleArm operations.
 // ************************************************************
 
 package frc.robot.subsystems;
@@ -15,18 +15,18 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kForward;
 import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kReverse;
 
-public class Popper extends SubsystemBase {
-  /** Creates a new popper. */
+public class AngleArms extends SubsystemBase {
+  /** Creates a new AngleArm. */
   
-  public Popper() {}
+  public AngleArms() {}
   
-  private final DoubleSolenoid popperSolenoid = new DoubleSolenoid(null, 2,3); 
+  private final DoubleSolenoid AngleArmSolenoid = new DoubleSolenoid(null, 2,3); 
 
   public void solenoidPopForward(){
-    popperSolenoid.set(kForward);
+    AngleArmSolenoid.set(kForward);
   }
   public void solenoidPopBackward(){
-    popperSolenoid.set(kReverse);
+    AngleArmSolenoid.set(kReverse);
   }
   
   @Override

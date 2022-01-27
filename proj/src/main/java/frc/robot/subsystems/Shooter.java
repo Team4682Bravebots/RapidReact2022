@@ -2,8 +2,8 @@
 // Bischop Blanchet Robotics
 // Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
-// File: Intake.java
-// Intent: Forms a subsystem that controls movements by the Jaws.
+// File: Shooter.java
+// Intent: Forms a subsystem that controls Shooter operations.
 // ************************************************************
 
 package frc.robot.subsystems;
@@ -17,16 +17,16 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class Intake extends SubsystemBase {
+public class Shooter extends SubsystemBase {
   
   
-  private WPI_TalonFX motor = new WPI_TalonFX(Constants.intakeMotorLeft);
-  private WPI_TalonFX right = new WPI_TalonFX(Constants.intakeMotorRight);
+  private WPI_TalonFX motor = new WPI_TalonFX(Constants.ShooterMotorLeft);
+  private WPI_TalonFX right = new WPI_TalonFX(Constants.ShooterMotorRight);
 
 	final int kUnitsPerRevolution = 2048; /* this is constant for Talon FX */
 
-/** Creates a new intake. */
-  public Intake() {
+/** Creates a new Shooter. */
+  public Shooter() {
     motor.configFactoryDefault();
     right.follow(motor);
     right.setInverted(true);
@@ -86,6 +86,6 @@ public class Intake extends SubsystemBase {
   }
 
   public void defualt(){
-    motor.set(TalonFXControlMode.PercentOutput, Constants.intakeDefualt);
+    motor.set(TalonFXControlMode.PercentOutput, Constants.ShooterDefualt);
   }
 }

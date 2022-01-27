@@ -11,18 +11,18 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.subsystems.Popper;
+import frc.robot.subsystems.AngleArms;
 
-public class PopperPop extends CommandBase {
-  private Popper popperSubsystem;
+public class AngleArmEnguageJaws extends CommandBase {
+  private AngleArms AngleArmSubsystem;
   private Timer timer = new Timer();
 
   private boolean done;
 
-  public PopperPop(Popper popperSubsystem) {
+  public AngleArmEnguageJaws(AngleArms AngleArmSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.popperSubsystem = popperSubsystem;
-    addRequirements(popperSubsystem);
+    this.AngleArmSubsystem = AngleArmSubsystem;
+    addRequirements(AngleArmSubsystem);
   }
 
   
@@ -38,9 +38,9 @@ public class PopperPop extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    popperSubsystem.solenoidPopForward();
-    if (timer.hasElapsed(Constants.popperTiming)){
-      popperSubsystem.solenoidPopBackward();
+    AngleArmSubsystem.solenoidPopForward();
+    if (timer.hasElapsed(Constants.AngleArmTiming)){
+      AngleArmSubsystem.solenoidPopBackward();
       done = true;
     }
   

@@ -2,8 +2,8 @@
 // Bischop Blanchet Robotics
 // Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
-// File: Graber.java
-// Intent: Forms a subsystem that controls movements by the Jaws.
+// File: TelescopingArm.java
+// Intent: Forms a subsystem that controls TelescopingArm operations.
 // ************************************************************
 
 package frc.robot.subsystems;
@@ -18,7 +18,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class Graber extends SubsystemBase {
+public class TelescopingArms extends SubsystemBase {
 
 
   private WPI_TalonFX left = new WPI_TalonFX(Constants.climberS1MotorLeft);
@@ -33,7 +33,7 @@ public class Graber extends SubsystemBase {
 	final int kUnitsPerRevolution = 2048; /* this is constant for Talon FX */
 
    /** Creates a new climberS1. */
-  public Graber() {
+  public TelescopingArms() {
 
     left.configFactoryDefault();
     right.follow(left);

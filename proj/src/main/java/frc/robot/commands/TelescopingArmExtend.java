@@ -2,8 +2,8 @@
 // Bischop Blanchet Robotics
 // Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
-// File: GraberControl.java
-// Intent: Forms a command to drive the Jaws to a default position.
+// File: TelescopingArmExtend.java
+// Intent: Forms a command to drive the telescoping arms to their extended position.
 // ************************************************************
 
 package frc.robot.commands;
@@ -11,21 +11,21 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Interfaces;
-import frc.robot.subsystems.Graber;
+import frc.robot.subsystems.TelescopingArms;
 
 
-public class GraberControl extends CommandBase {
-  public Graber graberSubsystem;
+public class TelescopingArmExtend extends CommandBase {
+  public TelescopingArms TelescopingArmSubsystem;
   public Interfaces interfaceSubsystem;
   double imput;
   int pov;
   int _smoothing;
   int _pov;
 
-  public GraberControl(Graber graberSubsystem, Interfaces interfaceSubsystem) {
+  public TelescopingArmExtend(TelescopingArms TelescopingArmSubsystem, Interfaces interfaceSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.graberSubsystem = graberSubsystem;
-    addRequirements(graberSubsystem);
+    this.TelescopingArmSubsystem = TelescopingArmSubsystem;
+    addRequirements(TelescopingArmSubsystem);
 
     this.interfaceSubsystem = interfaceSubsystem;
     addRequirements(interfaceSubsystem);
@@ -43,7 +43,7 @@ public class GraberControl extends CommandBase {
     int imputToDegree = 2048/360 * 2000;
 
     double targetPos = imput * imputToDegree;
-    double currentPOS = Math.round(graberSubsystem.getPosition());
+    double currentPOS = Math.round(TelescopingArmSubsystem.getPosition());
 
 
     
@@ -52,7 +52,7 @@ public class GraberControl extends CommandBase {
     
     if(targetPos < currentPOS-300 || targetPos > currentPOS+300){
     
-       graberSubsystem.setClimberPostion(targetPos, imputToDegree);
+       TelescopingArmSubsystem.setClimberPostion(targetPos, imputToDegree);
     }
 
      pov = interfaceSubsystem.getXboxPov();
@@ -64,7 +64,7 @@ public class GraberControl extends CommandBase {
 			_smoothing--;
 			if (_smoothing < 0)
 				_smoothing = 0;
-        graberSubsystem.setSmoothing(_smoothing);
+        TelescopingArmSubsystem.setSmoothing(_smoothing);
 
 			System.out.println("Smoothing is set to: " + _smoothing);
 		} else if (_pov == 0) { // D-Pad up
@@ -72,7 +72,7 @@ public class GraberControl extends CommandBase {
 			_smoothing++;
 			if (_smoothing > 8)
 				_smoothing = 8;
-      graberSubsystem.setSmoothing(_smoothing);
+      TelescopingArmSubsystem.setSmoothing(_smoothing);
 			System.out.println("Smoothing is set to: " + _smoothing);
 		}
 		_pov = pov; /* save the pov value for next time */

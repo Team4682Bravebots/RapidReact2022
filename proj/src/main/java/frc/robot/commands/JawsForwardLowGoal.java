@@ -3,7 +3,7 @@
 // Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
 // File: JawsForwardLowGoal.java
-// Intent: Forms a command to drive the Jaws to a default position.
+// Intent: Forms a command to drive the Jaws to the low goal forward position.
 // ************************************************************
 
 package frc.robot.commands;
