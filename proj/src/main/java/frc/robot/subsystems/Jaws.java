@@ -2,8 +2,8 @@
 // Bischop Blanchet Robotics
 // Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
-// File: Arm.java
-// Intent: Forms a subsystem that controls movements by the arm.
+// File: Jaws.java
+// Intent: Forms a subsystem that controls movements by the Jaws.
 // ************************************************************
 
 package frc.robot.subsystems;
@@ -18,10 +18,10 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class Arm extends SubsystemBase {
+public class Jaws extends SubsystemBase {
 
 
-  private final WPI_TalonFX motor = new WPI_TalonFX(Constants.armPort);
+  private final WPI_TalonFX motor = new WPI_TalonFX(Constants.JawsPort);
 
   /*
    * Talon FX has 2048 units per revolution
@@ -32,7 +32,7 @@ public class Arm extends SubsystemBase {
   final int kUnitsPerRevolution = 2048; /* this is constant for Talon FX */
 
   /** Creates a new climberS1. */
-  public Arm() {
+  public Jaws() {
 
     motor.configFactoryDefault();
     
@@ -88,7 +88,7 @@ public class Arm extends SubsystemBase {
     return selSenVel;
   }
 
-  public void setArmPosition(double targetPos) {
+  public void setJawsPosition(double targetPos) {
     motor.set(TalonFXControlMode.MotionMagic, targetPos);
   }
   

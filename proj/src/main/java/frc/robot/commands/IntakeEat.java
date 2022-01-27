@@ -3,7 +3,7 @@
 // Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
 // File: IntakeEat.java
-// Intent: Forms a command to drive the arm to a default position.
+// Intent: Forms a command to drive the Jaws to a default position.
 // ************************************************************
 
 package frc.robot.commands;
@@ -32,7 +32,7 @@ public IntakeEat(Intake intakeSubsystem, Pneumatics PneumaticsSubsystem) {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    PneumaticsSubsystem.solenoidIntakeArmForward(); 
+    PneumaticsSubsystem.solenoidIntakeJawsForward(); 
     //run intake morons too
     intakeSubsystem.eat(0.1);
   }
@@ -40,7 +40,7 @@ public IntakeEat(Intake intakeSubsystem, Pneumatics PneumaticsSubsystem) {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    PneumaticsSubsystem.solenoidIntakeArmBackward();
+    PneumaticsSubsystem.solenoidIntakeJawsBackward();
   }
 
   // Returns true when the command should end.

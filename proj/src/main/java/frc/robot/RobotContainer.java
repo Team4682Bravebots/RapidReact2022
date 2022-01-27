@@ -22,7 +22,7 @@ public class RobotContainer {
 
 
   //declaring and init subsystems  
-  public static Arm m_arm = new Arm();
+  public static Jaws m_jaws = new Jaws();
   public static Pneumatics m_pnuematics  = new Pneumatics();
   public static Intake m_intake = new Intake();
   public static DriveTrain m_drivetrain = new DriveTrain();
@@ -49,8 +49,8 @@ public class RobotContainer {
   public RobotContainer() {
 
     //TODO //substystems and defualt commands
-  CommandScheduler.getInstance().registerSubsystem(m_arm);
- //CommandScheduler.getInstance().setDefaultCommand(m_arm, new armDefualt(m_arm));
+  CommandScheduler.getInstance().registerSubsystem(m_jaws);
+ //CommandScheduler.getInstance().setDefaultCommand(m_Jaws, new JawsDefualt(m_Jaws));
 
   CommandScheduler.getInstance().registerSubsystem(m_climbers1);
   //CommandScheduler.getInstance().setDefaultCommand(m_climbers1, new climberS1Defualt(m_climbers1, m_interfaces));
@@ -128,39 +128,38 @@ public class RobotContainer {
 
 
 //BUTTTON BOARD
-//1 arm defualt     armDefualt.java 
-//2 arm pos 1       armPos1.java
-//3 arm pos 2       armPos2.java
+//1 Jaws defualt     JawsDefualt.java 
+//2 Jaws pos 1       JawsIntake.java
+//3 Jaws pos 2       JawsForwardLowGoal.java
 
 //4 climber defualt   climber lock + climberS1Defualt.java
 //5 climber pos 1     climber unlock + climberS1Extended.java 
 //6 climber pos 2     wait for climb then climberlock + climberS1Endgame.java
 
-//7 eat               armPos1 + intkaeEat + index eat 
+//7 eat               JawsIntake + intkaeEat + index eat 
 //8 barf              intkaeBard (high speed) + index barf 
 //9 barf low          intakeBarf (low speed) + index barf 
 
-//10 grab arm in 
-//11 grab arm out
+//10 grab Jaws in 
+//11 grab Jaws out
 
 
     //BUTTONBOARD
-    button1.whenPressed(new ArmDefault(m_arm));
-    button2.whenPressed(new ArmPos1(m_arm));
-    button3.whenPressed(new ArmPos2(m_arm));
+    button1.whenPressed(new JawsDefault(m_jaws));
+    button2.whenPressed(new JawsIntake(m_jaws));
+    button3.whenPressed(new JawsForwardLowGoal(m_jaws));
 
     button4.whenPressed(new ClimberS1Default(m_climbers1));//TODO
     button5.whenPressed(new ClimberS1Extended(m_climbers1));//TODO
     button6.whenPressed(new ClimberS1EndGame(m_climbers1));//TODO
 
-    button7.whenPressed(new ArmPos1(m_arm));
+    button7.whenPressed(new JawsIntake(m_jaws));
     button7.whenPressed(new IntakeEat(m_intake, m_pnuematics));
-    //TODO
-
+   
     button8.whenPressed(new IntakeBarf(m_intake, m_pnuematics, m_interfaces));
     button9.whenPressed(new IntakeBarf(m_intake, m_pnuematics, m_interfaces));
 
-    //button10.whenPressed(new lockArmToGraber());
+    //button10.whenPressed(new lockJawsToGraber());
     //button10.whenPressed(new unlockGraber());
 
     //button11.whenPressed(new graberIn());
@@ -168,7 +167,7 @@ public class RobotContainer {
 
 
 //CO Driver Contrller. 
-//left stick arm
+//left stick Jaws
 //right stick climber 
 //left bumper eat
 //Right bumper barf
@@ -180,25 +179,26 @@ public class RobotContainer {
 //Menue index 2 
 
     //CODRIVER CONTROLLER 
-    //left stick arm (scedule)
+    //left stick Jaws (scedule)
     //right stikc climber (scedule)
     //left trigger intake (scedule )
     //right trigger shoot (scedule)
     //TODO grabber stuff
-/*
+    /*
     buttonA.whenPressed(new graberLock());
     buttonB.whenPressed(new grabberUnlock());
-    buttonX.whenPressed(new armGrabberLock());
-    buttonY.whenPressed(new armGrabberUnlovk());
+    buttonX.whenPressed(new JawsGrabberLock());
+    buttonY.whenPressed(new JawsGrabberUnlovk());
 
     joystickLeftButton.whenPressed(new indexEat());
     joystickRightButton.whenPressed(new intakeBarf());
 
-*/
+    */
 
-    buttonA.whenPressed(new ArmDefault(m_arm));
-    buttonX.whenPressed(new ArmPos1(m_arm));
-    buttonY.whenPressed(new ArmPos2(m_arm));
+    // TODO - this is incorrect below and needs much work ...
+    buttonA.whenPressed(new JawsDefault(m_jaws));
+    buttonX.whenPressed(new JawsIntake(m_jaws));
+    buttonY.whenPressed(new JawsForwardLowGoal(m_jaws));
 
     // D-Pad Stuff \\
 

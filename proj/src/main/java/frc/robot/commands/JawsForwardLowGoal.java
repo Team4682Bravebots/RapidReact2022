@@ -2,24 +2,23 @@
 // Bischop Blanchet Robotics
 // Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
-// File: ArmDefault.java
-// Intent: Forms a command to drive the arm to a default position.
+// File: JawsForwardLowGoal.java
+// Intent: Forms a command to drive the Jaws to a default position.
 // ************************************************************
 
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Jaws;
 
-public class ArmPos1 extends CommandBase {
-  public Arm armSubsystem;
-  boolean done;
-
-  public ArmPos1(Arm armSubsystem) {
+public class JawsForwardLowGoal extends CommandBase {
+  public Jaws jawsSubsystem;
+  
+  public JawsForwardLowGoal(Jaws jawsSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.armSubsystem = armSubsystem;
-    addRequirements(armSubsystem);
+    this.jawsSubsystem = jawsSubsystem;
+    addRequirements(jawsSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -29,10 +28,9 @@ public class ArmPos1 extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    armSubsystem.setArmPosition(Constants.armPos1);
+    jawsSubsystem.setJawsPosition(Constants.JawsForwardLowGoal);
 
-   // armSubsystem.isFinished(done, Constants.armDefualt);
-   System.out.println(armSubsystem.getPosition());
+    System.out.println(jawsSubsystem.getPosition());
 
 
   }

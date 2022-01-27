@@ -3,13 +3,13 @@
 // Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
 // File: Level.java
-// Intent: Forms a command to drive the arm to a default position.
+// Intent: Forms a command to drive the Jaws to a default position.
 // ************************************************************
 
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Jaws;
 import frc.robot.subsystems.ClimberS1;
 import frc.robot.subsystems.Graber;
 
@@ -17,17 +17,17 @@ public class ZeroSensors extends CommandBase {
   /** Creates a new zeroSensors. 
  * @param m_climbers2
  * @param m_climbers1
- * @param m_arm*/
+ * @param m_Jaws*/
 
-  public Arm m_arm;
+  public Jaws m_Jaws;
   public ClimberS1 m_climbers1;
   public Graber m_climbers2;
 
-  public ZeroSensors(Arm m_arm, ClimberS1 m_climbers1, Graber m_climbers2) {
+  public ZeroSensors(Jaws m_Jaws, ClimberS1 m_climbers1, Graber m_climbers2) {
     // Use addRequirements() here to declare subsystem dependencies.
 
-    this.m_arm = m_arm;
-    addRequirements(m_arm);
+    this.m_Jaws = m_Jaws;
+    addRequirements(m_Jaws);
 
     this.m_climbers1 = m_climbers1;
     addRequirements(m_climbers1);
@@ -43,12 +43,12 @@ public class ZeroSensors extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_arm.zeroSensors();
+    m_Jaws.zeroSensors();
     //m_climbers1.zeroSensors();
     //m_climbers2.zeroSensors();
     //TODO add anyother sensors 
 
-    System.out.println(m_arm.getPosition());
+    System.out.println(m_Jaws.getPosition());
   }
 
   // Called once the command ends or is interrupted.

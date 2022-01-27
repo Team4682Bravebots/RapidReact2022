@@ -2,43 +2,47 @@
 // Bischop Blanchet Robotics
 // Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
-// File: Level.java
+// File: JawsDefault.java
 // Intent: Forms a command to drive the Jaws to a default position.
 // ************************************************************
 
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Popper;
+import frc.robot.Constants;
+import frc.robot.subsystems.Jaws;
 
-public class PopperDefault extends CommandBase {
-  private Popper popperSubsystem;
+public class JawsDefault extends CommandBase {
+  private final Jaws jawsSubsystem;
+  boolean done;
 
-  public PopperDefault(Popper popperSubsystem) {
+
+  /** Creates a new JawsDefualt. */
+  public JawsDefault(Jaws jawsSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.popperSubsystem = popperSubsystem;
-    addRequirements(popperSubsystem);
-  }
-
-  
+    this.jawsSubsystem = jawsSubsystem;
+    addRequirements(jawsSubsystem);
+    }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
+    done = false;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    popperSubsystem.solenoidPopBackward();
+    jawsSubsystem.setJawsPosition(Constants.JawsDefualt);
+    //RobotContainer.m_Jaws.setJawsPosition(0);
+
+  //  jawsSubsystem.isFinished(done, Constants.JawsDefualt);
+    System.out.println(jawsSubsystem.getPosition());
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-   
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override

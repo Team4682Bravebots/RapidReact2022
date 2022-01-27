@@ -3,7 +3,7 @@
 // Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
 // File: IntakeDefault.java
-// Intent: Forms a command to drive the arm to a default position.
+// Intent: Forms a command to drive the Jaws to a default position.
 // ************************************************************
 
 package frc.robot.commands;
@@ -35,7 +35,7 @@ public class IntakeDefault extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    PneumaticsSubsystem.solenoidIntakeArmBackward();
+    PneumaticsSubsystem.solenoidIntakeJawsBackward();
     //any motors that need to be turned off
     intakeSubsystem.defualt();
   }

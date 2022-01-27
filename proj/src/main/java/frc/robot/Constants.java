@@ -26,17 +26,17 @@ public final class Constants {
    public static int climberS2MotorLeft = -1;
    public static int climberS2MotorRight = -1;
 
-   public static int armPort = -1;
+   public static int JawsPort = -1;
    
    public static final int intakeMotorLeft = -1;
    public static final int intakeMotorRight = -1;
 
 
 
-  // arm reach points \\
-   public static int armDefualt = 0;
-   public static int armPos1 = 2048 * 1;//TODO the mathh to find some good points depending on the gearing 
-   public static int armPos2 = 2048 * 2;
+  // Jaws reach points \\
+   public static int JawsDefualt = 0;
+   public static int JawsIntake = 2048 * 1;//TODO the mathh to find some good points depending on the gearing 
+   public static int JawsForwardLowGoal = 2048 * 2;
    
   // climber reach points \\
    public static int s1Defualt = 0;

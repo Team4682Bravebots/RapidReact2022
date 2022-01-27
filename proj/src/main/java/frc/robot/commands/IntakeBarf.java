@@ -3,7 +3,7 @@
 // Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
 // File: IntakeBarf.java
-// Intent: Forms a command to drive the arm to a default position.
+// Intent: Forms a command to drive the Jaws to a default position.
 // ************************************************************
 
 package frc.robot.commands;
@@ -40,8 +40,8 @@ public class IntakeBarf extends CommandBase {
   public void execute() {
     intakeSubsystem.barf(interfacesSubsystem.getXboxRawAxis(2));
     System.out.println(interfacesSubsystem.getXboxRawAxis(2));
-    PneumaticsSubsystem.solenoidIntakeArmForward();
-    PneumaticsSubsystem.solenoidIntakeArmForward();
+    PneumaticsSubsystem.solenoidIntakeJawsForward();
+    PneumaticsSubsystem.solenoidIntakeJawsForward();
   }
 
   // Called once the command ends or is interrupted.

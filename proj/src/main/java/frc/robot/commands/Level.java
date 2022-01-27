@@ -3,33 +3,33 @@
 // Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
 // File: Level.java
-// Intent: Forms a command to drive the arm to a default position.
+// Intent: Forms a command to drive the Jaws to a default position.
 // ************************************************************
 
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Jaws;
 
 public class Level extends CommandBase {
   /** Creates a new level. */
   double gyroValue;
   double gyroLevel;
-  double armTarget;
+  double JawsTarget;
   double degreeToEncoderTick;
 
   boolean done;
 
-  private Arm armSubsystem;
+  private Jaws jawsSubsystem;
 
   AnalogGyro gyro = new AnalogGyro(0); // ANA Ch. 0
 
 
-  public Level(Arm armSubsystem) {
+  public Level(Jaws jawsSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.armSubsystem = armSubsystem;
-    addRequirements(armSubsystem);
+    this.jawsSubsystem = jawsSubsystem;
+    addRequirements(jawsSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -49,13 +49,13 @@ public class Level extends CommandBase {
     gyroLevel = 0; // ?????
     degreeToEncoderTick = 20;
 
-    armTarget = gyroValue/175  * -degreeToEncoderTick; // Change negitive if it makes it swing more
+    JawsTarget = gyroValue/175  * -degreeToEncoderTick; // Change negitive if it makes it swing more
 
     //divied by 175 make a gyro tick equal to one degree
 
 
 
-    armSubsystem.setArmPosition(armTarget);
+    jawsSubsystem.setJawsPosition(JawsTarget);
 
     //double slow = 0.24;
 
@@ -65,12 +65,12 @@ public class Level extends CommandBase {
 
    /* 
   if (Math.abs(gyro.getAngle() <= 3)) {
-    armSubsystem.setArmPosition(slow - (gyro.getAngle()) / 15);
+    jawsSubsystem.setJawsPosition(slow - (gyro.getAngle()) / 15);
    } else if (Math.abs(gyro.getAngle()) < 10) {
     if (gyro.getAngle() > 0) {
-     armSubsystem.setArmPosition(slow);
+     jawsSubsystem.setJawsPosition(slow);
     } else if (gyro.getAngle() < 0) {
-     armSubsystem.setArmPosition(slow);
+     jawsSubsystem.setJawsPosition(slow);
     }
      } */
 

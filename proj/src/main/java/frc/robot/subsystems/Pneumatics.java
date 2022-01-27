@@ -3,7 +3,7 @@
 // Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
 // File: Pnuematics.java
-// Intent: Forms a subsystem that controls movements by the arm.
+// Intent: Forms a subsystem that controls movements by the Jaws.
 // ************************************************************
 
 package frc.robot.subsystems;
@@ -24,12 +24,12 @@ public class Pneumatics extends SubsystemBase {
   private final DoubleSolenoid graber = new DoubleSolenoid(null, 2,3);
 
   
-  public void solenoidIntakeArmForward() {
+  public void solenoidIntakeJawsForward() {
     Solenoid.set(kForward);
   }
 
  
-  public void solenoidIntakeArmBackward() {
+  public void solenoidIntakeJawsBackward() {
     Solenoid.set(kReverse);
   }
 
@@ -41,11 +41,11 @@ public class Pneumatics extends SubsystemBase {
     graber.set(kReverse);
   }
 
-  public void armToGraberLock(){
+  public void JawsToGraberLock(){
     graber.set(kForward);
   }
 
-  public void armToGraberUnlock(){
+  public void JawsToGraberUnlock(){
     graber.set(kReverse);
   }
 
