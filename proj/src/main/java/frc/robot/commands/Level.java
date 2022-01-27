@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Arm;
 
-public class level extends CommandBase {
+public class Level extends CommandBase {
   /** Creates a new level. */
   double gyroValue;
   double gyroLevel;
@@ -22,7 +22,7 @@ public class level extends CommandBase {
   AnalogGyro gyro = new AnalogGyro(0); // ANA Ch. 0
 
 
-  public level(Arm armSubsystem) {
+  public Level(Arm armSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.armSubsystem = armSubsystem;
     addRequirements(armSubsystem);

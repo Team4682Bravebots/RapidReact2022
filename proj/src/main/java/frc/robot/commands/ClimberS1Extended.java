@@ -8,11 +8,11 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.ClimberS1;
 
-public class climberS1Extended extends CommandBase {
+public class ClimberS1Extended extends CommandBase {
 
   public ClimberS1 climberSubsystem;
 
-  public climberS1Extended(ClimberS1 climberSubsystem) {
+  public ClimberS1Extended(ClimberS1 climberSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.climberSubsystem = climberSubsystem;
     addRequirements(climberSubsystem);

@@ -8,11 +8,11 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Pnuematics;
 
-public class intakeEat extends CommandBase {
+public class IntakeEat extends CommandBase {
   private Pnuematics pnuematicsSubsystem;
   private Intake intakeSubsystem;
 
-public intakeEat(Intake intakeSubsystem, Pnuematics pnuematicsSubsystem) {
+public IntakeEat(Intake intakeSubsystem, Pnuematics pnuematicsSubsystem) {
   this.intakeSubsystem = intakeSubsystem;
   addRequirements(intakeSubsystem);
 

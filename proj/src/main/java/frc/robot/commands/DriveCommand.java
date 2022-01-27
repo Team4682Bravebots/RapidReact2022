@@ -7,11 +7,11 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
 
-public class driveCommand extends CommandBase {
+public class DriveCommand extends CommandBase {
   /** Creates a new driveCommand. 
    * 
  * @param m_drivetrain*/
-  public driveCommand(DriveTrain m_drivetrain) {
+  public DriveCommand(DriveTrain m_drivetrain) {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 

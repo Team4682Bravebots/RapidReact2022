@@ -10,7 +10,7 @@ import frc.robot.subsystems.Interfaces;
 import frc.robot.subsystems.Graber;
 
 
-public class graberControll extends CommandBase {
+public class GraberControl extends CommandBase {
   public Graber graberSubsystem;
   public Interfaces interfaceSubsystem;
   double imput;
@@ -18,7 +18,7 @@ public class graberControll extends CommandBase {
   int _smoothing;
   int _pov;
 
-  public graberControll(Graber graberSubsystem, Interfaces interfaceSubsystem) {
+  public GraberControl(Graber graberSubsystem, Interfaces interfaceSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.graberSubsystem = graberSubsystem;
     addRequirements(graberSubsystem);

@@ -8,13 +8,13 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Pnuematics;
 
-public class intakeDefualt extends CommandBase {
+public class IntakeDefault extends CommandBase {
   /** Creates a new solenoidOne. 
  * @param m_intake*/
     private Pnuematics pnuematicsSubsystem;
     private Intake intakeSubsystem;
   
-  public intakeDefualt(Intake intakeSubsystem, Pnuematics pnuematicsSubsystem) {
+  public IntakeDefault(Intake intakeSubsystem, Pnuematics pnuematicsSubsystem) {
     this.intakeSubsystem = intakeSubsystem;
     addRequirements(intakeSubsystem);
 

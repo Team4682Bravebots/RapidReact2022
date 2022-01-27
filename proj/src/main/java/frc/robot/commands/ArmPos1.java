@@ -8,11 +8,11 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Arm;
 
-public class armPos1 extends CommandBase {
+public class ArmPos1 extends CommandBase {
   public Arm armSubsystem;
   boolean done;
 
-  public armPos1(Arm armSubsystem) {
+  public ArmPos1(Arm armSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.armSubsystem = armSubsystem;
     addRequirements(armSubsystem);
