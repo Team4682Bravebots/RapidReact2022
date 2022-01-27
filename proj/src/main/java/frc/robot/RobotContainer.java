@@ -1,6 +1,10 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
+// ************************************************************
+// Bischop Blanchet Robotics
+// Historic home of the 'BraveBots'
+// FRC - Rapid React - 2022
+// File: RobotContainer.java
+// Intent: Forms the key command initiation logic of the robot.
+// ************************************************************
 
 package frc.robot;
 
@@ -42,46 +46,36 @@ public class RobotContainer {
   int _smoothing = 0;
 
 
-
-
-
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
-  public RobotContainer() {
-
+  public RobotContainer()
+  {
     //TODO //substystems and defualt commands
-  CommandScheduler.getInstance().registerSubsystem(m_jaws);
- //CommandScheduler.getInstance().setDefaultCommand(m_Jaws, new JawsDefualt(m_Jaws));
+    CommandScheduler.getInstance().registerSubsystem(m_jaws);
+    //CommandScheduler.getInstance().setDefaultCommand(m_Jaws, new JawsDefualt(m_Jaws));
 
-  CommandScheduler.getInstance().registerSubsystem(m_climbers1);
-  //CommandScheduler.getInstance().setDefaultCommand(m_climbers1, new climberS1Defualt(m_climbers1, m_interfaces));
+    CommandScheduler.getInstance().registerSubsystem(m_climbers1);
+    //CommandScheduler.getInstance().setDefaultCommand(m_climbers1, new climberS1Defualt(m_climbers1, m_interfaces));
 
-  CommandScheduler.getInstance().registerSubsystem(m_TelescopingArm);
-  //TODO CommandScheduler.getInstance().setDefaultCommand(m_climbers2, new climberS2Defualt(m_climbers2));
+    CommandScheduler.getInstance().registerSubsystem(m_TelescopingArm);
+    //TODO CommandScheduler.getInstance().setDefaultCommand(m_climbers2, new climberS2Defualt(m_climbers2));
 
-  CommandScheduler.getInstance().registerSubsystem(m_drivetrain);
- // CommandScheduler.getInstance().setDefaultCommand(m_drivetrain, new driveCommand(m_drivetrain));
+    CommandScheduler.getInstance().registerSubsystem(m_drivetrain);
+    // CommandScheduler.getInstance().setDefaultCommand(m_drivetrain, new driveCommand(m_drivetrain));
 
-  CommandScheduler.getInstance().registerSubsystem(m_Shooter);
- // CommandScheduler.getInstance().setDefaultCommand(m_Shooter, new ShooterDefualt(m_Shooter, m_pnuematics));
-  
-  CommandScheduler.getInstance().registerSubsystem(m_pnuematics);
-  //CommandScheduler.getInstance().setDefaultCommand(m_pnuematics, new AngleArmDefualt(m_pnuematics));
+    CommandScheduler.getInstance().registerSubsystem(m_Shooter);
+    // CommandScheduler.getInstance().setDefaultCommand(m_Shooter, new ShooterDefualt(m_Shooter, m_pnuematics));
 
-  CommandScheduler.getInstance().registerSubsystem(m_AngleArm);
-  //CommandScheduler.getInstance().setDefaultCommand(m_AngleArm, new AngleArmDefualt(m_AngleArm));;
+    CommandScheduler.getInstance().registerSubsystem(m_pnuematics);
+    //CommandScheduler.getInstance().setDefaultCommand(m_pnuematics, new AngleArmDefualt(m_pnuematics));
 
-  CommandScheduler.getInstance().registerSubsystem(m_interfaces);
+    CommandScheduler.getInstance().registerSubsystem(m_AngleArm);
+    //CommandScheduler.getInstance().setDefaultCommand(m_AngleArm, new AngleArmDefualt(m_AngleArm));;
 
+    CommandScheduler.getInstance().registerSubsystem(m_interfaces);
 
-
-
-
-
-   // init hids \\
-   driverController = new Joystick(Constants.portDriverController); // sets joystick varibles to joysticks
-   coDriverController = new XboxController(Constants.portCoDriverController);
-
-
+    // init hids \\
+    driverController = new Joystick(Constants.portDriverController); // sets joystick varibles to joysticks
+    coDriverController = new XboxController(Constants.portCoDriverController);
 
     // Configure the button bindings
     configureButtonBindings();
@@ -124,24 +118,21 @@ public class RobotContainer {
     JoystickButton button10 = new JoystickButton(buttonBoard, 10);
     JoystickButton button11 = new JoystickButton(buttonBoard, 11);
 
+    //BUTTTON BOARD
+    //1 Jaws defualt     JawsDefualt.java 
+    //2 Jaws pos 1       JawsShooter.java
+    //3 Jaws pos 2       JawsForwardLowGoal.java
 
+    //4 climber defualt   climber lock + climberS1Defualt.java
+    //5 climber pos 1     climber unlock + climberS1Extended.java 
+    //6 climber pos 2     wait for climb then climberlock + climberS1Endgame.java
 
+    //7 eat               JawsShooter + intkaeEat + index eat 
+    //8 barf              intkaeBard (high speed) + index barf 
+    //9 barf low          ShooterBarf (low speed) + index barf 
 
-//BUTTTON BOARD
-//1 Jaws defualt     JawsDefualt.java 
-//2 Jaws pos 1       JawsShooter.java
-//3 Jaws pos 2       JawsForwardLowGoal.java
-
-//4 climber defualt   climber lock + climberS1Defualt.java
-//5 climber pos 1     climber unlock + climberS1Extended.java 
-//6 climber pos 2     wait for climb then climberlock + climberS1Endgame.java
-
-//7 eat               JawsShooter + intkaeEat + index eat 
-//8 barf              intkaeBard (high speed) + index barf 
-//9 barf low          ShooterBarf (low speed) + index barf 
-
-//10 grab Jaws in 
-//11 grab Jaws out
+    //10 grab Jaws in 
+    //11 grab Jaws out
 
 
     //BUTTONBOARD

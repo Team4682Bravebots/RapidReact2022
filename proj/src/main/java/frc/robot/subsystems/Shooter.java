@@ -38,7 +38,6 @@ public class Shooter extends SubsystemBase {
     motor.setInverted(false);
 
     motor.configNeutralDeadband(0.001, Constants.kTimeoutMs);
-
     
     motor.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, Constants.kTimeoutMs);
     motor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, Constants.kTimeoutMs);
@@ -65,8 +64,6 @@ public class Shooter extends SubsystemBase {
     motor.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(false, 20, 25, 1.0));
 
     // left.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
-
-
   }
   
 

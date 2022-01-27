@@ -1,3 +1,11 @@
+// ************************************************************
+// Bischop Blanchet Robotics
+// Historic home of the 'BraveBots'
+// FRC - Rapid React - 2022
+// File: Gains.java
+// Intent: Forms a set of gains.
+// ************************************************************
+
 package frc.robot;
 
 public class Gains {
