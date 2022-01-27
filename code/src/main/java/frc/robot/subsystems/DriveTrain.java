@@ -1,112 +1,89 @@
-<<<<<<< Updated upstream:proj/src/main/java/frc/robot/Robot.java
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-=======
 // ************************************************************
 // Bishop Blanchet Robotics
 // Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
-// File: Robot.java
-// Intent: Robot implementation robot spec.
+// File: DriveTrain.java
+// Intent: Forms model for the DriveTrain subsystem.
 // ************************************************************
->>>>>>> Stashed changes:code/src/main/java/frc/robot/Robot.java
 
-package frc.robot;
+package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
+import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
-/**
- * The VM is configured to automatically run this class, and to call the functions corresponding to
- * each mode, as described in the TimedRobot documentation. If you change the name of this class or
- * the package after creating this project, you must also update the build.gradle file in the
- * project.
- */
-public class Robot extends TimedRobot {
-  private Command m_autonomousCommand;
-  private RobotContainer m_robotContainer;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
+public class DriveTrain extends SubsystemBase
+{
+  // four matched motors - two for each tank drive side
+  private WPI_TalonFX leftFront = new WPI_TalonFX(Constants.driveMotorLeftFrontCanId);
+  private WPI_TalonFX leftRear = new WPI_TalonFX(Constants.driveMotorLeftRearCanId);
+  private WPI_TalonFX rightFront = new WPI_TalonFX(Constants.driveMotorRightFrontCanId);
+  private WPI_TalonFX rightRear = new WPI_TalonFX(Constants.driveMotorRightRearCanId);
 
-  
-  /**
-   * This function is run when the robot is first started up and should be used for any
-   * initialization code.
-   */
-  @Override
-  public void robotInit() {
-    // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
-    // autonomous chooser on the dashboard.
-    m_robotContainer = new RobotContainer();
-  }
+  // ctor
+  public DriveTrain()
+  {
+    leftFront.configFactoryDefault();
+    leftRear.configFactoryDefault();
+    rightFront.configFactoryDefault();
+    rightRear.configFactoryDefault();
 
-  /**
-   * This function is called every robot packet, no matter the mode. Use this for items like
-   * diagnostics that you want ran during disabled, autonomous, teleoperated and test.
-   *
-   * <p>This runs after the mode specific periodic functions, but before LiveWindow and
-   * SmartDashboard integrated updating.
-   */
-  @Override
-  public void robotPeriodic() {
-    // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
-    // commands, running already-scheduled commands, removing finished or interrupted commands,
-    // and running subsystem periodic() methods.  This must be called from the robot's periodic
-    // block in order for anything in the Command-based framework to work.
-    CommandScheduler.getInstance().run();
-  }
+    // setup each side with a follower
+    leftRear.follow(leftFront);
+    rightRear.follow(rightFront);
 
-  /** This function is called once each time the robot enters Disabled mode. */
-  @Override
-  public void disabledInit() {}
+    // setup the inverted values for each motor
+    leftFront.setInverted(Constants.driveMotorLeftFrontInverted);
+    leftRear.setInverted(Constants.driveMotorLeftRearInverted);
+    rightFront.setInverted(Constants.driveMotorRightFrontInverted);
+    rightRear.setInverted(Constants.driveMotorRightRearInverted);
+    
+    // setup the various settings for the motors
+    leftFront.setNeutralMode(NeutralMode.Brake);
+		leftFront.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
+		leftFront.overrideLimitSwitchesEnable(true);
+		leftFront.config_kP(0, 5, 10); // TODO - fix these magic numbers!!!
+		leftFront.config_kD(0, 4000, 10); // TODO - fix these magic numbers!!!
+		leftFront.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+		leftFront.configMotionCruiseVelocity(0.01, 0); // TODO - fix these magic numbers!!!
+		leftFront.configMotionAcceleration(0.01, 0); // TODO - fix these magic numbers!!!
+    leftFront.configStatorCurrentLimit(
+      new StatorCurrentLimitConfiguration(
+        true, // enabled | 
+        20, // Limit(amp) |
+        25, // Trigger Threshold(amp) |
+        1.0)); // Trigger Threshold Time(s)
+    //leftFront.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
 
-  @Override
-  public void disabledPeriodic() {}
-
-  /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
-  @Override
-  public void autonomousInit() {
-    //m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-
-    // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.schedule();
-    }
-  }
-
-  /** This function is called periodically during autonomous. */
-  @Override
-  public void autonomousPeriodic() {}
-
-  @Override
-  public void teleopInit() {
-    // This makes sure that the autonomous stops running when
-    // teleop starts running. If you want the autonomous to
-    // continue until interrupted by another command, remove
-    // this line or comment it out.
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
-    }
-  }
-
-  /** This function is called periodically during operator control. */
-  @Override
-  public void teleopPeriodic() {
-
-    //RobotContainer.m_drivetrain.schedule();
-
+		rightFront.setNeutralMode(NeutralMode.Brake);
+		rightFront.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
+		rightFront.overrideLimitSwitchesEnable(true);
+		rightFront.config_kP(0, 5, 10);
+		rightFront.config_kD(0, 4000, 10);
+		rightFront.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+		rightFront.configMotionCruiseVelocity(0.01, 0); 
+		rightFront.configMotionAcceleration(0.01, 0);	
+    rightFront.configStatorCurrentLimit(
+      new StatorCurrentLimitConfiguration(
+        true, // enabled | 
+        20, // Limit(amp) |
+        25, // Trigger Threshold(amp) |
+        1.0)); // Trigger Threshold Time(s)
+    //rightFront..configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
   }
 
   @Override
-  public void testInit() {
-    // Cancels all running commands at the start of test mode.
-    CommandScheduler.getInstance().cancelAll();
+  public void periodic()
+  {
+    // This method will be called once per scheduler run
   }
-
-  /** This function is called periodically during test mode. */
-  @Override
-  public void testPeriodic() {}
 }
 
 /*
@@ -151,3 +128,4 @@ ccccccccccccccccccccccccccccccccccccccccc::;,''''''',;:ccccccccccccccccccccccccc
 ccccccccccccccccccccccccccccccccccccccccccccc::::::ccccccccccccccccccccccccccccccccccccccccccccccccc
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 */
+ 

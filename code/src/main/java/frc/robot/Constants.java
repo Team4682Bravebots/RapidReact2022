@@ -1,112 +1,120 @@
-<<<<<<< Updated upstream:proj/src/main/java/frc/robot/Robot.java
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-=======
 // ************************************************************
 // Bishop Blanchet Robotics
 // Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
-// File: Robot.java
-// Intent: Robot implementation robot spec.
+// File: Constants.java
+// Intent: The class that will contain all 'hard coded' values.
+// This should be the only place in all of the classes that 
+// 'magic numbers' should appear.
 // ************************************************************
->>>>>>> Stashed changes:code/src/main/java/frc/robot/Robot.java
 
 package frc.robot;
-
-import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
 /**
- * The VM is configured to automatically run this class, and to call the functions corresponding to
- * each mode, as described in the TimedRobot documentation. If you change the name of this class or
- * the package after creating this project, you must also update the build.gradle file in the
- * project.
+ * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
+ * constants. This class should not be used for any other purpose. All constants should be declared
+ * globally (i.e. public static). Do not put anything functional in this class.
+ *
+ * <p>It is advised to statically import this class (or one of its inner classes) wherever the
+ * constants are needed, to reduce verbosity.
  */
-public class Robot extends TimedRobot {
-  private Command m_autonomousCommand;
-  private RobotContainer m_robotContainer;
+public final class Constants
+{
+  // CAN bus ports
 
+  // motor CAN ports 
+  //TODO - P0 - fill in proper CAN bus index for arm motors
+  public static int armMotorLeftCanId = -1;
+  public static int armMotorRightCanId = -1;
 
-  
-  /**
-   * This function is run when the robot is first started up and should be used for any
-   * initialization code.
+  //TODO - P0 - fill in proper CAN bus index for drive motors
+  public static int driveMotorLeftFrontCanId = -1;
+  public static int driveMotorLeftRearCanId = -1;
+  public static int driveMotorRightFrontCanId = -1;
+  public static int driveMotorRightRearCanId = -1;
+
+  //TODO - P0 - fill in proper CAN bus index for climber motors
+  public static int frontClimbersMotorLeftCanId = -1;
+  public static int frontClimbersMotorRightCanId = -1;
+
+  //TODO - P0 - fill in proper CAN bus index for intake motors (temporary test values below)
+  public static final int intakeMotorLeftCanId = 1;
+  public static final int intakeMotorRightCanId = 2;
+
+  // pneumatics CAN port
+  //TODO - P0 - fill in proper CAN bus index for pneumatics control module
+  public static int pneumaticsControlModuleCanId = -1;
+
+  // climber magic numbers
+  //TODO - P0 - fill in proper spool values based on emperical testing
+  // will use a linear interpolation mechanism to determine how  
+  public static double spoolLineLengthMillimeters = 0; // min stop to max stop
+  public static double spoolDiameter0PercentCoiledMillimeters = 0;
+  public static double spoolDiameter25PercentCoiledMillimeters = 0;
+  public static double spoolDiameter50PercentCoiledMillimeters = 0;
+  public static double spoolDiameter75PercentCoiledMillimeters = 0;
+  public static double spoolDiameter100PercentCoiledMillimeters = 0;
+
+  // Motor magic numbers
+  public static boolean driveMotorLeftFrontInverted = false;
+  public static boolean driveMotorLeftRearInverted = false;
+  public static boolean driveMotorRightFrontInverted = false;
+  public static boolean driveMotorRightRearInverted = false;
+
+  // arm reach points \\
+  public static int armDefualt = 0;
+  public static int armPos1 = 2048 * 1;//TODO the mathh to find some good points depending on the gearing 
+  public static int armPos2 = 2048 * 2;
+
+  // popper timing \\
+  public static final double popperTiming = 0.3;
+
+  // substystem motor speeds \\
+  public static final double intakeEatSpeed = 0.5;
+  public static final double intakeBarfSpeed = 0.5;
+  public static final double intakeDefualt = 0.5;
+
+  // hid ports \\ 
+  public static int portDriverController = 0;
+  public static int portCoDriverController = 1;
+
+  // xbox buttons \\
+  public final static int buttonA = 1;
+  public final static int buttonB = 2;
+  public final static int buttonX = 3; 
+  public final static int buttonY = 4;
+  public final int buttonO1 = -1;
+  public final int buttonO2 = 8;
+  public final int stickLeftDown = 9;
+  public final int stickRightDown = 10;
+  public final static int bumperLeft = 5;
+  public final static int bumperRight = 6;
+
+  //joystick axis lables 
+  public static final int joystickX = 0;
+  public static final int joystickY = 1;
+  public static final int joystickZ = 2;
+
+  // util \\ //TODO if needed 
+  public static final int kPIDLoopIdx = 0;
+  public static final int kTimeoutMs = 30;
+  public static final int kSlotIdx = 0;
+
+  // solonoid directions
+  public static Value hookSolenoidEnguage = Value.kForward;
+  public static Value hookSolenoidRelease = Value.kReverse;
+
+  public static final Gains kGains = new Gains(0.2, 0.0, 0.0, 0.2, 0, 1.0);
+
+    /*
+   * Talon FX has 2048 units per revolution
+   * 
+   * https://phoenix-documentation.readthedocs.io/en/latest/ch14_MCSensor.html#
+   * sensor-resolution
    */
-  @Override
-  public void robotInit() {
-    // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
-    // autonomous chooser on the dashboard.
-    m_robotContainer = new RobotContainer();
-  }
+  public static final int kUnitsPerRevolution = 2048; /* this is constant for Talon FX */
 
-  /**
-   * This function is called every robot packet, no matter the mode. Use this for items like
-   * diagnostics that you want ran during disabled, autonomous, teleoperated and test.
-   *
-   * <p>This runs after the mode specific periodic functions, but before LiveWindow and
-   * SmartDashboard integrated updating.
-   */
-  @Override
-  public void robotPeriodic() {
-    // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
-    // commands, running already-scheduled commands, removing finished or interrupted commands,
-    // and running subsystem periodic() methods.  This must be called from the robot's periodic
-    // block in order for anything in the Command-based framework to work.
-    CommandScheduler.getInstance().run();
-  }
-
-  /** This function is called once each time the robot enters Disabled mode. */
-  @Override
-  public void disabledInit() {}
-
-  @Override
-  public void disabledPeriodic() {}
-
-  /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
-  @Override
-  public void autonomousInit() {
-    //m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-
-    // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.schedule();
-    }
-  }
-
-  /** This function is called periodically during autonomous. */
-  @Override
-  public void autonomousPeriodic() {}
-
-  @Override
-  public void teleopInit() {
-    // This makes sure that the autonomous stops running when
-    // teleop starts running. If you want the autonomous to
-    // continue until interrupted by another command, remove
-    // this line or comment it out.
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
-    }
-  }
-
-  /** This function is called periodically during operator control. */
-  @Override
-  public void teleopPeriodic() {
-
-    //RobotContainer.m_drivetrain.schedule();
-
-  }
-
-  @Override
-  public void testInit() {
-    // Cancels all running commands at the start of test mode.
-    CommandScheduler.getInstance().cancelAll();
-  }
-
-  /** This function is called periodically during test mode. */
-  @Override
-  public void testPeriodic() {}
 }
 
 /*
