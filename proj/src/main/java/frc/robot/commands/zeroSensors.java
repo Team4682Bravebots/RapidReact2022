@@ -9,7 +9,7 @@ import frc.robot.subsystems.arm;
 import frc.robot.subsystems.climberS1;
 import frc.robot.subsystems.graber;
 
-public class zeroSensors extends CommandBase {
+public class ZeroSensors extends CommandBase {
   /** Creates a new zeroSensors. 
  * @param m_climbers2
  * @param m_climbers1
@@ -19,7 +19,7 @@ public class zeroSensors extends CommandBase {
   public climberS1 m_climbers1;
   public graber m_climbers2;
 
-  public zeroSensors(arm m_arm, climberS1 m_climbers1, graber m_climbers2) {
+  public ZeroSensors(arm m_arm, climberS1 m_climbers1, graber m_climbers2) {
     // Use addRequirements() here to declare subsystem dependencies.
 
     this.m_arm = m_arm;

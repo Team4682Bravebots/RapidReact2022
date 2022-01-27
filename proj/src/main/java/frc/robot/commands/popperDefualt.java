@@ -7,10 +7,10 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.popper;
 
-public class popperDefualt extends CommandBase {
+public class PopperDefualt extends CommandBase {
   private popper popperSubsystem;
 
-  public popperDefualt(popper popperSubsystem) {
+  public PopperDefualt(popper popperSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.popperSubsystem = popperSubsystem;
     addRequirements(popperSubsystem);
