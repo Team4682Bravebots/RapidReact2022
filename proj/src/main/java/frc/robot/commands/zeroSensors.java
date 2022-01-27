@@ -15,11 +15,11 @@ public class ZeroSensors extends CommandBase {
  * @param m_climbers1
  * @param m_arm*/
 
-  public arm m_arm;
+  public Arm m_arm;
   public ClimberS1 m_climbers1;
   public Graber m_climbers2;
 
-  public ZeroSensors(arm m_arm, ClimberS1 m_climbers1, Graber m_climbers2) {
+  public ZeroSensors(Arm m_arm, ClimberS1 m_climbers1, Graber m_climbers2) {
     // Use addRequirements() here to declare subsystem dependencies.
 
     this.m_arm = m_arm;
