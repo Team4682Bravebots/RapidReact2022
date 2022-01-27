@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.*;
+import frc.robot.subsystems.*;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -21,14 +22,14 @@ public class RobotContainer {
 
 
   //declaring and init subsystems  
-  public static arm m_arm = new arm();
-  public static pnuematics m_pnuematics  = new pnuematics();
-  public static intake m_intake = new intake();
-  public static driveTrain m_drivetrain = new driveTrain();
-  public static climberS1 m_climbers1 = new climberS1();
-  public static graber m_graber = new graber();
-  public static popper m_popper = new popper();
-  public static interfaces m_interfaces = new interfaces();
+  public static Arm m_arm = new Arm();
+  public static Pneumatics m_pnuematics  = new Pneumatics();
+  public static Intake m_intake = new Intake();
+  public static DriveTrain m_drivetrain = new DriveTrain();
+  public static ClimberS1 m_climbers1 = new ClimberS1();
+  public static Graber m_graber = new Graber();
+  public static Popper m_popper = new Popper();
+  public static Interfaces m_interfaces = new Interfaces();
 
 
   //declering hids
@@ -148,7 +149,7 @@ public class RobotContainer {
     button2.whenPressed(new ArmPos1(m_arm));
     button3.whenPressed(new ArmPos2(m_arm));
 
-    button4.whenPressed(new ClimberS1Defualt(m_climbers1));//TODO
+    button4.whenPressed(new ClimberS1Default(m_climbers1));//TODO
     button5.whenPressed(new ClimberS1Extended(m_climbers1));//TODO
     button6.whenPressed(new ClimberS1EndGame(m_climbers1));//TODO
 
@@ -195,21 +196,12 @@ public class RobotContainer {
 
 */
 
-
-
-
-
-
-
     buttonA.whenPressed(new ArmDefault(m_arm));
-    buttonX.whenPressed(new armPos1(m_arm));
-    buttonY.whenPressed(new armPos2(m_arm));
-
-
+    buttonX.whenPressed(new ArmPos1(m_arm));
+    buttonY.whenPressed(new ArmPos2(m_arm));
 
     // D-Pad Stuff \\
 
-    
     double pov = coDriverController.getPOV();
     System.out.println(pov);
 
