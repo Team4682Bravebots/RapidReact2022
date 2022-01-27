@@ -1,59 +1,48 @@
-// ************************************************************
-// Bischop Blanchet Robotics
-// Historic home of the 'BraveBots'
-// FRC - Rapid React - 2022
-// File: ArmDefault.java
-// Intent: Return arm to its default position.
-// ************************************************************
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.subsystems.*;
+import frc.robot.subsystems.arm;
 
-public class ArmDefualt extends CommandBase
-{
-
-  private Arm armSubsystem;
+public class armDefualt extends CommandBase {
+  private final arm armSubsystem;
   boolean done;
 
-  // ctor
-  public ArmDefualt(Arm arm)
-  {
+
+  /** Creates a new armDefualt. */
+  public armDefualt(arm armSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.armSubsystem = arm;
+    this.armSubsystem = armSubsystem;
     addRequirements(armSubsystem);
-  }
+    }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize()
-  {
+  public void initialize() {
     done = false;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute()
-  {
+  public void execute() {
     armSubsystem.setArmPosition(Constants.armDefualt);
     //RobotContainer.m_arm.setArmPosition(0);
 
-    //  armSubsystem.isFinished(done, Constants.armDefualt);
+  //  armSubsystem.isFinished(done, Constants.armDefualt);
     System.out.println(armSubsystem.getPosition());
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted)
-  {
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
-  public boolean isFinished()
-  {
+  public boolean isFinished() {
     return false;
   }
 }
