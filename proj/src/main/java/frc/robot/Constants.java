@@ -18,6 +18,29 @@ package frc.robot;
  */
 public final class Constants
 {
+  // shooter \\\
+  public static final double highGoalSpeed = 0;
+  public static final double lowGoalSpeed = 0;
+  public static final double eatSpeed = 0;
+  public static final double barfSpeed = 0;
+
+   // Jaws reach points \\
+  public static int JawsDefualt = 0;
+  public static int JawsShooter = 2048 * 1;//TODO the mathh to find some good points depending on the gearing 
+  public static int JawsForwardLowGoal = 2048 * 2;
+
+  // climber reach points \\
+  public static int s1Defualt = 0;
+  public static int s1Extended = 1; //TODO need to calculate top of climber
+  public static int s1EndGame = 2; //TODO should be just less then double "s1Extended"
+
+  public static int s2Defualt = 0; 
+  public static int s2Extended = 4062 * 1; //TODO need to calculate top of climber 
+  public static int s2EndGame = 4062 * 2; //TODO should be just less then double "s2Extended"
+
+
+
+  
   // hid ports \\ 
   public static int portDriverController = 0;
   public static int portCoDriverController = 1;
@@ -52,19 +75,7 @@ public final class Constants
 
   // TODO -  the code below needs work ... make it cleaner 
 
-  // Jaws reach points \\
-  public static int JawsDefualt = 0;
-  public static int JawsShooter = 2048 * 1;//TODO the mathh to find some good points depending on the gearing 
-  public static int JawsForwardLowGoal = 2048 * 2;
 
-  // climber reach points \\
-  public static int s1Defualt = 0;
-  public static int s1Extended = 1; //TODO need to calculate top of climber
-  public static int s1EndGame = 2; //TODO should be just less then double "s1Extended"
-
-  public static int s2Defualt = 0; 
-  public static int s2Extended = 4062 * 1; //TODO need to calculate top of climber 
-  public static int s2EndGame = 4062 * 2; //TODO should be just less then double "s2Extended"
 
 
   // AngleArm timing \\
@@ -102,5 +113,7 @@ public final class Constants
   public static final int kSlotIdx = 0;
 
   public static final Gains kGains = new Gains(0.2, 0.0, 0.0, 0.2, 0, 1.0);
+
+
 
 }

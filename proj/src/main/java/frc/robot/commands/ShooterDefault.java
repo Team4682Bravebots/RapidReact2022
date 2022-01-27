@@ -10,6 +10,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Interfaces;
 import frc.robot.subsystems.Pneumatics;
 
 public class ShooterDefault extends CommandBase {
@@ -17,13 +18,17 @@ public class ShooterDefault extends CommandBase {
  * @param m_Shooter*/
     private Pneumatics PneumaticsSubsystem;
     private Shooter ShooterSubsystem;
+    private Interfaces interfacesSusbsystem;
   
-  public ShooterDefault(Shooter ShooterSubsystem, Pneumatics PneumaticsSubsystem) {
+  public ShooterDefault(Shooter ShooterSubsystem, Pneumatics PneumaticsSubsystem, Interfaces interfacesSubsystem) {
     this.ShooterSubsystem = ShooterSubsystem;
     addRequirements(ShooterSubsystem);
 
     this.PneumaticsSubsystem = PneumaticsSubsystem;
     addRequirements(PneumaticsSubsystem);
+
+    this.interfacesSusbsystem = interfacesSubsystem;
+    addRequirements(interfacesSubsystem);
 
   }
     // Use addRequirements() here to declare subsystem dependencies.
@@ -36,6 +41,11 @@ public class ShooterDefault extends CommandBase {
   @Override
   public void execute() {
     PneumaticsSubsystem.solenoidShooterJawsBackward();
+
+    ShooterSubsystem.shooterManual(interfacesSubsystem.xboxRawa);
+
+
+
     //any motors that need to be turned off
     ShooterSubsystem.defualt();
   }

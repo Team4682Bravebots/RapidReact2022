@@ -36,14 +36,26 @@ public class Shooter extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public void eat(double speed){
+  public void eat(){
+    topMotor.set(Constants.eatSpeed);
+  }
+
+  public void barf(){
+    topMotor.set(Constants.barfSpeed);
+  }
+
+  public void shootLow(){
+    topMotor.set(Constants.highGoalSpeed);
+  }
+
+  public void shootHigh(){
+    topMotor.set(Constants.lowGoalSpeed);
+  }
+
+  public void shooterManual(double speed){
     topMotor.set(speed);
   }
-
-  public void barf(double speed){
-    topMotor.set(speed * -1.0);
-  }
-
+  
   public void defualt(){
     topMotor.set(0.0);
   }
