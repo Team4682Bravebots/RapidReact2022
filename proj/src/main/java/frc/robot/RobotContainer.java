@@ -9,22 +9,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.ArmDefualt;
-import frc.robot.commands.armPos1;
-import frc.robot.commands.armPos2;
-import frc.robot.commands.climberS1Defualt;
-import frc.robot.commands.climberS1EndGame;
-import frc.robot.commands.climberS1Extended;
-import frc.robot.commands.intakeBarf;
-import frc.robot.commands.intakeEat;
-import frc.robot.subsystems.arm;
-import frc.robot.subsystems.climberS1;
-import frc.robot.subsystems.driveTrain;
-import frc.robot.subsystems.graber;
-import frc.robot.subsystems.intake;
-import frc.robot.subsystems.interfaces;
-import frc.robot.subsystems.pnuematics;
-import frc.robot.subsystems.popper;
+import frc.robot.commands.*;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -159,20 +144,20 @@ public class RobotContainer {
 
 
     //BUTTONBOARD
-    button1.whenPressed(new ArmDefualt(m_arm));
-    button2.whenPressed(new armPos1(m_arm));
-    button3.whenPressed(new armPos2(m_arm));
+    button1.whenPressed(new ArmDefault(m_arm));
+    button2.whenPressed(new ArmPos1(m_arm));
+    button3.whenPressed(new ArmPos2(m_arm));
 
-    button4.whenPressed(new climberS1Defualt(m_climbers1));//TODO
-    button5.whenPressed(new climberS1Extended(m_climbers1));//TODO
-    button6.whenPressed(new climberS1EndGame(m_climbers1));//TODO
+    button4.whenPressed(new ClimberS1Defualt(m_climbers1));//TODO
+    button5.whenPressed(new ClimberS1Extended(m_climbers1));//TODO
+    button6.whenPressed(new ClimberS1EndGame(m_climbers1));//TODO
 
-    button7.whenPressed(new armPos1(m_arm));
-    button7.whenPressed(new intakeEat(m_intake, m_pnuematics));
+    button7.whenPressed(new ArmPos1(m_arm));
+    button7.whenPressed(new IntakeEat(m_intake, m_pnuematics));
     //TODO
 
-    button8.whenPressed(new intakeBarf(m_intake, m_pnuematics, m_interfaces));
-    button9.whenPressed(new intakeBarf(m_intake, m_pnuematics, m_interfaces));
+    button8.whenPressed(new IntakeBarf(m_intake, m_pnuematics, m_interfaces));
+    button9.whenPressed(new IntakeBarf(m_intake, m_pnuematics, m_interfaces));
 
     //button10.whenPressed(new lockArmToGraber());
     //button10.whenPressed(new unlockGraber());
@@ -216,7 +201,7 @@ public class RobotContainer {
 
 
 
-    buttonA.whenPressed(new ArmDefualt(m_arm));
+    buttonA.whenPressed(new ArmDefault(m_arm));
     buttonX.whenPressed(new armPos1(m_arm));
     buttonY.whenPressed(new armPos2(m_arm));
 
