@@ -2,8 +2,8 @@
 // Bischop Blanchet Robotics
 // Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
-// File: TelescopingArmRetract.java
-// Intent: Forms a command to drive the telescoping arms to their retracted position.
+// File: TelescopingArmEndGame.java
+// Intent: Forms a command to drive the telescoping arms to their end game position.
 // ************************************************************
 
 package frc.robot.commands;
@@ -14,7 +14,7 @@ import frc.robot.subsystems.Interfaces;
 import frc.robot.subsystems.TelescopingArms;
 
 
-public class TelescopingArmRetract extends CommandBase {
+public class TelescopingArmEndGame extends CommandBase {
   public TelescopingArms TelescopingArmSubsystem;
   public Interfaces interfaceSubsystem;
   double imput;
@@ -22,7 +22,7 @@ public class TelescopingArmRetract extends CommandBase {
   int _smoothing;
   int _pov;
 
-  public TelescopingArmRetract(TelescopingArms TelescopingArmSubsystem, Interfaces interfaceSubsystem) {
+  public TelescopingArmEndGame(TelescopingArms TelescopingArmSubsystem, Interfaces interfaceSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.TelescopingArmSubsystem = TelescopingArmSubsystem;
     addRequirements(TelescopingArmSubsystem);

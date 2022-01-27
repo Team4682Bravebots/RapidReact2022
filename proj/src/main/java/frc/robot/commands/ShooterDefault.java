@@ -3,7 +3,7 @@
 // Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
 // File: ShooterDefault.java
-// Intent: Forms a command to drive the Jaws to a default position.
+// Intent: Forms a command to let the shooter wind down to stopped position.
 // ************************************************************
 
 package frc.robot.commands;

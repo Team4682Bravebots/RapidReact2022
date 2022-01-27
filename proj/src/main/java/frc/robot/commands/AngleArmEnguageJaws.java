@@ -3,7 +3,7 @@
 // Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
 // File: Level.java
-// Intent: Forms a command to drive the Jaws to a default position.
+// Intent: Forms a command to have the AngleArm attach to the Jaws and disconnect from the chassis.
 // ************************************************************
 
 package frc.robot.commands;
@@ -14,18 +14,16 @@ import frc.robot.Constants;
 import frc.robot.subsystems.AngleArms;
 
 public class AngleArmEnguageJaws extends CommandBase {
-  private AngleArms AngleArmSubsystem;
+  private AngleArms angleArmSubsystem;
   private Timer timer = new Timer();
 
   private boolean done;
 
-  public AngleArmEnguageJaws(AngleArms AngleArmSubsystem) {
+  public AngleArmEnguageJaws(AngleArms angleArmSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.AngleArmSubsystem = AngleArmSubsystem;
-    addRequirements(AngleArmSubsystem);
-  }
-
-  
+    this.angleArmSubsystem = angleArmSubsystem;
+    addRequirements(angleArmSubsystem);
+  }  
 
   // Called when the command is initially scheduled.
   @Override
@@ -38,9 +36,9 @@ public class AngleArmEnguageJaws extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    AngleArmSubsystem.solenoidPopForward();
+    angleArmSubsystem.solenoidPopForward();
     if (timer.hasElapsed(Constants.AngleArmTiming)){
-      AngleArmSubsystem.solenoidPopBackward();
+      angleArmSubsystem.solenoidPopBackward();
       done = true;
     }
   

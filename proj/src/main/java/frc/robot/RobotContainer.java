@@ -149,9 +149,9 @@ public class RobotContainer {
     button2.whenPressed(new JawsIntake(m_jaws));
     button3.whenPressed(new JawsForwardLowGoal(m_jaws));
 
-    button4.whenPressed(new ClimberS1Default(m_climbers1));//TODO
-    button5.whenPressed(new ClimberS1Extended(m_climbers1));//TODO
-    button6.whenPressed(new ClimberS1EndGame(m_climbers1));//TODO
+    button4.whenPressed(new TelescopingArmRetract(m_TelescopingArm, m_interfaces));//TODO
+    button5.whenPressed(new TelescopingArmExtend(m_TelescopingArm, m_interfaces));//TODO
+    button6.whenPressed(new TelescopingArmEndGame(m_TelescopingArm, m_interfaces));//TODO
 
     button7.whenPressed(new JawsIntake(m_jaws));
     button7.whenPressed(new ShooterIntake(m_Shooter, m_pnuematics));

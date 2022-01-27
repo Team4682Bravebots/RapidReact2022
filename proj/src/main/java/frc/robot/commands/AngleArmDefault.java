@@ -2,8 +2,8 @@
 // Bischop Blanchet Robotics
 // Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
-// File: Level.java
-// Intent: Forms a command to drive the Jaws to a default position.
+// File: AngleArmDefault.java
+// Intent: Forms a command to have the AngleArm attach to the chassis and disconnect from the Jaws.
 // ************************************************************
 
 package frc.robot.commands;
@@ -12,15 +12,13 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.AngleArms;
 
 public class AngleArmDefault extends CommandBase {
-  private AngleArms AngleArmSubsystem;
+  private AngleArms angleArmSubsystem;
 
-  public AngleArmDefault(AngleArms AngleArmSubsystem) {
+  public AngleArmDefault(AngleArms angleArmSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.AngleArmSubsystem = AngleArmSubsystem;
-    addRequirements(AngleArmSubsystem);
+    this.angleArmSubsystem = angleArmSubsystem;
+    addRequirements(angleArmSubsystem);
   }
-
-  
 
   // Called when the command is initially scheduled.
   @Override
@@ -31,7 +29,7 @@ public class AngleArmDefault extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    AngleArmSubsystem.solenoidPopBackward();
+    angleArmSubsystem.solenoidPopBackward();
   }
 
   // Called once the command ends or is interrupted.

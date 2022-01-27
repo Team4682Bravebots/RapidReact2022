@@ -3,8 +3,11 @@
 // Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
 // File: Level.java
-// Intent: Forms a command to drive the Jaws to a default position.
+// Intent: ???.
 // ************************************************************
+
+// TODO - Owen what is this for?  Are we going to self-level the robot?  I dobut it.
+// this needs work
 
 package frc.robot.commands;
 
