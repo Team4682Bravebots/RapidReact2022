@@ -10,7 +10,6 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Jaws;
-import frc.robot.subsystems.BallStorage;
 import frc.robot.subsystems.TelescopingArms;
 
 public class ZeroSensors extends CommandBase {

@@ -40,7 +40,7 @@ public class TelescopingArmManual extends CommandBase {
   public void execute() {
  
     imput = Math.round(interfaceSubsystem.getXboxRawAxis(Constants.joystickX) * 10) / 10;
-    int imputToDegree = 2048/360 * 2000;
+    //int imputToDegree = 2048/360 * 2000;
 
     telescopingArmSubsystem.setClimberSpeed(imput);
 
