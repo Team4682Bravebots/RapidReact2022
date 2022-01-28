@@ -51,31 +51,32 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer()
   {
-    //TODO //substystems and defualt commands
-    CommandScheduler.getInstance().registerSubsystem(m_jaws);
-    //CommandScheduler.getInstance().setDefaultCommand(m_Jaws, new JawsDefualt(m_Jaws));
-
-    CommandScheduler.getInstance().registerSubsystem(m_climbers1);
-    //CommandScheduler.getInstance().setDefaultCommand(m_climbers1, new climberS1Defualt(m_climbers1, m_interfaces));
-
-    CommandScheduler.getInstance().registerSubsystem(m_TelescopingArm);
-    //TODO CommandScheduler.getInstance().setDefaultCommand(m_climbers2, new climberS2Defualt(m_climbers2));
+    CommandScheduler.getInstance().registerSubsystem(m_AngleArm);
+    CommandScheduler.getInstance().setDefaultCommand(m_AngleArm, new AngleArmDefault(m_AngleArm));;
+   
+    CommandScheduler.getInstance().registerSubsystem(m_ballStorage);
 
     CommandScheduler.getInstance().registerSubsystem(m_drivetrain);
-    // CommandScheduler.getInstance().setDefaultCommand(m_drivetrain, new driveCommand(m_drivetrain));
-
-    CommandScheduler.getInstance().registerSubsystem(m_Shooter);
-    // CommandScheduler.getInstance().setDefaultCommand(m_Shooter, new ShooterDefualt(m_Shooter, m_pnuematics));
+    CommandScheduler.getInstance().setDefaultCommand(m_drivetrain, new DriveCommand(m_drivetrain));
+  
+    CommandScheduler.getInstance().registerSubsystem(m_interfaces);
+  
+    CommandScheduler.getInstance().registerSubsystem(m_jaws);
+    CommandScheduler.getInstance().setDefaultCommand(m_jaws, new JawsDefault(m_jaws, m_interfaces));
 
     CommandScheduler.getInstance().registerSubsystem(m_pnuematics);
-    //CommandScheduler.getInstance().setDefaultCommand(m_pnuematics, new AngleArmDefualt(m_pnuematics));
 
-    CommandScheduler.getInstance().registerSubsystem(m_AngleArm);
-    //CommandScheduler.getInstance().setDefaultCommand(m_AngleArm, new AngleArmDefualt(m_AngleArm));;
+    CommandScheduler.getInstance().registerSubsystem(m_Shooter);
+    CommandScheduler.getInstance().setDefaultCommand(m_Shooter, new ShooterDefault(m_Shooter, m_pnuematics, m_interfaces));
 
-    CommandScheduler.getInstance().registerSubsystem(m_interfaces);
+    CommandScheduler.getInstance().registerSubsystem(m_TelescopingArm);
+    CommandScheduler.getInstance().setDefaultCommand(m_TelescopingArm, new TelescopingArmManual(m_TelescopingArm, m_interfaces));
 
-    CommandScheduler.getInstance().registerSubsystem(m_ballStorage);
+
+  
+    
+
+ 
 
     // init hids \\
     driverController = new Joystick(Constants.portDriverController); // sets joystick varibles to joysticks
