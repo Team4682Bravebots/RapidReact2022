@@ -12,16 +12,25 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.AngleArms;
+import frc.robot.subsystems.Interfaces;
 
 public class AngleArmDefault extends CommandBase {
   private AngleArms angleArmSubsystem;
+  private Interfaces InterfacesSubsystem;
   private Timer timer = new Timer();
   private boolean done;
 
-  public AngleArmDefault(AngleArms angleArmSubsystem) {
+  public AngleArmDefault(
+    AngleArms angleArmSubsystem,
+    Interfaces InterfaceSubsystem
+    ) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.angleArmSubsystem = angleArmSubsystem;
     addRequirements(angleArmSubsystem);
+
+    this.InterfacesSubsystem = InterfacesSubsystem;
+    addRequirements(InterfacesSubsystem);
+
   }
 
   // Called when the command is initially scheduled.
@@ -35,9 +44,11 @@ public class AngleArmDefault extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    angleArmSubsystem.disenguageArm();
     angleArmSubsystem.enguageChassis();
+    
     if (timer.hasElapsed(Constants.AngleArmTiming)){
-      angleArmSubsystem.disenguageJaws();
+      angleArmSubsystem.disenguageArm();
       done = true;
     }
   }
