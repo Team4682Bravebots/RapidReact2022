@@ -1,10 +1,12 @@
 // ************************************************************
-// Bischop Blanchet Robotics
+// Bishop Blanchet Robotics
 // Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
 // File: ClimberS1.java
 // Intent: Forms a subsystem that controls movements by the Jaws.
 // ************************************************************
+
+// ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ 
 
 package frc.robot.subsystems;
 

@@ -1,10 +1,12 @@
 // ************************************************************
-// Bischop Blanchet Robotics
+// Bishop Blanchet Robotics
 // Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
 // File: Main.java
 // Intent: Program entrypoint.
 // ************************************************************
+
+// ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ 
 
 package frc.robot;
 
