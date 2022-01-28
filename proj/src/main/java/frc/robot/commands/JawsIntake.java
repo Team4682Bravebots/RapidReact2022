@@ -29,7 +29,7 @@ public class JawsIntake extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    jawsSubsystem.setJawsPosition(Constants.JawsShooter);
+    jawsSubsystem.setJawsPosition(Constants.JawsIntakePosition);
 
    // jawsSubsystem.isFinished(done, Constants.JawsDefualt);
    System.out.println(jawsSubsystem.getPosition());

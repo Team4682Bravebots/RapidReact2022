@@ -28,7 +28,7 @@ public class JawsForwardLowGoal extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    jawsSubsystem.setJawsPosition(Constants.JawsForwardLowGoal);
+    jawsSubsystem.setJawsPosition(Constants.JawsLowGoalPosition);
 
     System.out.println(jawsSubsystem.getPosition());
 

@@ -11,6 +11,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.*;
@@ -34,6 +35,7 @@ public class RobotContainer {
   public static TelescopingArms m_TelescopingArm = new TelescopingArms();
   public static AngleArms m_AngleArm = new AngleArms();
   public static Interfaces m_interfaces = new Interfaces();
+  public static BallStorage m_ballStorage = new BallStorage();
 
 
   //declering hids
@@ -72,6 +74,8 @@ public class RobotContainer {
     //CommandScheduler.getInstance().setDefaultCommand(m_AngleArm, new AngleArmDefualt(m_AngleArm));;
 
     CommandScheduler.getInstance().registerSubsystem(m_interfaces);
+
+    CommandScheduler.getInstance().registerSubsystem(m_ballStorage);
 
     // init hids \\
     driverController = new Joystick(Constants.portDriverController); // sets joystick varibles to joysticks
@@ -136,7 +140,7 @@ public class RobotContainer {
 
 
     //BUTTONBOARD
-    button1.whenPressed(new JawsDefault(m_jaws));
+    button1.whenPressed(new JawsDefault(m_jaws, m_interfaces));
     button2.whenPressed(new JawsIntake(m_jaws));
     button3.whenPressed(new JawsForwardLowGoal(m_jaws));
 
@@ -145,10 +149,10 @@ public class RobotContainer {
     button6.whenPressed(new TelescopingArmEndGame(m_TelescopingArm, m_interfaces));//TODO
 
     button7.whenPressed(new JawsIntake(m_jaws));
-    button7.whenPressed(new ShooterIntake(m_Shooter, m_pnuematics));
+    button7.whenPressed(new ShooterIntake(m_Shooter, m_pnuematics, m_ballStorage));
    
-    button8.whenPressed(new ShooterForwardLowShot(m_Shooter, m_pnuematics, m_interfaces));
-    button9.whenPressed(new ShooterForwardLowShot(m_Shooter, m_pnuematics, m_interfaces));
+    button8.whenPressed(new ShooterForwardLowShot(m_Shooter, m_pnuematics, m_interfaces, m_ballStorage));
+    button9.whenPressed(new ShooterForwardLowShot(m_Shooter, m_pnuematics, m_interfaces, m_ballStorage));
 
     //button10.whenPressed(new lockJawsToTelescopingArm());
     //button10.whenPressed(new unlockTelescopingArm());
@@ -186,8 +190,9 @@ public class RobotContainer {
 
     */
 
-    // TODO - this is incorrect below and needs much work ...
-    buttonA.whenPressed(new JawsDefault(m_jaws));
+    // TODO - this is incorrect below and needs much work ... 
+    //TODO this was just for testing motors 
+    buttonA.whenPressed(new JawsDefault(m_jaws, m_interfaces));
     buttonX.whenPressed(new JawsIntake(m_jaws));
     buttonY.whenPressed(new JawsForwardLowGoal(m_jaws));
 

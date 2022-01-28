@@ -44,7 +44,7 @@ public ShooterIntake(
     ShooterSubsystem.eat();
     BallStorageSubsystem.store();
 
-    PneumaticsSubsystem.solenoidShooterJawsForward(); 
+    //PneumaticsSubsystem.solenoidShooterJawsForward(); 
     //run Shooter morons too
   
   }

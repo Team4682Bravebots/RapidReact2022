@@ -24,10 +24,13 @@ public final class Constants
   public static final double eatSpeed = 0;
   public static final double barfSpeed = 0;
 
-   // Jaws reach points \\
-  public static int JawsDefualt = 0;
-  public static int JawsShooter = 2048 * 1;//TODO the mathh to find some good points depending on the gearing 
-  public static int JawsForwardLowGoal = 2048 * 2;
+  // Jaws reach points \\
+  public static final double JawsReverseHighGoalPosition = 0;
+  public static final double JawsIntakePosition = 0;
+  public static final double JawsLowGoalPosition = 0;
+  public static final double JawsHighGoalPosition = 0;
+   
+   
 
   // climber reach points \\
   public static int s1Defualt = 0;
@@ -115,7 +118,6 @@ public final class Constants
   public static final int kSlotIdx = 0;
 
   public static final Gains kGains = new Gains(0.2, 0.0, 0.0, 0.2, 0, 1.0);
-
 
 
 }

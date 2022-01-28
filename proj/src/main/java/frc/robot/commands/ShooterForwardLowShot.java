@@ -55,8 +55,8 @@ public class ShooterForwardLowShot extends CommandBase {
 
     //ShooterSubsystem.barf(interfacesSubsystem.getXboxRawAxis(2));
     //System.out.println(interfacesSubsystem.getXboxRawAxis(2));
-    PneumaticsSubsystem.solenoidShooterJawsForward();
-    PneumaticsSubsystem.solenoidShooterJawsForward();
+    //PneumaticsSubsystem.solenoidShooterJawsForward();
+    //PneumaticsSubsystem.solenoidShooterJawsForward();
   }
 
   // Called once the command ends or is interrupted.

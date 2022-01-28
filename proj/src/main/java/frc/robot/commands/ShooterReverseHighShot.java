@@ -52,8 +52,8 @@ public class ShooterReverseHighShot extends CommandBase {
     BallStorageSubsystem.retrieve();
 
 
-    PneumaticsSubsystem.solenoidShooterJawsForward();
-    PneumaticsSubsystem.solenoidShooterJawsForward();
+    //PneumaticsSubsystem.solenoidShooterJawsForward();
+    //PneumaticsSubsystem.solenoidShooterJawsForward();
   }
 
   // Called once the command ends or is interrupted.

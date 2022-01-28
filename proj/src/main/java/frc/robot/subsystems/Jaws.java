@@ -93,6 +93,9 @@ public class Jaws extends SubsystemBase {
     rightMotor.set(TalonFXControlMode.MotionMagic, targetPos);
   }
   
+  public void jawsManual(double speed){
+    rightMotor.set(TalonFXControlMode.PercentOutput, speed);
+  }
   //public void isFinished(boolean done, double targetPos){
    //if(rightMotor.getSelectedSensorPosition() >= targetPos + 100 || rightMotor.getSelectedSensorPosition() <=targetPos - 100){
      //done = true;

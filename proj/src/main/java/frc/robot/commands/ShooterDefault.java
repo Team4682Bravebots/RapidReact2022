@@ -50,9 +50,6 @@ public class ShooterDefault extends CommandBase {
     //TODO check this is the right axis 
 
 
-
-    //any motors that need to be turned off
-    //ShooterSubsystem.defualt();
   }
 
   // Called once the command ends or is interrupted.
