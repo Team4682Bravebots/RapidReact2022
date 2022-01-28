@@ -37,12 +37,12 @@ public class BallStorage extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public void store(double speed){
-    topMotor.set(speed);
+  public void store(){
+    topMotor.set(Constants.storeSpeed);
   }
 
-  public void retrieve(double speed){
-    topMotor.set(speed * -1.0);
+  public void retrieve(){
+    topMotor.set(Constants.retreiveSpeed * -1.0);
   }
 
   public void defualt(){

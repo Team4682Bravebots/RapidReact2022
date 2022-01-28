@@ -38,7 +38,9 @@ public final class Constants
   public static int s2Extended = 4062 * 1; //TODO need to calculate top of climber 
   public static int s2EndGame = 4062 * 2; //TODO should be just less then double "s2Extended"
 
-
+  // Ball storage \\
+  public static final double retreiveSpeed = 0;
+  public static final double storeSpeed = 0;
 
   
   // hid ports \\ 
