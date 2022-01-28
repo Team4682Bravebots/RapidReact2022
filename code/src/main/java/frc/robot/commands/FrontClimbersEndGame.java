@@ -1,5 +1,9 @@
 // ************************************************************
+<<<<<<< HEAD
 // Bishop Blanchet Robotics
+=======
+// Bischop Blanchet Robotics
+>>>>>>> main
 // Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
 // File: FrontClimbersEndGame.java
@@ -45,6 +49,7 @@ public class FrontClimbersEndGame extends CommandBase
   {
     return false;
   }
+<<<<<<< HEAD
 }
 
 /*
@@ -89,3 +94,6 @@ ccccccccccccccccccccccccccccccccccccccccc::;,''''''',;:ccccccccccccccccccccccccc
 ccccccccccccccccccccccccccccccccccccccccccccc::::::ccccccccccccccccccccccccccccccccccccccccccccccccc
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 */
+=======
+}
+>>>>>>> main

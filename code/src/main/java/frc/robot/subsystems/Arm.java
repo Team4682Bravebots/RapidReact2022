@@ -1,5 +1,9 @@
 // ************************************************************
+<<<<<<< HEAD
 // Bishop Blanchet Robotics
+=======
+// Bischop Blanchet Robotics
+>>>>>>> main
 // Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
 // File: Arm.java
@@ -110,6 +114,7 @@ public class Arm extends SubsystemBase
   {
     left.setSelectedSensorPosition(0);
   }
+<<<<<<< HEAD
 }
 
 /*
@@ -154,3 +159,6 @@ ccccccccccccccccccccccccccccccccccccccccc::;,''''''',;:ccccccccccccccccccccccccc
 ccccccccccccccccccccccccccccccccccccccccccccc::::::ccccccccccccccccccccccccccccccccccccccccccccccccc
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 */
+=======
+}
+>>>>>>> main

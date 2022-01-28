@@ -1,5 +1,9 @@
 // ************************************************************
+<<<<<<< HEAD
 // Bishop Blanchet Robotics
+=======
+// Bischop Blanchet Robotics
+>>>>>>> main
 // Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
 // File: Intake.java
@@ -90,6 +94,7 @@ public class Intake extends SubsystemBase
     leftMotor.set(TalonFXControlMode.PercentOutput, Constants.intakeDefualt);
   }
 }
+<<<<<<< HEAD
 
 /*
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
@@ -133,3 +138,5 @@ ccccccccccccccccccccccccccccccccccccccccc::;,''''''',;:ccccccccccccccccccccccccc
 ccccccccccccccccccccccccccccccccccccccccccccc::::::ccccccccccccccccccccccccccccccccccccccccccccccccc
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 */
+=======
+>>>>>>> main

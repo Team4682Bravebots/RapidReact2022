@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <<<<<<< Updated upstream:proj/src/main/java/frc/robot/Main.java
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
@@ -11,6 +12,15 @@
 // Intent: Robot program entry point.
 // ************************************************************
 >>>>>>> Stashed changes:code/src/main/java/frc/robot/Main.java
+=======
+// ************************************************************
+// Bischop Blanchet Robotics
+// Historic home of the 'BraveBots'
+// FRC - Rapid React - 2022
+// File: Main.java
+// Intent: Program entrypoint.
+// ************************************************************
+>>>>>>> main
 
 package frc.robot;
 

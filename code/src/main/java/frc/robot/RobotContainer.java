@@ -1,5 +1,9 @@
 // ************************************************************
+<<<<<<< HEAD
 // Bishop Blanchet Robotics
+=======
+// Bischop Blanchet Robotics
+>>>>>>> main
 // Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
 // File: RobotContainer.java
@@ -151,6 +155,7 @@ public class RobotContainer {
 
 }
 
+<<<<<<< HEAD
 /*
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 cccccccccccccccccccccccccccccccccc:;,;;:cccccccccccccccccccccc::cccccccccccccccccccccccccccccccccccc
@@ -194,3 +199,5 @@ ccccccccccccccccccccccccccccccccccccccccccccc::::::ccccccccccccccccccccccccccccc
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 */
 
+=======
+>>>>>>> main

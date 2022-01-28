@@ -1,5 +1,9 @@
 // ************************************************************
+<<<<<<< HEAD
 // Bishop Blanchet Robotics
+=======
+// Bischop Blanchet Robotics
+>>>>>>> main
 // Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
 // File: Interfaces.java
@@ -51,6 +55,7 @@ public class Interfaces extends SubsystemBase
     return pov;
   }
 }
+<<<<<<< HEAD
 
 /*
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
@@ -94,3 +99,5 @@ ccccccccccccccccccccccccccccccccccccccccc::;,''''''',;:ccccccccccccccccccccccccc
 ccccccccccccccccccccccccccccccccccccccccccccc::::::ccccccccccccccccccccccccccccccccccccccccccccccccc
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 */
+=======
+>>>>>>> main

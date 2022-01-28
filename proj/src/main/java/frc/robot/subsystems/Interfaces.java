@@ -1,11 +1,24 @@
+<<<<<<< HEAD
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
+=======
+// ************************************************************
+// Bischop Blanchet Robotics
+// Historic home of the 'BraveBots'
+// FRC - Rapid React - 2022
+// File: Interfaces.java
+// Intent: Forms a subsystem that controls movements by the Jaws.
+// ************************************************************
+>>>>>>> main
 
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Joystick;
+<<<<<<< HEAD
 import edu.wpi.first.wpilibj.XboxController;
+=======
+>>>>>>> main
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 

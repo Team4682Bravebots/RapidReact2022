@@ -1,5 +1,9 @@
 // ************************************************************
+<<<<<<< HEAD
 // Bishop Blanchet Robotics
+=======
+// Bischop Blanchet Robotics
+>>>>>>> main
 // Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
 // File: DriveTrain.java
@@ -85,6 +89,7 @@ public class DriveTrain extends SubsystemBase
     // This method will be called once per scheduler run
   }
 }
+<<<<<<< HEAD
 
 /*
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
@@ -128,4 +133,6 @@ ccccccccccccccccccccccccccccccccccccccccc::;,''''''',;:ccccccccccccccccccccccccc
 ccccccccccccccccccccccccccccccccccccccccccccc::::::ccccccccccccccccccccccccccccccccccccccccccccccccc
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 */
+=======
+>>>>>>> main
  

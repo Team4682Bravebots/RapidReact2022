@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <<<<<<< Updated upstream:proj/src/main/java/frc/robot/Robot.java
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
@@ -11,11 +12,19 @@
 // Intent: Robot implementation robot spec.
 // ************************************************************
 >>>>>>> Stashed changes:code/src/main/java/frc/robot/Robot.java
+=======
+// ************************************************************
+// Bischop Blanchet Robotics
+// Historic home of the 'BraveBots'
+// FRC - Rapid React - 2022
+// File: RobotContainer.java
+// Intent: Wrapper class standard stub for robot in FRC challange.
+// ************************************************************
+>>>>>>> main
 
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 /**
@@ -25,8 +34,9 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * project.
  */
 public class Robot extends TimedRobot {
-  private Command m_autonomousCommand;
+  //private Command m_autonomousCommand;
   private RobotContainer m_robotContainer;
+
 
 
   
@@ -38,6 +48,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
+
     m_robotContainer = new RobotContainer();
   }
 
@@ -70,9 +81,9 @@ public class Robot extends TimedRobot {
     //m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.schedule();
-    }
+   // if (m_autonomousCommand != null) {
+     // m_autonomousCommand.schedule();
+    //}
   }
 
   /** This function is called periodically during autonomous. */
@@ -85,9 +96,9 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
-    }
+    //if (m_autonomousCommand != null) {
+    //  m_autonomousCommand.cancel();
+    //}
   }
 
   /** This function is called periodically during operator control. */
@@ -102,6 +113,7 @@ public class Robot extends TimedRobot {
   public void testInit() {
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
+    //from frosty
   }
 
   /** This function is called periodically during test mode. */
