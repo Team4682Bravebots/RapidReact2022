@@ -1,5 +1,5 @@
 // ************************************************************
-// Bischop Blanchet Robotics
+// Bishop Blanchet Robotics
 // Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
 // File: TelescopingArm.java
@@ -45,7 +45,7 @@ public class TelescopingArms extends SubsystemBase
 		right.follow(left);
 		right.setIdleMode(IdleMode.kBrake);
 
-    // initialze PID controller and encoder objects
+    // initialize PID controller and encoder objects
     leftPidController = left.getPIDController();
     rightPidController = right.getPIDController();
     leftEncoder = left.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 1);
@@ -120,7 +120,7 @@ public class TelescopingArms extends SubsystemBase
     right.set(speed);
   }
 
-  public void setClimberPostion(double targetPos)
+  public void setClimberPosition(double targetPos)
   {
     leftPidController.setReference(targetPos, ControlType.kSmartMotion);
     // TODO

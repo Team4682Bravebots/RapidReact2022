@@ -1,5 +1,5 @@
 // ************************************************************
-// Bischop Blanchet Robotics
+// Bishop Blanchet Robotics
 // Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
 // File: Level.java
@@ -15,14 +15,15 @@ import frc.robot.subsystems.AngleArms;
 import frc.robot.subsystems.Interfaces;
 import frc.robot.subsystems.Jaws;
 
-public class AngleArmEnguageJaws extends CommandBase {
+public class AngleArmEngageJaws extends CommandBase {
   private AngleArms angleArmSubsystem;
   private Interfaces InterfacesSubsystem;
   private Jaws JawsSubsystem;
   private Timer timer = new Timer();
   private boolean done;
 
-  public AngleArmEnguageJaws(
+  
+  public AngleArmEngageJaws(
     AngleArms angleArmSubsystem,
     Interfaces InterfacesSubsystem,
     Jaws JawsSubsystem
@@ -49,8 +50,8 @@ public class AngleArmEnguageJaws extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    angleArmSubsystem.enguageArm();
-    angleArmSubsystem.disenguageChassis();
+    angleArmSubsystem.engageArm();
+    angleArmSubsystem.disengageChassis();
 
     JawsSubsystem.setJawsPosition(InterfacesSubsystem.getXboxRawAxis(Constants.joystickZ));
     //TODO set this to the right joystick

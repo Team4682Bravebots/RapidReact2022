@@ -1,5 +1,5 @@
 // ************************************************************
-// Bischop Blanchet Robotics
+// Bishop Blanchet Robotics
 // Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
 // File: AngleArmDefault.java
@@ -14,16 +14,16 @@ import frc.robot.Constants;
 import frc.robot.subsystems.AngleArms;
 
 public class AngleArmDefault extends CommandBase {
-  private AngleArms angleArmSubsystem;
+  private AngleArms AngleArmSubsystem;
   private Timer timer = new Timer();
   //private boolean done;
 
   public AngleArmDefault(
-    AngleArms angleArmSubsystem
+    AngleArms AngleArmSubsystem
     ) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.angleArmSubsystem = angleArmSubsystem;
-    addRequirements(angleArmSubsystem);
+    this.AngleArmSubsystem = AngleArmSubsystem;
+    addRequirements(AngleArmSubsystem);
 
   }
 
@@ -38,11 +38,11 @@ public class AngleArmDefault extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    angleArmSubsystem.disenguageArm();
-    angleArmSubsystem.enguageChassis();
+    AngleArmSubsystem.disengageArm();
+    AngleArmSubsystem.engageChassis();
 
     if (timer.hasElapsed(Constants.AngleArmTiming)){
-      angleArmSubsystem.disenguageArm();
+      AngleArmSubsystem.disengageArm();
       //done = true;
     }
   }

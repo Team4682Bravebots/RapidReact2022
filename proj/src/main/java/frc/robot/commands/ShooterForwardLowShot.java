@@ -1,5 +1,5 @@
 // ************************************************************
-// Bischop Blanchet Robotics
+// Bishop Blanchet Robotics
 // Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
 // File: ShooterForwardLowShot.java
@@ -22,15 +22,15 @@ public class ShooterForwardLowShot extends CommandBase {
   public BallStorage BallStorageSubsystem;
 
   public ShooterForwardLowShot(
-     Shooter ShooterSubystem, 
+     Shooter ShooterSubsystem, 
      Pneumatics PneumaticsSubsystem, 
      Interfaces interfacesSubsystem,
      BallStorage BallStorageSubsystem
     ) {
 
     // Use addRequirements() here to declare subsystem dependencies.
-    this.ShooterSubsystem = ShooterSubystem;
-    addRequirements(ShooterSubystem);
+    this.ShooterSubsystem = ShooterSubsystem;
+    addRequirements(ShooterSubsystem);
 
     this.PneumaticsSubsystem = PneumaticsSubsystem;
     addRequirements(PneumaticsSubsystem);

@@ -1,5 +1,5 @@
 // ************************************************************
-// Bischop Blanchet Robotics
+// Bishop Blanchet Robotics
 // Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
 // File: JawsDefault.java
@@ -19,7 +19,7 @@ public class JawsDefault extends CommandBase {
   boolean done;
 
 
-  /** Creates a new JawsDefualt. */
+  /** Creates a new JawsDefault. */
   public JawsDefault(
     Jaws jawsSubsystem,
     Interfaces InterfacesSubsystem
@@ -44,7 +44,7 @@ public class JawsDefault extends CommandBase {
   public void execute() {
     jawsSubsystem.jawsManual(InterfacesSubsystem.getXboxRawAxis(Constants.joystickY));
     //TODO set this to the right axis 
-    //RobotContainer.m_Jaws.setJawsPosition(0);
+    //RobotContainer.m_Jaws.setJawsPosition(0); 
 
   //  jawsSubsystem.isFinished(done, Constants.JawsDefualt);
     System.out.println(jawsSubsystem.getPosition());

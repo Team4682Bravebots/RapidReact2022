@@ -1,5 +1,5 @@
 // ************************************************************
-// Bischop Blanchet Robotics
+// Bishop Blanchet Robotics
 // Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
 // File: TelescopingArmExtend.java
@@ -17,7 +17,7 @@ import frc.robot.subsystems.TelescopingArms;
 public class TelescopingArmExtend extends CommandBase {
   public TelescopingArms telescopingArmSubsystem;
   public Interfaces interfaceSubsystem;
-  double imput;
+  double input;
   int pov;
   int _smoothing;
   int _pov;
@@ -39,7 +39,7 @@ public class TelescopingArmExtend extends CommandBase {
   @Override
   public void execute() {
  
-   telescopingArmSubsystem.setClimberPostion(Constants.s1Extended);
+   telescopingArmSubsystem.setClimberPosition(Constants.s1Extended);
   }
 
   // Called once the command ends or is interrupted.

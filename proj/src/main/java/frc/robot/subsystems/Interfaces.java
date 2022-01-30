@@ -1,5 +1,5 @@
 // ************************************************************
-// Bischop Blanchet Robotics
+// Bishop Blanchet Robotics
 // Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
 // File: Interfaces.java
@@ -26,7 +26,7 @@ public class Interfaces extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
       // init hids \\
-     driverController = new Joystick(Constants.portDriverController); // sets joystick varibles to joysticks
+     driverController = new Joystick(Constants.portDriverController); // sets joystick variables to joysticks
      coDriverController = new Joystick(Constants.portCoDriverController);
 
 

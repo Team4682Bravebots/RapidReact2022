@@ -1,5 +1,5 @@
-// ************************************************************
-// Bischop Blanchet Robotics
+ // ************************************************************
+// Bishop Blanchet Robotics
 // Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
 // File: TelescopingArmManual.java
@@ -17,7 +17,7 @@ import frc.robot.subsystems.TelescopingArms;
 public class TelescopingArmManual extends CommandBase {
   public TelescopingArms telescopingArmSubsystem;
   public Interfaces interfaceSubsystem;
-  double imput;
+  double input;
   int pov;
   int _smoothing;
   int _pov;
@@ -39,17 +39,17 @@ public class TelescopingArmManual extends CommandBase {
   @Override
   public void execute() {
  
-    imput = Math.round(interfaceSubsystem.getXboxRawAxis(Constants.joystickX) * 10) / 10;
-    //int imputToDegree = 2048/360 * 2000;
+    input = Math.round(interfaceSubsystem.getXboxRawAxis(Constants.joystickX) * 10) / 10;
+    //int inputToDegree = 2048/360 * 2000;
 
-    telescopingArmSubsystem.setClimberSpeed(imput);
+    telescopingArmSubsystem.setClimberSpeed(input);
 
     /*
-    double targetPos = imput * imputToDegree;
+    double targetPos = input * inputToDegree;
     double currentPOS = Math.round(telescopingArmSubsystem.getPosition());
   
     System.out.println(currentPOS);
-    System.out.println("imput" + imput);
+    System.out.println("input" + input);
     
     if(targetPos < currentPOS-300 || targetPos > currentPOS+300){
     

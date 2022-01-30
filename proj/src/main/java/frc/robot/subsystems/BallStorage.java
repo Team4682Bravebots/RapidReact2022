@@ -1,5 +1,5 @@
 // ************************************************************
-// Bischop Blanchet Robotics
+// Bishop Blanchet Robotics
 // Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
 // File: ClimberS1.java
@@ -42,10 +42,12 @@ public class BallStorage extends SubsystemBase {
   }
 
   public void retrieve(){
-    topMotor.set(Constants.retreiveSpeed * -1.0);
+    topMotor.set(Constants.retrieveSpeed * -1.0);
   }
 
-  public void defualt(){
+  public void defaultM(){ 
     topMotor.set(0.0);
   }
+
+
 }

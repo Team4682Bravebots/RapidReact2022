@@ -1,5 +1,5 @@
 // ************************************************************
-// Bischop Blanchet Robotics
+// Bishop Blanchet Robotics
 // Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
 // File: AngleArm.java
@@ -26,21 +26,21 @@ public class AngleArms extends SubsystemBase {
   private final DoubleSolenoid leftJawsAngleArmSolenoid = new DoubleSolenoid(null, 2,3); 
   private final DoubleSolenoid rightJawsAngleArmSolenoid = new DoubleSolenoid(null, 2,3); 
 
-  public void enguageChassis(){
+  public void engageChassis(){
     leftChassisAngleArmSolenoid.set(kForward);
     rightChassisAngleArmSolenoid.set(kForward);
   }
-  public void disenguageChassis(){
+  public void disengageChassis(){
     leftChassisAngleArmSolenoid.set(kReverse);
     rightChassisAngleArmSolenoid.set(kReverse);
   }
 
-  public void enguageArm(){
+  public void engageArm(){
     leftJawsAngleArmSolenoid.set(kForward);
     rightJawsAngleArmSolenoid.set(kForward);
   }
 
-  public void disenguageArm(){
+  public void disengageArm(){
     leftJawsAngleArmSolenoid.set(kReverse);
     rightJawsAngleArmSolenoid.set(kReverse);
   }

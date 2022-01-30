@@ -1,5 +1,5 @@
 // ************************************************************
-// Bischop Blanchet Robotics
+// Bishop Blanchet Robotics
 // Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
 // File: Shooter.java
@@ -56,7 +56,7 @@ public class Shooter extends SubsystemBase {
     topMotor.set(speed);
   }
   
-  public void defualt(){
+  public void defaultM(){
     topMotor.set(0.0);
   }
 }

@@ -1,5 +1,5 @@
 // ************************************************************
-// Bischop Blanchet Robotics
+// Bishop Blanchet Robotics
 // Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
 // File: DriveTrain.java
@@ -78,14 +78,14 @@ public class DriveTrain extends SubsystemBase
     //rightFront..configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
   }
 
-  public void driveControll(double leftSpeed, double rightSpeed)
+  public void driveControl(double leftSpeed, double rightSpeed)
   {
-    //sets motors to imput speeds (sets to conroll motor and conquencly follower motor)
+    //sets motors to imput speeds (sets to control motor and consequently follower motor)
     leftRear.set(leftSpeed);
     rightRear.set(rightSpeed);
   }
 
-  public void defualt(){
+  public void defaultM(){ //
     leftRear.set(0);
     rightRear.set(0);
   }

@@ -1,5 +1,5 @@
 // ************************************************************
-// Bischop Blanchet Robotics
+// Bishop Blanchet Robotics
 // Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
 // File: ShooterDefault.java
@@ -19,7 +19,7 @@ public class ShooterDefault extends CommandBase {
  * @param m_Shooter*/
     private Pneumatics PneumaticsSubsystem;
     private Shooter ShooterSubsystem;
-    private Interfaces interfacesSusbsystem;
+    private Interfaces interfacesSubsystem;
   
   public ShooterDefault(
     Shooter ShooterSubsystem, 
@@ -32,7 +32,7 @@ public class ShooterDefault extends CommandBase {
     this.PneumaticsSubsystem = PneumaticsSubsystem;
     addRequirements(PneumaticsSubsystem);
 
-    this.interfacesSusbsystem = interfacesSubsystem;
+    this.interfacesSubsystem = interfacesSubsystem;
     addRequirements(interfacesSubsystem);
 
   }
@@ -46,7 +46,7 @@ public class ShooterDefault extends CommandBase {
   @Override
   public void execute() {
     PneumaticsSubsystem.solenoidShooterJawsBackward();
-    ShooterSubsystem.shooterManual(interfacesSusbsystem.getXboxRawAxis(Constants.joystickZ));
+    ShooterSubsystem.shooterManual(interfacesSubsystem.getXboxRawAxis(Constants.joystickZ));
     //TODO check this is the right axis 
 
 
