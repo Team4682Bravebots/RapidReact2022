@@ -6,8 +6,6 @@
 // Intent: Forms a command to have the AngleArm attach to the chassis and disconnect from the Jaws.
 // ************************************************************
 
-// ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ 
-
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Timer;
@@ -16,14 +14,17 @@ import frc.robot.Constants;
 import frc.robot.subsystems.AngleArms;
 
 public class AngleArmDefault extends CommandBase {
-  private AngleArms angleArmSubsystem;
+  private AngleArms AngleArmSubsystem;
   private Timer timer = new Timer();
-  private boolean done;
+  //private boolean done;
 
-  public AngleArmDefault(AngleArms angleArmSubsystem) {
+  public AngleArmDefault(
+    AngleArms AngleArmSubsystem
+    ) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.angleArmSubsystem = angleArmSubsystem;
-    addRequirements(angleArmSubsystem);
+    this.AngleArmSubsystem = AngleArmSubsystem;
+    addRequirements(AngleArmSubsystem);
+
   }
 
   // Called when the command is initially scheduled.
@@ -31,16 +32,18 @@ public class AngleArmDefault extends CommandBase {
   public void initialize() {
     timer.reset();
     timer.start();
-    done = false;
+    //done = false;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    angleArmSubsystem.enguageChassis();
+    AngleArmSubsystem.disengageArm();
+    AngleArmSubsystem.engageChassis();
+
     if (timer.hasElapsed(Constants.AngleArmTiming)){
-      angleArmSubsystem.disenguageJaws();
-      done = true;
+      AngleArmSubsystem.disengageArm();
+      //done = true;
     }
   }
 

@@ -6,8 +6,6 @@
 // Intent: Forms a subsystem that controls the AngleArm operations.
 // ************************************************************
 
-// ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ 
-
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -22,27 +20,33 @@ public class AngleArms extends SubsystemBase {
   
   public AngleArms() {}
   
+  //TODO set null to the pnuematics module we use 
   private final DoubleSolenoid leftChassisAngleArmSolenoid = new DoubleSolenoid(null, 2,3); 
   private final DoubleSolenoid rightChassisAngleArmSolenoid = new DoubleSolenoid(null, 2,3); 
   private final DoubleSolenoid leftJawsAngleArmSolenoid = new DoubleSolenoid(null, 2,3); 
   private final DoubleSolenoid rightJawsAngleArmSolenoid = new DoubleSolenoid(null, 2,3); 
 
-  public void enguageChassis(){
+  public void engageChassis(){
     leftChassisAngleArmSolenoid.set(kForward);
     rightChassisAngleArmSolenoid.set(kForward);
   }
-  public void disenguageChassis(){
+  public void disengageChassis(){
     leftChassisAngleArmSolenoid.set(kReverse);
     rightChassisAngleArmSolenoid.set(kReverse);
   }
 
-  public void enguageJaws(){
+  public void engageArm(){
     leftJawsAngleArmSolenoid.set(kForward);
     rightJawsAngleArmSolenoid.set(kForward);
   }
-  public void disenguageJaws(){
+
+  public void disengageArm(){
     leftJawsAngleArmSolenoid.set(kReverse);
     rightJawsAngleArmSolenoid.set(kReverse);
+  }
+
+  public void setPower(double power){
+
   }
   
   @Override

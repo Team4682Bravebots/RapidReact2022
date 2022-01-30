@@ -3,10 +3,8 @@
 // Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
 // File: RobotContainer.java
-// Intent: Wrapper class standard stub for robot in FRC challange.
+// Intent: Wrapper class standard stub for robot in FRC challenge.
 // ************************************************************
-
-// ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ 
 
 package frc.robot;
 

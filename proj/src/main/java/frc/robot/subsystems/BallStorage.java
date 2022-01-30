@@ -6,16 +6,9 @@
 // Intent: Forms a subsystem that controls movements by the Jaws.
 // ************************************************************
 
-// ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ 
-
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
-import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
-import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -44,15 +37,17 @@ public class BallStorage extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public void store(double speed){
-    topMotor.set(speed);
+  public void store(){
+    topMotor.set(Constants.storeSpeed);
   }
 
-  public void retrieve(double speed){
-    topMotor.set(speed * -1.0);
+  public void retrieve(){
+    topMotor.set(Constants.retrieveSpeed * -1.0);
   }
 
-  public void defualt(){
+  public void defaultM(){ 
     topMotor.set(0.0);
   }
+
+
 }

@@ -6,8 +6,6 @@
 // Intent: Forms a subsystem that controls TelescopingArm operations.
 // ************************************************************
 
-// ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ 
-
 package frc.robot.subsystems;
 
 import com.revrobotics.RelativeEncoder;
@@ -47,7 +45,7 @@ public class TelescopingArms extends SubsystemBase
 		right.follow(left);
 		right.setIdleMode(IdleMode.kBrake);
 
-    // initialze PID controller and encoder objects
+    // initialize PID controller and encoder objects
     leftPidController = left.getPIDController();
     rightPidController = right.getPIDController();
     leftEncoder = left.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 1);
@@ -117,7 +115,12 @@ public class TelescopingArms extends SubsystemBase
     return selSenVel;
   }
 
-  public void setClimberPostion(double targetPos)
+  public void setClimberSpeed(double speed)
+  {
+    right.set(speed);
+  }
+
+  public void setClimberPosition(double targetPos)
   {
     leftPidController.setReference(targetPos, ControlType.kSmartMotion);
     // TODO
@@ -127,5 +130,9 @@ public class TelescopingArms extends SubsystemBase
   {
     left.setInverted(true);
     // TODO
+  }
+
+  public void zeroSensors(){
+    //TODO add zero sensors for these 
   }
 }

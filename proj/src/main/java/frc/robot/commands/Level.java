@@ -6,11 +6,10 @@
 // Intent: ???.
 // ************************************************************
 
-// ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ 
-
 // TODO - Owen what is this for?  Are we going to self-level the robot?  I dobut it.
 // this needs work
-
+//Kyle wanted me to use the jaws or a weigh to self level the robot, this was before the arm was used to move the second climber but going to keep it for now 
+ 
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.AnalogGyro;
@@ -54,9 +53,9 @@ public class Level extends CommandBase {
     gyroLevel = 0; // ?????
     degreeToEncoderTick = 20;
 
-    JawsTarget = gyroValue/175  * -degreeToEncoderTick; // Change negitive if it makes it swing more
+    JawsTarget = gyroValue/175  * -degreeToEncoderTick; // Change negative if it makes it swing more
 
-    //divied by 175 make a gyro tick equal to one degree
+    //divided by 175 make a gyro tick equal to one degree
 
 
 

@@ -6,8 +6,6 @@
 // Intent: Forms a command to drive the Jaws to the high goal forward position.
 // ************************************************************
 
-// ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ 
-
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -30,7 +28,7 @@ public class JawsForwardHighGoal extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    jawsSubsystem.setJawsPosition(Constants.JawsForwardLowGoal);
+    jawsSubsystem.setJawsPosition(Constants.JawsHighGoalPosition);
 
     System.out.println(jawsSubsystem.getPosition());
 

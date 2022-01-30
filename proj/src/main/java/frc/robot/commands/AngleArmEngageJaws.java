@@ -6,24 +6,37 @@
 // Intent: Forms a command to have the AngleArm attach to the Jaws and disconnect from the chassis.
 // ************************************************************
 
-// ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ 
-
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.AngleArms;
+import frc.robot.subsystems.Interfaces;
+import frc.robot.subsystems.Jaws;
 
 public class AngleArmEngageJaws extends CommandBase {
   private AngleArms angleArmSubsystem;
+  private Interfaces InterfacesSubsystem;
+  private Jaws JawsSubsystem;
   private Timer timer = new Timer();
   private boolean done;
 
-  public AngleArmEngageJaws(AngleArms angleArmSubsystem) {
+  
+  public AngleArmEngageJaws(
+    AngleArms angleArmSubsystem,
+    Interfaces InterfacesSubsystem,
+    Jaws JawsSubsystem
+  ) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.angleArmSubsystem = angleArmSubsystem;
     addRequirements(angleArmSubsystem);
+
+    this.InterfacesSubsystem = InterfacesSubsystem;
+    addRequirements(InterfacesSubsystem);
+
+    this.JawsSubsystem = JawsSubsystem;
+    addRequirements(JawsSubsystem);
   }  
 
   // Called when the command is initially scheduled.
@@ -37,11 +50,19 @@ public class AngleArmEngageJaws extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    angleArmSubsystem.enguageJaws();
+    angleArmSubsystem.engageArm();
+    angleArmSubsystem.disengageChassis();
+
+    JawsSubsystem.setJawsPosition(InterfacesSubsystem.getXboxRawAxis(Constants.joystickZ));
+    //TODO set this to the right joystick
+
+
+    /*
     if (timer.hasElapsed(Constants.AngleArmTiming)){
       angleArmSubsystem.disenguageChassis();
       done = true;
-    } 
+    } */
+
   }
 
   // Called once the command ends or is interrupted.

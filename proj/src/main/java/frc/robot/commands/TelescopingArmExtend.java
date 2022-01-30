@@ -6,8 +6,6 @@
 // Intent: Forms a command to drive the telescoping arms to their extended position.
 // ************************************************************
 
-// ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ 
-
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -19,7 +17,7 @@ import frc.robot.subsystems.TelescopingArms;
 public class TelescopingArmExtend extends CommandBase {
   public TelescopingArms telescopingArmSubsystem;
   public Interfaces interfaceSubsystem;
-  double imput;
+  double input;
   int pov;
   int _smoothing;
   int _pov;
@@ -41,26 +39,7 @@ public class TelescopingArmExtend extends CommandBase {
   @Override
   public void execute() {
  
-    imput = Math.round(interfaceSubsystem.getXboxRawAxis(Constants.joystickX) * 10) / 10;
-    int imputToDegree = 2048/360 * 2000;
-
-    double targetPos = imput * imputToDegree;
-    double currentPOS = Math.round(telescopingArmSubsystem.getPosition());
-
-
-    
-    System.out.println(currentPOS);
-    System.out.println("imput" + imput);
-    
-    if(targetPos < currentPOS-300 || targetPos > currentPOS+300){
-    
-       telescopingArmSubsystem.setClimberPostion(targetPos);
-    }
-
-     pov = interfaceSubsystem.getXboxPov();
-
-     pov = interfaceSubsystem.getXboxPov();
-     // TODO
+   telescopingArmSubsystem.setClimberPosition(Constants.s1Extended);
   }
 
   // Called once the command ends or is interrupted.

@@ -6,11 +6,8 @@
 // Intent: Forms model for the DriveTrain subsystem.
 // ************************************************************
 
-// ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ 
-
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
 import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
@@ -81,6 +78,17 @@ public class DriveTrain extends SubsystemBase
     //rightFront..configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
   }
 
+  public void driveControl(double leftSpeed, double rightSpeed)
+  {
+    //sets motors to imput speeds (sets to control motor and consequently follower motor)
+    leftRear.set(leftSpeed);
+    rightRear.set(rightSpeed);
+  }
+
+  public void defaultM(){ //
+    leftRear.set(0);
+    rightRear.set(0);
+  }
   @Override
   public void periodic()
   {

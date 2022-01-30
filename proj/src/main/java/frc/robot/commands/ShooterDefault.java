@@ -6,12 +6,12 @@
 // Intent: Forms a command to let the shooter wind down to stopped position.
 // ************************************************************
 
-// ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ 
-
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
+import frc.robot.Constants;
+import frc.robot.subsystems.Interfaces;
 import frc.robot.subsystems.Pneumatics;
 
 public class ShooterDefault extends CommandBase {
@@ -19,13 +19,21 @@ public class ShooterDefault extends CommandBase {
  * @param m_Shooter*/
     private Pneumatics PneumaticsSubsystem;
     private Shooter ShooterSubsystem;
+    private Interfaces interfacesSubsystem;
   
-  public ShooterDefault(Shooter ShooterSubsystem, Pneumatics PneumaticsSubsystem) {
+  public ShooterDefault(
+    Shooter ShooterSubsystem, 
+    Pneumatics PneumaticsSubsystem, 
+    Interfaces interfacesSubsystem
+    ) {
     this.ShooterSubsystem = ShooterSubsystem;
     addRequirements(ShooterSubsystem);
 
     this.PneumaticsSubsystem = PneumaticsSubsystem;
     addRequirements(PneumaticsSubsystem);
+
+    this.interfacesSubsystem = interfacesSubsystem;
+    addRequirements(interfacesSubsystem);
 
   }
     // Use addRequirements() here to declare subsystem dependencies.
@@ -38,8 +46,10 @@ public class ShooterDefault extends CommandBase {
   @Override
   public void execute() {
     PneumaticsSubsystem.solenoidShooterJawsBackward();
-    //any motors that need to be turned off
-    ShooterSubsystem.defualt();
+    ShooterSubsystem.shooterManual(interfacesSubsystem.getXboxRawAxis(Constants.joystickZ));
+    //TODO check this is the right axis 
+
+
   }
 
   // Called once the command ends or is interrupted.
