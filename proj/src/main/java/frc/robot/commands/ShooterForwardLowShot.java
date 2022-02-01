@@ -6,6 +6,8 @@
 // Intent: Forms a command to shoot the ball at the low goal assuming the forward position.
 // ************************************************************
 
+// ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ 
+
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -16,29 +18,29 @@ import frc.robot.subsystems.Pneumatics;
 
 public class ShooterForwardLowShot extends CommandBase {
  
-  public Shooter ShooterSubsystem;
-  public Pneumatics PneumaticsSubsystem;
+  public Shooter shooterSubsystem;
+  public Pneumatics pneumaticsSubsystem;
   public Interfaces interfacesSubsystem;
-  public BallStorage BallStorageSubsystem;
+  public BallStorage ballStorageSubsystem;
 
   public ShooterForwardLowShot(
      Shooter ShooterSubsystem, 
      Pneumatics PneumaticsSubsystem, 
-     Interfaces interfacesSubsystem,
+     Interfaces InterfacesSubsystem,
      BallStorage BallStorageSubsystem
     ) {
 
     // Use addRequirements() here to declare subsystem dependencies.
-    this.ShooterSubsystem = ShooterSubsystem;
+    this.shooterSubsystem = ShooterSubsystem;
     addRequirements(ShooterSubsystem);
 
-    this.PneumaticsSubsystem = PneumaticsSubsystem;
+    this.pneumaticsSubsystem = PneumaticsSubsystem;
     addRequirements(PneumaticsSubsystem);
 
-    this.interfacesSubsystem = interfacesSubsystem;
-    addRequirements(interfacesSubsystem);
+    this.interfacesSubsystem = InterfacesSubsystem;
+    addRequirements(InterfacesSubsystem);
     
-    this.BallStorageSubsystem = BallStorageSubsystem;
+    this.ballStorageSubsystem = BallStorageSubsystem;
     addRequirements(BallStorageSubsystem);
   }
 
@@ -49,8 +51,8 @@ public class ShooterForwardLowShot extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    ShooterSubsystem.shootLow();
-    BallStorageSubsystem.retrieve();
+    shooterSubsystem.shootLow();
+    ballStorageSubsystem.retrieve();
 
 
     //ShooterSubsystem.barf(interfacesSubsystem.getXboxRawAxis(2));

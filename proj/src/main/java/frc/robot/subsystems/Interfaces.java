@@ -6,6 +6,8 @@
 // Intent: Forms a subsystem that controls movements by the Jaws.
 // ************************************************************
 
+// ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ 
+
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -28,17 +30,15 @@ public class Interfaces extends SubsystemBase {
       // init hids \\
      driverController = new Joystick(Constants.portDriverController); // sets joystick variables to joysticks
      coDriverController = new Joystick(Constants.portCoDriverController);
-
-
-
   }
 
-    //gets the joystick axis value where ever you want, 
+  //gets the joystick axis value where ever you want, 
   //for y use Robot.m_robotContainer.getJoystickRawAxis(Constants.joystickY); 
   //for x use Robot.m_robotContainer.getJoystickRawAxis(Constants.joystickX);
   public double getJoystickRawAxis(int axis){
     return driverController.getRawAxis(axis);
   }
+
   public double getXboxRawAxis(int axis){
     return coDriverController.getRawAxis(axis);
   }

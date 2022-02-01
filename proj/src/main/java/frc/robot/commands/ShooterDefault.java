@@ -6,6 +6,8 @@
 // Intent: Forms a command to let the shooter wind down to stopped position.
 // ************************************************************
 
+// ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ 
+
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -17,23 +19,24 @@ import frc.robot.subsystems.Pneumatics;
 public class ShooterDefault extends CommandBase {
   /** Creates a new solenoidOne. 
  * @param m_Shooter*/
-    private Pneumatics PneumaticsSubsystem;
-    private Shooter ShooterSubsystem;
+
+    private Pneumatics pneumaticsSubsystem;
+    private Shooter shooterSubsystem;
     private Interfaces interfacesSubsystem;
   
   public ShooterDefault(
     Shooter ShooterSubsystem, 
     Pneumatics PneumaticsSubsystem, 
-    Interfaces interfacesSubsystem
+    Interfaces InterfacesSubsystem
     ) {
-    this.ShooterSubsystem = ShooterSubsystem;
+    this.shooterSubsystem = ShooterSubsystem;
     addRequirements(ShooterSubsystem);
 
-    this.PneumaticsSubsystem = PneumaticsSubsystem;
+    this.pneumaticsSubsystem = PneumaticsSubsystem;
     addRequirements(PneumaticsSubsystem);
 
-    this.interfacesSubsystem = interfacesSubsystem;
-    addRequirements(interfacesSubsystem);
+    this.interfacesSubsystem = InterfacesSubsystem;
+    addRequirements(InterfacesSubsystem);
 
   }
     // Use addRequirements() here to declare subsystem dependencies.
@@ -45,10 +48,9 @@ public class ShooterDefault extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    PneumaticsSubsystem.solenoidShooterJawsBackward();
-    ShooterSubsystem.shooterManual(interfacesSubsystem.getXboxRawAxis(Constants.joystickZ));
+    pneumaticsSubsystem.solenoidShooterJawsBackward();
+    shooterSubsystem.shooterManual(interfacesSubsystem.getXboxRawAxis(Constants.joystickZ));
     //TODO check this is the right axis 
-
 
   }
 

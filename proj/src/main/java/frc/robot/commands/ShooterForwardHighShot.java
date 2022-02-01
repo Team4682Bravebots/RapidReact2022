@@ -6,6 +6,8 @@
 // Intent: Forms a command to shoot the ball at the high goal assuming the forward position.
 // ************************************************************
 
+// ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ 
+
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -16,28 +18,28 @@ import frc.robot.subsystems.Pneumatics;
 
 public class ShooterForwardHighShot extends CommandBase {
  
-  public Shooter ShooterSubsystem;
-  public Pneumatics PneumaticsSubsystem;
-  public Interfaces InterfacesSubsystem;
-  public BallStorage BallStorageSubsystem;
+  public Shooter shooterSubsystem;
+  public Pneumatics pneumaticsSubsystem;
+  public Interfaces interfacesSubsystem;
+  public BallStorage ballStorageSubsystem;
 
   public ShooterForwardHighShot(
     Shooter ShooterSubsystem, 
     Pneumatics PneumaticsSubsystem, 
     Interfaces InterfacesSubsystem,
-    BallStorage BallStorageSubStorage
+    BallStorage BallStorageSubsystem
     ) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.ShooterSubsystem = ShooterSubsystem;
+    this.shooterSubsystem = ShooterSubsystem;
     addRequirements(ShooterSubsystem);
 
-    this.PneumaticsSubsystem = PneumaticsSubsystem;
+    this.pneumaticsSubsystem = PneumaticsSubsystem;
     addRequirements(PneumaticsSubsystem);
 
-    this.InterfacesSubsystem = InterfacesSubsystem;
+    this.interfacesSubsystem = InterfacesSubsystem;
     addRequirements(InterfacesSubsystem);
 
-    this.BallStorageSubsystem = BallStorageSubsystem;
+    this.ballStorageSubsystem = BallStorageSubsystem;
     addRequirements(BallStorageSubsystem);
   }
 
@@ -49,8 +51,8 @@ public class ShooterForwardHighShot extends CommandBase {
   @Override
   public void execute() {
 
-    ShooterSubsystem.shootHigh();
-    BallStorageSubsystem.retrieve();
+    shooterSubsystem.shootHigh();
+    ballStorageSubsystem.retrieve();
 
     //ShooterSubsystem.barf(interfacesSubsystem.getXboxRawAxis(2));
     //System.out.println(interfacesSubsystem.getXboxRawAxis(2));

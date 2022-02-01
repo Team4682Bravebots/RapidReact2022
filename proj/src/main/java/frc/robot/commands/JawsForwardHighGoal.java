@@ -13,12 +13,13 @@ import frc.robot.Constants;
 import frc.robot.subsystems.Jaws;
 
 public class JawsForwardHighGoal extends CommandBase {
+
   public Jaws jawsSubsystem;
   
-  public JawsForwardHighGoal(Jaws jawsSubsystem) {
+  public JawsForwardHighGoal(Jaws JawsSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.jawsSubsystem = jawsSubsystem;
-    addRequirements(jawsSubsystem);
+    this.jawsSubsystem = JawsSubsystem;
+    addRequirements(JawsSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -31,8 +32,6 @@ public class JawsForwardHighGoal extends CommandBase {
     jawsSubsystem.setJawsPosition(Constants.JawsHighGoalPosition);
 
     System.out.println(jawsSubsystem.getPosition());
-
-
   }
 
   // Called once the command ends or is interrupted.

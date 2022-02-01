@@ -6,10 +6,8 @@
 // Intent: ???.
 // ************************************************************
 
-// TODO - Owen what is this for?  Are we going to self-level the robot?  I dobut it.
-// this needs work
-//Kyle wanted me to use the jaws or a weigh to self level the robot, this was before the arm was used to move the second climber but going to keep it for now 
- 
+// ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ 
+
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.AnalogGyro;
@@ -17,23 +15,20 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Jaws;
 
 public class Level extends CommandBase {
-  /** Creates a new level. */
+
   double gyroValue;
   double gyroLevel;
   double JawsTarget;
   double degreeToEncoderTick;
-
   boolean done;
-
   private Jaws jawsSubsystem;
-
   AnalogGyro gyro = new AnalogGyro(0); // ANA Ch. 0
 
-
-  public Level(Jaws jawsSubsystem) {
+  /** Creates a new level. */
+  public Level(Jaws JawsSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.jawsSubsystem = jawsSubsystem;
-    addRequirements(jawsSubsystem);
+    this.jawsSubsystem = JawsSubsystem;
+    addRequirements(JawsSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -64,8 +59,6 @@ public class Level extends CommandBase {
     //double slow = 0.24;
 
     System.out.println(Math.round(gyro.getAngle()));
-
-  
 
    /* 
   if (Math.abs(gyro.getAngle() <= 3)) {

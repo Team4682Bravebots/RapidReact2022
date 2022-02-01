@@ -16,26 +16,28 @@ import frc.robot.subsystems.Interfaces;
 import frc.robot.subsystems.Jaws;
 
 public class AngleArmEngageJaws extends CommandBase {
+
   private AngleArms angleArmSubsystem;
-  private Interfaces InterfacesSubsystem;
-  private Jaws JawsSubsystem;
+  private Interfaces interfacesSubsystem;
+  private Jaws jawsSubsystem;
   private Timer timer = new Timer();
   private boolean done;
 
-  
+   // TODO - why is it that we need the jaws and the interface here?
+  // cotr
   public AngleArmEngageJaws(
-    AngleArms angleArmSubsystem,
+    AngleArms AngleArmSubsystem,
     Interfaces InterfacesSubsystem,
     Jaws JawsSubsystem
   ) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.angleArmSubsystem = angleArmSubsystem;
-    addRequirements(angleArmSubsystem);
+    this.angleArmSubsystem = AngleArmSubsystem;
+    addRequirements(AngleArmSubsystem);
 
-    this.InterfacesSubsystem = InterfacesSubsystem;
+    this.interfacesSubsystem = InterfacesSubsystem;
     addRequirements(InterfacesSubsystem);
 
-    this.JawsSubsystem = JawsSubsystem;
+    this.jawsSubsystem = JawsSubsystem;
     addRequirements(JawsSubsystem);
   }  
 
@@ -50,19 +52,11 @@ public class AngleArmEngageJaws extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    angleArmSubsystem.engageArm();
-    angleArmSubsystem.disengageChassis();
-
-    JawsSubsystem.setJawsPosition(InterfacesSubsystem.getXboxRawAxis(Constants.joystickZ));
-    //TODO set this to the right joystick
-
-
-    /*
+    angleArmSubsystem.enguageJaws();
     if (timer.hasElapsed(Constants.AngleArmTiming)){
-      angleArmSubsystem.disenguageChassis();
+      angleArmSubsystem.disengageChassis();
       done = true;
-    } */
-
+    }
   }
 
   // Called once the command ends or is interrupted.

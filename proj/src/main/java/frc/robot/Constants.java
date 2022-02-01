@@ -6,6 +6,8 @@
 // Intent: Forms all constants for the robot.
 // ************************************************************
 
+// ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ 
+
 package frc.robot;
 
 /**
@@ -32,13 +34,13 @@ public final class Constants
    
    
 
-  // climber reach points \\
+  // telescoping arms reach points \\
   public static int s1Default = 0;
-  public static int s1Extended = 1; //TODO need to calculate top of climber
+  public static int s1Extended = 1; //TODO need to calculate top of telescoping arms
   public static int s1EndGame = 2; //TODO should be just less then double "s1Extended"
 
   public static int s2Default = 0; 
-  public static int s2Extended = 4062 * 1; //TODO need to calculate top of climber 
+  public static int s2Extended = 4062 * 1; //TODO need to calculate top of telescoping arm 
   public static int s2EndGame = 4062 * 2; //TODO should be just less then double "s2Extended"
 
   // Ball storage \\
@@ -126,6 +128,5 @@ public final class Constants
 
   // gains \\
   public static final Gains kGains = new Gains(0.2, 0.0, 0.0, 0.2, 0, 1.0);
-
 
 }

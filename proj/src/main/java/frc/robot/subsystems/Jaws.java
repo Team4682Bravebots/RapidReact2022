@@ -6,6 +6,8 @@
 // Intent: Forms a subsystem that controls movements by the Jaws.
 // ************************************************************
 
+// ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ 
+
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -98,12 +100,12 @@ public class Jaws extends SubsystemBase {
   public void jawsManual(double speed){
     rightMotor.set(TalonFXControlMode.PercentOutput, speed);
   }
+
   //public void isFinished(boolean done, double targetPos){
    //if(rightMotor.getSelectedSensorPosition() >= targetPos + 100 || rightMotor.getSelectedSensorPosition() <=targetPos - 100){
      //done = true;
     //} else { done = false; }
   //}
-
 
   public void setInverted() {
     rightMotor.setInverted(true);

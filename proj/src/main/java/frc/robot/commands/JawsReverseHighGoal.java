@@ -6,6 +6,8 @@
 // Intent: Forms a command to drive the Jaws to the reverse high goal position.
 // ************************************************************
 
+// ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ 
+
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -13,12 +15,13 @@ import frc.robot.Constants;
 import frc.robot.subsystems.Jaws;
 
 public class JawsReverseHighGoal extends CommandBase {
+
   public Jaws jawsSubsystem;
   
-  public JawsReverseHighGoal(Jaws jawsSubsystem) {
+  public JawsReverseHighGoal(Jaws JawsSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.jawsSubsystem = jawsSubsystem;
-    addRequirements(jawsSubsystem);
+    this.jawsSubsystem = JawsSubsystem;
+    addRequirements(JawsSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -31,8 +34,6 @@ public class JawsReverseHighGoal extends CommandBase {
     jawsSubsystem.setJawsPosition(Constants.JawsReverseHighGoalPosition);
 
     System.out.println(jawsSubsystem.getPosition());
-
-
   }
 
   // Called once the command ends or is interrupted.

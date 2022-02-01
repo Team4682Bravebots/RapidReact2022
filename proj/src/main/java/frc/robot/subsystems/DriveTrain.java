@@ -6,6 +6,8 @@
 // Intent: Forms model for the DriveTrain subsystem.
 // ************************************************************
 
+// ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ 
+
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -85,10 +87,12 @@ public class DriveTrain extends SubsystemBase
     rightRear.set(rightSpeed);
   }
 
+  // TODO - what does 'defaultM' mean?
   public void defaultM(){ //
     leftRear.set(0);
     rightRear.set(0);
   }
+
   @Override
   public void periodic()
   {

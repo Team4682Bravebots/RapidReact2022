@@ -6,6 +6,8 @@
 // Intent: Forms a command to drive the Jaws to the low goal forward position.
 // ************************************************************
 
+// ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ 
+
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -15,10 +17,10 @@ import frc.robot.subsystems.Jaws;
 public class JawsForwardLowGoal extends CommandBase {
   public Jaws jawsSubsystem;
   
-  public JawsForwardLowGoal(Jaws jawsSubsystem) {
+  public JawsForwardLowGoal(Jaws JawsSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.jawsSubsystem = jawsSubsystem;
-    addRequirements(jawsSubsystem);
+    this.jawsSubsystem = JawsSubsystem;
+    addRequirements(JawsSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -31,8 +33,6 @@ public class JawsForwardLowGoal extends CommandBase {
     jawsSubsystem.setJawsPosition(Constants.JawsLowGoalPosition);
 
     System.out.println(jawsSubsystem.getPosition());
-
-
   }
 
   // Called once the command ends or is interrupted.

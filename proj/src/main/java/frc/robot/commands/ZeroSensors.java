@@ -6,6 +6,8 @@
 // Intent: Forms a command to reset all sensors?
 // ************************************************************
 
+// ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ 
+
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -13,24 +15,23 @@ import frc.robot.subsystems.Jaws;
 import frc.robot.subsystems.TelescopingArms;
 
 public class ZeroSensors extends CommandBase {
-  /** Creates a new zeroSensors. 
- * @param m_climbers2
- * @param m_climbers1
- * @param m_Jaws*/
+ /*
+ * @param Jaws
+ * @param TelescopingArms
+ */
 
-  public Jaws m_Jaws;
-  public TelescopingArms m_telescopingArms;
+  public Jaws jaws;
+  public TelescopingArms telescopingArms;
 
-  public ZeroSensors(Jaws m_Jaws, TelescopingArms m_telescopingArms) {
+  /** Creates a new zeroSensors.  */
+  public ZeroSensors(Jaws Jaws, TelescopingArms TelescopingArms) {
     // Use addRequirements() here to declare subsystem dependencies.
 
-    this.m_Jaws = m_Jaws;
-    addRequirements(m_Jaws);
+    this.jaws = Jaws;
+    addRequirements(Jaws);
 
-    this.m_telescopingArms = m_telescopingArms;
-    addRequirements(m_telescopingArms);
-
-
+    this.telescopingArms = TelescopingArms;
+    addRequirements(TelescopingArms);
   }
 
   // Called when the command is initially scheduled.
@@ -40,15 +41,13 @@ public class ZeroSensors extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_Jaws.zeroSensors();
-    //m_climbers1.zeroSensors();
-    //m_climbers2.zeroSensors();
+
     //TODO add anyother sensors 
 
-    m_Jaws.zeroSensors();
-    m_telescopingArms.zeroSensors();
+    jaws.zeroSensors();
+    telescopingArms.zeroSensors();
 
-    System.out.println(m_Jaws.getPosition());
+    System.out.println(jaws.getPosition());
   }
 
   // Called once the command ends or is interrupted.

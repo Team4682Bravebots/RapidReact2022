@@ -6,6 +6,8 @@
 // Intent: Forms a command to intake the ball when the Jaws are at the floor/intake position.
 // ************************************************************
 
+// ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ 
+
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -14,22 +16,23 @@ import frc.robot.subsystems.BallStorage;
 import frc.robot.subsystems.Pneumatics;
 
 public class ShooterIntake extends CommandBase {
-  private Pneumatics PneumaticsSubsystem;
-  private Shooter ShooterSubsystem;
-  private BallStorage BallStorageSubsystem;
+
+  private Pneumatics pneumaticsSubsystem;
+  private Shooter shooterSubsystem;
+  private BallStorage ballStorageSubsystem;
 
 public ShooterIntake(
   Shooter ShooterSubsystem,
   Pneumatics PneumaticsSubsystem,
   BallStorage BallStorageSubsystem
   ) {
-  this.ShooterSubsystem = ShooterSubsystem;
+  this.shooterSubsystem = ShooterSubsystem;
   addRequirements(ShooterSubsystem);
 
-  this.PneumaticsSubsystem = PneumaticsSubsystem;
+  this.pneumaticsSubsystem = PneumaticsSubsystem;
   addRequirements(PneumaticsSubsystem);
 
-  this.BallStorageSubsystem = BallStorageSubsystem;
+  this.ballStorageSubsystem = BallStorageSubsystem;
   addRequirements(BallStorageSubsystem);
   
   }
@@ -41,8 +44,8 @@ public ShooterIntake(
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    ShooterSubsystem.eat();
-    BallStorageSubsystem.store();
+    shooterSubsystem.eat();
+    ballStorageSubsystem.store();
 
     //PneumaticsSubsystem.solenoidShooterJawsForward(); 
     //run Shooter morons too
@@ -52,7 +55,7 @@ public ShooterIntake(
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    PneumaticsSubsystem.solenoidShooterJawsBackward();
+    pneumaticsSubsystem.solenoidShooterJawsBackward();
   }
 
   // Returns true when the command should end.
