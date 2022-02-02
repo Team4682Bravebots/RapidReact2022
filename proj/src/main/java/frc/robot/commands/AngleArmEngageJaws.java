@@ -54,7 +54,7 @@ public class AngleArmEngageJaws extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    angleArmSubsystem.enguageJaws();
+    angleArmSubsystem.engageJaws();
     if (timer.hasElapsed(Constants.AngleArmTiming)){
       angleArmSubsystem.disengageChassis();
       done = true;

@@ -22,7 +22,7 @@ public class BallStorage extends SubsystemBase {
   private WPI_TalonSRX topMotor = new WPI_TalonSRX(Constants.telescopingArmsMotorLeftCanId);
   private WPI_TalonSRX bottomMotor = new WPI_TalonSRX(Constants.telescopingArmsMotorRightCanId);
 
-  double imput;
+  double input;
 
   @Override
   public void setDefaultCommand(Command myCommand) {

@@ -48,16 +48,6 @@ public class AngleArms extends SubsystemBase {
     rightChassisAngleArmSolenoid.set(kReverse);
   }
 
-  public void enguageJaws(){
-  //  leftJawsAngleArmSolenoid.set(kForward);
-  //  rightJawsAngleArmSolenoid.set(kForward);
-  }
-
-
-  public void disenguageJaws(){
-  //  leftJawsAngleArmSolenoid.set(kReverse);
-  //  rightJawsAngleArmSolenoid.set(kReverse);
-  }
 
   public void setPower(double power){
 
