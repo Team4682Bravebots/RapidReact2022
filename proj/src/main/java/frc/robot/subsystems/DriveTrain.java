@@ -17,17 +17,24 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class DriveTrain extends SubsystemBase
 {
+
   // four matched motors - two for each tank drive side
   private WPI_TalonFX leftFront = new WPI_TalonFX(Constants.driveMotorLeftFrontCanId);
   private WPI_TalonFX leftRear = new WPI_TalonFX(Constants.driveMotorLeftRearCanId);
   private WPI_TalonFX rightFront = new WPI_TalonFX(Constants.driveMotorRightFrontCanId);
   private WPI_TalonFX rightRear = new WPI_TalonFX(Constants.driveMotorRightRearCanId);
 
+  @Override
+  public void setDefaultCommand(Command myCommand) {
+      // TODO Auto-generated method stub
+      super.setDefaultCommand(myCommand);
+  }
   // ctor
   public DriveTrain()
   {

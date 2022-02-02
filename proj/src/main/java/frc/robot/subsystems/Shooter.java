@@ -14,14 +14,21 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.*;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Shooter extends SubsystemBase {
   
-  private CANSparkMax topMotor = new CANSparkMax(Constants.telescopingArmsMotorLeftCanId, MotorType.kBrushless);
-  private CANSparkMax bottomMotor = new CANSparkMax(Constants.telescopingArmsMotorRightCanId, MotorType.kBrushless);
+  private CANSparkMax topMotor = new CANSparkMax(Constants.shooterMotorLeftCanId, MotorType.kBrushless);
+  private CANSparkMax bottomMotor = new CANSparkMax(Constants.shooterMotorRightCanId, MotorType.kBrushless);
 
+  @Override
+  public void setDefaultCommand(Command myCommand) {
+      // TODO Auto-generated method stub
+      super.setDefaultCommand(myCommand);
+  }
+  
   /** Creates a new Shooter. */
   public Shooter() {
     topMotor.restoreFactoryDefaults();

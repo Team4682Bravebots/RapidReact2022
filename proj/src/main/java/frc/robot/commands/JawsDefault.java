@@ -46,9 +46,11 @@ public class JawsDefault extends CommandBase {
   public void execute() {
     // TODO - Owen, seems like JawsDefault should be a default position of the jaws
     // not manual use of the jaws.  Does the 'default' name make you think of manual movement?
-    jawsSubsystem.jawsManual(interfacesSubsystem.getXboxRawAxis(Constants.joystickY));
+
+
+    //jawsSubsystem.jawsManual(interfacesSubsystem.getXboxRawAxis(Constants.joystickY));
     //TODO set this to the right axis 
-    //RobotContainer.m_Jaws.setJawsPosition(0); 
+    jawsSubsystem.setJawsPosition(0); 
 
   //  jawsSubsystem.isFinished(done, Constants.JawsDefualt);
     System.out.println(jawsSubsystem.getPosition());

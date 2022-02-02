@@ -11,20 +11,32 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kForward;
 import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kReverse;
 
+import com.fasterxml.jackson.databind.ser.std.StdKeySerializers.Default;
+
 public class AngleArms extends SubsystemBase {
 
   /** Creates a new AngleArm. */ 
   public AngleArms() {}
+
+  @Override
+  public void setDefaultCommand(Command myCommand) {
+      // TODO Auto-generated method stub
+      super.setDefaultCommand(myCommand);
+  }
   
-  private final DoubleSolenoid leftChassisAngleArmSolenoid = new DoubleSolenoid(null, 2,3); 
-  private final DoubleSolenoid rightChassisAngleArmSolenoid = new DoubleSolenoid(null, 2,3); 
-  private final DoubleSolenoid leftJawsAngleArmSolenoid = new DoubleSolenoid(null, 2,3); 
-  private final DoubleSolenoid rightJawsAngleArmSolenoid = new DoubleSolenoid(null, 2,3); 
+  //TODO only ports 1-8 are acceptable for solenoids
+  
+  private final DoubleSolenoid leftChassisAngleArmSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 4,5); 
+  private final DoubleSolenoid rightChassisAngleArmSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 6,7); 
+ // private final DoubleSolenoid leftJawsAngleArmSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 8,9); 
+ // private final DoubleSolenoid rightJawsAngleArmSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 10,11); 
 
   public void engageChassis(){
     leftChassisAngleArmSolenoid.set(kForward);
@@ -37,14 +49,14 @@ public class AngleArms extends SubsystemBase {
   }
 
   public void enguageJaws(){
-    leftJawsAngleArmSolenoid.set(kForward);
-    rightJawsAngleArmSolenoid.set(kForward);
+  //  leftJawsAngleArmSolenoid.set(kForward);
+  //  rightJawsAngleArmSolenoid.set(kForward);
   }
 
 
   public void disenguageJaws(){
-    leftJawsAngleArmSolenoid.set(kReverse);
-    rightJawsAngleArmSolenoid.set(kReverse);
+  //  leftJawsAngleArmSolenoid.set(kReverse);
+  //  rightJawsAngleArmSolenoid.set(kReverse);
   }
 
   public void setPower(double power){

@@ -17,6 +17,7 @@ import com.revrobotics.SparkMaxRelativeEncoder;
 import com.revrobotics.CANSparkMax.*;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -30,6 +31,12 @@ public class TelescopingArms extends SubsystemBase
   private RelativeEncoder rightEncoder;
   private RelativeEncoder leftEncoder;
   public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM, maxVel, minVel, maxAcc, allowedErr;
+  
+  @Override
+  public void setDefaultCommand(Command myCommand) {
+      // TODO Auto-generated method stub
+      super.setDefaultCommand(myCommand);
+  }
   
   /*
 	 * Talon FX has 2048 units per revolution
@@ -50,8 +57,8 @@ public class TelescopingArms extends SubsystemBase
     // initialize PID controller and encoder objects
     leftPidController = left.getPIDController();
     rightPidController = right.getPIDController();
-    leftEncoder = left.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 1);
-    rightEncoder = left.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 1);
+    leftEncoder = left.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, Constants.countPerRevHallSensor);
+    rightEncoder = left.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, Constants.countPerRevHallSensor);
     leftEncoder.setPosition(0.0);
     rightEncoder.setPosition(0.0);
 

@@ -27,10 +27,10 @@ public final class Constants
   public static final double barfSpeed = 0;
 
   // Jaws reach points \\
-  public static final double JawsReverseHighGoalPosition = 0;
-  public static final double JawsIntakePosition = 0;
-  public static final double JawsLowGoalPosition = 0;
-  public static final double JawsHighGoalPosition = 0;
+  public static final double JawsReverseHighGoalPosition = 4062 * 4;
+  public static final double JawsIntakePosition = 4062 * 0;
+  public static final double JawsLowGoalPosition = 4062 * 2;
+  public static final double JawsHighGoalPosition = 4062 * 3;
    
    
 
@@ -51,26 +51,26 @@ public final class Constants
 
   // CAN BUS NUMBERS \\
     //TODO - P0 - fill in proper CAN bus index for Jaws motors
-    public static int jawsMotorRightCanId = -1;
-    public static int jawsMotorLeftCanId = -1;
+    public static int jawsMotorRightCanId = 1;
+    public static int jawsMotorLeftCanId = 27;
 
     //TODO - P0 - fill in proper CAN bus index for telescoping arm motors
-    public static int telescopingArmsMotorLeftCanId = -1;
-    public static int telescopingArmsMotorRightCanId = -1;
+    public static int telescopingArmsMotorLeftCanId = 28;
+    public static int telescopingArmsMotorRightCanId = 29;
 
     //TODO - P0 - fill in proper CAN bus index for shooting motors
-    public static final int shooterMotorLeftCanId = -1;
-    public static final int shooterMotorRightCanId = -1;
+    public static final int shooterMotorLeftCanId = 31;
+    public static final int shooterMotorRightCanId = 32;
 
     //TODO - P0 - fill in proper CAN bus index for ball storage motors
-    public static int ballStorageMotorTopCanId = -1;
-    public static int ballStorageMotorBottomCanId = -1;
+    public static int ballStorageMotorTopCanId = 33;
+    public static int ballStorageMotorBottomCanId = 34;
 
     //TODO - P0 - fill in proper CAN bus index for drive motors
-    public static int driveMotorLeftFrontCanId = -1;
-    public static int driveMotorLeftRearCanId = -1;
-    public static int driveMotorRightFrontCanId = -1;
-    public static int driveMotorRightRearCanId = -1;
+    public static int driveMotorLeftFrontCanId = 35;
+    public static int driveMotorLeftRearCanId = 36;
+    public static int driveMotorRightFrontCanId = 37;
+    public static int driveMotorRightRearCanId = 38;
 
 
   // MOTOR SETTINGS \\
@@ -128,5 +128,7 @@ public final class Constants
 
   // gains \\
   public static final Gains kGains = new Gains(0.2, 0.0, 0.0, 0.2, 0, 1.0);
+  public static final int countPerRevHallSensor = 42;
+  public static final int buttonBoardPort = 0;
 
 }

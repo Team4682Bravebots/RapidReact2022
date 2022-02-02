@@ -53,25 +53,25 @@ public class RobotContainer {
   public RobotContainer()
   {
     CommandScheduler.getInstance().registerSubsystem(m_AngleArm);
-    CommandScheduler.getInstance().setDefaultCommand(m_AngleArm, new AngleArmDefault(m_AngleArm));;
+    //CommandScheduler.getInstance().setDefaultCommand(m_AngleArm, new AngleArmDefault(m_AngleArm));;
    
     CommandScheduler.getInstance().registerSubsystem(m_ballStorage);
 
     CommandScheduler.getInstance().registerSubsystem(m_drivetrain);
-    CommandScheduler.getInstance().setDefaultCommand(m_drivetrain, new DriveCommand(m_drivetrain));
+    //CommandScheduler.getInstance().setDefaultCommand(m_drivetrain, new DriveCommand(m_drivetrain));
   
     CommandScheduler.getInstance().registerSubsystem(m_interfaces);
   
     CommandScheduler.getInstance().registerSubsystem(m_jaws);
-    CommandScheduler.getInstance().setDefaultCommand(m_jaws, new JawsDefault(m_jaws, m_interfaces));
+    //CommandScheduler.getInstance().setDefaultCommand(m_jaws, new JawsDefault(m_jaws, m_interfaces));
 
     CommandScheduler.getInstance().registerSubsystem(m_pneumatics);
 
     CommandScheduler.getInstance().registerSubsystem(m_Shooter);
-    CommandScheduler.getInstance().setDefaultCommand(m_Shooter, new ShooterDefault(m_Shooter, m_pneumatics, m_interfaces));
+    //CommandScheduler.getInstance().setDefaultCommand(m_Shooter, new ShooterDefault(m_Shooter, m_pneumatics, m_interfaces));
 
     CommandScheduler.getInstance().registerSubsystem(m_TelescopingArm);
-    CommandScheduler.getInstance().setDefaultCommand(m_TelescopingArm, new TelescopingArmManual(m_TelescopingArm, m_interfaces));
+    //CommandScheduler.getInstance().setDefaultCommand(m_TelescopingArm, new TelescopingArmManual(m_TelescopingArm, m_interfaces));
 
 
   
@@ -82,6 +82,7 @@ public class RobotContainer {
     // init hids \\
     driverController = new Joystick(Constants.portDriverController); // sets joystick variables to joysticks
     coDriverController = new XboxController(Constants.portCoDriverController);
+    buttonBoard = new Joystick(Constants.buttonBoardPort);
 
     // Configure the button bindings
     configureButtonBindings();
@@ -102,10 +103,10 @@ public class RobotContainer {
   private void configureButtonBindings() {
 
 
-    JoystickButton buttonA = new JoystickButton(coDriverController, XboxController.Button.kA.value);
-    JoystickButton buttonB = new JoystickButton(coDriverController, XboxController.Button.kB.value);
-    JoystickButton buttonY = new JoystickButton(coDriverController, XboxController.Button.kY.value);
-    JoystickButton buttonX = new JoystickButton(coDriverController, XboxController.Button.kX.value);
+    JoystickButton buttonA = new JoystickButton(coDriverController, 1);
+    JoystickButton buttonB = new JoystickButton(coDriverController, 2);
+    JoystickButton buttonY = new JoystickButton(coDriverController, 3);
+    JoystickButton buttonX = new JoystickButton(coDriverController, 4);
     JoystickButton bumperLeft = new JoystickButton(coDriverController, XboxController.Button.kLeftBumper.value);
     JoystickButton bumperRight = new JoystickButton(coDriverController, XboxController.Button.kRightBumper.value);
     JoystickButton joystickLeftButton = new JoystickButton(coDriverController, XboxController.Button.kLeftStick.value);
@@ -123,6 +124,14 @@ public class RobotContainer {
     JoystickButton button9 = new JoystickButton(buttonBoard, 9);
     JoystickButton button10 = new JoystickButton(buttonBoard, 10);
     JoystickButton button11 = new JoystickButton(buttonBoard, 11);
+
+
+    //testing
+    buttonA.whenPressed(new JawsIntake(m_jaws));
+    buttonB.whenPressed(new JawsForwardLowGoal(m_jaws));
+    buttonY.whenPressed(new JawsForwardHighGoal(m_jaws));
+    buttonX.whenPressed(new ZeroSensors(m_jaws, m_TelescopingArm));
+  
 
 
 
@@ -199,11 +208,7 @@ public class RobotContainer {
 
     //TODO - this is incorrect below and needs much work ... 
     //TODO this was just for testing motors 
-    buttonA.whenPressed(new JawsDefault(m_jaws, m_interfaces));
-    buttonX.whenPressed(new JawsIntake(m_jaws));
-    buttonY.whenPressed(new JawsForwardLowGoal(m_jaws));
-
-
+  
 
     // D-Pad Stuff \\
 
