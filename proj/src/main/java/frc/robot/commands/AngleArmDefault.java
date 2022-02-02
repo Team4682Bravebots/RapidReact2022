@@ -42,7 +42,7 @@ public class AngleArmDefault extends CommandBase {
   public void execute() {
     angleArmSubsystem.engageChassis();
     if (timer.hasElapsed(Constants.AngleArmTiming)){
-      angleArmSubsystem.disenguageJaws();
+      angleArmSubsystem.disengageJaws();
       done = true;
     }
   }

@@ -21,7 +21,7 @@ public class BallStorage extends SubsystemBase {
   private WPI_TalonSRX topMotor = new WPI_TalonSRX(Constants.telescopingArmsMotorLeftCanId);
   private WPI_TalonSRX bottomMotor = new WPI_TalonSRX(Constants.telescopingArmsMotorRightCanId);
 
-  double imput;
+  double input;
 
    /** Creates a new climberS1. */
   public BallStorage() {
