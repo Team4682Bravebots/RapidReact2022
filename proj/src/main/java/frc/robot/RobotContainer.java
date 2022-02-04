@@ -102,7 +102,6 @@ public class RobotContainer {
 
   private void configureButtonBindings() {
 
-
     JoystickButton buttonA = new JoystickButton(coDriverController, 1);
     JoystickButton buttonB = new JoystickButton(coDriverController, 2);
     JoystickButton buttonY = new JoystickButton(coDriverController, 3);
@@ -125,16 +124,12 @@ public class RobotContainer {
     JoystickButton button10 = new JoystickButton(buttonBoard, 10);
     JoystickButton button11 = new JoystickButton(buttonBoard, 11);
 
-
     //testing
     buttonA.whenPressed(new JawsIntake(m_jaws));
     buttonB.whenPressed(new JawsForwardLowGoal(m_jaws));
     buttonY.whenPressed(new JawsForwardHighGoal(m_jaws));
     buttonX.whenPressed(new ZeroSensors(m_jaws, m_TelescopingArm));
   
-
-
-
     //BUTTON BOARD
     //1 Jaws default      JawsDefault.java 
     //2 Jaws pos 1        JawsShooter.java
@@ -173,21 +168,17 @@ public class RobotContainer {
     //button11.whenPressed(new TelescopingArmIn());
     //button12.whenPressed(new grabOut());
 
-
-
-
-
-//CO Driver Controller. 
-//left stick Jaws
-//right stick climber 
-//left bumper eat
-//Right bumper barf
-//A + rightStick grabber
-//B pneumatics 1
-//C pneumatics 2
-//D pneumatics 3 
-//Start index 1
-//Menu index 2 
+    //CO Driver Controller. 
+    //left stick Jaws
+    //right stick climber 
+    //left bumper eat
+    //Right bumper barf
+    //A + rightStick grabber
+    //B pneumatics 1
+    //C pneumatics 2
+    //D pneumatics 3 
+    //Start index 1
+    //Menu index 2 
 
     //CODRIVER CONTROLLER 
     //left stick Jaws (schedule)
@@ -215,10 +206,8 @@ public class RobotContainer {
     double pov = coDriverController.getPOV();
     System.out.println(pov);
 
-
     // joystick fun stuff \\
     double joystickThrottleValue = driverController.getThrottle();
-
 
   }
 

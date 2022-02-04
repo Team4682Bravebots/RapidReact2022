@@ -10,6 +10,8 @@
 
 package frc.robot;
 
+import frc.robot.*;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -20,6 +22,13 @@ package frc.robot;
  */
 public final class Constants
 {
+  // Encoder information
+  // this uses the on-motor quadratrue encoder - based on documenation might be 2048
+  public static final double CtreTalonFx500EncoderTicksPerRevolution = 4092; 
+  // this uses the halls effect sensor when plugged into the spark max
+  public static final double RevNeoEncoderTicksPerRevolution = 42; 
+
+
   // shooter \\\
   public static final double highGoalSpeed = 0;
   public static final double lowGoalSpeed = 0;
@@ -27,11 +36,10 @@ public final class Constants
   public static final double barfSpeed = 0;
 
   // Jaws reach points \\
-  public static final double JawsReverseHighGoalPosition = 4062 * 4;
-  public static final double JawsIntakePosition = 4062 * 0;
-  public static final double JawsLowGoalPosition = 4062 * 2;
-  public static final double JawsHighGoalPosition = 4062 * 3;
-   
+  public static final double JawsReverseHighGoalPosition = CtreTalonFx500EncoderTicksPerRevolution * 4;
+  public static final double JawsIntakePosition = CtreTalonFx500EncoderTicksPerRevolution * 0;
+  public static final double JawsLowGoalPosition = CtreTalonFx500EncoderTicksPerRevolution * 2;
+  public static final double JawsHighGoalPosition = CtreTalonFx500EncoderTicksPerRevolution * 3;
    
 
   // telescoping arms reach points \\
@@ -47,79 +55,69 @@ public final class Constants
   public static final double retrieveSpeed = 0;
   public static final double storeSpeed = 0;
 
-  
 
   // CAN BUS NUMBERS \\
-    //TODO - P0 - fill in proper CAN bus index for Jaws motors
-    public static int jawsMotorRightCanId = 1;
-    public static int jawsMotorLeftCanId = 27;
+  //TODO - P0 - fill in proper CAN bus index for Jaws motors
+  public static int jawsMotorRightCanId = 9;
+  public static int jawsMotorLeftCanId = 10;
 
-    //TODO - P0 - fill in proper CAN bus index for telescoping arm motors
-    public static int telescopingArmsMotorLeftCanId = 28;
-    public static int telescopingArmsMotorRightCanId = 29;
+  //TODO - P0 - fill in proper CAN bus index for telescoping arm motors
+  public static int telescopingArmsMotorLeftCanId = 28;
+  public static int telescopingArmsMotorRightCanId = 29;
 
-    //TODO - P0 - fill in proper CAN bus index for shooting motors
-    public static final int shooterMotorLeftCanId = 31;
-    public static final int shooterMotorRightCanId = 32;
+  //TODO - P0 - fill in proper CAN bus index for shooting motors
+  public static final int shooterMotorLeftCanId = 31;
+  public static final int shooterMotorRightCanId = 32;
 
-    //TODO - P0 - fill in proper CAN bus index for ball storage motors
-    public static int ballStorageMotorTopCanId = 33;
-    public static int ballStorageMotorBottomCanId = 34;
+  //TODO - P0 - fill in proper CAN bus index for ball storage motors
+  public static int ballStorageMotorTopCanId = 33;
+  public static int ballStorageMotorBottomCanId = 34;
 
-    //TODO - P0 - fill in proper CAN bus index for drive motors
-    public static int driveMotorLeftFrontCanId = 35;
-    public static int driveMotorLeftRearCanId = 36;
-    public static int driveMotorRightFrontCanId = 37;
-    public static int driveMotorRightRearCanId = 38;
-
+  //TODO - P0 - fill in proper CAN bus index for drive motors
+  public static int driveMotorLeftFrontCanId = 7;
+  public static int driveMotorLeftRearCanId = 8;
+  public static int driveMotorRightFrontCanId = 11;
+  public static int driveMotorRightRearCanId = 12;
 
   // MOTOR SETTINGS \\
 
-    // Motor magic numbers
-    public static boolean driveMotorLeftFrontInverted = false;
-    public static boolean driveMotorLeftRearInverted = false;
-    public static boolean driveMotorRightFrontInverted = false;
-    public static boolean driveMotorRightRearInverted = false;
+  // Motor magic numbers
+  public static boolean driveMotorLeftFrontInverted = false;
+  public static boolean driveMotorLeftRearInverted = false;
+  public static boolean driveMotorRightFrontInverted = false;
+  public static boolean driveMotorRightRearInverted = false;
 
   // TODO -  the code below needs work ... make it cleaner 
 
-
-
   // TIMING AND SPEEDS \\
-    // AngleArm timing \\
-    public static final double AngleArmTiming = 0.3;
+  // AngleArm timing \\
+  public static final double AngleArmTiming = 0.3;
 
-    // substystem motor speeds \\
-    public static final double ShooterEatSpeed = 0.5;
-    public static final double ShooterBarfSpeed = 0.5;
-    public static final double ShooterDefault = 0.5;
-
-
-
+  // substystem motor speeds \\
+  public static final double ShooterEatSpeed = 0.5;
+  public static final double ShooterBarfSpeed = 0.5;
+  public static final double ShooterDefault = 0.5;
 
   // HIDS \\
-    // hid ports \\ 
-    public static int portDriverController = 0;
-    public static int portCoDriverController = 1;
-    // xbox buttons \\
-    public final static int buttonA = 1;
-    public final static int buttonB = 2;
-    public final static int buttonX = 3; 
-    public final static int buttonY = 4;
-    public final int buttonO1 = -1;
-    public final int buttonO2 = 8;
-    public final int stickLeftDown = 9;
-    public final int stickRightDown = 10;
-    public final static int bumperLeft = 5;
-    public final static int bumperRight = 6;
+  // hid ports \\ 
+  public static int portDriverController = 0;
+  public static int portCoDriverController = 1;
+  // xbox buttons \\
+  public final static int buttonA = 1;
+  public final static int buttonB = 2;
+  public final static int buttonX = 3; 
+  public final static int buttonY = 4;
+  public final int buttonO1 = -1;
+  public final int buttonO2 = 8;
+  public final int stickLeftDown = 9;
+  public final int stickRightDown = 10;
+  public final static int bumperLeft = 5;
+  public final static int bumperRight = 6;
 
-    //joystick axis lables 
-    public static final int joystickX = 0;
-    public static final int joystickY = 1;
-    public static final int joystickZ = 2;
-
-
-
+  //joystick axis lables 
+  public static final int joystickX = 0;
+  public static final int joystickY = 1;
+  public static final int joystickZ = 2;
 
   // util \\ //TODO if needed 
   public static final int kPIDLoopIdx = 0;
