@@ -33,10 +33,11 @@ public class Shooter extends SubsystemBase {
   public Shooter() {
     topMotor.restoreFactoryDefaults();
 		bottomMotor.restoreFactoryDefaults(); 
+		topMotor.setIdleMode(IdleMode.kCoast);
+		bottomMotor.setIdleMode(IdleMode.kCoast);
 
 		bottomMotor.follow(topMotor);
     bottomMotor.setInverted(true);
-		bottomMotor.setIdleMode(IdleMode.kCoast);
   }
   
 

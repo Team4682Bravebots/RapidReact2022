@@ -87,6 +87,29 @@ public class DriveTrain extends SubsystemBase
     //rightFront..configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
   }
 
+
+  // A method to take in x and y and turn them into right and left
+  // drive motor speeds
+  public void arcadeDrive(double yAxisValue, double xAxisValue)
+  {
+    if(yAxisValue > 1.0 || yAxisValue < -1.0)
+    {
+      throw new IllegalArgumentException(
+        "yAxisValue outside of bounds - valid range from -1.0 to 1.0");
+    }
+    if(xAxisValue > 1.0 || xAxisValue < -1.0)
+    {
+      throw new IllegalArgumentException(
+        "xAxisValue outside of bounds - valid range from -1.0 to 1.0");
+    }
+    // the heart of arcade is the calculation below
+    double leftSpeed = yAxisValue - xAxisValue;
+    double rightSpeed = yAxisValue + xAxisValue;
+    driveControl(
+      this.truncateValue(leftSpeed, -1.0, 1.0),
+      this.truncateValue(rightSpeed, -1.0, 1.0));
+  }
+
   public void driveControl(double leftSpeed, double rightSpeed)
   {
     //sets motors to imput speeds (sets to control motor and consequently follower motor)
@@ -105,5 +128,21 @@ public class DriveTrain extends SubsystemBase
   {
     // This method will be called once per scheduler run
   }
+
+  // A method to make sure that values are retained within the boundaries
+  private double truncateValue(double value, double minBoundary, double maxBoundary)
+  {
+    double trimmedValue = value;
+    if(value < minBoundary)
+    {
+      trimmedValue = minBoundary;
+    }
+    else if (value > maxBoundary)
+    {
+      trimmedValue = maxBoundary;
+    }
+    return trimmedValue;
+  }  
+  
 }
  

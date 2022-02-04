@@ -18,6 +18,10 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -40,7 +44,7 @@ public class RobotContainer {
 
 
   //declaring hids
-  private Joystick driverController;
+  private XboxController driverController;
   private XboxController coDriverController; 
   private Joystick buttonBoard;
 
@@ -52,18 +56,38 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer()
   {
+    // init hids \\
+    driverController = new XboxController(Constants.portDriverController); // sets joystick variables to joysticks
+    coDriverController = new XboxController(Constants.portCoDriverController);
+    buttonBoard = new Joystick(Constants.buttonBoardPort);
+
+    // Configure the button bindings
+    configureButtonBindings();
+
     CommandScheduler.getInstance().registerSubsystem(m_AngleArm);
     //CommandScheduler.getInstance().setDefaultCommand(m_AngleArm, new AngleArmDefault(m_AngleArm));;
    
     CommandScheduler.getInstance().registerSubsystem(m_ballStorage);
 
     CommandScheduler.getInstance().registerSubsystem(m_drivetrain);
-    //CommandScheduler.getInstance().setDefaultCommand(m_drivetrain, new DriveCommand(m_drivetrain));
+    // Set the default drive command to split-stick arcade drive
+    m_drivetrain.setDefaultCommand(
+        new RunCommand(
+          () ->
+          m_drivetrain.arcadeDrive(
+            driverController.getLeftX(),
+            driverController.getLeftY()),
+          m_drivetrain));
   
     CommandScheduler.getInstance().registerSubsystem(m_interfaces);
   
     CommandScheduler.getInstance().registerSubsystem(m_jaws);
-    //CommandScheduler.getInstance().setDefaultCommand(m_jaws, new JawsDefault(m_jaws, m_interfaces));
+    // Set the jaws command to use right stick y componet
+    m_jaws.setDefaultCommand(
+        new RunCommand(
+          () ->
+          m_jaws.jawsManual(driverController.getRightY()),
+          m_jaws));
 
     CommandScheduler.getInstance().registerSubsystem(m_pneumatics);
 
@@ -73,19 +97,6 @@ public class RobotContainer {
     CommandScheduler.getInstance().registerSubsystem(m_TelescopingArm);
     //CommandScheduler.getInstance().setDefaultCommand(m_TelescopingArm, new TelescopingArmManual(m_TelescopingArm, m_interfaces));
 
-
-  
-    
-
- 
-
-    // init hids \\
-    driverController = new Joystick(Constants.portDriverController); // sets joystick variables to joysticks
-    coDriverController = new XboxController(Constants.portCoDriverController);
-    buttonBoard = new Joystick(Constants.buttonBoardPort);
-
-    // Configure the button bindings
-    configureButtonBindings();
   }
 
   
@@ -95,6 +106,7 @@ public class RobotContainer {
   public double getJoystickRawAxis(int axis){
     return driverController.getRawAxis(axis);
   }
+
   public double getXboxRawAxis(int axis){
     return coDriverController.getRawAxis(axis);
   }
@@ -110,7 +122,6 @@ public class RobotContainer {
     JoystickButton bumperRight = new JoystickButton(coDriverController, XboxController.Button.kRightBumper.value);
     JoystickButton joystickLeftButton = new JoystickButton(coDriverController, XboxController.Button.kLeftStick.value);
     JoystickButton joystickRightButton = new JoystickButton(coDriverController, XboxController.Button.kRightStick.value);
-
 
     JoystickButton button1 = new JoystickButton(buttonBoard, 1);
     JoystickButton button2 = new JoystickButton(buttonBoard, 2);
@@ -162,64 +173,20 @@ public class RobotContainer {
     button8.whenPressed(new ShooterForwardLowShot(m_Shooter, m_pneumatics, m_interfaces, m_ballStorage));
     button9.whenPressed(new ShooterForwardLowShot(m_Shooter, m_pneumatics, m_interfaces, m_ballStorage));
 
-    //button10.whenPressed(new lockJawsToTelescopingArm());
-    //button10.whenPressed(new unlockTelescopingArm());
-
-    //button11.whenPressed(new TelescopingArmIn());
-    //button12.whenPressed(new grabOut());
-
-    //CO Driver Controller. 
-    //left stick Jaws
-    //right stick climber 
-    //left bumper eat
-    //Right bumper barf
-    //A + rightStick grabber
-    //B pneumatics 1
-    //C pneumatics 2
-    //D pneumatics 3 
-    //Start index 1
-    //Menu index 2 
-
-    //CODRIVER CONTROLLER 
-    //left stick Jaws (schedule)
-    //right stick climber (schedule)
-    //left trigger Shooter (schedule )
-    //right trigger shoot (schedule)
-    //TODO grabber stuff
-    /*
-    buttonA.whenPressed(new TelescopingArmLock());
-    buttonB.whenPressed(new grabberUnlock());
-    buttonX.whenPressed(new JawsGrabberLock());
-    buttonY.whenPressed(new JawsGrabberUnlock());
-
-    joystickLeftButton.whenPressed(new indexEat());
-    joystickRightButton.whenPressed(new ShooterBarf());
-
-    */
-
-    //TODO - this is incorrect below and needs much work ... 
-    //TODO this was just for testing motors 
-  
-
-    // D-Pad Stuff \\
-
-    double pov = coDriverController.getPOV();
-    System.out.println(pov);
-
-    // joystick fun stuff \\
-    double joystickThrottleValue = driverController.getThrottle();
-
   }
-
-  
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
    * @return the command to run in autonomous
    */
-  //public Command getAutonomousCommand() {
+  public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    //return m_autoCommand;
+    // TODO - fix this stub below!!!
+    return new RunCommand(
+      () ->
+      m_drivetrain.arcadeDrive(0.1, 0.0),
+      m_drivetrain);
   }
 
+}
