@@ -44,7 +44,7 @@ public class TelescopingArmManual extends CommandBase {
     input = Math.round(interfaceSubsystem.getXboxRawAxis(Constants.joystickX) * 10) / 10;
     //int inputToDegree = 2048/360 * 2000;
 
-    telescopingArmSubsystem.setClimberSpeed(input);
+    telescopingArmSubsystem.setTelescopeArmSpeed(input);
 
     /*
     double targetPos = input * inputToDegree;

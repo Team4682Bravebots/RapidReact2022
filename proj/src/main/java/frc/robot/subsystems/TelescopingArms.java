@@ -117,12 +117,12 @@ public class TelescopingArms extends SubsystemBase
     return selSenVel;
   }
 
-  public void setClimberSpeed(double speed)
+  public void setTelescopeArmSpeed(double speed)
   {
     right.set(speed);
   }
 
-  public void setClimberPosition(double targetPos)
+  public void setTelescopeArmPosition(double targetPos)
   {
     leftPidController.setReference(targetPos, ControlType.kSmartMotion);
     // TODO

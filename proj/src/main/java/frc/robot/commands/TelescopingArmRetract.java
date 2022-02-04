@@ -41,7 +41,7 @@ public class TelescopingArmRetract extends CommandBase {
   @Override
   public void execute() {
     //TODO add retract method for in the pit 
-    telescopingArmSubsystem.setClimberPosition(Constants.s1Default);
+    telescopingArmSubsystem.setTelescopeArmPosition(Constants.telescopeArmRetracted);
   }
 
   // Called once the command ends or is interrupted.

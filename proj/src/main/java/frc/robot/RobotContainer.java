@@ -110,6 +110,11 @@ public class RobotContainer {
     JoystickButton bumperRight = new JoystickButton(coDriverController, XboxController.Button.kRightBumper.value);
     JoystickButton joystickLeftButton = new JoystickButton(coDriverController, XboxController.Button.kLeftStick.value);
     JoystickButton joystickRightButton = new JoystickButton(coDriverController, XboxController.Button.kRightStick.value);
+    JoystickButton triggerLeft = new JoystickButton(coDriverController, XboxController.Axis.kLeftTrigger.value);
+    JoystickButton triggerRight = new JoystickButton(coDriverController, XboxController.Axis.kRightTrigger.value);
+    JoystickButton backButton = new JoystickButton(coDriverController, XboxController.Button.kBack.value);
+    JoystickButton startButton = new JoystickButton(coDriverController, XboxController.Button.kStart.value);
+
 
 
     JoystickButton button1 = new JoystickButton(buttonBoard, 1);
@@ -197,12 +202,39 @@ public class RobotContainer {
 
     */
 
-    //TODO - this is incorrect below and needs much work ... 
-    //TODO this was just for testing motors 
-    buttonA.whenPressed(new JawsDefault(m_jaws, m_interfaces));
-    buttonX.whenPressed(new JawsIntake(m_jaws));
-    buttonY.whenPressed(new JawsForwardLowGoal(m_jaws));
+    /*TODO
+    Engages/disengages top angle arm pneumatics solenoids
+    buttonY.whenPressed(new );
 
+    Engages/disengages bottom angle arm pneumatics solenoids
+    buttonB.whenPressed(new );
+
+    Intake and store ball at set speed at stage one motor control */
+    bumperLeft.whenPressed(new JawsIntake(m_jaws));
+    bumperLeft.whenPressed(new ShooterIntake(m_Shooter, m_pneumatics, m_ballStorage));
+    
+    //Shoot ball at set speed at stage one motor control 
+    bumperRight.whenPressed(new ShooterForwardLowShot(m_Shooter, m_pneumatics, m_interfaces, m_ballStorage));
+    /*
+    Jaws up and down at variable speed
+    joystickLeftButton.whenPressed(new );
+
+    Telescoping arm up and down at variable speed
+    joystickRightButton.whenPressed(new );
+
+    Intake ball at variable speed
+    triggerLeft.whenPressed(new );
+
+    Shoot ball at variable speed
+    triggerRight.whenPressed(new );
+
+    Intake and store ball at set speed at stage two motor control */
+    backButton.whenPressed(new JawsIntake(m_jaws));
+    backButton.whenPressed(new ShooterIntake(m_Shooter, m_pneumatics, m_ballStorage));
+    
+    //Shoot ball at set speed at stage two motor control 
+    bumperRight.whenPressed(new ShooterForwardLowShot(m_Shooter, m_pneumatics, m_interfaces, m_ballStorage));
+    
 
 
     // D-Pad Stuff \\

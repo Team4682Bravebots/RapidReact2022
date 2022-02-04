@@ -35,13 +35,13 @@ public final class Constants
    
 
   // telescoping arms reach points \\
-  public static int s1Default = 0;
-  public static int s1Extended = 1; //TODO need to calculate top of telescoping arms
-  public static int s1EndGame = 2; //TODO should be just less then double "s1Extended"
+  public static int telescopeArmRetracted = 0;
+  public static int telescopeArmExtended = 1; //TODO need to calculate top of telescoping arms
+  public static int telescopeArmEndGame = 2; //TODO should be just less then double "s1Extended"
 
-  public static int s2Default = 0; 
-  public static int s2Extended = 4062 * 1; //TODO need to calculate top of telescoping arm 
-  public static int s2EndGame = 4062 * 2; //TODO should be just less then double "s2Extended"
+  public static int telescopeArmRetractedInMM = 0; 
+  public static int telescopeArmExtendedInMM = 4062 * 1; //TODO need to calculate top of telescoping arm 
+  public static int telescopeArmEndGameInMM = 4062 * 2; //TODO should be just less then double "s2Extended"
 
   // Ball storage \\
   public static final double retrieveSpeed = 0;

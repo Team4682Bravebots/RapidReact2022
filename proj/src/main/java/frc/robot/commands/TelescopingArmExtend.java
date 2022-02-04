@@ -42,7 +42,7 @@ public class TelescopingArmExtend extends CommandBase {
   @Override
   public void execute() {
  
-   telescopingArmSubsystem.setClimberPosition(Constants.s1Extended);
+   telescopingArmSubsystem.setTelescopeArmPosition(Constants.telescopeArmExtended);
   }
 
   // Called once the command ends or is interrupted.

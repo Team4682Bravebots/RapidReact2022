@@ -42,7 +42,7 @@ public class TelescopingArmEndGame extends CommandBase {
   @Override
   public void execute() {
  
-    telescopingArmSubsystem.setClimberPosition(Constants.s1EndGame);
+    telescopingArmSubsystem.setTelescopeArmPosition(Constants.telescopeArmEndGame);
 
   }
 
