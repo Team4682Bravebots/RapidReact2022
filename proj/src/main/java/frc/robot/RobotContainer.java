@@ -138,7 +138,7 @@ public class RobotContainer {
     buttonA.whenPressed(new JawsIntake(m_jaws));
     buttonB.whenPressed(new JawsForwardLowGoal(m_jaws));
     buttonY.whenPressed(new JawsForwardHighGoal(m_jaws));
-    buttonX.whenPressed(new ZeroSensors(m_jaws, m_TelescopingArm));
+    buttonX.whenPressed(new RobotCalibration(m_jaws, m_TelescopingArm));
   
     //BUTTON BOARD
     //1 Jaws default      JawsDefault.java 

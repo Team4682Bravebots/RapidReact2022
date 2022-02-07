@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.common.ConsecutiveDigitalInput;
 import frc.robot.common.MotorUtils;
 
 public class Jaws extends SubsystemBase
@@ -33,15 +34,19 @@ public class Jaws extends SubsystemBase
   private static final double jawsMotorEncoderTicksPerDegree = Constants.CtreTalonFx500EncoderTicksPerRevolution / Constants.DegreesPerRevolution;
   private static final double jawsSpeedDuringCalibration = -0.8;
   private static final double jawsMotorToArmEffectiveGearRatio = 500;
+  private static final int jawsMinimumIsCalibratedConsecutiveCount = 1;
 
   /* *********************************************************************
   MEMBERS
   ************************************************************************/
   private final WPI_TalonFX rightMotor = new WPI_TalonFX(Constants.jawsMotorRightCanId);
   private final WPI_TalonFX leftMotor = new WPI_TalonFX(Constants.jawsMotorLeftCanId);
-  private final DigitalInput jawsIntakeStopLimitSwitch = new DigitalInput(Constants.jawsIntakeStopLimitSwitchChannel);
+  private final ConsecutiveDigitalInput jawsIntakeStopLimitSwitch = 
+    new ConsecutiveDigitalInput(Constants.jawsIntakeStopLimitSwitchChannel);
 
   private double motorReferencePosition = 0.0;
+  private boolean jawsMotionCurrentlyCalibrating = false;
+  private boolean jawsMotionCalibrated = false;
 
   /* *********************************************************************
   CONSTRUCTORS
@@ -57,41 +62,38 @@ public class Jaws extends SubsystemBase
   PUBLIC METHODS
   ************************************************************************/
 
-  // this method will force the jaws to the lower limit switch position
-  public void calibrateJaws()
-  {
-    try
-    {
-      // power the motors toward the intake position
-      this.setJawsSpeedManual(Jaws.jawsSpeedDuringCalibration);
-
-      // wait for the limit switch to not be in the 'open' state
-      while(jawsIntakeStopLimitSwitch.get())
-      {
-        // TODO - how to not tight while properly?
-        java.lang.Thread.sleep(10);
-      }
-
-      // stop the motors
-      rightMotor.set(ControlMode.PercentOutput, 0.0); 
-
-      // set the motor encoders to zero
-      rightMotor.setSelectedSensorPosition(0);
-      leftMotor.setSelectedSensorPosition(0);
-    }
-    catch(Exception ex)
-    {
-      System.out.println("Jaws::calibrateJaws failed - " + ex.toString());
-    }
-
-    // get the motor encoders reference position
-    motorReferencePosition = this.getAverageMotorEncoderPosition();
-  }
-
   // A method to obtain the Jaws current angle
   public double getJawsAngle()
   {
     return this.convertMotorEncoderPositionToJawsAngle(this.getAverageMotorEncoderPosition());
+  }
+
+  // a method to continue to watch and find out if the jaws have finished calibration
+  public boolean isCalibrationComplete()
+  {
+    if(jawsMotionCalibrated == false)
+    {
+      // make sure the limit switch is set - switch is closed
+      // also make sure it has been closed on at least two successive calls
+      if(jawsIntakeStopLimitSwitch.get() &&
+        jawsIntakeStopLimitSwitch.getStatusCount() >= Jaws.jawsMinimumIsCalibratedConsecutiveCount)
+      {
+        // stop the motors
+        rightMotor.set(ControlMode.PercentOutput, 0.0); 
+
+        // set the motor encoders to zero
+        rightMotor.setSelectedSensorPosition(0);
+        leftMotor.setSelectedSensorPosition(0);
+
+        // get the motor encoders reference position
+        motorReferencePosition = this.getAverageMotorEncoderPosition();
+    
+        // mark things as calibrated
+        jawsMotionCalibrated = true;
+        jawsMotionCurrentlyCalibrating = false;
+      }
+    }
+    return jawsMotionCalibrated;
   }
 
   // This method will be called once per scheduler run
@@ -120,6 +122,17 @@ public class Jaws extends SubsystemBase
   {
     MotorUtils.validateMotorSpeedInput(jawsSpeed, "jawsSpeed", null);
     rightMotor.set(TalonFXControlMode.PercentOutput, jawsSpeed);
+  }
+
+  // a method to start jaws on the path toward calibration
+  public void startCalibration()
+  {
+    if(jawsMotionCurrentlyCalibrating == false && jawsMotionCalibrated == false)
+    {
+      // power the motors toward the intake position
+      this.setJawsSpeedManual(Jaws.jawsSpeedDuringCalibration);
+      jawsMotionCurrentlyCalibrating = true;
+    }
   }
 
   /* *********************************************************************
