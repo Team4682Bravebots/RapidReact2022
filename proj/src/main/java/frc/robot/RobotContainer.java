@@ -10,7 +10,6 @@
 
 package frc.robot;
 
-
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -86,7 +85,7 @@ public class RobotContainer {
     m_jaws.setDefaultCommand(
         new RunCommand(
           () ->
-          m_jaws.jawsManual(driverController.getRightY()),
+          m_jaws.setJawsSpeedManual(driverController.getRightY()),
           m_jaws));
 
     CommandScheduler.getInstance().registerSubsystem(m_pneumatics);

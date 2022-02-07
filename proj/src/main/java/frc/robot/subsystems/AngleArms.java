@@ -11,50 +11,52 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kForward;
 import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kReverse;
 
-import com.fasterxml.jackson.databind.ser.std.StdKeySerializers.Default;
-
 public class AngleArms extends SubsystemBase {
 
-  /** Creates a new AngleArm. */ 
+ 
+  private final DoubleSolenoid bothChassisAngleArmSolenoid = new DoubleSolenoid(
+    Constants.robotPneumaticsControlModuleType,
+    Constants.bothChassisAngleArmSolenoidForwardChannel,
+    Constants.bothChassisAngleArmSolenoidReverseChannel); 
+  private final DoubleSolenoid bothJawsAngleArmSolenoid = new DoubleSolenoid(
+    Constants.robotPneumaticsControlModuleType,
+    Constants.bothJawsAngleArmSolenoidForwardChannel,
+    Constants.bothJawsAngleArmSolenoidReverseChannel); 
+
+ /** Creates a new AngleArm. */ 
   public AngleArms() {}
+ 
+  public void engageChassis()
+  {
+    bothChassisAngleArmSolenoid.set(kForward);
+  }
+
+  public void disengageChassis()
+  {
+    bothChassisAngleArmSolenoid.set(kReverse);
+  }
+
+  public void engageJaws()
+  {
+    bothJawsAngleArmSolenoid.set(kForward);
+  }
+
+  public void disengageJaws()
+  {
+    bothJawsAngleArmSolenoid.set(kReverse);
+  }
 
   @Override
-  public void setDefaultCommand(Command myCommand) {
+  public void setDefaultCommand(Command myCommand)
+  {
       // TODO Auto-generated method stub
       super.setDefaultCommand(myCommand);
-  }
-  
-  //TODO only ports 1-8 are acceptable for solenoids
-  
-  private final DoubleSolenoid leftChassisAngleArmSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 4,5); 
-  private final DoubleSolenoid rightChassisAngleArmSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 6,7); 
- // private final DoubleSolenoid leftJawsAngleArmSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 8,9); 
- // private final DoubleSolenoid rightJawsAngleArmSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 10,11); 
-
-  public void engageChassis(){
-    leftChassisAngleArmSolenoid.set(kForward);
-    rightChassisAngleArmSolenoid.set(kForward);
-  }
-
-  public void disengageChassis(){
-    leftChassisAngleArmSolenoid.set(kReverse);
-    rightChassisAngleArmSolenoid.set(kReverse);
-  }
-
-
-  public void setPower(double power){
-
-  }
-  
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
   }
 }

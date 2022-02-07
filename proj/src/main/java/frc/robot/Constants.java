@@ -11,6 +11,7 @@
 package frc.robot;
 
 import frc.robot.*;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -22,12 +23,14 @@ import frc.robot.*;
  */
 public final class Constants
 {
+  public static final double DegreesPerRevolution = 360.0;
   // Encoder information
-  // this uses the on-motor quadratrue encoder - based on documenation might be 2048
-  public static final double CtreTalonFx500EncoderTicksPerRevolution = 4092; 
+  // this uses the on-motor quadratrue encoder
+  // see: https://www.vexrobotics.com/pro/falcon-500 where it says "2048 CPR encoder"
+  public static final double CtreTalonFx500EncoderTicksPerRevolution = 2048; 
   // this uses the halls effect sensor when plugged into the spark max
+  // see: https://www.revrobotics.com/rev-21-1650/ where it says "42 counts per rev."
   public static final double RevNeoEncoderTicksPerRevolution = 42; 
-
 
   // shooter \\\
   public static final double highGoalSpeed = 0;
@@ -36,11 +39,10 @@ public final class Constants
   public static final double barfSpeed = 0;
 
   // Jaws reach points \\
-  public static final double JawsReverseHighGoalPosition = CtreTalonFx500EncoderTicksPerRevolution * 4;
-  public static final double JawsIntakePosition = CtreTalonFx500EncoderTicksPerRevolution * 0;
-  public static final double JawsLowGoalPosition = CtreTalonFx500EncoderTicksPerRevolution * 2;
-  public static final double JawsHighGoalPosition = CtreTalonFx500EncoderTicksPerRevolution * 3;
-   
+  public static final double jawsReverseHighGoalPositionAngle = 115.0;
+  public static final double jawsIntakePositionAngle = 5.0;
+  public static final double jawsLowGoalPositionAngle = 40.0;
+  public static final double jawsHighGoalPositionAngle = 65.0; 
 
   // telescoping arms reach points \\
   public static int s1Default = 0;
@@ -54,7 +56,6 @@ public final class Constants
   // Ball storage \\
   public static final double retrieveSpeed = 0;
   public static final double storeSpeed = 0;
-
 
   // CAN BUS NUMBERS \\
   //TODO - P0 - fill in proper CAN bus index for Jaws motors
@@ -78,6 +79,18 @@ public final class Constants
   public static int driveMotorLeftRearCanId = 8;
   public static int driveMotorRightFrontCanId = 11;
   public static int driveMotorRightRearCanId = 12;
+
+  // Pneumatics Control Module
+  public static final PneumaticsModuleType robotPneumaticsControlModuleType = PneumaticsModuleType.CTREPCM;
+  public static final int bothChassisAngleArmSolenoidForwardChannel = 0;
+  public static final int bothChassisAngleArmSolenoidReverseChannel = 1;
+  public static final int bothJawsAngleArmSolenoidForwardChannel = 4;
+  public static final int bothJawsAngleArmSolenoidReverseChannel = 5;
+  public static final int jawsClutchSolenoidForwardChannel = 6;
+  public static final int jawsClutchSolenoidReverseChannel = 7;
+
+  // Digital Input Channel Numbers
+  public static final int jawsIntakeStopLimitSwitchChannel = 0;
 
   // MOTOR SETTINGS \\
 

@@ -15,37 +15,26 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.AngleArms;
 import frc.robot.subsystems.Interfaces;
-import frc.robot.subsystems.Jaws;
 
 public class AngleArmEngageJaws extends CommandBase {
 
   private AngleArms angleArmSubsystem;
-  private Interfaces interfacesSubsystem;
-  private Jaws jawsSubsystem;
   private Timer timer = new Timer();
   private boolean done;
 
-   // TODO - why is it that we need the jaws and the interface here?
   // cotr
   public AngleArmEngageJaws(
-    AngleArms AngleArmSubsystem,
-    Interfaces InterfacesSubsystem,
-    Jaws JawsSubsystem
-  ) {
+    AngleArms AngleArmSubsystem)
+  {
     // Use addRequirements() here to declare subsystem dependencies.
     this.angleArmSubsystem = AngleArmSubsystem;
     addRequirements(AngleArmSubsystem);
-
-    this.interfacesSubsystem = InterfacesSubsystem;
-    addRequirements(InterfacesSubsystem);
-
-    this.jawsSubsystem = JawsSubsystem;
-    addRequirements(JawsSubsystem);
   }  
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
+  public void initialize()
+  {
     timer.reset();
     timer.start();
     done = false;
@@ -53,8 +42,9 @@ public class AngleArmEngageJaws extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    //angleArmSubsystem.engageJaws();
+  public void execute()
+  {
+    angleArmSubsystem.engageJaws();
     if (timer.hasElapsed(Constants.AngleArmTiming)){
       angleArmSubsystem.disengageChassis();
       done = true;
@@ -63,12 +53,21 @@ public class AngleArmEngageJaws extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
+  public void end(boolean interrupted)
+  {
+    // in the event that we are being interrupted and the operation is not complete, we want to revert it
+    if(interrupted == true && done == false)
+    {
+      // revert the change - seemingly we should order in the same way just reverse the operations
+      angleArmSubsystem.disengageJaws();
+      angleArmSubsystem.engageChassis();
+    }
   }
 
   // Returns true when the command should end.
   @Override
-  public boolean isFinished() {
+  public boolean isFinished()
+  {
     return done;
   }
 }

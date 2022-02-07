@@ -44,10 +44,9 @@ public class ZeroSensors extends CommandBase {
 
     //TODO add anyother sensors 
 
-    jaws.zeroSensors();
+    jaws.calibrateJaws();
     telescopingArms.zeroSensors();
-
-    System.out.println(jaws.getPosition());
+    System.out.println(jaws.getJawsAngle());
   }
 
   // Called once the command ends or is interrupted.

@@ -44,16 +44,8 @@ public class JawsDefault extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // TODO - Owen, seems like JawsDefault should be a default position of the jaws
-    // not manual use of the jaws.  Does the 'default' name make you think of manual movement?
-
-
-    //jawsSubsystem.jawsManual(interfacesSubsystem.getXboxRawAxis(Constants.joystickY));
-    //TODO set this to the right axis 
-    jawsSubsystem.setJawsPosition(0); 
-
-  //  jawsSubsystem.isFinished(done, Constants.JawsDefualt);
-    System.out.println(jawsSubsystem.getPosition());
+    jawsSubsystem.setJawsSpeedManual(interfacesSubsystem.getXboxRawAxis(Constants.joystickY));
+    System.out.println(jawsSubsystem.getJawsAngle());
   }
 
   // Called once the command ends or is interrupted.

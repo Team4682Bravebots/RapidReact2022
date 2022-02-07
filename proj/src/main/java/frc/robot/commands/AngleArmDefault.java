@@ -15,13 +15,12 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.AngleArms;
 
+// Ideally this command needs to be scheduled as NOT being interruptible (e.g., uninterruptible)
 public class AngleArmDefault extends CommandBase {
-  
+
   private AngleArms angleArmSubsystem;
   private Timer timer = new Timer();
-  private boolean done;
-
-  
+  private boolean done;  
 
   public AngleArmDefault(
     AngleArms AngleArmSubsystem)
@@ -33,7 +32,8 @@ public class AngleArmDefault extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
+  public void initialize()
+  {
     timer.reset();
     timer.start();
     done = false;
@@ -44,19 +44,29 @@ public class AngleArmDefault extends CommandBase {
   public void execute() {
     angleArmSubsystem.engageChassis();
     if (timer.hasElapsed(Constants.AngleArmTiming)){
-      //angleArmSubsystem.disengageJaws();
+      angleArmSubsystem.disengageJaws();
       done = true;
     }
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {  
+  public void end(boolean interrupted)
+  {
+    // in the event that we are being interrupted and the operation is not complete, we want to revert it
+    if(interrupted == true && done == false)
+    {
+      // revert the change - seemingly we should order in the same way just reverse the operations
+      angleArmSubsystem.disengageChassis();
+      angleArmSubsystem.engageJaws();
+    }
   }
 
   // Returns true when the command should end.
   @Override
-  public boolean isFinished() {
-    return false;
+  public boolean isFinished()
+  {
+    return done;
   }
+
 }

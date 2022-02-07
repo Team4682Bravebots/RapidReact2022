@@ -21,6 +21,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
+import frc.robot.common.MotorUtils;
+
 public class DriveTrain extends SubsystemBase
 {
 
@@ -92,16 +94,8 @@ public class DriveTrain extends SubsystemBase
   // drive motor speeds
   public void arcadeDrive(double yAxisValue, double xAxisValue)
   {
-    if(yAxisValue > 1.0 || yAxisValue < -1.0)
-    {
-      throw new IllegalArgumentException(
-        "yAxisValue outside of bounds - valid range from -1.0 to 1.0");
-    }
-    if(xAxisValue > 1.0 || xAxisValue < -1.0)
-    {
-      throw new IllegalArgumentException(
-        "xAxisValue outside of bounds - valid range from -1.0 to 1.0");
-    }
+    MotorUtils.validateMotorSpeedInput(yAxisValue, "yAxisValue ", null);
+    MotorUtils.validateMotorSpeedInput(yAxisValue, "xAxisValue ", null);
     // the heart of arcade is the calculation below
     double leftSpeed = yAxisValue - xAxisValue;
     double rightSpeed = yAxisValue + xAxisValue;
