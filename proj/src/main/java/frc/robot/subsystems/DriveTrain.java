@@ -100,8 +100,8 @@ public class DriveTrain extends SubsystemBase
     double leftSpeed = yAxisValue - xAxisValue;
     double rightSpeed = yAxisValue + xAxisValue;
     driveControl(
-      this.truncateValue(leftSpeed, -1.0, 1.0),
-      this.truncateValue(rightSpeed, -1.0, 1.0));
+      MotorUtils.truncateValue(leftSpeed, -1.0, 1.0),
+      MotorUtils.truncateValue(rightSpeed, -1.0, 1.0));
   }
 
   public void driveControl(double leftSpeed, double rightSpeed)
@@ -122,21 +122,6 @@ public class DriveTrain extends SubsystemBase
   {
     // This method will be called once per scheduler run
   }
-
-  // A method to make sure that values are retained within the boundaries
-  private double truncateValue(double value, double minBoundary, double maxBoundary)
-  {
-    double trimmedValue = value;
-    if(value < minBoundary)
-    {
-      trimmedValue = minBoundary;
-    }
-    else if (value > maxBoundary)
-    {
-      trimmedValue = maxBoundary;
-    }
-    return trimmedValue;
-  }  
-  
+ 
 }
  

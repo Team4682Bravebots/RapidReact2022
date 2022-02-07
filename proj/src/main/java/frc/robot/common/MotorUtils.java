@@ -18,4 +18,21 @@ public class MotorUtils
         }        
     }
     
+    // A method to make sure that values are retained within the boundaries
+    public static double truncateValue(
+        double value,
+        double minBoundary,
+        double maxBoundary)
+    {
+        double trimmedValue = value;
+        if(value < minBoundary)
+        {
+            trimmedValue = minBoundary;
+        }
+        else if (value > maxBoundary)
+        {
+            trimmedValue = maxBoundary;
+        }
+        return trimmedValue;
+    }  
 }

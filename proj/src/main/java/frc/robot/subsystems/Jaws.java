@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.common.MotorUtils;
 
 public class Jaws extends SubsystemBase
 {
@@ -115,9 +116,10 @@ public class Jaws extends SubsystemBase
   }
 
   // a method to drive the jaws motors manually
-  public void setJawsSpeedManual(double speed)
+  public void setJawsSpeedManual(double jawsSpeed)
   {
-    rightMotor.set(TalonFXControlMode.PercentOutput, speed);
+    MotorUtils.validateMotorSpeedInput(jawsSpeed, "jawsSpeed", null);
+    rightMotor.set(TalonFXControlMode.PercentOutput, jawsSpeed);
   }
 
   /* *********************************************************************
