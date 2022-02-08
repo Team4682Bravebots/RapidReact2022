@@ -167,10 +167,10 @@ public class RobotContainer {
     button6.whenPressed(new TelescopingArmEndGame(m_TelescopingArm, m_interfaces));//TODO
 
     button7.whenPressed(new JawsIntake(m_jaws));
-    button7.whenPressed(new ShooterIntake(m_Shooter, m_pneumatics, m_ballStorage));
+    button7.whenPressed(new ShooterIntake(m_Shooter, m_ballStorage));
    
-    button8.whenPressed(new ShooterForwardLowShot(m_Shooter, m_pneumatics, m_interfaces, m_ballStorage));
-    button9.whenPressed(new ShooterForwardLowShot(m_Shooter, m_pneumatics, m_interfaces, m_ballStorage));
+    button8.whenPressed(new ShooterForwardLowShot(m_Shooter, m_interfaces, m_ballStorage));
+    button9.whenPressed(new ShooterForwardLowShot(m_Shooter, m_interfaces, m_ballStorage));
 
   }
 

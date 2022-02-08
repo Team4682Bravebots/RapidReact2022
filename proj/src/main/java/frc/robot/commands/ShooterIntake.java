@@ -13,24 +13,18 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.BallStorage;
-import frc.robot.subsystems.Pneumatics;
 
 public class ShooterIntake extends CommandBase {
 
-  private Pneumatics pneumaticsSubsystem;
   private Shooter shooterSubsystem;
   private BallStorage ballStorageSubsystem;
 
 public ShooterIntake(
   Shooter ShooterSubsystem,
-  Pneumatics PneumaticsSubsystem,
   BallStorage BallStorageSubsystem
   ) {
   this.shooterSubsystem = ShooterSubsystem;
   addRequirements(ShooterSubsystem);
-
-  this.pneumaticsSubsystem = PneumaticsSubsystem;
-  addRequirements(PneumaticsSubsystem);
 
   this.ballStorageSubsystem = BallStorageSubsystem;
   addRequirements(BallStorageSubsystem);
@@ -46,16 +40,13 @@ public ShooterIntake(
   public void execute() {
     shooterSubsystem.eat();
     ballStorageSubsystem.store();
-
-    //PneumaticsSubsystem.solenoidShooterJawsForward(); 
-    //run Shooter morons too
-  
+ 
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    pneumaticsSubsystem.solenoidShooterJawsBackward();
+  public void end(boolean interrupted)
+  {
   }
 
   // Returns true when the command should end.

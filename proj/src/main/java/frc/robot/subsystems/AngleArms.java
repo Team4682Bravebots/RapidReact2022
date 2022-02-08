@@ -13,14 +13,15 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 
 import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kForward;
 import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kReverse;
 
-public class AngleArms extends SubsystemBase {
+import frc.robot.Constants;
 
- 
+public class AngleArms extends SubsystemBase
+{
+
   private final DoubleSolenoid bothChassisAngleArmSolenoid = new DoubleSolenoid(
     Constants.robotPneumaticsControlModuleType,
     Constants.bothChassisAngleArmSolenoidForwardChannel,
@@ -29,28 +30,33 @@ public class AngleArms extends SubsystemBase {
     Constants.robotPneumaticsControlModuleType,
     Constants.bothJawsAngleArmSolenoidForwardChannel,
     Constants.bothJawsAngleArmSolenoidReverseChannel); 
+  
+  private DoubleSolenoid.Value chassisEnguaged = kForward;
+  private DoubleSolenoid.Value chassisDisenguaged = kReverse;
+  private DoubleSolenoid.Value jawsEnguaged = kForward;
+  private DoubleSolenoid.Value jawsDisnguaged = kReverse;
 
- /** Creates a new AngleArm. */ 
+  // ctor for angle arms 
   public AngleArms() {}
- 
+
   public void engageChassis()
   {
-    bothChassisAngleArmSolenoid.set(kForward);
+    bothChassisAngleArmSolenoid.set(this.chassisEnguaged);
   }
 
   public void disengageChassis()
   {
-    bothChassisAngleArmSolenoid.set(kReverse);
+    bothChassisAngleArmSolenoid.set(this.chassisDisenguaged);
   }
 
   public void engageJaws()
   {
-    bothJawsAngleArmSolenoid.set(kForward);
+    bothJawsAngleArmSolenoid.set(this.jawsEnguaged);
   }
 
   public void disengageJaws()
   {
-    bothJawsAngleArmSolenoid.set(kReverse);
+    bothJawsAngleArmSolenoid.set(this.jawsDisnguaged);
   }
 
   @Override

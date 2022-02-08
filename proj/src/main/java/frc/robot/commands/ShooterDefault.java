@@ -14,26 +14,20 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
 import frc.robot.Constants;
 import frc.robot.subsystems.Interfaces;
-import frc.robot.subsystems.Pneumatics;
 
 public class ShooterDefault extends CommandBase {
   /** Creates a new solenoidOne. 
  * @param m_Shooter*/
 
-    private Pneumatics pneumaticsSubsystem;
     private Shooter shooterSubsystem;
     private Interfaces interfacesSubsystem;
   
   public ShooterDefault(
     Shooter ShooterSubsystem, 
-    Pneumatics PneumaticsSubsystem, 
     Interfaces InterfacesSubsystem
     ) {
     this.shooterSubsystem = ShooterSubsystem;
     addRequirements(ShooterSubsystem);
-
-    this.pneumaticsSubsystem = PneumaticsSubsystem;
-    addRequirements(PneumaticsSubsystem);
 
     this.interfacesSubsystem = InterfacesSubsystem;
     addRequirements(InterfacesSubsystem);
@@ -48,7 +42,6 @@ public class ShooterDefault extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    pneumaticsSubsystem.solenoidShooterJawsBackward();
     shooterSubsystem.shooterManual(interfacesSubsystem.getXboxRawAxis(Constants.joystickZ));
     //TODO check this is the right axis 
 
