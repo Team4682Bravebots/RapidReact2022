@@ -14,13 +14,23 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Jaws;
 import frc.robot.subsystems.TelescopingArms;
 
+/**
+* A Command class devoted to getting the robot in a place where all systems are ready for a match.
+* Includes work to move prepare subsystems such as moving an arm into a reference position or adjusting
+* the ball subsystem such that the ball is ready to shoot.
+*/
 public class RobotCalibration extends CommandBase {
 
   private Jaws jaws;
   private TelescopingArms telescopingArms;
   private boolean sensorCalibrationComplete = false;
 
-  // constructor
+  /**
+  * Constructor for RobotCalibration
+  *
+  * @param  Jaws - the current Jaws subsystem object
+  * @param  TelescopingArms - the current TelescopingArms subsystem object
+  */
   public RobotCalibration(Jaws Jaws, TelescopingArms TelescopingArms) {
     // Use addRequirements() here to declare subsystem dependencies.
 

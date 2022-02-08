@@ -17,13 +17,17 @@ public class ConsecutiveDigitalInput extends DigitalInput
 {
 
     /* *********************************************************************
-    CONSTRUCTORS
+    Members
     ************************************************************************/
     private Timer timer = new Timer();
     private boolean lastStatus = false;
     private int lastStatusCount = 0;
 
-    // constructor for Jaws
+    /**
+    * Constructor for ConsecutiveDigitalInput
+    *
+    * @param  channel - the current IO channel for the DigitalInput
+    */
     public ConsecutiveDigitalInput(int channel) 
     {
         super(channel);
@@ -46,13 +50,21 @@ public class ConsecutiveDigitalInput extends DigitalInput
         return rtnVal;
     }
 
-    // method to will tell you how many times in a row this most recent status check has occured - 0 based counter
+    /**
+    * method to will tell you how many times in a row this most recent status check has occured - 0 based counter
+    *
+    * @return the count of times that get has returned the most recent status check value 
+    */
     public int getStatusCount()
     {
         return lastStatusCount;
     }
 
-    // a method to know how long this digital input has been reporting the most recent status check
+    /**
+    * a method to know how long this digital input has been reporting the most recent status check
+    *
+    * @return the duration in seconds that get has returned the most recent status check value 
+    */
     public double getStatusTimeInSeconds()
     {
         return timer.get();
