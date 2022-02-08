@@ -45,13 +45,10 @@ public final class Constants
   public static final double jawsHighGoalPositionAngle = 65.0; 
 
   // telescoping arms reach points \\
-  public static int s1Default = 0;
-  public static int s1Extended = 1; //TODO need to calculate top of telescoping arms
-  public static int s1EndGame = 2; //TODO should be just less then double "s1Extended"
-
-  public static int s2Default = 0; 
-  public static int s2Extended = 4062 * 1; //TODO need to calculate top of telescoping arm 
-  public static int s2EndGame = 4062 * 2; //TODO should be just less then double "s2Extended"
+  public static final double telescopingArmsRetractHeightMillimeters = 2;
+  public static final double telescopingArmsMediumExtendHeightMillimeters = 1200;
+  public static final double telescopingArmsHighExtendHeightMillimeters = 1000;
+  public static final double telescopingArmsTraversalExtendHeightMillimeters = 1000;
 
   // Ball storage \\
   public static final double retrieveSpeed = 0;

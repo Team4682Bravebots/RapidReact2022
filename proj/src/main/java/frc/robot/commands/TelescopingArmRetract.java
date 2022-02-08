@@ -37,13 +37,14 @@ public class TelescopingArmRetract extends CommandBase {
   @Override
   public void initialize() {}
 
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    //TODO add retract method for in the pit 
-    telescopingArmSubsystem.setClimberPosition(Constants.s1Default);
-  }
-
+   // Called every time the scheduler runs while the command is scheduled.
+   @Override
+   public void execute()
+   {
+     // TODO - much more needed here
+     telescopingArmSubsystem.setTelescopingArmsHeight(Constants.telescopingArmsRetractHeightMillimeters);
+   }
+ 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {}

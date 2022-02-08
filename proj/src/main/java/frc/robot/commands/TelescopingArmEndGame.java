@@ -40,11 +40,12 @@ public class TelescopingArmEndGame extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
- 
-    telescopingArmSubsystem.setClimberPosition(Constants.s1EndGame);
-
+  public void execute()
+  {
+    // TODO - much more needed here
+    telescopingArmSubsystem.setTelescopingArmsHeight(Constants.telescopingArmsHighExtendHeightMillimeters);
   }
+
 
   // Called once the command ends or is interrupted.
   @Override

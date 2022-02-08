@@ -39,28 +39,9 @@ public class TelescopingArmManual extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
- 
-    input = Math.round(interfaceSubsystem.getXboxRawAxis(Constants.joystickX) * 10) / 10;
-    //int inputToDegree = 2048/360 * 2000;
-
-    telescopingArmSubsystem.setClimberSpeed(input);
-
-    /*
-    double targetPos = input * inputToDegree;
-    double currentPOS = Math.round(telescopingArmSubsystem.getPosition());
-  
-    System.out.println(currentPOS);
-    System.out.println("input" + input);
-    
-    if(targetPos < currentPOS-300 || targetPos > currentPOS+300){
-    
-       telescopingArmSubsystem.setClimberPostion(targetPos);
-    }
-
-     pov = interfaceSubsystem.getXboxPov();
-     // TODO
-     */
+  public void execute()
+  {
+    telescopingArmSubsystem.setTelescopingArmsSpeedManual(interfaceSubsystem.getXboxRawAxis(Constants.joystickX));
   }
 
   // Called once the command ends or is interrupted.

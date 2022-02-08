@@ -56,7 +56,8 @@ public class RobotCalibration extends CommandBase {
     allCalibrationComplete &= jaws.isCalibrationComplete();
 
     // determine if jaws are calibrated cleanly
-    telescopingArms.zeroSensors();
+    telescopingArms.startCalibration();
+    allCalibrationComplete &= telescopingArms.isCalibrationComplete();
 
     // TODO - add more subsystems to become calibrated here!!!
 
