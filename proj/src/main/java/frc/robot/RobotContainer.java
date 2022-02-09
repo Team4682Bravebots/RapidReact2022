@@ -41,11 +41,10 @@ public class RobotContainer {
   public static Interfaces m_interfaces = new Interfaces();
   public static BallStorage m_ballStorage = new BallStorage();
 
-
-  //declaring hids
-  private XboxController driverController;
-  private XboxController coDriverController; 
-  private Joystick buttonBoard;
+  // sets joystick variables to joysticks
+  private XboxController driverController = new XboxController(Constants.portDriverController); 
+  private XboxController coDriverController = new XboxController(Constants.portCoDriverController);
+  private Joystick buttonBoard = new Joystick(Constants.buttonBoardPort);
 
   int pov = -1;
   int _pov = -1;
@@ -55,11 +54,6 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer()
   {
-    // init hids \\
-    driverController = new XboxController(Constants.portDriverController); // sets joystick variables to joysticks
-    coDriverController = new XboxController(Constants.portCoDriverController);
-    buttonBoard = new Joystick(Constants.buttonBoardPort);
-
     // Configure the button bindings
     configureButtonBindings();
 
