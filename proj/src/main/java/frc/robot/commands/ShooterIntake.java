@@ -37,10 +37,13 @@ public ShooterIntake(
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    shooterSubsystem.eat();
-    ballStorageSubsystem.store();
- 
+  public void execute()
+  {
+    // when the shot method returns true it is up to sufficient speed
+    if(shooterSubsystem.intake())
+    {
+      ballStorageSubsystem.store();
+    }
   }
 
   // Called once the command ends or is interrupted.

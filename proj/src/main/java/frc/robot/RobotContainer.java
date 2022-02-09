@@ -89,9 +89,21 @@ public class RobotContainer {
           m_jaws));
 
     CommandScheduler.getInstance().registerSubsystem(m_pneumatics);
+    // Set the compressor to just run?
+    /*
+    m_pneumatics.setDefaultCommand(
+        new RunCommand(
+          () ->
+          m_pneumatics.compressorOn(),
+          m_pneumatics));
+          */
 
     CommandScheduler.getInstance().registerSubsystem(m_Shooter);
-    //CommandScheduler.getInstance().setDefaultCommand(m_Shooter, new ShooterDefault(m_Shooter, m_pneumatics, m_interfaces));
+    m_Shooter.setDefaultCommand(
+        new RunCommand(
+          () ->
+          m_Shooter.stopShooter(),
+          m_Shooter));
 
     CommandScheduler.getInstance().registerSubsystem(m_TelescopingArm);
     //CommandScheduler.getInstance().setDefaultCommand(m_TelescopingArm, new TelescopingArmManual(m_TelescopingArm, m_interfaces));
@@ -169,8 +181,9 @@ public class RobotContainer {
     button7.whenPressed(new JawsIntake(m_jaws));
     button7.whenPressed(new ShooterIntake(m_Shooter, m_ballStorage));
    
-    button8.whenPressed(new ShooterForwardLowShot(m_Shooter, m_interfaces, m_ballStorage));
-    button9.whenPressed(new ShooterForwardLowShot(m_Shooter, m_interfaces, m_ballStorage));
+    button8.whenPressed(new ShooterForwardLowShot(m_Shooter, m_ballStorage));
+    button9.whenPressed(new ShooterForwardHighShot(m_Shooter, m_ballStorage));
+    button10.whenPressed(new ShooterReverseHighShot(m_Shooter, m_ballStorage));
 
   }
 

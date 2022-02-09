@@ -13,12 +13,16 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.Compressor;
-
+import edu.wpi.first.wpilibj.PneumaticsControlModule;
 import frc.robot.*;
 
 public class Pneumatics extends SubsystemBase
 {
-  private final Compressor compressor = new Compressor(0, Constants.robotPneumaticsControlModuleType);
+  private final PneumaticsControlModule pneumaticsHub = 
+    new PneumaticsControlModule(Constants.robotPneumaticsControlModuleCanId);
+  private final Compressor compressor = new Compressor(
+    Constants.robotPneumaticsControlModuleCanId,
+    Constants.robotPneumaticsControlModuleType);
 
   @Override
   public void setDefaultCommand(Command myCommand)
@@ -29,7 +33,8 @@ public class Pneumatics extends SubsystemBase
   
   public void compressorOn()
   {
-    compressor.enableDigital(); //maybe if no work enable analog?
+    pneumaticsHub.enableCompressorDigital();
+    compressor.enableDigital();
   }
 
   public void compressorOff()

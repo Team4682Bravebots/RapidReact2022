@@ -19,25 +19,15 @@ import frc.robot.subsystems.Pneumatics;
 public class ShooterReverseHighShot extends CommandBase {
  
   public Shooter shooterSubsystem;
-  public Pneumatics pneumaticsSubsystem;
-  public Interfaces interfacesSubsystem;
   public BallStorage ballStorageSubsystem;
 
   public ShooterReverseHighShot(
     Shooter ShooterSubsystem, 
-    Pneumatics PneumaticsSubsystem, 
-    Interfaces InterfacesSubsystem,
-    BallStorage BallStorageSubsystem
-    ) {
+    BallStorage BallStorageSubsystem)
+  {
     // Use addRequirements() here to declare subsystem dependencies.
     this.shooterSubsystem = ShooterSubsystem;
     addRequirements(ShooterSubsystem);
-
-    this.pneumaticsSubsystem = PneumaticsSubsystem;
-    addRequirements(PneumaticsSubsystem);
-
-    this.interfacesSubsystem = InterfacesSubsystem;
-    addRequirements(InterfacesSubsystem);
 
     this.ballStorageSubsystem = BallStorageSubsystem;
     addRequirements(BallStorageSubsystem);
@@ -49,9 +39,13 @@ public class ShooterReverseHighShot extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    shooterSubsystem.shootHigh();
-    ballStorageSubsystem.retrieve();
+  public void execute()
+  {
+    // when the shot method returns true it is up to sufficient speed
+    if(shooterSubsystem.shootHighReverse())
+    {
+      ballStorageSubsystem.retrieve();
+    }
   }
 
   // Called once the command ends or is interrupted.
@@ -60,7 +54,8 @@ public class ShooterReverseHighShot extends CommandBase {
 
   // Returns true when the command should end.
   @Override
-  public boolean isFinished() {
+  public boolean isFinished()
+  {
     return false;
   }
 }

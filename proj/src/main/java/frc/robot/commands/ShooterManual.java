@@ -2,7 +2,7 @@
 // Bishop Blanchet Robotics
 // Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
-// File: ShooterDefault.java
+// File: ShooterManual.java
 // Intent: Forms a command to let the shooter wind down to stopped position.
 // ************************************************************
 
@@ -15,25 +15,21 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.Constants;
 import frc.robot.subsystems.Interfaces;
 
-public class ShooterDefault extends CommandBase {
-  /** Creates a new solenoidOne. 
- * @param m_Shooter*/
+public class ShooterManual extends CommandBase {
 
-    private Shooter shooterSubsystem;
-    private Interfaces interfacesSubsystem;
+  private Shooter shooterSubsystem;
+  private Interfaces interfacesSubsystem;
   
-  public ShooterDefault(
+  public ShooterManual(
     Shooter ShooterSubsystem, 
-    Interfaces InterfacesSubsystem
-    ) {
+    Interfaces InterfacesSubsystem)
+  {
     this.shooterSubsystem = ShooterSubsystem;
     addRequirements(ShooterSubsystem);
 
     this.interfacesSubsystem = InterfacesSubsystem;
     addRequirements(InterfacesSubsystem);
-
   }
-    // Use addRequirements() here to declare subsystem dependencies.
 
   // Called when the command is initially scheduled.
   @Override
@@ -41,10 +37,9 @@ public class ShooterDefault extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
+  public void execute()
+  {
     shooterSubsystem.shooterManual(interfacesSubsystem.getXboxRawAxis(Constants.joystickZ));
-    //TODO check this is the right axis 
-
   }
 
   // Called once the command ends or is interrupted.
@@ -53,7 +48,8 @@ public class ShooterDefault extends CommandBase {
 
   // Returns true when the command should end.
   @Override
-  public boolean isFinished() {
+  public boolean isFinished()
+  {
     return false;
   }
 }

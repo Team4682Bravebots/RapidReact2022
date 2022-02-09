@@ -13,26 +13,19 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.BallStorage;
-import frc.robot.subsystems.Interfaces;
-import frc.robot.subsystems.Pneumatics;
 
 public class ShooterForwardHighShot extends CommandBase {
  
   public Shooter shooterSubsystem;
-  public Interfaces interfacesSubsystem;
   public BallStorage ballStorageSubsystem;
 
   public ShooterForwardHighShot(
     Shooter ShooterSubsystem, 
-    Interfaces InterfacesSubsystem,
     BallStorage BallStorageSubsystem
     ) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.shooterSubsystem = ShooterSubsystem;
     addRequirements(ShooterSubsystem);
-
-    this.interfacesSubsystem = InterfacesSubsystem;
-    addRequirements(InterfacesSubsystem);
 
     this.ballStorageSubsystem = BallStorageSubsystem;
     addRequirements(BallStorageSubsystem);
@@ -44,13 +37,13 @@ public class ShooterForwardHighShot extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-
-    shooterSubsystem.shootHigh();
-    ballStorageSubsystem.retrieve();
-
-    //ShooterSubsystem.barf(interfacesSubsystem.getXboxRawAxis(2));
-    //System.out.println(interfacesSubsystem.getXboxRawAxis(2));
+  public void execute()
+  {
+    // when the shot method returns true it is up to sufficient speed
+    if(shooterSubsystem.shootHigh())
+    {
+      ballStorageSubsystem.retrieve();
+    }
   }
 
   // Called once the command ends or is interrupted.
@@ -59,7 +52,8 @@ public class ShooterForwardHighShot extends CommandBase {
 
   // Returns true when the command should end.
   @Override
-  public boolean isFinished() {
+  public boolean isFinished()
+  {
     return false;
   }
 }

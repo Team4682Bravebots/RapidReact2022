@@ -19,26 +19,56 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import edu.wpi.first.wpilibj.drive.*;
+import edu.wpi.first.wpilibj.motorcontrol.*;
 
+import frc.robot.Constants;
 import frc.robot.common.MotorUtils;
 
 public class DriveTrain extends SubsystemBase
 {
-
   // four matched motors - two for each tank drive side
   private WPI_TalonFX leftFront = new WPI_TalonFX(Constants.driveMotorLeftFrontCanId);
   private WPI_TalonFX leftRear = new WPI_TalonFX(Constants.driveMotorLeftRearCanId);
   private WPI_TalonFX rightFront = new WPI_TalonFX(Constants.driveMotorRightFrontCanId);
   private WPI_TalonFX rightRear = new WPI_TalonFX(Constants.driveMotorRightRearCanId);
+  private MotorControllerGroup left = new MotorControllerGroup(leftFront, leftRear);
+  private MotorControllerGroup right = new MotorControllerGroup(rightFront, rightRear);
+  private DifferentialDrive drive = new DifferentialDrive(left, right);
 
   @Override
   public void setDefaultCommand(Command myCommand) {
       // TODO Auto-generated method stub
       super.setDefaultCommand(myCommand);
   }
+
   // ctor
   public DriveTrain()
+  {
+    this.initializeMotors();
+  }
+
+  // A method to take in x and y and turn them into right and left
+  // drive motor speeds
+  public void arcadeDrive(double yAxisValue, double xAxisValue)
+  {
+    drive.arcadeDrive(yAxisValue, xAxisValue);
+  }
+
+  public void driveControl(double leftSpeed, double rightSpeed)
+  {
+    //sets motors to imput speeds (sets to control motor and consequently follower motor)
+    leftRear.set(leftSpeed);
+    rightRear.set(rightSpeed);
+  }
+
+  @Override
+  public void periodic()
+  {
+    // This method will be called once per scheduler run
+  }
+
+  private void initializeMotors()
   {
     leftFront.configFactoryDefault();
     leftRear.configFactoryDefault();
@@ -87,40 +117,6 @@ public class DriveTrain extends SubsystemBase
         25, // Trigger Threshold(amp) |
         1.0)); // Trigger Threshold Time(s)
     //rightFront..configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
-  }
-
-
-  // A method to take in x and y and turn them into right and left
-  // drive motor speeds
-  public void arcadeDrive(double yAxisValue, double xAxisValue)
-  {
-    MotorUtils.validateMotorSpeedInput(yAxisValue, "yAxisValue ", null);
-    MotorUtils.validateMotorSpeedInput(yAxisValue, "xAxisValue ", null);
-    // the heart of arcade is the calculation below
-    double leftSpeed = yAxisValue - xAxisValue;
-    double rightSpeed = yAxisValue + xAxisValue;
-    driveControl(
-      MotorUtils.truncateValue(leftSpeed, -1.0, 1.0),
-      MotorUtils.truncateValue(rightSpeed, -1.0, 1.0));
-  }
-
-  public void driveControl(double leftSpeed, double rightSpeed)
-  {
-    //sets motors to imput speeds (sets to control motor and consequently follower motor)
-    leftRear.set(leftSpeed);
-    rightRear.set(rightSpeed);
-  }
-
-  // TODO - what does 'defaultM' mean?
-  public void defaultM(){ //
-    leftRear.set(0);
-    rightRear.set(0);
-  }
-
-  @Override
-  public void periodic()
-  {
-    // This method will be called once per scheduler run
   }
  
 }

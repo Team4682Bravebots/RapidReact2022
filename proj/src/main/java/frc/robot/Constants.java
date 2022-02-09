@@ -32,11 +32,15 @@ public final class Constants
   // see: https://www.revrobotics.com/rev-21-1650/ where it says "42 counts per rev."
   public static final double RevNeoEncoderTicksPerRevolution = 42; 
 
-  // shooter \\\
-  public static final double highGoalSpeed = 0;
-  public static final double lowGoalSpeed = 0;
-  public static final double eatSpeed = 0;
-  public static final double barfSpeed = 0;
+  // shooter 
+  public static final double bottomMotorForwardLowGoalSpeed = 0.8;
+  public static final double topMotorForwardLowGoalSpeed = 0.7;
+  public static final double bottomMotorForwardHighGoalSpeed = 1.0;
+  public static final double topMotorForwardHighGoalSpeed = 0.95;
+  public static final double bottomMotorReverseHighGoalSpeed = 1.0;
+  public static final double topMotorReverseHighGoalSpeed = 0.95;
+  public static final double bottomMotorIntakeSpeed = -0.5;
+  public static final double topMotorIntakeSpeed = -0.4;
 
   // Jaws reach points \\
   public static final double jawsReverseHighGoalPositionAngle = 115.0;
@@ -64,8 +68,8 @@ public final class Constants
   public static int telescopingArmsMotorRightCanId = 29;
 
   //TODO - P0 - fill in proper CAN bus index for shooting motors
-  public static final int shooterMotorLeftCanId = 31;
-  public static final int shooterMotorRightCanId = 32;
+  public static final int shooterMotorBottomCanId = 5;
+  public static final int shooterMotorTopCanId = 6;
 
   //TODO - P0 - fill in proper CAN bus index for ball storage motors
   public static int ballStorageMotorTopCanId = 33;
@@ -79,6 +83,10 @@ public final class Constants
 
   // Pneumatics Control Module
   public static final PneumaticsModuleType robotPneumaticsControlModuleType = PneumaticsModuleType.CTREPCM;
+  public static final int ctrePneumaticsControlModuleCanId = 0;
+  public static final int revPneumaticsControlModuleCanId = 1;
+  public static final int robotPneumaticsControlModuleCanId = 
+    robotPneumaticsControlModuleType == PneumaticsModuleType.CTREPCM ? ctrePneumaticsControlModuleCanId : revPneumaticsControlModuleCanId;
   public static final int bothChassisAngleArmSolenoidForwardChannel = 0;
   public static final int bothChassisAngleArmSolenoidReverseChannel = 1;
   public static final int bothJawsAngleArmSolenoidForwardChannel = 4;
