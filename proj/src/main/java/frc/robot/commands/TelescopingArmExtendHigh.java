@@ -1,9 +1,9 @@
-// ************************************************************
+ // ************************************************************
 // Bishop Blanchet Robotics
 // Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
-// File: TelescopingArmEndGame.java
-// Intent: Forms a command to drive the telescoping arms to their end game position.
+// File: TelescopingArmExtendHighTraversal.java
+// Intent: Forms a command to drive the telescoping arms to their retracted position.
 // ************************************************************
 
 // ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ 
@@ -16,22 +16,16 @@ import frc.robot.subsystems.Interfaces;
 import frc.robot.subsystems.TelescopingArms;
 
 
-public class TelescopingArmEndGame extends CommandBase {
-
+public class TelescopingArmExtendHigh extends CommandBase
+{
   public TelescopingArms telescopingArmSubsystem;
-  public Interfaces interfaceSubsystem;
-  double input;
-  int pov;
-  int _smoothing;
-  int _pov;
+  boolean done = false;
 
-  public TelescopingArmEndGame(TelescopingArms telescopingArmSubsystem, Interfaces interfaceSubsystem) {
+  public TelescopingArmExtendHigh(TelescopingArms telescopingArmSubsystem)
+  {
     // Use addRequirements() here to declare subsystem dependencies.
     this.telescopingArmSubsystem = telescopingArmSubsystem;
     addRequirements(telescopingArmSubsystem);
-
-    this.interfaceSubsystem = interfaceSubsystem;
-    addRequirements(interfaceSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -42,18 +36,21 @@ public class TelescopingArmEndGame extends CommandBase {
   @Override
   public void execute()
   {
-    // TODO - much more needed here
-    telescopingArmSubsystem.setTelescopingArmsHeight(Constants.telescopingArmsHighExtendHeightMillimeters);
+    if(telescopingArmSubsystem.setTelescopingArmsHeight(Constants.telescopingArmsHighExtendHeightInches, Constants.telescopingArmsToleranceInches))
+    {
+      done = true;
+    }
+    System.out.println("Jaws angle at: " + telescopingArmSubsystem.getTelescopingArmsHeight());
   }
-
-
+ 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
-  public boolean isFinished() {
-    return false;
+  public boolean isFinished()
+  {
+    return done;
   }
 }

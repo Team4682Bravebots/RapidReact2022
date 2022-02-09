@@ -36,25 +36,30 @@ public class DriveTrain extends SubsystemBase
   private MotorControllerGroup right = new MotorControllerGroup(rightFront, rightRear);
   private DifferentialDrive drive = new DifferentialDrive(left, right);
 
-  @Override
-  public void setDefaultCommand(Command myCommand) {
-      // TODO Auto-generated method stub
-      super.setDefaultCommand(myCommand);
-  }
-
   // ctor
   public DriveTrain()
   {
     this.initializeMotors();
   }
 
-  // A method to take in x and y and turn them into right and left
-  // drive motor speeds
+  /**
+  * A method to take in x and y stick inputs and turn them into right and left motor speeds
+  * considering arcade style driving
+  *
+  * @param  yAxisValue - left motor speed, range -1.0 to 1.0 where positive values are forward
+  * @param  xAxisValue - right motor speed, range -1.0 to 1.0 where positive values are forward
+  */
   public void arcadeDrive(double yAxisValue, double xAxisValue)
   {
     drive.arcadeDrive(yAxisValue, xAxisValue);
   }
 
+  /**
+  * direct motor speed control over drive wheels
+  *
+  * @param  leftSpeed - left motor speed, range -1.0 to 1.0 where positive values are forward
+  * @param  rightSpeed - right motor speed, range -1.0 to 1.0 where positive values are forward
+  */
   public void driveControl(double leftSpeed, double rightSpeed)
   {
     //sets motors to imput speeds (sets to control motor and consequently follower motor)
@@ -66,6 +71,13 @@ public class DriveTrain extends SubsystemBase
   public void periodic()
   {
     // This method will be called once per scheduler run
+  }
+
+  @Override
+  public void setDefaultCommand(Command myCommand)
+  {
+      // TODO Auto-generated method stub
+      super.setDefaultCommand(myCommand);
   }
 
   private void initializeMotors()

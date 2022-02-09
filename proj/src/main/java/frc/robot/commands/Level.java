@@ -54,7 +54,7 @@ public class Level extends CommandBase {
 
 
 
-    jawsSubsystem.setJawsAngle(JawsTarget);
+    jawsSubsystem.setJawsAngle(JawsTarget, 1.0);
 
     //double slow = 0.24;
 

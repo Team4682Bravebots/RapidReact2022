@@ -14,10 +14,13 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Jaws;
 
-public class JawsForwardLowGoal extends CommandBase {
+public class JawsForwardLowGoal extends CommandBase
+{
   public Jaws jawsSubsystem;
+  private boolean done = false;
   
-  public JawsForwardLowGoal(Jaws JawsSubsystem) {
+  public JawsForwardLowGoal(Jaws JawsSubsystem)
+  {
     // Use addRequirements() here to declare subsystem dependencies.
     this.jawsSubsystem = JawsSubsystem;
     addRequirements(JawsSubsystem);
@@ -29,10 +32,14 @@ public class JawsForwardLowGoal extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    jawsSubsystem.setJawsAngle(Constants.jawsLowGoalPositionAngle);
-
-    System.out.println(jawsSubsystem.getJawsAngle());
+  public void execute()
+  {
+    if(jawsSubsystem.setJawsAngle(Constants.jawsLowGoalPositionAngle, Constants.jawsPositionAngleTolerance))
+    {
+      jawsSubsystem.holdCurrentJawsPosition();
+      done = true;
+    }
+    System.out.println("Jaws angle at: " + jawsSubsystem.getJawsAngle());
   }
 
   // Called once the command ends or is interrupted.
@@ -41,7 +48,8 @@ public class JawsForwardLowGoal extends CommandBase {
 
   // Returns true when the command should end.
   @Override
-  public boolean isFinished() {
-    return false;
+  public boolean isFinished()
+  {
+    return done;
   }
 }

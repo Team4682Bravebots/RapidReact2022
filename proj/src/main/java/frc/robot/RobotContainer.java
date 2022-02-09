@@ -33,11 +33,11 @@ public class RobotContainer {
   //declaring and init subsystems  
   public static Jaws m_jaws = new Jaws();
   public static Pneumatics m_pneumatics  = new Pneumatics();
-  public static Shooter m_Shooter = new Shooter();
+  public static Shooter m_shooter = new Shooter();
   public static DriveTrain m_drivetrain = new DriveTrain();
   public static BallStorage m_climbers1 = new BallStorage();
-  public static TelescopingArms m_TelescopingArm = new TelescopingArms();
-  public static AngleArms m_AngleArm = new AngleArms();
+  public static TelescopingArms m_telescopingArm = new TelescopingArms();
+  public static AngleArms m_angleArm = new AngleArms();
   public static Interfaces m_interfaces = new Interfaces();
   public static BallStorage m_ballStorage = new BallStorage();
 
@@ -57,10 +57,11 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
-    CommandScheduler.getInstance().registerSubsystem(m_AngleArm);
-    //CommandScheduler.getInstance().setDefaultCommand(m_AngleArm, new AngleArmDefault(m_AngleArm));;
+    CommandScheduler.getInstance().registerSubsystem(m_angleArm);
+    // TODO - add the default command for angle arms!
    
     CommandScheduler.getInstance().registerSubsystem(m_ballStorage);
+    // TODO - add the default command for ball storage!
 
     CommandScheduler.getInstance().registerSubsystem(m_drivetrain);
     // Set the default drive command to split-stick arcade drive
@@ -73,17 +74,18 @@ public class RobotContainer {
           m_drivetrain));
   
     CommandScheduler.getInstance().registerSubsystem(m_interfaces);
+    // TODO - add the default command for interfaces ??????????????????????????????
   
     CommandScheduler.getInstance().registerSubsystem(m_jaws);
     // Set the jaws command to use right stick y componet
     m_jaws.setDefaultCommand(
         new RunCommand(
           () ->
-          m_jaws.setJawsSpeedManual(driverController.getRightY()),
+          m_jaws.setJawsSpeedManual(driverController.getRightX()),
           m_jaws));
 
     CommandScheduler.getInstance().registerSubsystem(m_pneumatics);
-    // Set the compressor to just run?
+    // TODO - add the default command for pneumatics ??????????????????????????????
     /*
     m_pneumatics.setDefaultCommand(
         new RunCommand(
@@ -92,15 +94,22 @@ public class RobotContainer {
           m_pneumatics));
           */
 
-    CommandScheduler.getInstance().registerSubsystem(m_Shooter);
-    m_Shooter.setDefaultCommand(
+    CommandScheduler.getInstance().registerSubsystem(m_shooter);
+    m_shooter.setDefaultCommand(
         new RunCommand(
           () ->
-          m_Shooter.stopShooter(),
-          m_Shooter));
+          m_shooter.shooterManual(
+            (driverController.getLeftTriggerAxis() > driverController.getRightTriggerAxis() ? 
+            -1.0 * driverController.getLeftTriggerAxis() : 
+            driverController.getRightTriggerAxis())),
+          m_shooter));
 
-    CommandScheduler.getInstance().registerSubsystem(m_TelescopingArm);
-    //CommandScheduler.getInstance().setDefaultCommand(m_TelescopingArm, new TelescopingArmManual(m_TelescopingArm, m_interfaces));
+    CommandScheduler.getInstance().registerSubsystem(m_telescopingArm);
+    m_telescopingArm.setDefaultCommand(
+        new RunCommand(
+          () ->
+          m_telescopingArm.setTelescopingArmsSpeedManual(driverController.getRightY()),
+          m_telescopingArm));
 
   }
 
@@ -128,6 +137,7 @@ public class RobotContainer {
     JoystickButton joystickLeftButton = new JoystickButton(coDriverController, XboxController.Button.kLeftStick.value);
     JoystickButton joystickRightButton = new JoystickButton(coDriverController, XboxController.Button.kRightStick.value);
 
+    JoystickButton button0 = new JoystickButton(buttonBoard, 0);
     JoystickButton button1 = new JoystickButton(buttonBoard, 1);
     JoystickButton button2 = new JoystickButton(buttonBoard, 2);
     JoystickButton button3 = new JoystickButton(buttonBoard, 3);
@@ -144,12 +154,14 @@ public class RobotContainer {
     buttonA.whenPressed(new JawsIntake(m_jaws));
     buttonB.whenPressed(new JawsForwardLowGoal(m_jaws));
     buttonY.whenPressed(new JawsForwardHighGoal(m_jaws));
-    buttonX.whenPressed(new RobotCalibration(m_jaws, m_TelescopingArm));
+    buttonX.whenPressed(new RobotCalibration(m_jaws, m_telescopingArm));
   
     //BUTTON BOARD
-    //1 Jaws default      JawsDefault.java 
-    //2 Jaws pos 1        JawsShooter.java
-    //3 Jaws pos 2        JawsForwardLowGoal.java
+    //0 disable button board?   ??.java
+
+    //1 Jaws pos 1        JawsIntake.java
+    //2 Jaws pos 2        JawsForwardLowGoal.java
+    //3 Jaws default      JawsForwardHighGoal.java
 
     //4 climber default   climber lock + climberS1Default.java
     //5 climber pos 1     climber unlock + climberS1Extended.java 
@@ -164,20 +176,20 @@ public class RobotContainer {
 
 
     //BUTTON BOARD
-    button1.whenPressed(new JawsDefault(m_jaws, m_interfaces));
-    button2.whenPressed(new JawsIntake(m_jaws));
-    button3.whenPressed(new JawsForwardLowGoal(m_jaws));
+    button1.whenPressed(new JawsIntake(m_jaws));
+    button2.whenPressed(new JawsForwardLowGoal(m_jaws));
+    button3.whenPressed(new JawsForwardHighGoal(m_jaws));
 
-    button4.whenPressed(new TelescopingArmRetract(m_TelescopingArm, m_interfaces));//TODO
-    button5.whenPressed(new TelescopingArmExtend(m_TelescopingArm, m_interfaces));//TODO
-    button6.whenPressed(new TelescopingArmEndGame(m_TelescopingArm, m_interfaces));//TODO
+    button4.whenPressed(new TelescopingArmRetract(m_telescopingArm));
+    button5.whenPressed(new TelescopingArmExtendMiddle(m_telescopingArm));
+    button6.whenPressed(new TelescopingArmExtendHigh(m_telescopingArm));
 
     button7.whenPressed(new JawsIntake(m_jaws));
-    button7.whenPressed(new ShooterIntake(m_Shooter, m_ballStorage));
+    button7.whenPressed(new ShooterIntake(m_shooter, m_ballStorage));
    
-    button8.whenPressed(new ShooterForwardLowShot(m_Shooter, m_ballStorage));
-    button9.whenPressed(new ShooterForwardHighShot(m_Shooter, m_ballStorage));
-    button10.whenPressed(new ShooterReverseHighShot(m_Shooter, m_ballStorage));
+    button8.whenPressed(new ShooterForwardLowShot(m_shooter, m_ballStorage));
+    button9.whenPressed(new ShooterForwardHighShot(m_shooter, m_ballStorage));
+    button10.whenPressed(new ShooterReverseHighShot(m_shooter, m_ballStorage));
 
   }
 

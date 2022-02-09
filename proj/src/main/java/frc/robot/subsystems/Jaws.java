@@ -154,13 +154,19 @@ public class Jaws extends SubsystemBase
     * a method exposed to callers to set the jaws angle
     *
     * @param  targetAngle - target angle of the jaws measured from front limit switch position
+    * @param  toleranceInDegrees - the tolerance bounds in degrees that determine if the jaws have reached the proper setting
+    * @return if the jaws have attained the target angle setpoint and are within the tolerance threashold
     */
-    public void setJawsAngle(double targetAngle)
+    public boolean setJawsAngle(double targetAngleInDegrees, double toleranceInDegrees)
     {
       this.releaseCurrentJawsPosition();
-      double trimmedAngle = MotorUtils.truncateValue(targetAngle, Jaws.minmumTargetAngle, Jaws.maximumTargetAngle);
+      double trimmedAngle = MotorUtils.truncateValue(targetAngleInDegrees, Jaws.minmumTargetAngle, Jaws.maximumTargetAngle);
+
       // because of follower this will set both motors
       rightMotor.set(TalonFXControlMode.MotionMagic, convertJawsAngleToMotorEncoderPosition(trimmedAngle));
+      double currentAngle = this.getJawsAngle();
+
+      return (currentAngle - toleranceInDegrees >= targetAngleInDegrees && currentAngle + toleranceInDegrees <= targetAngleInDegrees);
     }
 
     /**

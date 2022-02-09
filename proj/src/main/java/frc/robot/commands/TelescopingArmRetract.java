@@ -16,34 +16,32 @@ import frc.robot.subsystems.Interfaces;
 import frc.robot.subsystems.TelescopingArms;
 
 
-public class TelescopingArmRetract extends CommandBase {
+public class TelescopingArmRetract extends CommandBase
+{
   public TelescopingArms telescopingArmSubsystem;
-  public Interfaces interfaceSubsystem;
-  double input;
-  int pov;
-  int _smoothing;
-  int _pov;
+  boolean done = false;
 
-  public TelescopingArmRetract(TelescopingArms telescopingArmSubsystem, Interfaces interfaceSubsystem) {
+  public TelescopingArmRetract(TelescopingArms telescopingArmSubsystem)
+  {
     // Use addRequirements() here to declare subsystem dependencies.
     this.telescopingArmSubsystem = telescopingArmSubsystem;
     addRequirements(telescopingArmSubsystem);
-
-    this.interfaceSubsystem = interfaceSubsystem;
-    addRequirements(interfaceSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {}
 
-   // Called every time the scheduler runs while the command is scheduled.
-   @Override
-   public void execute()
-   {
-     // TODO - much more needed here
-     telescopingArmSubsystem.setTelescopingArmsHeight(Constants.telescopingArmsRetractHeightMillimeters);
-   }
+  // Called every time the scheduler runs while the command is scheduled.
+  @Override
+  public void execute()
+  {
+    if(telescopingArmSubsystem.setTelescopingArmsHeight(Constants.telescopingArmsRetractHeightInches, Constants.telescopingArmsToleranceInches))
+    {
+      done = true;
+    }
+    System.out.println("Jaws angle at: " + telescopingArmSubsystem.getTelescopingArmsHeight());
+  }
  
   // Called once the command ends or is interrupted.
   @Override
@@ -51,7 +49,8 @@ public class TelescopingArmRetract extends CommandBase {
 
   // Returns true when the command should end.
   @Override
-  public boolean isFinished() {
-    return false;
+  public boolean isFinished()
+  {
+    return done;
   }
 }
