@@ -13,24 +13,26 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.BallStorage;
-import frc.robot.subsystems.Interfaces;
-import frc.robot.subsystems.Pneumatics;
 
 public class ShooterReverseHighShot extends CommandBase {
  
-  public Shooter shooterSubsystem;
-  public BallStorage ballStorageSubsystem;
+  private Shooter shooterSubsystem;
+  private BallStorage ballStorageSubsystem;
+  boolean done = false;
 
-  public ShooterReverseHighShot(
-    Shooter ShooterSubsystem, 
-    BallStorage BallStorageSubsystem)
+  /**
+  * The two argument constructor for the shooter forward low shot
+  *
+  * @param ShooterSubsystem - The shooter subsystem in this robot
+  * @param BallStorageSubsystem - The ball storage subsystem in this robot
+  */
+  public ShooterReverseHighShot(Shooter ShooterSubsystem, BallStorage BallStorageSubsystem)
   {
-    // Use addRequirements() here to declare subsystem dependencies.
     this.shooterSubsystem = ShooterSubsystem;
     addRequirements(ShooterSubsystem);
 
     this.ballStorageSubsystem = BallStorageSubsystem;
-    addRequirements(BallStorageSubsystem);
+    addRequirements(BallStorageSubsystem); 
   }
 
   // Called when the command is initially scheduled.
@@ -41,21 +43,32 @@ public class ShooterReverseHighShot extends CommandBase {
   @Override
   public void execute()
   {
-    // when the shot method returns true it is up to sufficient speed
-    if(shooterSubsystem.shootHighReverse())
+    // when no balls are present ... just mark this as done
+    if(ballStorageSubsystem.getOnboardBallCount() <= 0)
     {
-      ballStorageSubsystem.retrieve();
+      done = true;
+    }
+    // when the shot method returns true it is up to sufficient speed
+    else if(shooterSubsystem.shootHighReverse())
+    {
+      // when the ball storage store method returns true a ball has been stored
+      if(ballStorageSubsystem.retrieve())
+      {
+        done = true;
+      }
     }
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted)
+  {
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished()
   {
-    return false;
+    return done;
   }
 }

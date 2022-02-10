@@ -59,6 +59,7 @@ public final class Constants
   // Ball storage \\
   public static final double retrieveSpeed = 0;
   public static final double storeSpeed = 0;
+  public static final int maximumStoredBallCount = 2;
 
   // CAN BUS NUMBERS \\
   //TODO - P0 - fill in proper CAN bus index for Jaws motors
@@ -98,6 +99,8 @@ public final class Constants
 
   // Digital Input Channel Numbers
   public static final int jawsIntakeStopLimitSwitchChannel = 0;
+  public static final int ballStorageFrontBeamBreakSensorChannel = 1;
+  public static final int ballStorageRearBeamBreakSensorChannel = 2;
 
   // MOTOR SETTINGS \\
 
