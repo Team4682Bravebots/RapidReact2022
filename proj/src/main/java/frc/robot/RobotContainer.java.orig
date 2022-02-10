@@ -192,9 +192,98 @@ public class RobotContainer {
     button7.whenPressed(new JawsIntake(m_jaws));
     button7.whenPressed(new ShooterIntake(m_shooter, m_ballStorage));
    
+<<<<<<< HEAD
+    button8.whenPressed(new ShooterForwardLowShot(m_Shooter, m_pneumatics, m_interfaces, m_ballStorage));
+    button9.whenPressed(new ShooterForwardLowShot(m_Shooter, m_pneumatics, m_interfaces, m_ballStorage));
+
+    //button10.whenPressed(new lockJawsToTelescopingArm());
+    //button10.whenPressed(new unlockTelescopingArm());
+
+    //button11.whenPressed(new TelescopingArmIn());
+    //button12.whenPressed(new grabOut());
+
+
+
+
+
+//CO Driver Controller. 
+//left stick Jaws
+//right stick climber 
+//left bumper eat
+//Right bumper barf
+//A + rightStick grabber
+//B pneumatics 1
+//C pneumatics 2
+//D pneumatics 3 
+//Start index 1
+//Menu index 2 
+
+    //CODRIVER CONTROLLER 
+    //left stick Jaws (schedule)
+    //right stick climber (schedule)
+    //left trigger Shooter (schedule )
+    //right trigger shoot (schedule)
+    //TODO grabber stuff
+    /*
+    buttonA.whenPressed(new TelescopingArmLock());
+    buttonB.whenPressed(new grabberUnlock());
+    buttonX.whenPressed(new JawsGrabberLock());
+    buttonY.whenPressed(new JawsGrabberUnlock());
+
+    joystickLeftButton.whenPressed(new indexEat());
+    joystickRightButton.whenPressed(new ShooterBarf());
+
+    */
+
+    /*TODO
+    Engages/disengages top angle arm pneumatics solenoids
+    buttonY.whenPressed(new );
+
+    Engages/disengages bottom angle arm pneumatics solenoids
+    buttonB.whenPressed(new );
+
+    Intake and store ball at set speed at stage one motor control */
+    bumperLeft.whenPressed(new JawsIntake(m_jaws));
+    bumperLeft.whenPressed(new ShooterIntake(m_Shooter, m_pneumatics, m_ballStorage));
+    
+    //Shoot ball at set speed at stage one motor control 
+    bumperRight.whenPressed(new ShooterForwardLowShot(m_Shooter, m_pneumatics, m_interfaces, m_ballStorage));
+    /*
+    Jaws up and down at variable speed
+    joystickLeftButton.whenPressed(new );
+
+    Telescoping arm up and down at variable speed
+    joystickRightButton.whenPressed(new );
+
+    Intake ball at variable speed
+    triggerLeft.whenPressed(new );
+
+    Shoot ball at variable speed
+    triggerRight.whenPressed(new );
+
+    Intake and store ball at set speed at stage two motor control */
+    backButton.whenPressed(new JawsIntake(m_jaws));
+    backButton.whenPressed(new ShooterIntake(m_Shooter, m_pneumatics, m_ballStorage));
+    
+    //Shoot ball at set speed at stage two motor control 
+    bumperRight.whenPressed(new ShooterForwardLowShot(m_Shooter, m_pneumatics, m_interfaces, m_ballStorage));
+    
+
+
+    // D-Pad Stuff \\
+
+    double pov = coDriverController.getPOV();
+    System.out.println(pov);
+
+
+    // joystick fun stuff \\
+    double joystickThrottleValue = driverController.getThrottle();
+
+=======
     button8.whenPressed(new ShooterForwardLowShot(m_shooter, m_ballStorage));
     button9.whenPressed(new ShooterForwardHighShot(m_shooter, m_ballStorage));
     button10.whenPressed(new ShooterReverseHighShot(m_shooter, m_ballStorage));
+>>>>>>> main
 
   }
 

@@ -17,8 +17,13 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.drive.*;
+import edu.wpi.first.wpilibj.motorcontrol.*;
+
 import frc.robot.Constants;
+import frc.robot.common.MotorUtils;
 
 public class DriveTrain extends SubsystemBase
 {
@@ -27,9 +32,55 @@ public class DriveTrain extends SubsystemBase
   private WPI_TalonFX leftRear = new WPI_TalonFX(Constants.driveMotorLeftRearCanId);
   private WPI_TalonFX rightFront = new WPI_TalonFX(Constants.driveMotorRightFrontCanId);
   private WPI_TalonFX rightRear = new WPI_TalonFX(Constants.driveMotorRightRearCanId);
+  private MotorControllerGroup left = new MotorControllerGroup(leftFront, leftRear);
+  private MotorControllerGroup right = new MotorControllerGroup(rightFront, rightRear);
+  private DifferentialDrive drive = new DifferentialDrive(left, right);
 
   // ctor
   public DriveTrain()
+  {
+    this.initializeMotors();
+  }
+
+  /**
+  * A method to take in x and y stick inputs and turn them into right and left motor speeds
+  * considering arcade style driving
+  *
+  * @param  yAxisValue - left motor speed, range -1.0 to 1.0 where positive values are forward
+  * @param  xAxisValue - right motor speed, range -1.0 to 1.0 where positive values are forward
+  */
+  public void arcadeDrive(double yAxisValue, double xAxisValue)
+  {
+    drive.arcadeDrive(yAxisValue, xAxisValue);
+  }
+
+  /**
+  * direct motor speed control over drive wheels
+  *
+  * @param  leftSpeed - left motor speed, range -1.0 to 1.0 where positive values are forward
+  * @param  rightSpeed - right motor speed, range -1.0 to 1.0 where positive values are forward
+  */
+  public void driveControl(double leftSpeed, double rightSpeed)
+  {
+    //sets motors to imput speeds (sets to control motor and consequently follower motor)
+    leftRear.set(leftSpeed);
+    rightRear.set(rightSpeed);
+  }
+
+  @Override
+  public void periodic()
+  {
+    // This method will be called once per scheduler run
+  }
+
+  @Override
+  public void setDefaultCommand(Command myCommand)
+  {
+      // TODO Auto-generated method stub
+      super.setDefaultCommand(myCommand);
+  }
+
+  private void initializeMotors()
   {
     leftFront.configFactoryDefault();
     leftRear.configFactoryDefault();
@@ -79,24 +130,6 @@ public class DriveTrain extends SubsystemBase
         1.0)); // Trigger Threshold Time(s)
     //rightFront..configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
   }
-
-  public void driveControl(double leftSpeed, double rightSpeed)
-  {
-    //sets motors to imput speeds (sets to control motor and consequently follower motor)
-    leftRear.set(leftSpeed);
-    rightRear.set(rightSpeed);
-  }
-
-  // TODO - what does 'defaultM' mean?
-  public void defaultM(){ //
-    leftRear.set(0);
-    rightRear.set(0);
-  }
-
-  @Override
-  public void periodic()
-  {
-    // This method will be called once per scheduler run
-  }
+ 
 }
  

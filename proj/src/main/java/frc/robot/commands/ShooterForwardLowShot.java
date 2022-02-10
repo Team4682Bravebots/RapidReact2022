@@ -14,31 +14,20 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.BallStorage;
 import frc.robot.subsystems.Interfaces;
-import frc.robot.subsystems.Pneumatics;
 
 public class ShooterForwardLowShot extends CommandBase {
  
   public Shooter shooterSubsystem;
-  public Pneumatics pneumaticsSubsystem;
-  public Interfaces interfacesSubsystem;
   public BallStorage ballStorageSubsystem;
 
   public ShooterForwardLowShot(
      Shooter ShooterSubsystem, 
-     Pneumatics PneumaticsSubsystem, 
-     Interfaces InterfacesSubsystem,
-     BallStorage BallStorageSubsystem
-    ) {
+     BallStorage BallStorageSubsystem)
+    {
 
     // Use addRequirements() here to declare subsystem dependencies.
     this.shooterSubsystem = ShooterSubsystem;
     addRequirements(ShooterSubsystem);
-
-    this.pneumaticsSubsystem = PneumaticsSubsystem;
-    addRequirements(PneumaticsSubsystem);
-
-    this.interfacesSubsystem = InterfacesSubsystem;
-    addRequirements(InterfacesSubsystem);
     
     this.ballStorageSubsystem = BallStorageSubsystem;
     addRequirements(BallStorageSubsystem);
@@ -50,15 +39,13 @@ public class ShooterForwardLowShot extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    shooterSubsystem.shootLow();
-    ballStorageSubsystem.retrieve();
-
-
-    //ShooterSubsystem.barf(interfacesSubsystem.getXboxRawAxis(2));
-    //System.out.println(interfacesSubsystem.getXboxRawAxis(2));
-    //PneumaticsSubsystem.solenoidShooterJawsForward();
-    //PneumaticsSubsystem.solenoidShooterJawsForward();
+  public void execute()
+  {
+    // when the shot method returns true it is up to sufficient speed
+    if(shooterSubsystem.shootLow())
+    {
+      ballStorageSubsystem.retrieve();
+    }
   }
 
   // Called once the command ends or is interrupted.
@@ -67,7 +54,8 @@ public class ShooterForwardLowShot extends CommandBase {
 
   // Returns true when the command should end.
   @Override
-  public boolean isFinished() {
+  public boolean isFinished()
+  {
     return false;
   }
 }

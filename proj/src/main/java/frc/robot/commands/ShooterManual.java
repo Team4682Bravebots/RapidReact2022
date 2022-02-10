@@ -2,8 +2,8 @@
 // Bishop Blanchet Robotics
 // Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
-// File: JawsForwardLowGoal.java
-// Intent: Forms a command to drive the Jaws to the low goal forward position.
+// File: ShooterManual.java
+// Intent: Forms a command to let the shooter wind down to stopped position.
 // ************************************************************
 
 // ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ 
@@ -11,35 +11,35 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Shooter;
 import frc.robot.Constants;
-import frc.robot.subsystems.Jaws;
+import frc.robot.subsystems.Interfaces;
 
-public class JawsForwardLowGoal extends CommandBase
-{
-  public Jaws jawsSubsystem;
-  private boolean done = false;
+public class ShooterManual extends CommandBase {
+
+  private Shooter shooterSubsystem;
+  private Interfaces interfacesSubsystem;
   
-  public JawsForwardLowGoal(Jaws JawsSubsystem)
+  public ShooterManual(
+    Shooter ShooterSubsystem, 
+    Interfaces InterfacesSubsystem)
   {
-    // Use addRequirements() here to declare subsystem dependencies.
-    this.jawsSubsystem = JawsSubsystem;
-    addRequirements(JawsSubsystem);
+    this.shooterSubsystem = ShooterSubsystem;
+    addRequirements(ShooterSubsystem);
+
+    this.interfacesSubsystem = InterfacesSubsystem;
+    addRequirements(InterfacesSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute()
   {
-    if(jawsSubsystem.setJawsAngle(Constants.jawsLowGoalPositionAngle, Constants.jawsPositionAngleTolerance))
-    {
-      jawsSubsystem.holdCurrentJawsPosition();
-      done = true;
-    }
-    System.out.println("Jaws angle at: " + jawsSubsystem.getJawsAngle());
+    shooterSubsystem.shooterManual(interfacesSubsystem.getXboxRawAxis(Constants.joystickZ));
   }
 
   // Called once the command ends or is interrupted.
@@ -50,6 +50,6 @@ public class JawsForwardLowGoal extends CommandBase
   @Override
   public boolean isFinished()
   {
-    return done;
+    return false;
   }
 }

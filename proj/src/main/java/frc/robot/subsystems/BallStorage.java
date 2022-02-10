@@ -13,6 +13,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -23,8 +24,16 @@ public class BallStorage extends SubsystemBase {
 
   double input;
 
+  @Override
+  public void setDefaultCommand(Command myCommand) {
+      // TODO Auto-generated method stub
+      super.setDefaultCommand(myCommand);
+  }
+  
    /** Creates a new climberS1. */
   public BallStorage() {
+
+    
 
     topMotor.configFactoryDefault();
 		bottomMotor.configFactoryDefault(); 

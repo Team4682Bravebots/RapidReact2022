@@ -49,6 +49,17 @@ public class AngleArms extends SubsystemBase
     bothChassisAngleArmSolenoid.set(this.chassisDisenguaged);
   }
 
+<<<<<<< HEAD
+  public void engageJaws(){
+    leftJawsAngleArmSolenoid.set(kForward);
+    rightJawsAngleArmSolenoid.set(kForward);
+  }
+
+
+  public void disengageJaws(){
+    leftJawsAngleArmSolenoid.set(kReverse);
+    rightJawsAngleArmSolenoid.set(kReverse);
+=======
   public void engageJaws()
   {
     bothJawsAngleArmSolenoid.set(this.jawsEnguaged);
@@ -57,6 +68,7 @@ public class AngleArms extends SubsystemBase
   public void disengageJaws()
   {
     bothJawsAngleArmSolenoid.set(this.jawsDisnguaged);
+>>>>>>> main
   }
 
   @Override

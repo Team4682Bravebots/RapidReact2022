@@ -50,11 +50,21 @@ public final class Constants
   public static final double jawsPositionAngleTolerance = 1.5;
 
   // telescoping arms reach points \\
+<<<<<<< HEAD
+  public static int telescopeArmRetracted = 0;
+  public static int telescopeArmExtended = 1; //TODO need to calculate top of telescoping arms
+  public static int telescopeArmEndGame = 2; //TODO should be just less then double "s1Extended"
+
+  public static int telescopeArmRetractedInMM = 0; 
+  public static int telescopeArmExtendedInMM = 4062 * 1; //TODO need to calculate top of telescoping arm 
+  public static int telescopeArmEndGameInMM = 4062 * 2; //TODO should be just less then double "s2Extended"
+=======
   public static final double telescopingArmsRetractHeightInches = 2.0;
   public static final double telescopingArmsMediumExtendHeightInches = 30.0;
   public static final double telescopingArmsHighExtendHeightInches = 25.0;
   public static final double telescopingArmsTraversalExtendHeightInches = 25.0;
   public static final double telescopingArmsToleranceInches = 0.25;
+>>>>>>> main
 
   // Ball storage \\
   public static final double retrieveSpeed = 0;

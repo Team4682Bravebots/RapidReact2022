@@ -82,6 +82,18 @@ public class TelescopingArms extends SubsystemBase
     CONSTRUCTORS
     ************************************************************************/
 
+<<<<<<< HEAD
+  public void setTelescopeArmSpeed(double speed)
+  {
+    right.set(speed);
+  }
+
+  public void setTelescopeArmPosition(double targetPos)
+  {
+    leftPidController.setReference(targetPos, ControlType.kSmartMotion);
+    // TODO
+  }
+=======
     /**
     * constructor for TelescopingArms subsystem
     */
@@ -93,6 +105,7 @@ public class TelescopingArms extends SubsystemBase
     /* *********************************************************************
     PUBLIC METHODS
     ************************************************************************/
+>>>>>>> main
 
     /**
     * A method to obtain the Arms height
