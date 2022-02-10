@@ -12,6 +12,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.*;
@@ -20,6 +21,8 @@ import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kForward;
+import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kReverse;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -55,13 +58,17 @@ public class RobotContainer {
   public RobotContainer()
   {
     // Configure the button bindings
-    configureButtonBindings();
+//    configureButtonBindings();
 
     CommandScheduler.getInstance().registerSubsystem(m_angleArm);
-    // TODO - add the default command for angle arms!
+    m_angleArm.setDefaultCommand(
+        new RunCommand(
+          () ->
+          m_angleArm.manualChassisConnection(driverController.getBButtonPressed() ? Value.kForward : Value.kOff),
+          m_angleArm));
    
     CommandScheduler.getInstance().registerSubsystem(m_ballStorage);
-    // TODO - add the default command for ball storage!
+    // TODO - add the default command for ballStorage
 
     CommandScheduler.getInstance().registerSubsystem(m_drivetrain);
     // Set the default drive command to split-stick arcade drive
@@ -92,7 +99,7 @@ public class RobotContainer {
           () ->
           m_pneumatics.compressorOn(),
           m_pneumatics));
-          */
+    */
 
     CommandScheduler.getInstance().registerSubsystem(m_shooter);
     m_shooter.setDefaultCommand(

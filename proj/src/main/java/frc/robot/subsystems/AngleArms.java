@@ -36,27 +36,62 @@ public class AngleArms extends SubsystemBase
   private DoubleSolenoid.Value jawsEnguaged = kForward;
   private DoubleSolenoid.Value jawsDisnguaged = kReverse;
 
+  private DoubleSolenoid.Value currentChassisSetting = kReverse;
+  private DoubleSolenoid.Value currentJawsSetting = kReverse;
+
   // ctor for angle arms 
   public AngleArms() {}
 
   public void engageChassis()
   {
-    bothChassisAngleArmSolenoid.set(this.chassisEnguaged);
+    if(currentChassisSetting != this.chassisEnguaged)
+    {
+      bothChassisAngleArmSolenoid.set(this.chassisEnguaged);
+    }
   }
 
   public void disengageChassis()
   {
-    bothChassisAngleArmSolenoid.set(this.chassisDisenguaged);
+    if(currentChassisSetting != this.chassisDisenguaged)
+    {
+      bothChassisAngleArmSolenoid.set(this.chassisDisenguaged);
+    }
   }
 
   public void engageJaws()
   {
-    bothJawsAngleArmSolenoid.set(this.jawsEnguaged);
+    if(this.currentJawsSetting != this.jawsEnguaged)
+    {
+      bothJawsAngleArmSolenoid.set(this.jawsEnguaged);
+    }
   }
 
   public void disengageJaws()
   {
-    bothJawsAngleArmSolenoid.set(this.jawsDisnguaged);
+    if(this.currentJawsSetting != this.jawsDisnguaged)
+    {
+      bothJawsAngleArmSolenoid.set(this.jawsDisnguaged);
+    }
+  }
+
+  public void manualChassisConnection(DoubleSolenoid.Value setting)
+  {
+    if(this.currentChassisSetting != setting)
+    {
+      bothChassisAngleArmSolenoid.set(setting);
+      this.currentChassisSetting = setting;
+      System.out.println("Setting bothChassisAngleArmSolenoid to: " + currentJawsSetting.toString());
+    }
+  }
+
+  public void manualJawsConnection(DoubleSolenoid.Value setting)
+  {
+    if(this.currentJawsSetting != setting)
+    {
+      bothJawsAngleArmSolenoid.set(setting);
+      this.currentJawsSetting = setting;
+      System.out.println("Setting bothJawsAngleArmSolenoid to: " + currentJawsSetting.toString());
+    }
   }
 
   @Override
