@@ -18,8 +18,8 @@ import frc.robot.*;
 
 public class Pneumatics extends SubsystemBase
 {
-  private final PneumaticsControlModule pneumaticsHub = 
-    new PneumaticsControlModule(Constants.robotPneumaticsControlModuleCanId);
+//  private final PneumaticsControlModule pneumaticsHub = 
+//    new PneumaticsControlModule(Constants.robotPneumaticsControlModuleCanId);
   private final Compressor compressor = new Compressor(
     Constants.robotPneumaticsControlModuleCanId,
     Constants.robotPneumaticsControlModuleType);
@@ -33,7 +33,7 @@ public class Pneumatics extends SubsystemBase
   
   public void compressorOn()
   {
-    pneumaticsHub.enableCompressorDigital();
+//    pneumaticsHub.enableCompressorDigital();
     compressor.enableDigital();
   }
 

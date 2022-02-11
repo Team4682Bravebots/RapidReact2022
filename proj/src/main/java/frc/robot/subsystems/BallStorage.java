@@ -23,8 +23,8 @@ public class BallStorage extends SubsystemBase
 
   private WPI_TalonSRX bottomMotor = new WPI_TalonSRX(Constants.ballStorageMotorBottomCanId);
   private WPI_TalonSRX topMotor = new WPI_TalonSRX(Constants.ballStorageMotorTopCanId);
-  private ConsecutiveDigitalInput frontBeamBreakSensor = new ConsecutiveDigitalInput(Constants.ballStorageFrontBeamBreakSensorChannel);
-  private ConsecutiveDigitalInput rearBeamBreakSensor = new ConsecutiveDigitalInput(Constants.ballStorageRearBeamBreakSensorChannel);
+  private StubConsecutiveDigitalInput frontBeamBreakSensor = new StubConsecutiveDigitalInput(Constants.ballStorageFrontBeamBreakSensorChannel);
+  private StubConsecutiveDigitalInput rearBeamBreakSensor = new StubConsecutiveDigitalInput(Constants.ballStorageRearBeamBreakSensorChannel);
 
   private int onboardBallCount = 0;
   private int historicOnboardBallCount = 0;
