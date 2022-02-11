@@ -12,23 +12,28 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
+import frc.robot.Constants;
 import frc.robot.subsystems.BallStorage;
 
 public class ShooterIntake extends CommandBase {
 
   private Shooter shooterSubsystem;
   private BallStorage ballStorageSubsystem;
+  boolean done = false;
 
-public ShooterIntake(
-  Shooter ShooterSubsystem,
-  BallStorage BallStorageSubsystem
-  ) {
-  this.shooterSubsystem = ShooterSubsystem;
-  addRequirements(ShooterSubsystem);
+  /**
+  * The two argument constructor for the shooter intake
+  *
+  * @param ShooterSubsystem - The shooter subsystem in this robot
+  * @param BallStorageSubsystem - The ball storage subsystem in this robot
+  */
+  public ShooterIntake(Shooter ShooterSubsystem, BallStorage BallStorageSubsystem)
+  {
+    this.shooterSubsystem = ShooterSubsystem;
+    addRequirements(ShooterSubsystem);
 
-  this.ballStorageSubsystem = BallStorageSubsystem;
-  addRequirements(BallStorageSubsystem);
-  
+    this.ballStorageSubsystem = BallStorageSubsystem;
+    addRequirements(BallStorageSubsystem); 
   }
 
   // Called when the command is initially scheduled.
@@ -39,10 +44,19 @@ public ShooterIntake(
   @Override
   public void execute()
   {
-    // when the shot method returns true it is up to sufficient speed
-    if(shooterSubsystem.intake())
+    // when no more balls can be stored ... just mark this as done
+    if(ballStorageSubsystem.getOnboardBallCount() >= Constants.maximumStoredBallCount)
     {
-      ballStorageSubsystem.store();
+      done = true;
+    }
+    // when the shot method returns true it is up to sufficient speed
+    else if(shooterSubsystem.intake())
+    {
+      // when the ball storage store method returns true a ball has been stored
+      if(ballStorageSubsystem.store())
+      {
+        done = true;
+      }
     }
   }
 
@@ -54,7 +68,8 @@ public ShooterIntake(
 
   // Returns true when the command should end.
   @Override
-  public boolean isFinished() {
-    return false;
+  public boolean isFinished()
+  {
+    return done;
   }
 }

@@ -12,6 +12,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.*;
@@ -20,6 +21,8 @@ import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kForward;
+import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kReverse;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -55,16 +58,22 @@ public class RobotContainer {
   public RobotContainer()
   {
     // Configure the button bindings
-    configureButtonBindings();
+//    configureButtonBindings();
 
     CommandScheduler.getInstance().registerSubsystem(m_angleArm);
-    // TODO - add the default command for angle arms!
-   
-    CommandScheduler.getInstance().registerSubsystem(m_ballStorage);
-    // TODO - add the default command for ball storage!
+    m_angleArm.setDefaultCommand(
+        new RunCommand(
+          () ->
+          m_angleArm.manualChassisConnection(driverController.getBButtonPressed() ? Value.kForward : Value.kOff),
+          m_angleArm));
 
-    CommandScheduler.getInstance().registerSubsystem(m_drivetrain);
+    // BALL STORAGE
+    CommandScheduler.getInstance().registerSubsystem(m_ballStorage);
+    // TODO - add the default command for ballStorage
+
+    // DRIVE TRAIN!!!
     // Set the default drive command to split-stick arcade drive
+    CommandScheduler.getInstance().registerSubsystem(m_drivetrain);
     m_drivetrain.setDefaultCommand(
         new RunCommand(
           () ->
@@ -73,11 +82,13 @@ public class RobotContainer {
             driverController.getLeftY()),
           m_drivetrain));
   
+    // INTERFACES!!!
     CommandScheduler.getInstance().registerSubsystem(m_interfaces);
     // TODO - add the default command for interfaces ??????????????????????????????
-  
+
+    // JAWS!!!
+    // default sets the jaws command to use right stick y componet
     CommandScheduler.getInstance().registerSubsystem(m_jaws);
-    // Set the jaws command to use right stick y componet
     m_jaws.setDefaultCommand(
         new RunCommand(
           () ->
@@ -85,14 +96,11 @@ public class RobotContainer {
           m_jaws));
 
     CommandScheduler.getInstance().registerSubsystem(m_pneumatics);
-    // TODO - add the default command for pneumatics ??????????????????????????????
-    /*
     m_pneumatics.setDefaultCommand(
         new RunCommand(
           () ->
           m_pneumatics.compressorOn(),
           m_pneumatics));
-          */
 
     CommandScheduler.getInstance().registerSubsystem(m_shooter);
     m_shooter.setDefaultCommand(
@@ -189,9 +197,7 @@ public class RobotContainer {
     button5.whenPressed(new TelescopingArmExtendMiddle(m_telescopingArm));
     button6.whenPressed(new TelescopingArmExtendHigh(m_telescopingArm));
 
-    button7.whenPressed(new JawsIntake(m_jaws));
     button7.whenPressed(new ShooterIntake(m_shooter, m_ballStorage));
-   
     button8.whenPressed(new ShooterForwardLowShot(m_shooter, m_ballStorage));
     button9.whenPressed(new ShooterForwardHighShot(m_shooter, m_ballStorage));
     button10.whenPressed(new ShooterReverseHighShot(m_shooter, m_ballStorage));

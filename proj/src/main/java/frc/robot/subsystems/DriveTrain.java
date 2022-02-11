@@ -36,7 +36,9 @@ public class DriveTrain extends SubsystemBase
   private MotorControllerGroup right = new MotorControllerGroup(rightFront, rightRear);
   private DifferentialDrive drive = new DifferentialDrive(left, right);
 
-  // ctor
+  /**
+  * No argument constructor for the DriveTrain subsystem.
+  */
   public DriveTrain()
   {
     this.initializeMotors();
