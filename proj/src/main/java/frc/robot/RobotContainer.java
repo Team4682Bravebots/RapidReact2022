@@ -32,33 +32,26 @@ import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kReverse;
  */
 public class RobotContainer {
 
-
   //declaring and init subsystems  
+  public static AngleArms m_angleArm = new AngleArms();
+  public static BallStorage m_ballStorage = new BallStorage();
+  public static DriveTrain m_drivetrain = new DriveTrain();
   public static Jaws m_jaws = new Jaws();
+  public static Interfaces m_interfaces = new Interfaces();
   public static Pneumatics m_pneumatics  = new Pneumatics();
   public static Shooter m_shooter = new Shooter();
-  public static DriveTrain m_drivetrain = new DriveTrain();
-  public static BallStorage m_climbers1 = new BallStorage();
   public static TelescopingArms m_telescopingArm = new TelescopingArms();
-  public static AngleArms m_angleArm = new AngleArms();
-  public static Interfaces m_interfaces = new Interfaces();
-  public static BallStorage m_ballStorage = new BallStorage();
 
   // sets joystick variables to joysticks
   private XboxController driverController = new XboxController(Constants.portDriverController); 
   private XboxController coDriverController = new XboxController(Constants.portCoDriverController);
   private Joystick buttonBoard = new Joystick(Constants.buttonBoardPort);
 
-  int pov = -1;
-  int _pov = -1;
-  int _smoothing = 0;
-
-
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer()
   {
     // Configure the button bindings
-//    configureButtonBindings();
+    configureButtonBindings();
 
     CommandScheduler.getInstance().registerSubsystem(m_angleArm);
     m_angleArm.setDefaultCommand(
@@ -125,17 +118,19 @@ public class RobotContainer {
   //gets the joystick axis value where ever you want, 
   //for y use Robot.m_robotContainer.getJoystickRawAxis(Constants.joystickY); 
   //for x use Robot.m_robotContainer.getJoystickRawAxis(Constants.joystickX);
-  public double getJoystickRawAxis(int axis){
+  public double getJoystickRawAxis(int axis)
+  {
     return driverController.getRawAxis(axis);
   }
 
-  public double getXboxRawAxis(int axis){
+  public double getXboxRawAxis(int axis)
+  {
     return coDriverController.getRawAxis(axis);
   }
 
 
-  private void configureButtonBindings() {
-
+  private void configureButtonBindings()
+  {
     JoystickButton buttonA = new JoystickButton(coDriverController, 1);
     JoystickButton buttonB = new JoystickButton(coDriverController, 2);
     JoystickButton buttonY = new JoystickButton(coDriverController, 3);
@@ -182,7 +177,6 @@ public class RobotContainer {
     //10 grab Jaws in 
     //11 grab Jaws out
 
-
     //BUTTON BOARD
     button1.whenPressed(new JawsIntake(m_jaws));
     button2.whenPressed(new JawsForwardLowGoal(m_jaws));
@@ -196,7 +190,6 @@ public class RobotContainer {
     button8.whenPressed(new ShooterForwardLowShot(m_shooter, m_ballStorage));
     button9.whenPressed(new ShooterForwardHighShot(m_shooter, m_ballStorage));
     button10.whenPressed(new ShooterReverseHighShot(m_shooter, m_ballStorage));
-
   }
 
   /**
