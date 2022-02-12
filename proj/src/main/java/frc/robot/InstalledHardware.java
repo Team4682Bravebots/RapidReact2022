@@ -55,8 +55,8 @@ public class InstalledHardware
     public static final boolean rightRearDriveMotorInstalled = true;
 
     // TelescopingArms Related Hardware
-    public static final boolean leftTelescopingArmsDriveMotorInstalled = false;
-    public static final boolean rightTelescopingArmsDriveMotorInstalled = false;
+    public static final boolean leftTelescopingArmsDriveMotorInstalled = true;
+    public static final boolean rightTelescopingArmsDriveMotorInstalled = true;
 
     // Jaws Related Hardware
     public static final boolean topJawsDriveMotorInstalled = false;
@@ -74,7 +74,7 @@ public class InstalledHardware
     public static final boolean forwardBallStorageBeamBreakSensorInstalled = false;
     public static final boolean rearBallStorageBeamBreakSensorInstalled = false;
 
-    // Jaws Related Hardware
-    public static final boolean angleArmsToJawsCylindarSolenoidPneumaticsInstalled = true;
-    public static final boolean angleArmsToChassisCylindarSolenoidPneumaticsInstalled = true;
+    // Angle Arms Related Hardware
+    public static final boolean angleArmsToJawsCylindarSolenoidPneumaticsInstalled = false;
+    public static final boolean angleArmsToChassisCylindarSolenoidPneumaticsInstalled = false;
 }

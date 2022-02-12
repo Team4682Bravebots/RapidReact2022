@@ -23,7 +23,10 @@ import frc.robot.InstalledHardware;
 public class AngleArms extends SubsystemBase
 {
 
-  private DoubleSolenoid bothChassisAngleArmSolenoid = null;
+  private static final DoubleSolenoid bothChassisAngleArmSolenoid = new DoubleSolenoid(
+    Constants.robotPneumaticsControlModuleType,
+    Constants.bothChassisAngleArmSolenoidForwardChannel,
+    Constants.bothChassisAngleArmSolenoidReverseChannel);
   private DoubleSolenoid bothJawsAngleArmSolenoid = null; 
   
   private DoubleSolenoid.Value chassisEnguaged = kForward;
@@ -39,6 +42,7 @@ public class AngleArms extends SubsystemBase
    */
   public AngleArms()
   {
+/*
     if(InstalledHardware.angleArmsToChassisCylindarSolenoidPneumaticsInstalled)
     {
       bothChassisAngleArmSolenoid = new DoubleSolenoid(
@@ -55,6 +59,7 @@ public class AngleArms extends SubsystemBase
         Constants.bothJawsAngleArmSolenoidReverseChannel);
       this.disengageJaws();
     }
+*/
   }
 
   /**

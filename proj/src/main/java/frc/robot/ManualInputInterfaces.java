@@ -87,8 +87,9 @@ public class ManualInputInterfaces
   public double getInputTelescopingArms()
   {
     // TODO - switch this to use the coDriverController soon!!!
-    // should be: coDriverController.getRightX();
-    return driverController.getRightX();
+    // should be: coDriverController.getRightY();
+    System.out.println("driverController.getRightY() == " + driverController.getRightY());
+    return driverController.getRightY();
   }
   /**
    * A method to initialize various commands to the numerous buttons

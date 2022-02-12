@@ -123,8 +123,8 @@ public class RobotContainer
       InstalledHardware.coDriverXboxControllerInstalled &&
       InstalledHardware.driverXboxControllerInstalled)
     {
-      m_angleArms = new AngleArms();
-      CommandScheduler.getInstance().registerSubsystem(m_angleArms);
+      m_interfaces = new ManualInputInterfaces();
+      System.out.println("initalizeManualInputInterfaces - success!!");
     }
   }
 
@@ -136,6 +136,7 @@ public class RobotContainer
       m_angleArms = new AngleArms();
       CommandScheduler.getInstance().registerSubsystem(m_angleArms);
       // no need for a default command as buttons control this subsystem
+      System.out.println("initalizeAngleArms - success!!");
     }
   }
 
@@ -148,6 +149,7 @@ public class RobotContainer
     {
       m_ballStorage = new BallStorage();
       CommandScheduler.getInstance().registerSubsystem(m_ballStorage);
+      System.out.println("initalizeBallStorage - success!!");
     }
   }
 
@@ -169,7 +171,8 @@ public class RobotContainer
             m_interfaces.getInputArcadeDriveX(),
             m_interfaces.getInputArcadeDriveY()),
           m_driveTrain));
-    }
+        System.out.println("initalizeDriveTrain - success!!");
+      }
   }
 
   private void initializeJaws()
@@ -187,6 +190,7 @@ public class RobotContainer
             () ->
             m_jaws.setJawsSpeedManual(m_interfaces.getInputJaws()),
             m_jaws));
+      System.out.println("initializeJaws - success!!");
     }
   }
 
@@ -202,6 +206,7 @@ public class RobotContainer
             () ->
             m_pneumatics.compressorOn(),
             m_pneumatics));    
+        System.out.println("initializePneumatics - success!!");
       }
   }
 
@@ -217,7 +222,8 @@ public class RobotContainer
             () ->
             m_shooter.shooterManual(m_interfaces.getInputShooter()),
             m_shooter));
-      }
+      System.out.println("initalizeShooter - success!!");
+    }
   }
 
   private void initalizeTelescopingArms()
@@ -232,6 +238,7 @@ public class RobotContainer
             () ->
             m_telescopingArms.setTelescopingArmsSpeedManual(m_interfaces.getInputTelescopingArms()),
             m_telescopingArms));
+      System.out.println("initalizeTelescopingArms - success!!");
     }
   }
 

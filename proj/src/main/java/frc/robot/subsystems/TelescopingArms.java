@@ -366,8 +366,8 @@ public class TelescopingArms extends SubsystemBase
     // this method sets all of the key settings that will help in motion magic
     private void initializeMotors()
     {
-      leftMotor.restoreFactoryDefaults();
-      rightMotor.restoreFactoryDefaults(); 
+//      leftMotor.restoreFactoryDefaults();
+//      rightMotor.restoreFactoryDefaults(); 
   
       rightMotor.follow(leftMotor);
       rightMotor.setIdleMode(IdleMode.kBrake);

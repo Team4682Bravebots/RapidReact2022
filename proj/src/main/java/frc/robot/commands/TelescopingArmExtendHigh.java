@@ -39,7 +39,7 @@ public class TelescopingArmExtendHigh extends CommandBase
     {
       done = true;
     }
-    System.out.println("Jaws angle at: " + telescopingArmSubsystem.getTelescopingArmsHeight());
+    System.out.println("Telescoping arms height: " + telescopingArmSubsystem.getTelescopingArmsHeight());
   }
  
   // Called once the command ends or is interrupted.

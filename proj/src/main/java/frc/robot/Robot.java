@@ -66,7 +66,7 @@ public class Robot extends TimedRobot
   public void autonomousInit()
   {
     // get the uber autonomus command from the container
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+//    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null)
     {
