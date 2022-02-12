@@ -3,7 +3,7 @@
 // Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
 // File: DriveCommand.java
-// Intent: Forms a command to drive the wheels according to arcade style setup.
+// Intent: Forms a command to drive the wheels according to input parameters (encoder dead reckoning and accelormeter for rotation).
 // ************************************************************
 
 // ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ 
@@ -39,7 +39,7 @@ public class DriveCommand extends CommandBase {
   @Override
   public void execute()
   {
-    // TODO
+    // TODO - much work needed here
   }
 
   // Called once the command ends or is interrupted.
