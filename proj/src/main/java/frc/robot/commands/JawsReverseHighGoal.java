@@ -19,6 +19,10 @@ public class JawsReverseHighGoal extends CommandBase {
   public Jaws jawsSubsystem;
   public boolean done;
   
+  /**
+   * Constructor for the jaws reverse high goal score
+   * @param JawsSubsystem
+   */
   public JawsReverseHighGoal(Jaws JawsSubsystem)
   {
     // Use addRequirements() here to declare subsystem dependencies.

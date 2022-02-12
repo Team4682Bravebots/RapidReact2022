@@ -34,25 +34,25 @@ public class InstalledHardware
     
     // Communication Hardware
     public static final boolean wifiRadioInstalled = false;
-    public static final boolean buttonBoardInstalled = false;
-    public static final boolean driverXboxControllerInstalled = false;
-    public static final boolean coDriverXboxControllerInstalled = false;
+    public static final boolean buttonBoardInstalled = true;
+    public static final boolean driverXboxControllerInstalled = true;
+    public static final boolean coDriverXboxControllerInstalled = true;
 
     // Orentation/Navigation Hardware
-    public static final boolean navxInstalled = false;
+    public static final boolean navxInstalled = true;
     public static final boolean limelightInstalled = false;
 
     // Pnematics Hardware
     public static final boolean compressorInstalled = false;
-    public static final boolean pressrueReliefSwitchInstalled = false;
+    public static final boolean pressureReliefSwitchInstalled = false;
 
     // DriveTrain Related Hardware
-    public static final boolean leftFinalDriveShaftEncoderInstalled = false;
-    public static final boolean rightFinalDriveShaftEncoderInstalled = false;
-    public static final boolean leftFrontDriveMotorInstalled = false;
-    public static final boolean leftRearDriveMotorInstalled = false;
-    public static final boolean rightFrontDriveMotorInstalled = false;
-    public static final boolean rightRearDriveMotorInstalled = false;
+    public static final boolean leftFinalDriveShaftEncoderInstalled = true;
+    public static final boolean rightFinalDriveShaftEncoderInstalled = true;
+    public static final boolean leftFrontDriveMotorInstalled = true;
+    public static final boolean leftRearDriveMotorInstalled = true;
+    public static final boolean rightFrontDriveMotorInstalled = true;
+    public static final boolean rightRearDriveMotorInstalled = true;
 
     // TelescopingArms Related Hardware
     public static final boolean leftTelescopingArmsDriveMotorInstalled = false;
@@ -70,11 +70,11 @@ public class InstalledHardware
 
     // Ball Storage Related Hardware
     public static final boolean topBallStorageMotorInstalled = false;
-    public static final boolean ballBallStorageMotorInstalled = false;
+    public static final boolean bottomBallStorageMotorInstalled = false;
     public static final boolean forwardBallStorageBeamBreakSensorInstalled = false;
     public static final boolean rearBallStorageBeamBreakSensorInstalled = false;
 
     // Jaws Related Hardware
-    public static final boolean angleArmsToJawsCylindarSolenoidPneumaticsInstalled = false;
-    public static final boolean angleArmsToChassisCylindarSolenoidPneumaticsInstalled = false;
+    public static final boolean angleArmsToJawsCylindarSolenoidPneumaticsInstalled = true;
+    public static final boolean angleArmsToChassisCylindarSolenoidPneumaticsInstalled = true;
 }

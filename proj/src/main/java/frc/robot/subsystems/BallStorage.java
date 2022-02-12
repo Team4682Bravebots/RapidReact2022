@@ -137,13 +137,30 @@ public class BallStorage extends SubsystemBase
   }
 
   /**
-  * A method exposed to callers to set 
-  *
-  * @param speed - The speed to set the motor to, valid range -1.0 to 1.0
+  * A method exposed to callers to cause motors to drive belts in storage direction
   */
-  public void setManualSpeed(double speed)
+  public void storeBallManual()
   {
-    topMotor.set(MotorUtils.truncateValue(speed, -1.0, 1.0));
+      // since motors are followers ok to just set one
+      topMotor.set(Constants.storeSpeed);
+  }
+
+  /**
+  * A method exposed to callers to cause motors to stop
+  */
+  public void stopBallManual()
+  {
+      // since motors are followers ok to just set one
+      topMotor.set(0.0);
+  }
+
+  /**
+  * A method exposed to callers to cause motors to drive belts in retrieve direction
+  */
+  public void retrieveBallManual()
+  {
+      // since motors are followers ok to just set one
+      topMotor.set(Constants.storeSpeed);
   }
 
   private boolean isBallInFrontPosition()

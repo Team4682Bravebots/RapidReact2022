@@ -33,14 +33,17 @@ public class TelescopingArms extends SubsystemBase
     private static final double telescopingArmsMotorEncoderTicksPerDegree = Constants.RevNeoEncoderTicksPerRevolution / Constants.DegreesPerRevolution; 
     private static final double telescopingArmsRetractSpeedDuringCalibration = -0.4;
     private static final double telescopingArmsExtendSpeedDuringCalibration = 0.4;
+    // TODO - must get this from Simeon/Carter soon-ish
     private static final double telescopingArmsMotorToArmEffectiveGearRatio = 500;
 
     private static final double minmumTargetHeight = 0.0;
     // important - this should be the maximum extension of the arms and it must also be the length of the wire on the spool - in inches!
+    // TODO - must get this from Simeon/Carter soon-ish
     private static final double maximumTargetHeight = 30.0; 
     // measurements of spool diameter in 4 discrete ranges
     // intended to be an average measurement of wire/chord on the spool when the spool is 'fractionaly wound'
     // for example when 0-25% of the wire is wound on the spool we need the diameter of the average winding to be placed in telescopingArmsSpoolDiameterInches0to25
+    // TODO - must get these from Simeon/Carter soon-ish
     private static final double telescopingArmsSpoolDiameterInches0to25 = 1.0; 
     private static final double telescopingArmsSpoolDiameterInches26to50 = 1.1; 
     private static final double telescopingArmsSpoolDiameterInches51to75 = 1.2; 
@@ -159,7 +162,7 @@ public class TelescopingArms extends SubsystemBase
           double rightCurrent = rightMotor.getOutputCurrent();
           if(rightPowerList.size() >= TelescopingArms.powerSampleSizeSufficient)
           {
-            double rightCurrentAverage = this.obtainAveragePowerLeft();
+            double rightCurrentAverage = this.obtainAveragePowerRight();
             if(rightCurrentAverage * TelescopingArms.telescopingArmsCalibrationCompleteSpikeFromAverageFactor < rightCurrent)
             {
               // left side is complete

@@ -15,10 +15,19 @@ import frc.robot.subsystems.DriveTrain;
 
 public class DriveCommand extends CommandBase {
   
-  /** Creates a new driveCommand. 
+  /** 
+  * Creates a new driveCommand. 
   * 
-  * @param m_drivetrain*/
-  public DriveCommand(DriveTrain m_drivetrain) {
+  * @param driveTrainSubsystem - the drive train subsystem
+  * @param distanceInInches - the distance in inches the centroid of the robot should move (positive is forward, negative is reverse)
+  * @param rotationInDegrees - the rotation from -180.0 to +180.0 in degrees
+  */
+  public DriveCommand(
+    DriveTrain driveTrainSubsystem,
+    double distanceInInches,
+    double rotationInDegrees,
+    double targetTimeInSeconds)
+  {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -28,7 +37,10 @@ public class DriveCommand extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute()
+  {
+    // TODO
+  }
 
   // Called once the command ends or is interrupted.
   @Override

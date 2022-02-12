@@ -35,7 +35,7 @@ public class Jaws extends SubsystemBase
     ************************************************************************/
     private static final double jawsMotorEncoderTicksPerDegree = Constants.CtreTalonFx500EncoderTicksPerRevolution / Constants.DegreesPerRevolution;
     private static final double jawsSpeedDuringCalibration = -0.8;
-    private static final double jawsMotorToArmEffectiveGearRatio = 500;
+    private static final double jawsMotorToArmEffectiveGearRatio = 212; // according to nathan on 02/08/2022
     private static final int jawsMinimumIsCalibratedConsecutiveCount = 1;
     private static final double minmumTargetAngle = 0.0;
     private static final double maximumTargetAngle = 160.0;

@@ -49,7 +49,7 @@ public class ShooterIntake extends CommandBase {
     {
       done = true;
     }
-    // when the shot method returns true it is up to sufficient speed
+    // when the intake method returns true it is up to sufficient speed
     else if(shooterSubsystem.intake())
     {
       // when the ball storage store method returns true a ball has been stored

@@ -20,6 +20,7 @@ import frc.robot.subsystems.*;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kForward;
 import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kReverse;
@@ -30,166 +31,49 @@ import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kReverse;
  * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
  * subsystems, commands, and button mappings) should be declared here.
  */
-public class RobotContainer {
+public class RobotContainer
+{
+  // declaring interfaces
+  private ManualInputInterfaces m_interfaces = null;
 
-  //declaring and init subsystems  
-  public static AngleArms m_angleArm = new AngleArms();
-  public static BallStorage m_ballStorage = new BallStorage();
-  public static DriveTrain m_drivetrain = new DriveTrain();
-  public static Jaws m_jaws = new Jaws();
-  public static Interfaces m_interfaces = new Interfaces();
-  public static Pneumatics m_pneumatics  = new Pneumatics();
-  public static Shooter m_shooter = new Shooter();
-  public static TelescopingArms m_telescopingArm = new TelescopingArms();
-
-  // sets joystick variables to joysticks
-  private XboxController driverController = new XboxController(Constants.portDriverController); 
-  private XboxController coDriverController = new XboxController(Constants.portCoDriverController);
-  private Joystick buttonBoard = new Joystick(Constants.buttonBoardPort);
+  // declaring and init subsystems  
+  private AngleArms m_angleArms = null;
+  private BallStorage m_ballStorage = null;
+  private DriveTrain m_driveTrain = null;
+  private Jaws m_jaws = null;
+  private Pneumatics m_pneumatics  = null;
+  private Shooter m_shooter = null;
+  private TelescopingArms m_telescopingArms = null;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer()
   {
-    // Configure the button bindings
-    configureButtonBindings();
+    // create the input interface
+    this.initalizeManualInputInterfaces();
 
-    CommandScheduler.getInstance().registerSubsystem(m_angleArm);
-    m_angleArm.setDefaultCommand(
-        new RunCommand(
-          () ->
-          m_angleArm.manualChassisConnection(driverController.getBButtonPressed() ? Value.kForward : Value.kOff),
-          m_angleArm));
+    // initalize the Angle Arms
+    this.initalizeAngleArms();
 
-    // BALL STORAGE
-    CommandScheduler.getInstance().registerSubsystem(m_ballStorage);
-    // TODO - add the default command for ballStorage
+    // initialize the ball storage
+    this.initalizeBallStorage();
 
-    // DRIVE TRAIN!!!
-    // Set the default drive command to split-stick arcade drive
-    CommandScheduler.getInstance().registerSubsystem(m_drivetrain);
-    m_drivetrain.setDefaultCommand(
-        new RunCommand(
-          () ->
-          m_drivetrain.arcadeDrive(
-            driverController.getLeftX(),
-            driverController.getLeftY()),
-          m_drivetrain));
-  
-    // INTERFACES!!!
-    CommandScheduler.getInstance().registerSubsystem(m_interfaces);
-    // TODO - add the default command for interfaces ??????????????????????????????
+    // initialize the drive train
+    this.initalizeDriveTrain();
 
-    // JAWS!!!
-    // default sets the jaws command to use right stick y componet
-    CommandScheduler.getInstance().registerSubsystem(m_jaws);
-    m_jaws.setDefaultCommand(
-        new RunCommand(
-          () ->
-          m_jaws.setJawsSpeedManual(driverController.getRightX()),
-          m_jaws));
+    // initialize the jaws
+    this.initializeJaws();
 
-    CommandScheduler.getInstance().registerSubsystem(m_pneumatics);
-    m_pneumatics.setDefaultCommand(
-        new RunCommand(
-          () ->
-          m_pneumatics.compressorOn(),
-          m_pneumatics));
+    // initialize the pneumatics - mostly just turn the compressor on ...
+    this.initializePneumatics();
 
-    CommandScheduler.getInstance().registerSubsystem(m_shooter);
-    m_shooter.setDefaultCommand(
-        new RunCommand(
-          () ->
-          m_shooter.shooterManual(
-            (driverController.getLeftTriggerAxis() > driverController.getRightTriggerAxis() ? 
-            -1.0 * driverController.getLeftTriggerAxis() : 
-            driverController.getRightTriggerAxis())),
-          m_shooter));
+    // initialize the telescoping arms
+    this.initalizeTelescopingArms();
 
-    CommandScheduler.getInstance().registerSubsystem(m_telescopingArm);
-    m_telescopingArm.setDefaultCommand(
-        new RunCommand(
-          () ->
-          m_telescopingArm.setTelescopingArmsSpeedManual(driverController.getRightY()),
-          m_telescopingArm));
-
-  }
-
-  
-  //gets the joystick axis value where ever you want, 
-  //for y use Robot.m_robotContainer.getJoystickRawAxis(Constants.joystickY); 
-  //for x use Robot.m_robotContainer.getJoystickRawAxis(Constants.joystickX);
-  public double getJoystickRawAxis(int axis)
-  {
-    return driverController.getRawAxis(axis);
-  }
-
-  public double getXboxRawAxis(int axis)
-  {
-    return coDriverController.getRawAxis(axis);
-  }
-
-
-  private void configureButtonBindings()
-  {
-    JoystickButton buttonA = new JoystickButton(coDriverController, 1);
-    JoystickButton buttonB = new JoystickButton(coDriverController, 2);
-    JoystickButton buttonY = new JoystickButton(coDriverController, 3);
-    JoystickButton buttonX = new JoystickButton(coDriverController, 4);
-    JoystickButton bumperLeft = new JoystickButton(coDriverController, XboxController.Button.kLeftBumper.value);
-    JoystickButton bumperRight = new JoystickButton(coDriverController, XboxController.Button.kRightBumper.value);
-    JoystickButton joystickLeftButton = new JoystickButton(coDriverController, XboxController.Button.kLeftStick.value);
-    JoystickButton joystickRightButton = new JoystickButton(coDriverController, XboxController.Button.kRightStick.value);
-
-    JoystickButton button0 = new JoystickButton(buttonBoard, 0);
-    JoystickButton button1 = new JoystickButton(buttonBoard, 1);
-    JoystickButton button2 = new JoystickButton(buttonBoard, 2);
-    JoystickButton button3 = new JoystickButton(buttonBoard, 3);
-    JoystickButton button4 = new JoystickButton(buttonBoard, 4);
-    JoystickButton button5 = new JoystickButton(buttonBoard, 5);
-    JoystickButton button6 = new JoystickButton(buttonBoard, 6);
-    JoystickButton button7 = new JoystickButton(buttonBoard, 7);
-    JoystickButton button8 = new JoystickButton(buttonBoard, 8);
-    JoystickButton button9 = new JoystickButton(buttonBoard, 9);
-    JoystickButton button10 = new JoystickButton(buttonBoard, 10);
-    JoystickButton button11 = new JoystickButton(buttonBoard, 11);
-
-    //testing
-    buttonA.whenPressed(new JawsIntake(m_jaws));
-    buttonB.whenPressed(new JawsForwardLowGoal(m_jaws));
-    buttonY.whenPressed(new JawsForwardHighGoal(m_jaws));
-    buttonX.whenPressed(new RobotCalibration(m_jaws, m_telescopingArm));
-  
-    //BUTTON BOARD
-    //0 disable button board?   ??.java
-
-    //1 Jaws pos 1        JawsIntake.java
-    //2 Jaws pos 2        JawsForwardLowGoal.java
-    //3 Jaws default      JawsForwardHighGoal.java
-
-    //4 climber default   climber lock + climberS1Default.java
-    //5 climber pos 1     climber unlock + climberS1Extended.java 
-    //6 climber pos 2     wait for climb then climberlock + climberS1Endgame.java
-
-    //7 eat               JawsShooter + intakeEat + index eat 
-    //8 barf              intakeBard (high speed) + index barf 
-    //9 barf low          ShooterBarf (low speed) + index barf 
-
-    //10 grab Jaws in 
-    //11 grab Jaws out
-
-    //BUTTON BOARD
-    button1.whenPressed(new JawsIntake(m_jaws));
-    button2.whenPressed(new JawsForwardLowGoal(m_jaws));
-    button3.whenPressed(new JawsForwardHighGoal(m_jaws));
-
-    button4.whenPressed(new TelescopingArmRetract(m_telescopingArm));
-    button5.whenPressed(new TelescopingArmExtendMiddle(m_telescopingArm));
-    button6.whenPressed(new TelescopingArmExtendHigh(m_telescopingArm));
-
-    button7.whenPressed(new ShooterIntake(m_shooter, m_ballStorage));
-    button8.whenPressed(new ShooterForwardLowShot(m_shooter, m_ballStorage));
-    button9.whenPressed(new ShooterForwardHighShot(m_shooter, m_ballStorage));
-    button10.whenPressed(new ShooterReverseHighShot(m_shooter, m_ballStorage));
+    // make sure that all of the buttons have appropriate commands bound to them
+    if(m_interfaces != null)
+    {
+      m_interfaces.initializeButtonCommandBindings(m_angleArms, m_ballStorage, m_driveTrain, m_jaws, m_shooter, m_telescopingArms);
+    }
   }
 
   /**
@@ -197,13 +81,158 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    // TODO - fix this stub below!!!
-    return new RunCommand(
-      () ->
-      m_drivetrain.arcadeDrive(0.1, 0.0),
-      m_drivetrain);
+  public Command getAutonomousCommand()
+  {
+    // TODO - much work needed in this command group here!!!
+
+    // example automation to attempt to
+    // 1. shoot first ball
+    // 2. pickup another ball
+    // 3. shoot second ball
+    DriveCommand driveReverseToShot = new DriveCommand(m_driveTrain, -22.7, 0.0, 1.9);
+    JawsForwardHighGoal jawsToHighGoal = new JawsForwardHighGoal(m_jaws);
+    ShooterForwardHighShot shootHighGoal = new ShooterForwardHighShot(m_shooter, m_ballStorage);
+    DriveCommand rotateTowardBall = new DriveCommand(m_driveTrain, 0.0, 130.0, 1.0);
+    DriveCommand driveForwardToBall = new DriveCommand(m_driveTrain, 99.7, 10.0, 2.9);
+    JawsIntake jawsIntake = new JawsIntake(m_jaws);
+    ShooterIntake shooterIntake = new ShooterIntake(m_shooter, m_ballStorage);
+    DriveCommand rotateTowardBasket = new DriveCommand(m_driveTrain, 0.0, -130.0, 1.0);
+    DriveCommand driveForwardToHighGoal = new DriveCommand(m_driveTrain, 99.7, -10.0, 2.9);
+    JawsForwardHighGoal jawsToHighGoal2 = new JawsForwardHighGoal(m_jaws);
+    ShooterForwardHighShot shootHighGoal2 = new ShooterForwardHighShot(m_shooter, m_ballStorage);
+    SequentialCommandGroup commandGroup = new SequentialCommandGroup(
+      driveReverseToShot,
+      jawsToHighGoal,
+      shootHighGoal,
+      rotateTowardBall,
+      driveForwardToBall,
+      jawsIntake,
+      shooterIntake,
+      rotateTowardBasket,
+      driveForwardToHighGoal,
+      jawsToHighGoal2,
+      shootHighGoal2
+    );
+
+    return commandGroup;
+  }
+
+  private void initalizeManualInputInterfaces()
+  {
+    if(InstalledHardware.buttonBoardInstalled &&
+      InstalledHardware.coDriverXboxControllerInstalled &&
+      InstalledHardware.driverXboxControllerInstalled)
+    {
+      m_angleArms = new AngleArms();
+      CommandScheduler.getInstance().registerSubsystem(m_angleArms);
+    }
+  }
+
+  private void initalizeAngleArms()
+  {
+    if(InstalledHardware.angleArmsToJawsCylindarSolenoidPneumaticsInstalled && 
+      InstalledHardware.angleArmsToChassisCylindarSolenoidPneumaticsInstalled)
+    {
+      m_angleArms = new AngleArms();
+      CommandScheduler.getInstance().registerSubsystem(m_angleArms);
+      // no need for a default command as buttons control this subsystem
+    }
+  }
+
+  private void initalizeBallStorage()
+  {
+    if(InstalledHardware.bottomBallStorageMotorInstalled && 
+      InstalledHardware.topBallStorageMotorInstalled && 
+      InstalledHardware.forwardBallStorageBeamBreakSensorInstalled &&
+      InstalledHardware.rearBallStorageBeamBreakSensorInstalled)
+    {
+      m_ballStorage = new BallStorage();
+      CommandScheduler.getInstance().registerSubsystem(m_ballStorage);
+    }
+  }
+
+  private void initalizeDriveTrain()
+  {
+    if(InstalledHardware.leftFinalDriveShaftEncoderInstalled && 
+      InstalledHardware.leftFrontDriveMotorInstalled && 
+      InstalledHardware.leftRearDriveMotorInstalled && 
+      InstalledHardware.rightFinalDriveShaftEncoderInstalled && 
+      InstalledHardware.rightFrontDriveMotorInstalled && 
+      InstalledHardware.rightRearDriveMotorInstalled)
+    {
+      m_driveTrain = new DriveTrain();
+      CommandScheduler.getInstance().registerSubsystem(m_driveTrain);
+      m_driveTrain.setDefaultCommand(
+        new RunCommand(
+          () ->
+          m_driveTrain.arcadeDrive(
+            m_interfaces.getInputArcadeDriveX(),
+            m_interfaces.getInputArcadeDriveY()),
+          m_driveTrain));
+    }
+  }
+
+  private void initializeJaws()
+  {
+    if(InstalledHardware.topJawsDriveMotorInstalled &&
+      InstalledHardware.bottomJawsDriveMotorInstalled &&
+      InstalledHardware.intakeStopJawsLmitSwitchInstalled &&
+      InstalledHardware.jawsClutchCylindarSolenoidPneumaticsInstalled)
+    {
+      // JAWS!!!
+      m_jaws = new Jaws();
+      CommandScheduler.getInstance().registerSubsystem(m_jaws);
+      m_jaws.setDefaultCommand(
+          new RunCommand(
+            () ->
+            m_jaws.setJawsSpeedManual(m_interfaces.getInputJaws()),
+            m_jaws));
+    }
+  }
+
+  private void initializePneumatics()
+  {
+    if(InstalledHardware.compressorInstalled &&
+      InstalledHardware.pressureReliefSwitchInstalled)
+    {
+      m_pneumatics = new Pneumatics();
+      CommandScheduler.getInstance().registerSubsystem(m_pneumatics);
+      m_pneumatics.setDefaultCommand(
+          new RunCommand(
+            () ->
+            m_pneumatics.compressorOn(),
+            m_pneumatics));    
+      }
+  }
+
+  private void initalizeShooter()
+  {
+    if(InstalledHardware.topShooterDriveMotorInstalled &&
+      InstalledHardware.bottomShooterDriveMotorInstalled)
+    {
+      m_shooter = new Shooter();
+      CommandScheduler.getInstance().registerSubsystem(m_shooter);
+      m_shooter.setDefaultCommand(
+          new RunCommand(
+            () ->
+            m_shooter.shooterManual(m_interfaces.getInputShooter()),
+            m_shooter));
+      }
+  }
+
+  private void initalizeTelescopingArms()
+  {
+    if(InstalledHardware.leftTelescopingArmsDriveMotorInstalled &&
+      InstalledHardware.rightTelescopingArmsDriveMotorInstalled)
+    {
+      m_telescopingArms = new TelescopingArms();
+      CommandScheduler.getInstance().registerSubsystem(m_telescopingArms);
+      m_telescopingArms.setDefaultCommand(
+          new RunCommand(
+            () ->
+            m_telescopingArms.setTelescopingArmsSpeedManual(m_interfaces.getInputTelescopingArms()),
+            m_telescopingArms));
+    }
   }
 
 }

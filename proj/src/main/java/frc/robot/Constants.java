@@ -48,6 +48,8 @@ public final class Constants
   public static final double jawsLowGoalPositionAngle = 40.0;
   public static final double jawsHighGoalPositionAngle = 65.0; 
   public static final double jawsPositionAngleTolerance = 1.5;
+  public static final double jawsAngleArmsEnguagePositionAngle = 81.0;
+  public static final double jawsAngleArmsEnguagePositionTolerance = 0.9;
 
   // telescoping arms reach points \\
   public static final double telescopingArmsRetractHeightInches = 2.0;
@@ -114,7 +116,11 @@ public final class Constants
 
   // TIMING AND SPEEDS \\
   // AngleArm timing \\
-  public static final double AngleArmTiming = 0.3;
+  public static final double AngleArmTimingSeconds = 0.3;
+
+  // BallStorage timing \\
+  public static final double BallStorageStoreTimingSeconds = 1.0;
+  public static final double BallStorageRetrieveTimingSeconds = 0.3;
 
   // substystem motor speeds \\
   public static final double ShooterEatSpeed = 0.5;

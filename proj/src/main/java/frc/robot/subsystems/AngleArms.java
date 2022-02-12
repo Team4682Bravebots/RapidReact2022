@@ -18,18 +18,13 @@ import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kForward;
 import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kReverse;
 
 import frc.robot.Constants;
+import frc.robot.InstalledHardware;
 
 public class AngleArms extends SubsystemBase
 {
 
-  private final DoubleSolenoid bothChassisAngleArmSolenoid = new DoubleSolenoid(
-    Constants.robotPneumaticsControlModuleType,
-    Constants.bothChassisAngleArmSolenoidForwardChannel,
-    Constants.bothChassisAngleArmSolenoidReverseChannel); 
-  private final DoubleSolenoid bothJawsAngleArmSolenoid = new DoubleSolenoid(
-    Constants.robotPneumaticsControlModuleType,
-    Constants.bothJawsAngleArmSolenoidForwardChannel,
-    Constants.bothJawsAngleArmSolenoidReverseChannel); 
+  private DoubleSolenoid bothChassisAngleArmSolenoid = null;
+  private DoubleSolenoid bothJawsAngleArmSolenoid = null; 
   
   private DoubleSolenoid.Value chassisEnguaged = kForward;
   private DoubleSolenoid.Value chassisDisenguaged = kReverse;
@@ -39,42 +34,105 @@ public class AngleArms extends SubsystemBase
   private DoubleSolenoid.Value currentChassisSetting = kReverse;
   private DoubleSolenoid.Value currentJawsSetting = kReverse;
 
-  // ctor for angle arms 
-  public AngleArms() {}
+  /**
+   * The constructor for AngleArms
+   */
+  public AngleArms()
+  {
+    if(InstalledHardware.angleArmsToChassisCylindarSolenoidPneumaticsInstalled)
+    {
+      bothChassisAngleArmSolenoid = new DoubleSolenoid(
+        Constants.robotPneumaticsControlModuleType,
+        Constants.bothChassisAngleArmSolenoidForwardChannel,
+        Constants.bothChassisAngleArmSolenoidReverseChannel);
+      this.engageChassis();
+    }
+    if(InstalledHardware.angleArmsToJawsCylindarSolenoidPneumaticsInstalled)
+    {
+      bothJawsAngleArmSolenoid = new DoubleSolenoid(
+        Constants.robotPneumaticsControlModuleType,
+        Constants.bothJawsAngleArmSolenoidForwardChannel,
+        Constants.bothJawsAngleArmSolenoidReverseChannel);
+      this.disengageJaws();
+    }
+  }
 
+  /**
+   * A method to tell the the solenoid to engage the chassis
+   */
   public void engageChassis()
   {
     if(currentChassisSetting != this.chassisEnguaged)
     {
-      bothChassisAngleArmSolenoid.set(this.chassisEnguaged);
+      this.manualChassisConnection(this.chassisEnguaged);
     }
   }
 
+  /**
+   * A method to tell the the solenoid to disengage the chassis
+   */
   public void disengageChassis()
   {
     if(currentChassisSetting != this.chassisDisenguaged)
     {
-      bothChassisAngleArmSolenoid.set(this.chassisDisenguaged);
+      this.manualChassisConnection(this.chassisDisenguaged);
     }
   }
 
+  /**
+   * A method to tell the the solenoid to engage the chassis
+   */
   public void engageJaws()
   {
     if(this.currentJawsSetting != this.jawsEnguaged)
     {
-      bothJawsAngleArmSolenoid.set(this.jawsEnguaged);
+      this.manualJawsConnection(this.jawsEnguaged);
     }
   }
 
+  /**
+   * A method to tell the the solenoid to disengage the chassis
+   */
   public void disengageJaws()
   {
     if(this.currentJawsSetting != this.jawsDisnguaged)
     {
-      bothJawsAngleArmSolenoid.set(this.jawsDisnguaged);
+      this.manualJawsConnection(this.jawsDisnguaged);
     }
   }
 
-  public void manualChassisConnection(DoubleSolenoid.Value setting)
+  /**
+   * A method to tell tell the chassis connection to do the opposite of its current setting
+   * If currently set to engaged it will disengage
+   * If currently set to disengage it will engage
+   */
+  public void toggleChassisConnection()
+  {
+    this.manualChassisConnection(
+      currentJawsSetting == DoubleSolenoid.Value.kForward ? DoubleSolenoid.Value.kReverse : DoubleSolenoid.Value.kForward
+    );
+  }
+
+  /**
+   * A method to tell tell the jaws connection to do the opposite of its current setting
+   * If currently set to engaged it will disengage
+   * If currently set to disengage it will engage
+   */
+  public void toggleJawsConnection()
+  {
+    this.manualJawsConnection(
+      currentJawsSetting == DoubleSolenoid.Value.kForward ? DoubleSolenoid.Value.kReverse : DoubleSolenoid.Value.kForward
+    );
+  }
+
+  @Override
+  public void setDefaultCommand(Command myCommand)
+  {
+      // TODO Auto-generated method stub
+      super.setDefaultCommand(myCommand);
+  }
+
+  private void manualChassisConnection(DoubleSolenoid.Value setting)
   {
     if(this.currentChassisSetting != setting)
     {
@@ -84,7 +142,7 @@ public class AngleArms extends SubsystemBase
     }
   }
 
-  public void manualJawsConnection(DoubleSolenoid.Value setting)
+  private void manualJawsConnection(DoubleSolenoid.Value setting)
   {
     if(this.currentJawsSetting != setting)
     {
@@ -94,10 +152,4 @@ public class AngleArms extends SubsystemBase
     }
   }
 
-  @Override
-  public void setDefaultCommand(Command myCommand)
-  {
-      // TODO Auto-generated method stub
-      super.setDefaultCommand(myCommand);
-  }
 }
