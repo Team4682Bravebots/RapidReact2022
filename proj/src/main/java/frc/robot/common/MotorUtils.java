@@ -29,7 +29,7 @@ public class MotorUtils
     *
     * @param  value - target value 
     * @param  minBoundary - when value is below the minimum boundary the minBoundary is used as the returned value
-    * @param  minBoundary - when value is above the maximum boundary the maxBoundary is used as the returned value
+    * @param  maxBoundary - when value is above the maximum boundary the maxBoundary is used as the returned value
     * @return the target or trimmed value
     */
     public static double truncateValue(

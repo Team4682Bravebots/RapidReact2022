@@ -228,8 +228,8 @@ public class TelescopingArms extends SubsystemBase
     */
     public void setTelescopingArmsSpeedManual(double telescopingArmsSpeed)
     {
-      MotorUtils.validateMotorSpeedInput(telescopingArmsSpeed, "TelescopingArmsSpeed", null);
-      rightMotor.set(telescopingArmsSpeed);
+      System.out.println("setTelescopingArmsSpeedManual to: " + telescopingArmsSpeed);
+      rightMotor.set(MotorUtils.truncateValue(telescopingArmsSpeed, -1.0, 1.0));
     }
 
     /**
@@ -366,17 +366,18 @@ public class TelescopingArms extends SubsystemBase
     // this method sets all of the key settings that will help in motion magic
     private void initializeMotors()
     {
-//      leftMotor.restoreFactoryDefaults();
-//      rightMotor.restoreFactoryDefaults(); 
-  
+      System.out.println(">>>>>>>>>>>>>>>>>>>>>>>> START initializeMotors()");
+      rightMotor.restoreFactoryDefaults();  
+      rightPidController = leftMotor.getPIDController();
+      rightEncoder = leftMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, Constants.countPerRevHallSensor);
       rightMotor.follow(leftMotor);
-      rightMotor.setIdleMode(IdleMode.kBrake);
+
+      leftMotor.restoreFactoryDefaults();
+      leftMotor.setIdleMode(IdleMode.kBrake);
   
       // initialize PID controller and encoder objects
       leftPidController = leftMotor.getPIDController();
-      rightPidController = rightMotor.getPIDController();
       leftEncoder = leftMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, Constants.countPerRevHallSensor);
-      rightEncoder = leftMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, Constants.countPerRevHallSensor);
   
       // PID coefficients
       kP = 5e-5; 
@@ -405,19 +406,7 @@ public class TelescopingArms extends SubsystemBase
       leftPidController.setSmartMotionMinOutputVelocity(minVel, smartMotionSlot);
       leftPidController.setSmartMotionMaxAccel(maxAcc, smartMotionSlot);
       leftPidController.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot);
-      
-      // set PID coefficients
-      rightPidController.setP(kP);
-      rightPidController.setI(kI);
-      rightPidController.setD(kD);
-      rightPidController.setIZone(kIz);
-      rightPidController.setFF(kFF);
-      rightPidController.setOutputRange(kMinOutput, kMaxOutput);
-  
-      rightPidController.setSmartMotionMaxVelocity(maxVel, smartMotionSlot);
-      rightPidController.setSmartMotionMinOutputVelocity(minVel, smartMotionSlot);
-      rightPidController.setSmartMotionMaxAccel(maxAcc, smartMotionSlot);
-      rightPidController.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot);
+      System.out.println("<<<<<<<<<<<<<<<<<<<<<<<< END initializeMotors()");
     }
 
     private void trimAndRecordLeftPower(double currentReading)
