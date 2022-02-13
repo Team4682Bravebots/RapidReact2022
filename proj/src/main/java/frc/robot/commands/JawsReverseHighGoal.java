@@ -40,7 +40,7 @@ public class JawsReverseHighGoal extends CommandBase {
   {
     if(jawsSubsystem.setJawsAngle(Constants.jawsReverseHighGoalPositionAngle, Constants.jawsPositionAngleTolerance))
     {
-      jawsSubsystem.holdCurrentJawsPosition();
+      jawsSubsystem.suspendJawMovement();
       done = true;
     }
   }

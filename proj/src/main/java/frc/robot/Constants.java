@@ -11,6 +11,8 @@
 package frc.robot;
 
 import frc.robot.*;
+import frc.robot.common.Gains;
+import frc.robot.common.RoboRioOrentation;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 
 /**
@@ -131,22 +133,6 @@ public final class Constants
   // hid ports \\ 
   public static int portDriverController = 0;
   public static int portCoDriverController = 1;
-  // xbox buttons \\
-  public final static int buttonA = 1;
-  public final static int buttonB = 2;
-  public final static int buttonX = 3; 
-  public final static int buttonY = 4;
-  public final int buttonO1 = -1;
-  public final int buttonO2 = 8;
-  public final int stickLeftDown = 9;
-  public final int stickRightDown = 10;
-  public final static int bumperLeft = 5;
-  public final static int bumperRight = 6;
-
-  //joystick axis lables 
-  public static final int joystickX = 0;
-  public static final int joystickY = 1;
-  public static final int joystickZ = 2;
 
   // util \\ //TODO if needed 
   public static final int kPIDLoopIdx = 0;
@@ -157,5 +143,8 @@ public final class Constants
   public static final Gains kGains = new Gains(0.2, 0.0, 0.0, 0.2, 0, 1.0);
   public static final int countPerRevHallSensor = 42;
   public static final int buttonBoardPort = 0;
+
+  // orentation
+  public static final RoboRioOrentation roboRioOrentation = RoboRioOrentation.RelayForward;
 
 }

@@ -33,8 +33,9 @@ import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kReverse;
  */
 public class RobotContainer
 {
-  // declaring interfaces
-  private ManualInputInterfaces m_interfaces = null;
+  // declaring input classes
+  private ManualInputInterfaces m_manualInput = null;
+  private OnboardInputInterfaces m_onboardInput = null;
 
   // declaring and init subsystems  
   private AngleArms m_angleArms = null;
@@ -48,8 +49,11 @@ public class RobotContainer
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer()
   {
-    // create the input interface
+    // create the manual input interface
     this.initalizeManualInputInterfaces();
+
+    // create the onboard input interface
+    this.initalizeOnboardInputInterfaces();
 
     // initalize the Angle Arms
     this.initalizeAngleArms();
@@ -70,9 +74,9 @@ public class RobotContainer
     this.initalizeTelescopingArms();
 
     // make sure that all of the buttons have appropriate commands bound to them
-    if(m_interfaces != null)
+    if(m_manualInput != null)
     {
-      m_interfaces.initializeButtonCommandBindings(m_angleArms, m_ballStorage, m_driveTrain, m_jaws, m_shooter, m_telescopingArms);
+      m_manualInput.initializeButtonCommandBindings(m_angleArms, m_ballStorage, m_driveTrain, m_jaws, m_shooter, m_telescopingArms);
     }
   }
 
@@ -123,8 +127,26 @@ public class RobotContainer
       InstalledHardware.coDriverXboxControllerInstalled &&
       InstalledHardware.driverXboxControllerInstalled)
     {
-      m_interfaces = new ManualInputInterfaces();
-      System.out.println("initalizeManualInputInterfaces - success!!");
+      m_manualInput = new ManualInputInterfaces();
+      System.out.println("SUCCESS: initalizeManualInputInterfaces");
+    }
+    else
+    {
+      System.out.println("FAIL: initalizeManualInputInterfaces");
+    }
+  }
+
+  private void initalizeOnboardInputInterfaces()
+  {
+    // TODO - when limelight comes online add it here
+    if(InstalledHardware.navxInstalled /* && InstalledHardware.limelightInstalled */)
+    {
+      m_onboardInput = new OnboardInputInterfaces();
+      System.out.println("SUCCESS: initalizeOnboardInputInterfaces");
+    }
+    else
+    {
+      System.out.println("FAIL: initalizeOnboardInputInterfaces");
     }
   }
 
@@ -136,7 +158,11 @@ public class RobotContainer
       m_angleArms = new AngleArms();
       CommandScheduler.getInstance().registerSubsystem(m_angleArms);
       // no need for a default command as buttons control this subsystem
-      System.out.println("initalizeAngleArms - success!!");
+      System.out.println("SUCCESS: initalizeAngleArms");
+    }
+    else
+    {
+      System.out.println("FAIL: initalizeAngleArms");
     }
   }
 
@@ -149,7 +175,11 @@ public class RobotContainer
     {
       m_ballStorage = new BallStorage();
       CommandScheduler.getInstance().registerSubsystem(m_ballStorage);
-      System.out.println("initalizeBallStorage - success!!");
+      System.out.println("SUCCESS: initalizeBallStorage");
+    }
+    else
+    {
+      System.out.println("FAIL: initalizeBallStorage");
     }
   }
 
@@ -168,11 +198,15 @@ public class RobotContainer
         new RunCommand(
           () ->
           m_driveTrain.arcadeDrive(
-            m_interfaces.getInputArcadeDriveX(),
-            m_interfaces.getInputArcadeDriveY()),
+            m_manualInput.getInputArcadeDriveX(),
+            m_manualInput.getInputArcadeDriveY()),
           m_driveTrain));
-        System.out.println("initalizeDriveTrain - success!!");
-      }
+      System.out.println("SUCCESS: initalizeDriveTrain");
+    }
+    else
+    {
+      System.out.println("FAIL: initalizeDriveTrain");
+    }
   }
 
   private void initializeJaws()
@@ -188,9 +222,13 @@ public class RobotContainer
       m_jaws.setDefaultCommand(
           new RunCommand(
             () ->
-            m_jaws.setJawsSpeedManual(m_interfaces.getInputJaws()),
+            m_jaws.setJawsSpeedManual(m_manualInput.getInputJaws()),
             m_jaws));
-      System.out.println("initializeJaws - success!!");
+      System.out.println("SUCCESS: initializeJaws");
+    }
+    else
+    {
+      System.out.println("FAIL: initializeJaws");
     }
   }
 
@@ -206,9 +244,14 @@ public class RobotContainer
             () ->
             m_pneumatics.compressorOn(),
             m_pneumatics));    
-        System.out.println("initializePneumatics - success!!");
-      }
+      System.out.println("SUCCESS: initializePneumatics");
+    }
+    else
+    {
+      System.out.println("FAIL: initializePneumatics");
+    }
   }
+
 
   private void initalizeShooter()
   {
@@ -220,11 +263,16 @@ public class RobotContainer
       m_shooter.setDefaultCommand(
           new RunCommand(
             () ->
-            m_shooter.shooterManual(m_interfaces.getInputShooter()),
+            m_shooter.shooterManual(m_manualInput.getInputShooter()),
             m_shooter));
-      System.out.println("initalizeShooter - success!!");
+      System.out.println("SUCCESS: initalizeShooter");
+    }
+    else
+    {
+      System.out.println("FAIL: initalizeShooter");
     }
   }
+
 
   private void initalizeTelescopingArms()
   {
@@ -236,10 +284,15 @@ public class RobotContainer
       m_telescopingArms.setDefaultCommand(
           new RunCommand(
             () ->
-            m_telescopingArms.setTelescopingArmsSpeedManual(m_interfaces.getInputTelescopingArms()),
+            m_telescopingArms.setTelescopingArmsSpeedManual(m_manualInput.getInputTelescopingArms()),
             m_telescopingArms));
-      System.out.println("initalizeTelescopingArms - success!!");
+      System.out.println("SUCCESS: initalizeTelescopingArms");
+    }
+    else
+    {
+      System.out.println("FAIL: initalizeTelescopingArms");
     }
   }
+
 
 }

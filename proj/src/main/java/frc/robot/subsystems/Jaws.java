@@ -138,19 +138,6 @@ public class Jaws extends SubsystemBase
     }
 
     /**
-    * a method exposed to callers to hold the current jaws angle
-    */
-    public void holdCurrentJawsPosition()
-    {
-      if(!clutchEnguaged)
-      {
-        jawsClutchSolenoid.set(this.clutchEnguagedSetting);
-        clutchEnguaged = true;
-        rightMotor.set(TalonFXControlMode.PercentOutput, 0.0);
-      }      
-    }
-
-    /**
     * a method exposed to callers to set the jaws angle
     *
     * @param  targetAngle - target angle of the jaws measured from front limit switch position
@@ -159,7 +146,7 @@ public class Jaws extends SubsystemBase
     */
     public boolean setJawsAngle(double targetAngleInDegrees, double toleranceInDegrees)
     {
-      this.releaseCurrentJawsPosition();
+      this.resumeJawMovement();
       double trimmedAngle = MotorUtils.truncateValue(targetAngleInDegrees, Jaws.minmumTargetAngle, Jaws.maximumTargetAngle);
 
       // because of follower this will set both motors
@@ -176,7 +163,7 @@ public class Jaws extends SubsystemBase
     */
     public void setJawsSpeedManual(double jawsSpeed)
     {
-      this.releaseCurrentJawsPosition();
+      this.resumeJawMovement();
       MotorUtils.validateMotorSpeedInput(jawsSpeed, "jawsSpeed", null);
       rightMotor.set(TalonFXControlMode.PercentOutput, jawsSpeed);
     }
@@ -198,15 +185,43 @@ public class Jaws extends SubsystemBase
     }
 
     /**
-    * a method exposed to callers to release the current jaws angle
+    * a method exposed to callers to hold/lock the current jaws angle
     */
-    public void releaseCurrentJawsPosition()
+    public void suspendJawMovement()
+    {
+      if(!clutchEnguaged)
+      {
+        jawsClutchSolenoid.set(this.clutchEnguagedSetting);
+        clutchEnguaged = true;
+        rightMotor.set(TalonFXControlMode.PercentOutput, 0.0);
+      }      
+    }
+    
+    /**
+    * a method exposed to callers to release/unlock the current jaws angle
+    */
+    public void resumeJawMovement()
     {
       if(clutchEnguaged)
       {
         jawsClutchSolenoid.set(this.clutchDisenguagedSetting);
         clutchEnguaged = false;
       }      
+    }
+
+    /**
+    * A method exposed to callers to toggle between locking and unlocking movement on the jaws
+    */
+    public void toggleJawMovement()
+    {
+      if(clutchEnguaged)
+      {
+        this.resumeJawMovement();
+      }
+      else
+      {
+        this.suspendJawMovement();
+      }
     }
 
     /* *********************************************************************

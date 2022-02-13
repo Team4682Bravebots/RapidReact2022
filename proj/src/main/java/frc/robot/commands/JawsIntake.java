@@ -36,7 +36,7 @@ public class JawsIntake extends CommandBase {
   {
     if(jawsSubsystem.setJawsAngle(Constants.jawsIntakePositionAngle, Constants.jawsPositionAngleTolerance))
     {
-      jawsSubsystem.holdCurrentJawsPosition();
+      jawsSubsystem.suspendJawMovement();
       done = true;
     }
   }

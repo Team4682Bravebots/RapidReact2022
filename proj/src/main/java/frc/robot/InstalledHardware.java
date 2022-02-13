@@ -32,15 +32,15 @@ public class InstalledHardware
     // Basic Hardware
     public static final boolean powerDistributionPannelInstalled = true;
     
-    // Communication Hardware
+    // Onboard Hardware - Orentation/Navigation Hardware
     public static final boolean wifiRadioInstalled = false;
+    public static final boolean navxInstalled = true;
+    public static final boolean limelightInstalled = false;
+
+    // External Input Hardware
     public static final boolean buttonBoardInstalled = true;
     public static final boolean driverXboxControllerInstalled = true;
     public static final boolean coDriverXboxControllerInstalled = true;
-
-    // Orentation/Navigation Hardware
-    public static final boolean navxInstalled = true;
-    public static final boolean limelightInstalled = false;
 
     // Pnematics Hardware
     public static final boolean compressorInstalled = false;

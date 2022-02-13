@@ -13,20 +13,29 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
 
-public class DriveCommand extends CommandBase {
+public class DriveCommand extends CommandBase
+{
+
+  private DriveTrain driveTrain;
+  private double targetDistanceInInches;
+  private double targetRotationInDegrees;
+  private double targetTimeInSeconds;
+  boolean started = false;
+  boolean done = false;
   
   /** 
   * Creates a new driveCommand. 
   * 
   * @param driveTrainSubsystem - the drive train subsystem
   * @param distanceInInches - the distance in inches the centroid of the robot should move (positive is forward, negative is reverse)
-  * @param rotationInDegrees - the rotation from -180.0 to +180.0 in degrees
+  * @param rotationInDegrees - the rotation from -360.0 to +360.0 in degrees
+  * @param timeInSeconds - the target time in seconds to perform the operation
   */
   public DriveCommand(
     DriveTrain driveTrainSubsystem,
     double distanceInInches,
     double rotationInDegrees,
-    double targetTimeInSeconds)
+    double timeInSeconds)
   {
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -39,7 +48,11 @@ public class DriveCommand extends CommandBase {
   @Override
   public void execute()
   {
-    // TODO - much work needed here
+    if(!started)
+    {
+      driveTrain.performCircleArcDriveInches(targetDistanceInInches, targetRotationInDegrees, targetTimeInSeconds);
+    }
+    done = driveTrain.isCurrentlyPerformingDriveMovement();
   }
 
   // Called once the command ends or is interrupted.
@@ -48,7 +61,8 @@ public class DriveCommand extends CommandBase {
 
   // Returns true when the command should end.
   @Override
-  public boolean isFinished() {
-    return false;
+  public boolean isFinished()
+  {
+    return done;
   }
 }

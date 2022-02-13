@@ -32,7 +32,7 @@ public class ManualInputInterfaces
   private TelescopingArms telescopingArms = null;
 
   /**
-   * The constructor to build this s
+   * The constructor to build this 'manual input' conduit
    */
   public ManualInputInterfaces()
   {
@@ -53,7 +53,8 @@ public class ManualInputInterfaces
    */
   public double getInputArcadeDriveY()
   {
-    return driverController.getLeftY();
+    // need to invert the y for all xbox controllers due to xbox controler having up as negative y axis
+    return driverController.getLeftY() * -1.0;
   }
 
   /**
@@ -88,9 +89,11 @@ public class ManualInputInterfaces
   {
     // TODO - switch this to use the coDriverController soon!!!
     // should be: coDriverController.getRightY();
-    System.out.println("driverController.getRightY() == " + driverController.getRightY());
-    return driverController.getRightY();
+    // need to invert the y for all xbox controllers due to xbox controler having up as negative y axis
+    System.out.println("driverController.getRightY() == " + driverController.getRightY() * -1.0);
+    return driverController.getRightY() * -1.0;
   }
+  
   /**
    * A method to initialize various commands to the numerous buttons
    * @param angleArmsSubsystem - the current angle arms subsystem
@@ -140,6 +143,7 @@ public class ManualInputInterfaces
       JoystickButton buttonY = new JoystickButton(coDriverController, XboxController.Button.kY.value);
       JoystickButton bumperLeft = new JoystickButton(driverController, XboxController.Button.kLeftBumper.value);
       JoystickButton bumperRight = new JoystickButton(driverController, XboxController.Button.kRightBumper.value);
+      JoystickButton joystickButton = new JoystickButton(driverController, XboxController.Button.kRightStick.value);
 
       if(angleArms != null)
       {
@@ -150,6 +154,10 @@ public class ManualInputInterfaces
       {
         bumperLeft.whenPressed(new BallStorageStoreManual(ballStorage));
         bumperRight.whenPressed(new BallStorageRetrieveManual(ballStorage));
+      }
+      if(jaws != null)
+      {
+        joystickButton.whenPressed(new JawsHoldReleaseManual(jaws));
       }
       // *************************************************************
       // *************************************************************
@@ -168,6 +176,7 @@ public class ManualInputInterfaces
       JoystickButton buttonY = new JoystickButton(coDriverController, XboxController.Button.kY.value);
       JoystickButton bumperLeft = new JoystickButton(coDriverController, XboxController.Button.kLeftBumper.value);
       JoystickButton bumperRight = new JoystickButton(coDriverController, XboxController.Button.kRightBumper.value);
+      JoystickButton joystickButton = new JoystickButton(coDriverController, XboxController.Button.kLeftStick.value);
 
       if(angleArms != null)
       {
@@ -178,6 +187,10 @@ public class ManualInputInterfaces
       {
         bumperLeft.whenPressed(new BallStorageStoreManual(ballStorage));
         bumperRight.whenPressed(new BallStorageRetrieveManual(ballStorage));
+      }
+      if(jaws != null)
+      {
+        joystickButton.whenPressed(new JawsHoldReleaseManual(jaws));
       }
     }
   }
