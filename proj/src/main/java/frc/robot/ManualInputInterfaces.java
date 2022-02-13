@@ -13,6 +13,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.builders.ClimbCommandBuilder;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 
@@ -24,18 +25,14 @@ public class ManualInputInterfaces
   private Joystick buttonBoard = new Joystick(Constants.buttonBoardPort);
 
   // subsystems needed for inputs
-  private AngleArms angleArms = null;
-  private BallStorage ballStorage = null;
-  private DriveTrain driveTrain = null;
-  private Jaws jaws = null;
-  private Shooter shooter = null;
-  private TelescopingArms telescopingArms = null;
+  private SubsystemCollection subsystemCollection = null;
 
   /**
    * The constructor to build this 'manual input' conduit
    */
-  public ManualInputInterfaces()
+  public ManualInputInterfaces(SubsystemCollection currentCollection)
   {
+    subsystemCollection = currentCollection;
   }
 
   /**
@@ -93,31 +90,13 @@ public class ManualInputInterfaces
     System.out.println("driverController.getRightY() == " + driverController.getRightY() * -1.0);
     return driverController.getRightY() * -1.0;
   }
-  
+
   /**
-   * A method to initialize various commands to the numerous buttons
-   * @param angleArmsSubsystem - the current angle arms subsystem
-   * @param ballStorageSubsystem - the current ball storage subsystem
-   * @param driveTrainSubsystem - the current drive train subsystem
-   * @param jawsSubsystem - the current jaws subsystem
-   * @param shooterSubsystem - the current shooter subsystem
-   * @param telescopingArmsSubsystem - the current telescoping arms subsystem
+   * A method to initialize various commands to the numerous buttons.
+   * Need delayed bindings as some subsystems during testing won't always be there.
    */
-  public void initializeButtonCommandBindings(
-    AngleArms angleArmsSubsystem,
-    BallStorage ballStorageSubsystem,
-    DriveTrain driveTrainSubsystem,
-    Jaws jawsSubsystem,
-    Shooter shooterSubsystem,
-    TelescopingArms telescopingArmsSubsystem)
+  public void initializeButtonCommandBindings()
   {
-    angleArms = angleArmsSubsystem;
-    ballStorage = ballStorageSubsystem;
-    driveTrain = driveTrainSubsystem;
-    jaws = jawsSubsystem;
-    shooter = shooterSubsystem;
-    telescopingArms = telescopingArmsSubsystem;
-    
     // Configure the button board bindings
     this.bindCommandsToButtonBoardButtons();
 
@@ -145,19 +124,19 @@ public class ManualInputInterfaces
       JoystickButton bumperRight = new JoystickButton(driverController, XboxController.Button.kRightBumper.value);
       JoystickButton joystickButton = new JoystickButton(driverController, XboxController.Button.kRightStick.value);
 
-      if(angleArms != null)
+      if(subsystemCollection.getAngleArmsSubsystem() != null)
       {
-        buttonB.whenPressed(new AngleArmsJawsManual(angleArms));
-        buttonY.whenPressed(new AngleArmsChassisManual(angleArms)); 
+        buttonB.whenPressed(new AngleArmsJawsManual(subsystemCollection.getAngleArmsSubsystem()));
+        buttonY.whenPressed(new AngleArmsChassisManual(subsystemCollection.getAngleArmsSubsystem())); 
       }
-      if(ballStorage != null)
+      if(subsystemCollection.getBallStorageSubsystem() != null)
       {
-        bumperLeft.whenPressed(new BallStorageStoreManual(ballStorage));
-        bumperRight.whenPressed(new BallStorageRetrieveManual(ballStorage));
+        bumperLeft.whenPressed(new BallStorageStoreManual(subsystemCollection.getBallStorageSubsystem()));
+        bumperRight.whenPressed(new BallStorageRetrieveManual(subsystemCollection.getBallStorageSubsystem()));
       }
-      if(jaws != null)
+      if(subsystemCollection.getJawsSubsystem() != null)
       {
-        joystickButton.whenPressed(new JawsHoldReleaseManual(jaws));
+        joystickButton.whenPressed(new JawsHoldReleaseManual(subsystemCollection.getJawsSubsystem()));
       }
       // *************************************************************
       // *************************************************************
@@ -178,19 +157,19 @@ public class ManualInputInterfaces
       JoystickButton bumperRight = new JoystickButton(coDriverController, XboxController.Button.kRightBumper.value);
       JoystickButton joystickButton = new JoystickButton(coDriverController, XboxController.Button.kLeftStick.value);
 
-      if(angleArms != null)
+      if(subsystemCollection.getAngleArmsSubsystem() != null)
       {
-        buttonB.whenPressed(new AngleArmsJawsManual(angleArms));
-        buttonY.whenPressed(new AngleArmsChassisManual(angleArms)); 
+        buttonB.whenPressed(new AngleArmsJawsManual(subsystemCollection.getAngleArmsSubsystem()));
+        buttonY.whenPressed(new AngleArmsChassisManual(subsystemCollection.getAngleArmsSubsystem())); 
       }
-      if(ballStorage != null)
+      if(subsystemCollection.getBallStorageSubsystem() != null)
       {
-        bumperLeft.whenPressed(new BallStorageStoreManual(ballStorage));
-        bumperRight.whenPressed(new BallStorageRetrieveManual(ballStorage));
+        bumperLeft.whenPressed(new BallStorageStoreManual(subsystemCollection.getBallStorageSubsystem()));
+        bumperRight.whenPressed(new BallStorageRetrieveManual(subsystemCollection.getBallStorageSubsystem()));
       }
-      if(jaws != null)
+      if(subsystemCollection.getJawsSubsystem() != null)
       {
-        joystickButton.whenPressed(new JawsHoldReleaseManual(jaws));
+        joystickButton.whenPressed(new JawsHoldReleaseManual(subsystemCollection.getJawsSubsystem()));
       }
     }
   }
@@ -213,33 +192,33 @@ public class ManualInputInterfaces
       JoystickButton button11 = new JoystickButton(buttonBoard, 11);
       JoystickButton button12 = new JoystickButton(buttonBoard, 12);
 
-      if(angleArms != null && jaws != null)
+      if(subsystemCollection.getAngleArmsSubsystem() != null && subsystemCollection.getJawsSubsystem() != null)
       {
-        button0.whenPressed(new AngleArmsEngageChassis(angleArms, jaws));
-        button1.whenPressed(new AngleArmsEngageJaws(angleArms, jaws));
+        button0.whenPressed(new AngleArmsEngageChassis(subsystemCollection.getAngleArmsSubsystem(), subsystemCollection.getJawsSubsystem()));
+        button1.whenPressed(new AngleArmsEngageJaws(subsystemCollection.getAngleArmsSubsystem(), subsystemCollection.getJawsSubsystem()));
       }
 
-      if(telescopingArms != null)
+      if(subsystemCollection.getTelescopingArmsSubsystem() != null && subsystemCollection.getJawsSubsystem() != null && subsystemCollection.getDriveTrainSubsystem() != null)
       {
-        button2.whenPressed(new TelescopingArmRetract(telescopingArms));
-        button3.whenPressed(new TelescopingArmExtendMiddle(telescopingArms));
-        button4.whenPressed(new TelescopingArmExtendHigh(telescopingArms));  
+        button2.whenPressed(ClimbCommandBuilder.buildMediumBarClimb(subsystemCollection));
+        button3.whenPressed(ClimbCommandBuilder.buildHighBarClimb(subsystemCollection));
+        button4.whenPressed(ClimbCommandBuilder.buildHighBarClimb(subsystemCollection));  
       }
 
-      if(jaws != null)
+      if(subsystemCollection.getJawsSubsystem() != null)
       {
-        button5.whenPressed(new JawsForwardHighGoal(jaws));
-        button6.whenPressed(new JawsReverseHighGoal(jaws));
-        button7.whenPressed(new JawsForwardLowGoal(jaws));
-        button8.whenPressed(new JawsIntake(jaws));
+        button5.whenPressed(new JawsForwardHighGoal(subsystemCollection.getJawsSubsystem()));
+        button6.whenPressed(new JawsReverseHighGoal(subsystemCollection.getJawsSubsystem()));
+        button7.whenPressed(new JawsForwardLowGoal(subsystemCollection.getJawsSubsystem()));
+        button8.whenPressed(new JawsIntake(subsystemCollection.getJawsSubsystem()));
       }
 
-      if(shooter != null && ballStorage != null)
+      if(subsystemCollection.getShooterSubsystem() != null && subsystemCollection.getBallStorageSubsystem() != null)
       {
-        button9.whenPressed(new ShooterForwardHighShot(shooter, ballStorage));
-        button10.whenPressed(new ShooterReverseHighShot(shooter, ballStorage));
-        button11.whenPressed(new ShooterForwardLowShot(shooter, ballStorage));
-        button12.whenPressed(new ShooterIntake(shooter, ballStorage));
+        button9.whenPressed(new ShooterForwardHighShot(subsystemCollection.getShooterSubsystem(), subsystemCollection.getBallStorageSubsystem()));
+        button10.whenPressed(new ShooterReverseHighShot(subsystemCollection.getShooterSubsystem(), subsystemCollection.getBallStorageSubsystem()));
+        button11.whenPressed(new ShooterForwardLowShot(subsystemCollection.getShooterSubsystem(), subsystemCollection.getBallStorageSubsystem()));
+        button12.whenPressed(new ShooterIntake(subsystemCollection.getShooterSubsystem(), subsystemCollection.getBallStorageSubsystem()));
       }
     }
   }

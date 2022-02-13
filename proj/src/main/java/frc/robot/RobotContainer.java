@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.builders.*;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 
@@ -46,6 +47,8 @@ public class RobotContainer
   private Shooter m_shooter = null;
   private TelescopingArms m_telescopingArms = null;
 
+  private SubsystemCollection m_collection = new SubsystemCollection();
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer()
   {
@@ -73,10 +76,22 @@ public class RobotContainer
     // initialize the telescoping arms
     this.initalizeTelescopingArms();
 
+    // assemble all of the constructed content and insert the references into the subsystem collection
+    m_collection.setAngleArmsSubsystem(m_angleArms);
+    m_collection.setBallStorageSubsystem(m_ballStorage);
+    m_collection.setDriveTrainSubsystem(m_driveTrain);
+    m_collection.setJawsSubsystem(m_jaws);
+    m_collection.setPneumaticsSubsystem(m_pneumatics);
+    m_collection.setShooterSubsystem(m_shooter);
+    m_collection.setTelescopingArmsSubsystem(m_telescopingArms);
+    m_collection.setManualInputInterfaces(m_manualInput);
+    m_collection.setOnboardInputInterfaces(m_onboardInput);
+    m_collection.setAngleArmsSubsystem(m_angleArms);
+
     // make sure that all of the buttons have appropriate commands bound to them
     if(m_manualInput != null)
     {
-      m_manualInput.initializeButtonCommandBindings(m_angleArms, m_ballStorage, m_driveTrain, m_jaws, m_shooter, m_telescopingArms);
+      m_manualInput.initializeButtonCommandBindings();
     }
   }
 
@@ -87,38 +102,7 @@ public class RobotContainer
    */
   public Command getAutonomousCommand()
   {
-    // TODO - much work needed in this command group here!!!
-
-    // example automation to attempt to
-    // 1. shoot first ball
-    // 2. pickup another ball
-    // 3. shoot second ball
-    DriveCommand driveReverseToShot = new DriveCommand(m_driveTrain, -22.7, 0.0, 1.9);
-    JawsForwardHighGoal jawsToHighGoal = new JawsForwardHighGoal(m_jaws);
-    ShooterForwardHighShot shootHighGoal = new ShooterForwardHighShot(m_shooter, m_ballStorage);
-    DriveCommand rotateTowardBall = new DriveCommand(m_driveTrain, 0.0, 130.0, 1.0);
-    DriveCommand driveForwardToBall = new DriveCommand(m_driveTrain, 99.7, 10.0, 2.9);
-    JawsIntake jawsIntake = new JawsIntake(m_jaws);
-    ShooterIntake shooterIntake = new ShooterIntake(m_shooter, m_ballStorage);
-    DriveCommand rotateTowardBasket = new DriveCommand(m_driveTrain, 0.0, -130.0, 1.0);
-    DriveCommand driveForwardToHighGoal = new DriveCommand(m_driveTrain, 99.7, -10.0, 2.9);
-    JawsForwardHighGoal jawsToHighGoal2 = new JawsForwardHighGoal(m_jaws);
-    ShooterForwardHighShot shootHighGoal2 = new ShooterForwardHighShot(m_shooter, m_ballStorage);
-    SequentialCommandGroup commandGroup = new SequentialCommandGroup(
-      driveReverseToShot,
-      jawsToHighGoal,
-      shootHighGoal,
-      rotateTowardBall,
-      driveForwardToBall,
-      jawsIntake,
-      shooterIntake,
-      rotateTowardBasket,
-      driveForwardToHighGoal,
-      jawsToHighGoal2,
-      shootHighGoal2
-    );
-
-    return commandGroup;
+    return AutonomousCommandBuilder.buildTestCollectAndShoot(m_collection);
   }
 
   private void initalizeManualInputInterfaces()
@@ -127,7 +111,7 @@ public class RobotContainer
       InstalledHardware.coDriverXboxControllerInstalled &&
       InstalledHardware.driverXboxControllerInstalled)
     {
-      m_manualInput = new ManualInputInterfaces();
+      m_manualInput = new ManualInputInterfaces(m_collection);
       System.out.println("SUCCESS: initalizeManualInputInterfaces");
     }
     else
