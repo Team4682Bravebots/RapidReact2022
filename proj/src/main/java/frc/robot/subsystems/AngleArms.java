@@ -12,8 +12,8 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
 import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kForward;
 import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kReverse;
 
@@ -22,11 +22,7 @@ import frc.robot.InstalledHardware;
 
 public class AngleArms extends SubsystemBase
 {
-
-  private static final DoubleSolenoid bothChassisAngleArmSolenoid = new DoubleSolenoid(
-    Constants.robotPneumaticsControlModuleType,
-    Constants.bothChassisAngleArmSolenoidForwardChannel,
-    Constants.bothChassisAngleArmSolenoidReverseChannel);
+  private DoubleSolenoid bothChassisAngleArmSolenoid = null;
   private DoubleSolenoid bothJawsAngleArmSolenoid = null; 
   
   private DoubleSolenoid.Value chassisEnguaged = kForward;
@@ -42,24 +38,17 @@ public class AngleArms extends SubsystemBase
    */
   public AngleArms()
   {
-/*
-    if(InstalledHardware.angleArmsToChassisCylindarSolenoidPneumaticsInstalled)
-    {
-      bothChassisAngleArmSolenoid = new DoubleSolenoid(
-        Constants.robotPneumaticsControlModuleType,
-        Constants.bothChassisAngleArmSolenoidForwardChannel,
-        Constants.bothChassisAngleArmSolenoidReverseChannel);
-      this.engageChassis();
-    }
-    if(InstalledHardware.angleArmsToJawsCylindarSolenoidPneumaticsInstalled)
-    {
-      bothJawsAngleArmSolenoid = new DoubleSolenoid(
-        Constants.robotPneumaticsControlModuleType,
-        Constants.bothJawsAngleArmSolenoidForwardChannel,
-        Constants.bothJawsAngleArmSolenoidReverseChannel);
-      this.disengageJaws();
-    }
-*/
+    bothChassisAngleArmSolenoid = new DoubleSolenoid(
+      Constants.robotPneumaticsControlModuleType,
+      Constants.bothChassisAngleArmSolenoidForwardChannel,
+      Constants.bothChassisAngleArmSolenoidReverseChannel);
+    this.engageChassis();
+    bothJawsAngleArmSolenoid = new DoubleSolenoid(
+      Constants.robotPneumaticsControlModuleType,
+      Constants.bothJawsAngleArmSolenoidForwardChannel,
+      Constants.bothJawsAngleArmSolenoidReverseChannel);
+    this.disengageJaws();
+  CommandScheduler.getInstance().registerSubsystem(this);
   }
 
   /**

@@ -51,7 +51,7 @@ public class RobotContainer
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer()
-  {
+  {   
     // create the manual input interface
     this.initalizeManualInputInterfaces();
 
@@ -75,7 +75,7 @@ public class RobotContainer
 
     // initialize the telescoping arms
     this.initalizeTelescopingArms();
-
+    
     // assemble all of the constructed content and insert the references into the subsystem collection
     m_collection.setAngleArmsSubsystem(m_angleArms);
     m_collection.setBallStorageSubsystem(m_ballStorage);
@@ -86,7 +86,6 @@ public class RobotContainer
     m_collection.setTelescopingArmsSubsystem(m_telescopingArms);
     m_collection.setManualInputInterfaces(m_manualInput);
     m_collection.setOnboardInputInterfaces(m_onboardInput);
-    m_collection.setAngleArmsSubsystem(m_angleArms);
 
     // make sure that all of the buttons have appropriate commands bound to them
     if(m_manualInput != null)
@@ -140,7 +139,6 @@ public class RobotContainer
       InstalledHardware.angleArmsToChassisCylindarSolenoidPneumaticsInstalled)
     {
       m_angleArms = new AngleArms();
-      CommandScheduler.getInstance().registerSubsystem(m_angleArms);
       // no need for a default command as buttons control this subsystem
       System.out.println("SUCCESS: initalizeAngleArms");
     }
@@ -158,7 +156,6 @@ public class RobotContainer
       InstalledHardware.rearBallStorageBeamBreakSensorInstalled)
     {
       m_ballStorage = new BallStorage();
-      CommandScheduler.getInstance().registerSubsystem(m_ballStorage);
       System.out.println("SUCCESS: initalizeBallStorage");
     }
     else
@@ -177,7 +174,6 @@ public class RobotContainer
       InstalledHardware.rightRearDriveMotorInstalled)
     {
       m_driveTrain = new DriveTrain();
-      CommandScheduler.getInstance().registerSubsystem(m_driveTrain);
       m_driveTrain.setDefaultCommand(
         new RunCommand(
           () ->
@@ -202,12 +198,11 @@ public class RobotContainer
     {
       // JAWS!!!
       m_jaws = new Jaws();
-      CommandScheduler.getInstance().registerSubsystem(m_jaws);
       m_jaws.setDefaultCommand(
           new RunCommand(
             () ->
             m_jaws.setJawsSpeedManual(m_manualInput.getInputJaws()),
-            m_jaws));
+          m_jaws));
       System.out.println("SUCCESS: initializeJaws");
     }
     else
@@ -222,12 +217,11 @@ public class RobotContainer
       InstalledHardware.pressureReliefSwitchInstalled)
     {
       m_pneumatics = new Pneumatics();
-      CommandScheduler.getInstance().registerSubsystem(m_pneumatics);
       m_pneumatics.setDefaultCommand(
           new RunCommand(
             () ->
             m_pneumatics.compressorOn(),
-            m_pneumatics));    
+          m_pneumatics));    
       System.out.println("SUCCESS: initializePneumatics");
     }
     else
@@ -243,12 +237,11 @@ public class RobotContainer
       InstalledHardware.bottomShooterDriveMotorInstalled)
     {
       m_shooter = new Shooter();
-      CommandScheduler.getInstance().registerSubsystem(m_shooter);
       m_shooter.setDefaultCommand(
           new RunCommand(
             () ->
             m_shooter.shooterManual(m_manualInput.getInputShooter()),
-            m_shooter));
+          m_shooter));
       System.out.println("SUCCESS: initalizeShooter");
     }
     else
@@ -264,12 +257,11 @@ public class RobotContainer
       InstalledHardware.rightTelescopingArmsDriveMotorInstalled)
     {
       m_telescopingArms = new TelescopingArms();
-      CommandScheduler.getInstance().registerSubsystem(m_telescopingArms);
       m_telescopingArms.setDefaultCommand(
           new RunCommand(
             () ->
             m_telescopingArms.setTelescopingArmsSpeedManual(m_manualInput.getInputTelescopingArms()),
-            m_telescopingArms));
+          m_telescopingArms));
       System.out.println("SUCCESS: initalizeTelescopingArms");
     }
     else

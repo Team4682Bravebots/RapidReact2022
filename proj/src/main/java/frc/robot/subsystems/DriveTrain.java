@@ -19,6 +19,7 @@ import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.drive.*;
 import edu.wpi.first.wpilibj.motorcontrol.*;
@@ -53,6 +54,7 @@ public class DriveTrain extends SubsystemBase
   public DriveTrain()
   {
     this.initializeMotors();
+    CommandScheduler.getInstance().registerSubsystem(this);
   }
 
   /**

@@ -11,6 +11,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsControlModule;
@@ -23,6 +24,11 @@ public class Pneumatics extends SubsystemBase
   private final Compressor compressor = new Compressor(
     Constants.robotPneumaticsControlModuleCanId,
     Constants.robotPneumaticsControlModuleType);
+
+  public Pneumatics()
+  {
+    CommandScheduler.getInstance().registerSubsystem(this);
+  }
 
   @Override
   public void setDefaultCommand(Command myCommand)
