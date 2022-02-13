@@ -23,6 +23,7 @@ public class ManualInputInterfaces
   private XboxController driverController = new XboxController(Constants.portDriverController); 
   private XboxController coDriverController = new XboxController(Constants.portCoDriverController);
   private Joystick buttonBoard = new Joystick(Constants.buttonBoardPort);
+  private int loopCount = 0;
 
   // subsystems needed for inputs
   private SubsystemCollection subsystemCollection = null;
@@ -87,7 +88,11 @@ public class ManualInputInterfaces
     // TODO - switch this to use the coDriverController soon!!!
     // should be: coDriverController.getRightY();
     // need to invert the y for all xbox controllers due to xbox controler having up as negative y axis
-    System.out.println("driverController.getRightY() == " + driverController.getRightY() * -1.0);
+    if(loopCount % 50 == 0)
+    {
+      System.out.println("driverController.getRightY() == " + driverController.getRightY() * -1.0);
+    }
+    ++loopCount;
     return driverController.getRightY() * -1.0;
   }
 
