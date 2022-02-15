@@ -18,6 +18,7 @@ import com.revrobotics.CANSparkMax.*;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.common.*;
@@ -33,14 +34,17 @@ public class TelescopingArms extends SubsystemBase
     private static final double telescopingArmsMotorEncoderTicksPerDegree = Constants.RevNeoEncoderTicksPerRevolution / Constants.DegreesPerRevolution; 
     private static final double telescopingArmsRetractSpeedDuringCalibration = -0.4;
     private static final double telescopingArmsExtendSpeedDuringCalibration = 0.4;
+    // TODO - must get this from Simeon/Carter soon-ish
     private static final double telescopingArmsMotorToArmEffectiveGearRatio = 500;
 
     private static final double minmumTargetHeight = 0.0;
     // important - this should be the maximum extension of the arms and it must also be the length of the wire on the spool - in inches!
+    // TODO - must get this from Simeon/Carter soon-ish
     private static final double maximumTargetHeight = 30.0; 
     // measurements of spool diameter in 4 discrete ranges
     // intended to be an average measurement of wire/chord on the spool when the spool is 'fractionaly wound'
     // for example when 0-25% of the wire is wound on the spool we need the diameter of the average winding to be placed in telescopingArmsSpoolDiameterInches0to25
+    // TODO - must get these from Simeon/Carter soon-ish
     private static final double telescopingArmsSpoolDiameterInches0to25 = 1.0; 
     private static final double telescopingArmsSpoolDiameterInches26to50 = 1.1; 
     private static final double telescopingArmsSpoolDiameterInches51to75 = 1.2; 
@@ -88,6 +92,7 @@ public class TelescopingArms extends SubsystemBase
     public TelescopingArms()
     {
       initializeMotors();
+      CommandScheduler.getInstance().registerSubsystem(this);
     }
 
     /* *********************************************************************
@@ -159,7 +164,7 @@ public class TelescopingArms extends SubsystemBase
           double rightCurrent = rightMotor.getOutputCurrent();
           if(rightPowerList.size() >= TelescopingArms.powerSampleSizeSufficient)
           {
-            double rightCurrentAverage = this.obtainAveragePowerLeft();
+            double rightCurrentAverage = this.obtainAveragePowerRight();
             if(rightCurrentAverage * TelescopingArms.telescopingArmsCalibrationCompleteSpikeFromAverageFactor < rightCurrent)
             {
               // left side is complete
@@ -192,16 +197,15 @@ public class TelescopingArms extends SubsystemBase
 
     /**
     * This method helps decide the default command
-    *
-    * @param  value - The default command
+    * @param  myCommand - The default command
     */
-    // 
     @Override
     public void setDefaultCommand(Command myCommand)
     {
+        // TODO Auto-generated method stub
         super.setDefaultCommand(myCommand);
     }
-
+  
     /**
     * a method exposed to callers to set the telescopingArms height
     *
@@ -225,8 +229,7 @@ public class TelescopingArms extends SubsystemBase
     */
     public void setTelescopingArmsSpeedManual(double telescopingArmsSpeed)
     {
-      MotorUtils.validateMotorSpeedInput(telescopingArmsSpeed, "TelescopingArmsSpeed", null);
-      rightMotor.set(telescopingArmsSpeed);
+      leftMotor.set(MotorUtils.truncateValue(telescopingArmsSpeed, -1.0, 1.0));
     }
 
     /**
@@ -363,17 +366,17 @@ public class TelescopingArms extends SubsystemBase
     // this method sets all of the key settings that will help in motion magic
     private void initializeMotors()
     {
-      leftMotor.restoreFactoryDefaults();
-      rightMotor.restoreFactoryDefaults(); 
-  
+      rightMotor.restoreFactoryDefaults();  
+      rightPidController = leftMotor.getPIDController();
+      rightEncoder = leftMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, Constants.countPerRevHallSensor);
       rightMotor.follow(leftMotor);
-      rightMotor.setIdleMode(IdleMode.kBrake);
+
+      leftMotor.restoreFactoryDefaults();
+      leftMotor.setIdleMode(IdleMode.kBrake);
   
       // initialize PID controller and encoder objects
       leftPidController = leftMotor.getPIDController();
-      rightPidController = rightMotor.getPIDController();
       leftEncoder = leftMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, Constants.countPerRevHallSensor);
-      rightEncoder = leftMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, Constants.countPerRevHallSensor);
   
       // PID coefficients
       kP = 5e-5; 
@@ -402,19 +405,6 @@ public class TelescopingArms extends SubsystemBase
       leftPidController.setSmartMotionMinOutputVelocity(minVel, smartMotionSlot);
       leftPidController.setSmartMotionMaxAccel(maxAcc, smartMotionSlot);
       leftPidController.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot);
-      
-      // set PID coefficients
-      rightPidController.setP(kP);
-      rightPidController.setI(kI);
-      rightPidController.setD(kD);
-      rightPidController.setIZone(kIz);
-      rightPidController.setFF(kFF);
-      rightPidController.setOutputRange(kMinOutput, kMaxOutput);
-  
-      rightPidController.setSmartMotionMaxVelocity(maxVel, smartMotionSlot);
-      rightPidController.setSmartMotionMinOutputVelocity(minVel, smartMotionSlot);
-      rightPidController.setSmartMotionMaxAccel(maxAcc, smartMotionSlot);
-      rightPidController.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot);
     }
 
     private void trimAndRecordLeftPower(double currentReading)

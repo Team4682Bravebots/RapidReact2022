@@ -11,6 +11,8 @@
 package frc.robot;
 
 import frc.robot.*;
+import frc.robot.common.Gains;
+import frc.robot.common.RoboRioOrentation;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 
 /**
@@ -48,6 +50,8 @@ public final class Constants
   public static final double jawsLowGoalPositionAngle = 40.0;
   public static final double jawsHighGoalPositionAngle = 65.0; 
   public static final double jawsPositionAngleTolerance = 1.5;
+  public static final double jawsAngleArmsEnguagePositionAngle = 81.0;
+  public static final double jawsAngleArmsEnguagePositionTolerance = 0.9;
 
   // telescoping arms reach points \\
   public static final double telescopingArmsRetractHeightInches = 2.0;
@@ -67,16 +71,16 @@ public final class Constants
   public static int jawsMotorLeftCanId = 10;
 
   //TODO - P0 - fill in proper CAN bus index for telescoping arm motors
-  public static int telescopingArmsMotorLeftCanId = 28;
-  public static int telescopingArmsMotorRightCanId = 29;
+  public static int telescopingArmsMotorLeftCanId = 13;
+  public static int telescopingArmsMotorRightCanId = 14;
 
   //TODO - P0 - fill in proper CAN bus index for shooting motors
   public static final int shooterMotorBottomCanId = 5;
   public static final int shooterMotorTopCanId = 6;
 
   //TODO - P0 - fill in proper CAN bus index for ball storage motors
-  public static int ballStorageMotorTopCanId = 33;
-  public static int ballStorageMotorBottomCanId = 34;
+  public static int ballStorageMotorTopCanId = 15;
+  public static int ballStorageMotorBottomCanId = 16;
 
   //TODO - P0 - fill in proper CAN bus index for drive motors
   public static int driveMotorLeftFrontCanId = 7;
@@ -114,7 +118,11 @@ public final class Constants
 
   // TIMING AND SPEEDS \\
   // AngleArm timing \\
-  public static final double AngleArmTiming = 0.3;
+  public static final double AngleArmTimingSeconds = 0.3;
+
+  // BallStorage timing \\
+  public static final double BallStorageStoreTimingSeconds = 1.0;
+  public static final double BallStorageRetrieveTimingSeconds = 0.3;
 
   // substystem motor speeds \\
   public static final double ShooterEatSpeed = 0.5;
@@ -125,22 +133,6 @@ public final class Constants
   // hid ports \\ 
   public static int portDriverController = 0;
   public static int portCoDriverController = 1;
-  // xbox buttons \\
-  public final static int buttonA = 1;
-  public final static int buttonB = 2;
-  public final static int buttonX = 3; 
-  public final static int buttonY = 4;
-  public final int buttonO1 = -1;
-  public final int buttonO2 = 8;
-  public final int stickLeftDown = 9;
-  public final int stickRightDown = 10;
-  public final static int bumperLeft = 5;
-  public final static int bumperRight = 6;
-
-  //joystick axis lables 
-  public static final int joystickX = 0;
-  public static final int joystickY = 1;
-  public static final int joystickZ = 2;
 
   // util \\ //TODO if needed 
   public static final int kPIDLoopIdx = 0;
@@ -151,5 +143,8 @@ public final class Constants
   public static final Gains kGains = new Gains(0.2, 0.0, 0.0, 0.2, 0, 1.0);
   public static final int countPerRevHallSensor = 42;
   public static final int buttonBoardPort = 0;
+
+  // orentation
+  public static final RoboRioOrentation roboRioOrentation = RoboRioOrentation.RelayForward;
 
 }

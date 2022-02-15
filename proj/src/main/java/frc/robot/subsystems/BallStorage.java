@@ -13,6 +13,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.common.*;
@@ -40,6 +41,7 @@ public class BallStorage extends SubsystemBase
 		bottomMotor.follow(topMotor);
     bottomMotor.setInverted(true);
 		bottomMotor.setNeutralMode(NeutralMode.Brake);
+    CommandScheduler.getInstance().registerSubsystem(this);
   }
 
   @Override
@@ -137,13 +139,30 @@ public class BallStorage extends SubsystemBase
   }
 
   /**
-  * A method exposed to callers to set 
-  *
-  * @param speed - The speed to set the motor to, valid range -1.0 to 1.0
+  * A method exposed to callers to cause motors to drive belts in storage direction
   */
-  public void setManualSpeed(double speed)
+  public void storeBallManual()
   {
-    topMotor.set(MotorUtils.truncateValue(speed, -1.0, 1.0));
+      // since motors are followers ok to just set one
+      topMotor.set(Constants.storeSpeed);
+  }
+
+  /**
+  * A method exposed to callers to cause motors to stop
+  */
+  public void stopBallManual()
+  {
+      // since motors are followers ok to just set one
+      topMotor.set(0.0);
+  }
+
+  /**
+  * A method exposed to callers to cause motors to drive belts in retrieve direction
+  */
+  public void retrieveBallManual()
+  {
+      // since motors are followers ok to just set one
+      topMotor.set(Constants.storeSpeed);
   }
 
   private boolean isBallInFrontPosition()

@@ -12,9 +12,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.subsystems.Interfaces;
 import frc.robot.subsystems.TelescopingArms;
-
 
 public class TelescopingArmRetract extends CommandBase
 {
@@ -40,7 +38,11 @@ public class TelescopingArmRetract extends CommandBase
     {
       done = true;
     }
+<<<<<<< HEAD
     System.out.println("Telescoping arms height at: " + telescopingArmSubsystem.getTelescopingArmsHeight());
+=======
+    System.out.println("Telescoping arms height: " + telescopingArmSubsystem.getTelescopingArmsHeight());
+>>>>>>> main
   }
  
   // Called once the command ends or is interrupted.

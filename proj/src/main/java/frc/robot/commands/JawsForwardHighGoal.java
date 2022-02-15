@@ -36,10 +36,9 @@ public class JawsForwardHighGoal extends CommandBase {
   {
     if(jawsSubsystem.setJawsAngle(Constants.jawsHighGoalPositionAngle, Constants.jawsPositionAngleTolerance))
     {
-      jawsSubsystem.holdCurrentJawsPosition();
+      jawsSubsystem.suspendJawMovement();
       done = true;
     }
-    System.out.println("Jaws angle at: " + jawsSubsystem.getJawsAngle());
   }
 
   // Called once the command ends or is interrupted.

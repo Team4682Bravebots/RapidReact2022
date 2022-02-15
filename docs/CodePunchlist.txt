@@ -1,0 +1,49 @@
+
+Teleop / Robot Code Punchlist:
+
+0. Build out of button board and integrate with PC - Owen?
+1. Update of ClimbCommandBuilder.java to build medium, high, and traversal climbs - Jonathan
+2. Limelight addition to onboard input interface - how to incorporate? - Owen
+3. Prototype pneumatics working with compressor, double solenoid and cutoff switch - Adenine
+  a. need to find ALL other CTRE PCM's working (2 are not working) - Adenine
+4. Validate output shaft encoder - Mike
+5. Telescoping arms configurations - gear ratio, maximum extension height, spool diameters - Simeon, Carter, Grayson M and Mike
+6. Beam break sensor location decision - toward back of ball storage throat? - Mike, Nathan, Gavin
+7. Add Sendable interface to various classes that need stats / telemetry - Mike
+8. What will suffleboard look like - setup shuffleboard - https://docs.wpilib.org/en/stable/docs/software/dashboards/shuffleboard/index.html
+
+9. Wire the robot
+10. More appropriate motor gains, acceleration and velocity story
+11. Final CAN and solenoid ID assignment
+12. Do we really need pneumatics subsystem?
+13. Determine preset variables
+  a. Duration required between enguage jaws and disenguage chassis (and vice-versa)
+  b. Duration the ball storage motors should run for manual bumper press
+  c. Default speed of ball storage motors - manual
+  d. Timing and speed of ball storage motors inbound and outbound
+  e. Jaws preset positioning - fwd high, fwd low, rev high, intake
+  f. Shooter shooting speeds both bottom and top spindles for fwd high, fwd low, rev high, intake
+  g. Telescoping arms preset positions - high, medium, retracted
+  h. Gains for Jaws, Telescoping Arms and DriveTrain motors
+  i. 
+14. Command and subsystem testing when subsystems are installed and wired
+  a. Angle arms automated
+  b. Angle arms manual
+  c. Ball storage manual
+  d. Drive command automated - straight and circular arc
+  e. Drive command manual
+  f. Jaws clutch manual
+  g. Jaws automated stops
+  h. Shooting automated presets - high fwd, low fwd, high reverse
+  i. Shooting manual
+
+
+Autonomous
+
+1. Figure out how we communicate with between driver station and robot at begining of autonomous so robot knows:
+  a. color - blue or red 
+  b. starting position/orentation
+  c: offset angle to long axis of playfield - north/south 
+2. Formulate three static methods one for each of our - AutonomousCommandBuilder.java command
+3. Hook in autonomous into Robot.java
+4. 

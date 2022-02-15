@@ -19,6 +19,7 @@ import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kForward;
@@ -35,7 +36,7 @@ public class Jaws extends SubsystemBase
     ************************************************************************/
     private static final double jawsMotorEncoderTicksPerDegree = Constants.CtreTalonFx500EncoderTicksPerRevolution / Constants.DegreesPerRevolution;
     private static final double jawsSpeedDuringCalibration = -0.8;
-    private static final double jawsMotorToArmEffectiveGearRatio = 500;
+    private static final double jawsMotorToArmEffectiveGearRatio = 212; // according to nathan on 02/08/2022
     private static final int jawsMinimumIsCalibratedConsecutiveCount = 1;
     private static final double minmumTargetAngle = 0.0;
     private static final double maximumTargetAngle = 160.0;
@@ -69,6 +70,7 @@ public class Jaws extends SubsystemBase
     public Jaws()
     {
       initializeMotors();
+      CommandScheduler.getInstance().registerSubsystem(this);
     }
 
     /* *********************************************************************
@@ -138,19 +140,6 @@ public class Jaws extends SubsystemBase
     }
 
     /**
-    * a method exposed to callers to hold the current jaws angle
-    */
-    public void holdCurrentJawsPosition()
-    {
-      if(!clutchEnguaged)
-      {
-        jawsClutchSolenoid.set(this.clutchEnguagedSetting);
-        clutchEnguaged = true;
-        rightMotor.set(TalonFXControlMode.PercentOutput, 0.0);
-      }      
-    }
-
-    /**
     * a method exposed to callers to set the jaws angle
     *
     * @param  targetAngle - target angle of the jaws measured from front limit switch position
@@ -159,7 +148,7 @@ public class Jaws extends SubsystemBase
     */
     public boolean setJawsAngle(double targetAngleInDegrees, double toleranceInDegrees)
     {
-      this.releaseCurrentJawsPosition();
+      this.resumeJawMovement();
       double trimmedAngle = MotorUtils.truncateValue(targetAngleInDegrees, Jaws.minmumTargetAngle, Jaws.maximumTargetAngle);
 
       // because of follower this will set both motors
@@ -176,7 +165,7 @@ public class Jaws extends SubsystemBase
     */
     public void setJawsSpeedManual(double jawsSpeed)
     {
-      this.releaseCurrentJawsPosition();
+      this.resumeJawMovement();
       MotorUtils.validateMotorSpeedInput(jawsSpeed, "jawsSpeed", null);
       rightMotor.set(TalonFXControlMode.PercentOutput, jawsSpeed);
     }
@@ -198,15 +187,43 @@ public class Jaws extends SubsystemBase
     }
 
     /**
-    * a method exposed to callers to release the current jaws angle
+    * a method exposed to callers to hold/lock the current jaws angle
     */
-    public void releaseCurrentJawsPosition()
+    public void suspendJawMovement()
+    {
+      if(!clutchEnguaged)
+      {
+        jawsClutchSolenoid.set(this.clutchEnguagedSetting);
+        clutchEnguaged = true;
+        rightMotor.set(TalonFXControlMode.PercentOutput, 0.0);
+      }      
+    }
+    
+    /**
+    * a method exposed to callers to release/unlock the current jaws angle
+    */
+    public void resumeJawMovement()
     {
       if(clutchEnguaged)
       {
         jawsClutchSolenoid.set(this.clutchDisenguagedSetting);
         clutchEnguaged = false;
       }      
+    }
+
+    /**
+    * A method exposed to callers to toggle between locking and unlocking movement on the jaws
+    */
+    public void toggleJawMovement()
+    {
+      if(clutchEnguaged)
+      {
+        this.resumeJawMovement();
+      }
+      else
+      {
+        this.suspendJawMovement();
+      }
     }
 
     /* *********************************************************************

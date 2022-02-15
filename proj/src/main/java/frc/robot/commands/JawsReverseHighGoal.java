@@ -19,6 +19,10 @@ public class JawsReverseHighGoal extends CommandBase {
   public Jaws jawsSubsystem;
   public boolean done;
   
+  /**
+   * Constructor for the jaws reverse high goal score
+   * @param JawsSubsystem
+   */
   public JawsReverseHighGoal(Jaws JawsSubsystem)
   {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -36,10 +40,9 @@ public class JawsReverseHighGoal extends CommandBase {
   {
     if(jawsSubsystem.setJawsAngle(Constants.jawsReverseHighGoalPositionAngle, Constants.jawsPositionAngleTolerance))
     {
-      jawsSubsystem.holdCurrentJawsPosition();
+      jawsSubsystem.suspendJawMovement();
       done = true;
     }
-    System.out.println("Jaws angle at: " + jawsSubsystem.getJawsAngle());
   }
 
   // Called once the command ends or is interrupted.
