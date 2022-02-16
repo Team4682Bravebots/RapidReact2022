@@ -13,6 +13,7 @@ package frc.robot;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.SPI;
 import frc.robot.common.*;
+import java.util.*; 
 
 public class OnboardInputInterfaces
 {
@@ -43,6 +44,31 @@ public class OnboardInputInterfaces
             navigationSensor.zeroYaw();
         }
         yawOffset = yawOffsetFromFieldLongAxis;
+    }
+
+    /**
+     * A method to obtain the current match target color
+     * @return - the target color of the current match
+     */
+    public Color getCurrentMatchTargetColor()
+    {
+        // TODO - figure how we are going to have the robot tell us what the current match color
+        return Color.Red;
+    }
+
+    /**
+     * A method to obtain the balls within the field of vision for the limelight
+     * @return - a vector of all of the balls in the field of vision
+     */
+    public Vector<CoordinateSystemBall> getBallsInFieldOfVision()
+    {
+        Vector<CoordinateSystemBall> balls = new Vector<CoordinateSystemBall>();
+
+        // TODO - OWEN fill in the code here to locate all balls within the field of vision of limelight
+
+        // make sure to sort before returning
+        Collections.sort(balls);
+        return balls;
     }
 
     /**
