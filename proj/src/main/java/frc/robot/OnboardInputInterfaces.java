@@ -66,6 +66,24 @@ public class OnboardInputInterfaces
 
         // TODO - OWEN fill in the code here to locate all balls within the field of vision of limelight
 
+        // This is just an example below.  The jist is would be you need to:
+        // 1. determine circular objects with the limelight
+        int countOfBallsFound = 1;
+        for(int inx = 0; inx < countOfBallsFound; ++inx)
+        {
+            // 2. determine each balls centroid in reference to a 0,0 coordinate system in the center of the field of vision
+            double nextXCentroid = -100.5; // pixels? (-x implies left of center)
+            double nextYCentroid = 200.5; // pixels? (+y implies above center)
+            // 3. determine each balls general diameter
+            double nextDiameter = 1.0; // pixels?
+            // 4. determine each balls color
+            Color nextColor = Color.Red;
+            // 5. then create an CoordinateSystemBall object and insert it into the collection
+            CoordinateSystemBall nextBallInField = new CoordinateSystemBall(nextColor, nextDiameter, nextXCentroid, nextYCentroid);
+            // insert the newly created ball into the vector/array
+            balls.add(nextBallInField);
+        }
+
         // make sure to sort before returning
         Collections.sort(balls);
         return balls;
