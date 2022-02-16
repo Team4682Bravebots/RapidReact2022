@@ -14,6 +14,8 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.SPI;
 import frc.robot.common.*;
 import java.util.*; 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 public class OnboardInputInterfaces
 {
@@ -52,8 +54,7 @@ public class OnboardInputInterfaces
      */
     public Color getCurrentMatchTargetColor()
     {
-        // TODO - figure how we are going to have the robot tell us what the current match color
-        return Color.Red;
+        return DriverStation.getAlliance() == Alliance.Blue ? Color.Blue : Color.Red;
     }
 
     /**
