@@ -1,6 +1,6 @@
 // ************************************************************
 // Bishop Blanchet Robotics
-// Historic home of the 'BraveBots'
+// Home of the Cybears
 // FRC - Rapid React - 2022
 // File: AngleArm.java
 // Intent: Forms a subsystem that controls the AngleArm operations.

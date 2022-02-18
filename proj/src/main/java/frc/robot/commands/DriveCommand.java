@@ -1,6 +1,6 @@
 // ************************************************************
 // Bishop Blanchet Robotics
-// Historic home of the 'BraveBots'
+// Home of the Cybears
 // FRC - Rapid React - 2022
 // File: DriveCommand.java
 // Intent: Forms a command to drive the wheels according to input parameters (encoder dead reckoning and accelormeter for rotation).

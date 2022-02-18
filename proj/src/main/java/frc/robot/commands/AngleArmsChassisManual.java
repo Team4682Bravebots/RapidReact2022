@@ -1,6 +1,6 @@
 // ************************************************************
 // Bishop Blanchet Robotics
-// Historic home of the 'BraveBots'
+// Home of the Cybears
 // FRC - Rapid React - 2022
 // File: AngleArmsChassisManual.java
 // Intent: Forms a manual command to have the AngleArm attach/detatch from the Chassis.

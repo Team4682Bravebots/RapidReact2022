@@ -1,6 +1,6 @@
 // ************************************************************
 // Bishop Blanchet Robotics
-// Historic home of the 'BraveBots'
+// Home of the Cybears
 // FRC - Rapid React - 2022
 // File: TelescopingArmRetract.java
 // Intent: Forms a command to drive the telescoping arms to their retracted position.
@@ -38,11 +38,7 @@ public class TelescopingArmRetract extends CommandBase
     {
       done = true;
     }
-<<<<<<< HEAD
-    System.out.println("Telescoping arms height at: " + telescopingArmSubsystem.getTelescopingArmsHeight());
-=======
     System.out.println("Telescoping arms height: " + telescopingArmSubsystem.getTelescopingArmsHeight());
->>>>>>> main
   }
  
   // Called once the command ends or is interrupted.

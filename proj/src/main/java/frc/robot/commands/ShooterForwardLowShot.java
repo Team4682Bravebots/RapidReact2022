@@ -1,6 +1,6 @@
 // ************************************************************
 // Bishop Blanchet Robotics
-// Historic home of the 'BraveBots'
+// Home of the Cybears
 // FRC - Rapid React - 2022
 // File: ShooterForwardLowShot.java
 // Intent: Forms a command to shoot the ball at the low goal assuming the forward position.

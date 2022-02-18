@@ -1,6 +1,6 @@
 // ************************************************************
 // Bishop Blanchet Robotics
-// Historic home of the 'BraveBots'
+// Home of the Cybears
 // FRC - Rapid React - 2022
 // File: Constants.java
 // Intent: Forms all constants for the robot.
@@ -50,8 +50,8 @@ public final class Constants
   public static final double jawsLowGoalPositionAngle = 40.0;
   public static final double jawsHighGoalPositionAngle = 65.0; 
   public static final double jawsPositionAngleTolerance = 1.5;
-  public static final double jawsAngleArmsEnguagePositionAngle = 81.0;
-  public static final double jawsAngleArmsEnguagePositionTolerance = 0.9;
+  public static final double jawsAngleArmsEngagePositionAngle = 81.0;
+  public static final double jawsAngleArmsEngagePositionTolerance = 0.9;
 
   // telescoping arms reach points \\
   public static final double telescopingArmsRetractHeightInches = 2.0;

@@ -1,6 +1,6 @@
 // ************************************************************
 // Bishop Blanchet Robotics
-// Historic home of the 'BraveBots'
+// Home of the Cybears
 // FRC - Rapid React - 2022
 // File: Constants.java
 // Intent: Forms all constants for the robot.
@@ -30,7 +30,7 @@ public class InstalledHardware
     // roboRioInstalled = true; - if it wasn't installed then the code wouldn't be running
 
     // Basic Hardware
-    public static final boolean powerDistributionPannelInstalled = true;
+    public static final boolean powerDistributionPanelInstalled = true;
     
     // Onboard Hardware - Orentation/Navigation Hardware
     public static final boolean wifiRadioInstalled = false;
@@ -62,7 +62,7 @@ public class InstalledHardware
     public static final boolean topJawsDriveMotorInstalled = false;
     public static final boolean bottomJawsDriveMotorInstalled = false;
     public static final boolean intakeStopJawsLmitSwitchInstalled = false;
-    public static final boolean jawsClutchCylindarSolenoidPneumaticsInstalled = false;
+    public static final boolean jawsClutchCylinderSolenoidPneumaticsInstalled = false;
 
     // Shooter Related Hardware
     public static final boolean topShooterDriveMotorInstalled = false;
@@ -75,6 +75,6 @@ public class InstalledHardware
     public static final boolean rearBallStorageBeamBreakSensorInstalled = false;
 
     // Angle Arms Related Hardware
-    public static final boolean angleArmsToJawsCylindarSolenoidPneumaticsInstalled = false;
-    public static final boolean angleArmsToChassisCylindarSolenoidPneumaticsInstalled = false;
+    public static final boolean angleArmsToJawsCylinderSolenoidPneumaticsInstalled = false;
+    public static final boolean angleArmsToChassisCylinderSolenoidPneumaticsInstalled = false;
 }

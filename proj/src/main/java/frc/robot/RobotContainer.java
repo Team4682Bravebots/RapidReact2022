@@ -1,6 +1,6 @@
 // ************************************************************
 // Bishop Blanchet Robotics
-// Historic home of the 'BraveBots'
+// Home of the Cybears
 // FRC - Rapid React - 2022
 // File: RobotContainer.java
 // Intent: Forms the key command initiation logic of the robot.
@@ -53,19 +53,19 @@ public class RobotContainer
   public RobotContainer()
   {   
     // create the manual input interface
-    this.initalizeManualInputInterfaces();
+    this.initializeManualInputInterfaces();
 
     // create the onboard input interface
-    this.initalizeOnboardInputInterfaces();
+    this.initializeOnboardInputInterfaces();
 
     // initalize the Angle Arms
-    this.initalizeAngleArms();
+    this.initializeAngleArms();
 
     // initialize the ball storage
-    this.initalizeBallStorage();
+    this.initializeBallStorage();
 
     // initialize the drive train
-    this.initalizeDriveTrain();
+    this.initializeDriveTrain();
 
     // initialize the jaws
     this.initializeJaws();
@@ -74,7 +74,7 @@ public class RobotContainer
     this.initializePneumatics();
 
     // initialize the telescoping arms
-    this.initalizeTelescopingArms();
+    this.initializeTelescopingArms();
     
     // assemble all of the constructed content and insert the references into the subsystem collection
     m_collection.setAngleArmsSubsystem(m_angleArms);
@@ -104,22 +104,22 @@ public class RobotContainer
     return AutonomousCommandBuilder.buildTestCollectAndShoot(m_collection);
   }
 
-  private void initalizeManualInputInterfaces()
+  private void initializeManualInputInterfaces()
   {
     if(InstalledHardware.buttonBoardInstalled &&
       InstalledHardware.coDriverXboxControllerInstalled &&
       InstalledHardware.driverXboxControllerInstalled)
     {
       m_manualInput = new ManualInputInterfaces(m_collection);
-      System.out.println("SUCCESS: initalizeManualInputInterfaces");
+      System.out.println("SUCCESS: initializeManualInputInterfaces");
     }
     else
     {
-      System.out.println("FAIL: initalizeManualInputInterfaces");
+      System.out.println("FAIL: initializeManualInputInterfaces");
     }
   }
 
-  private void initalizeOnboardInputInterfaces()
+  private void initializeOnboardInputInterfaces()
   {
     // TODO - when limelight comes online add it here
     if(InstalledHardware.navxInstalled /* && InstalledHardware.limelightInstalled */)
@@ -129,26 +129,26 @@ public class RobotContainer
     }
     else
     {
-      System.out.println("FAIL: initalizeOnboardInputInterfaces");
+      System.out.println("FAIL: initializeOnboardInputInterfaces");
     }
   }
 
-  private void initalizeAngleArms()
+  private void initializeAngleArms()
   {
-    if(InstalledHardware.angleArmsToJawsCylindarSolenoidPneumaticsInstalled && 
-      InstalledHardware.angleArmsToChassisCylindarSolenoidPneumaticsInstalled)
+    if(InstalledHardware.angleArmsToJawsCylinderSolenoidPneumaticsInstalled && 
+      InstalledHardware.angleArmsToChassisCylinderSolenoidPneumaticsInstalled)
     {
       m_angleArms = new AngleArms();
       // no need for a default command as buttons control this subsystem
-      System.out.println("SUCCESS: initalizeAngleArms");
+      System.out.println("SUCCESS: initializeAngleArms");
     }
     else
     {
-      System.out.println("FAIL: initalizeAngleArms");
+      System.out.println("FAIL: initializeAngleArms");
     }
   }
 
-  private void initalizeBallStorage()
+  private void initializeBallStorage()
   {
     if(InstalledHardware.bottomBallStorageMotorInstalled && 
       InstalledHardware.topBallStorageMotorInstalled && 
@@ -156,15 +156,15 @@ public class RobotContainer
       InstalledHardware.rearBallStorageBeamBreakSensorInstalled)
     {
       m_ballStorage = new BallStorage();
-      System.out.println("SUCCESS: initalizeBallStorage");
+      System.out.println("SUCCESS: initializeBallStorage");
     }
     else
     {
-      System.out.println("FAIL: initalizeBallStorage");
+      System.out.println("FAIL: initializeBallStorage");
     }
   }
 
-  private void initalizeDriveTrain()
+  private void initializeDriveTrain()
   {
     if(InstalledHardware.leftFinalDriveShaftEncoderInstalled && 
       InstalledHardware.leftFrontDriveMotorInstalled && 
@@ -181,11 +181,11 @@ public class RobotContainer
             m_manualInput.getInputArcadeDriveX(),
             m_manualInput.getInputArcadeDriveY()),
           m_driveTrain));
-      System.out.println("SUCCESS: initalizeDriveTrain");
+      System.out.println("SUCCESS: initializeDriveTrain");
     }
     else
     {
-      System.out.println("FAIL: initalizeDriveTrain");
+      System.out.println("FAIL: initializeDriveTrain");
     }
   }
 
@@ -193,8 +193,8 @@ public class RobotContainer
   {
     if(InstalledHardware.topJawsDriveMotorInstalled &&
       InstalledHardware.bottomJawsDriveMotorInstalled &&
-      InstalledHardware.intakeStopJawsLmitSwitchInstalled &&
-      InstalledHardware.jawsClutchCylindarSolenoidPneumaticsInstalled)
+      InstalledHardware.intakeStopJawsLimitSwitchInstalled &&
+      InstalledHardware.jawsClutchCylinderSolenoidPneumaticsInstalled)
     {
       // JAWS!!!
       m_jaws = new Jaws();
@@ -231,77 +231,7 @@ public class RobotContainer
   }
 
 
-<<<<<<< HEAD
-  private void configureButtonBindings() {
-
-    JoystickButton buttonA = new JoystickButton(coDriverController, 1);
-    JoystickButton buttonB = new JoystickButton(coDriverController, 2);
-    JoystickButton buttonY = new JoystickButton(coDriverController, 3);
-    JoystickButton buttonX = new JoystickButton(coDriverController, 4);
-    JoystickButton bumperLeft = new JoystickButton(coDriverController, XboxController.Button.kLeftBumper.value);
-    JoystickButton bumperRight = new JoystickButton(coDriverController, XboxController.Button.kRightBumper.value);
-    JoystickButton joystickLeftButton = new JoystickButton(coDriverController, XboxController.Button.kLeftStick.value);
-    JoystickButton joystickRightButton = new JoystickButton(coDriverController, XboxController.Button.kRightStick.value);
-    JoystickButton triggerLeft = new JoystickButton(coDriverController, XboxController.Axis.kLeftTrigger.value);
-    JoystickButton triggerRight = new JoystickButton(coDriverController, XboxController.Axis.kRightTrigger.value);
-    JoystickButton backButton = new JoystickButton(coDriverController, XboxController.Button.kBack.value);
-    JoystickButton startButton = new JoystickButton(coDriverController, XboxController.Button.kStart.value);
-
-
-    JoystickButton button0 = new JoystickButton(buttonBoard, 0);
-    JoystickButton button1 = new JoystickButton(buttonBoard, 1);
-    JoystickButton button2 = new JoystickButton(buttonBoard, 2);
-    JoystickButton button3 = new JoystickButton(buttonBoard, 3);
-    JoystickButton button4 = new JoystickButton(buttonBoard, 4);
-    JoystickButton button5 = new JoystickButton(buttonBoard, 5);
-    JoystickButton button6 = new JoystickButton(buttonBoard, 6);
-    JoystickButton button7 = new JoystickButton(buttonBoard, 7);
-    JoystickButton button8 = new JoystickButton(buttonBoard, 8);
-    JoystickButton button9 = new JoystickButton(buttonBoard, 9);
-    JoystickButton button10 = new JoystickButton(buttonBoard, 10);
-    JoystickButton button11 = new JoystickButton(buttonBoard, 11);
-
-    //testing
-    buttonA.whenPressed(new JawsIntake(m_jaws));
-    buttonB.whenPressed(new JawsForwardLowGoal(m_jaws));
-    buttonY.whenPressed(new JawsForwardHighGoal(m_jaws));
-    buttonX.whenPressed(new RobotCalibration(m_jaws, m_telescopingArm));
-  
-    //BUTTON BOARD
-    //0 disable button board?   ??.java
-
-    //1 Jaws pos 1        JawsIntake.java
-    //2 Jaws pos 2        JawsForwardLowGoal.java
-    //3 Jaws default      JawsForwardHighGoal.java
-
-    //4 climber default   climber lock + climberS1Default.java
-    //5 climber pos 1     climber unlock + climberS1Extended.java 
-    //6 climber pos 2     wait for climb then climberlock + climberS1Endgame.java
-
-    //7 eat               JawsShooter + intakeEat + index eat 
-    //8 barf              intakeBard (high speed) + index barf 
-    //9 barf low          ShooterBarf (low speed) + index barf 
-
-    //10 grab Jaws in 
-    //11 grab Jaws out
-
-
-    //BUTTON BOARD
-    button1.whenPressed(new JawsIntake(m_jaws));
-    button2.whenPressed(new JawsForwardLowGoal(m_jaws));
-    button3.whenPressed(new JawsForwardHighGoal(m_jaws));
-
-    button4.whenPressed(new TelescopingArmRetract(m_telescopingArm));
-    button5.whenPressed(new TelescopingArmExtendMiddle(m_telescopingArm));
-    button6.whenPressed(new TelescopingArmExtendHigh(m_telescopingArm));
-
-    button7.whenPressed(new ShooterIntake(m_shooter, m_ballStorage));
-    button8.whenPressed(new ShooterForwardLowShot(m_shooter, m_ballStorage));
-    button9.whenPressed(new ShooterForwardHighShot(m_shooter, m_ballStorage));
-    button10.whenPressed(new ShooterReverseHighShot(m_shooter, m_ballStorage));
-
-=======
-  private void initalizeShooter()
+  private void initializeShooter()
   {
     if(InstalledHardware.topShooterDriveMotorInstalled &&
       InstalledHardware.bottomShooterDriveMotorInstalled)
@@ -312,17 +242,16 @@ public class RobotContainer
             () ->
             m_shooter.shooterManual(m_manualInput.getInputShooter()),
           m_shooter));
-      System.out.println("SUCCESS: initalizeShooter");
+      System.out.println("SUCCESS: initializeShooter");
     }
     else
     {
-      System.out.println("FAIL: initalizeShooter");
+      System.out.println("FAIL: initializeShooter");
     }
->>>>>>> main
   }
 
 
-  private void initalizeTelescopingArms()
+  private void initializeTelescopingArms()
   {
     if(InstalledHardware.leftTelescopingArmsDriveMotorInstalled &&
       InstalledHardware.rightTelescopingArmsDriveMotorInstalled)
@@ -333,11 +262,11 @@ public class RobotContainer
             () ->
             m_telescopingArms.setTelescopingArmsSpeedManual(m_manualInput.getInputTelescopingArms()),
           m_telescopingArms));
-      System.out.println("SUCCESS: initalizeTelescopingArms");
+      System.out.println("SUCCESS: initializeTelescopingArms");
     }
     else
     {
-      System.out.println("FAIL: initalizeTelescopingArms");
+      System.out.println("FAIL: initializeTelescopingArms");
     }
   }
 

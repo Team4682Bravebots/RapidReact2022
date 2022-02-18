@@ -1,6 +1,6 @@
 // ************************************************************
 // Bishop Blanchet Robotics
-// Historic home of the 'BraveBots'
+// Home of the Cybears
 // FRC - Rapid React - 2022
 // File: ShooterReverseHighShot.java
 // Intent: Forms a command to shoot the ball at the high goal assuming the reverse position.
