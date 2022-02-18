@@ -1,6 +1,6 @@
 // ************************************************************
 // Bishop Blanchet Robotics
-// Home of the Cybears
+// Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
 // File: ClimberS1.java
 // Intent: Forms a subsystem that controls movements by the Jaws.

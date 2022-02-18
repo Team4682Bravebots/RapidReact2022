@@ -1,6 +1,6 @@
 // ************************************************************
 // Bishop Blanchet Robotics
-// Home of the Cybears
+// Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
 // File: TelescopingArm.java
 // Intent: Forms a container that stores references to the current subsystems.

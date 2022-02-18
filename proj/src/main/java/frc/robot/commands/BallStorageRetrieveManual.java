@@ -1,6 +1,6 @@
 // ************************************************************
 // Bishop Blanchet Robotics
-// Home of the Cybears
+// Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
 // File: BallStorageRetrieveManual.java
 // Intent: Forms a manual command to have the BallStorage to retrieve a ball.

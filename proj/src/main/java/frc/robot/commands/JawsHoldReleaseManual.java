@@ -1,6 +1,6 @@
 // ************************************************************
 // Bishop Blanchet Robotics
-// Home of the Cybears
+// Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
 // File: JawsHoldReleaseManual.java
 // Intent: Forms a command to toggle the Jaws clutch from its current position to the oposite setting

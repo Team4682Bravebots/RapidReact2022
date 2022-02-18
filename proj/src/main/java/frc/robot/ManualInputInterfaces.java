@@ -1,6 +1,6 @@
 // ************************************************************
 // Bishop Blanchet Robotics
-// Home of the Cybears
+// Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
 // File: ManualInputInterfaces.java
 // Intent: Forms a class that grants access to driver controlled inputs.

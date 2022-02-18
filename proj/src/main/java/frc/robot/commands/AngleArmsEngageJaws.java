@@ -1,6 +1,6 @@
 // ************************************************************
 // Bishop Blanchet Robotics
-// Home of the Cybears
+// Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
 // File: AngleArmsEngageJaws.java
 // Intent: Forms a command to have the AngleArm attach to the Jaws and disconnect from the chassis.
@@ -50,7 +50,7 @@ public class AngleArmsEngageJaws extends CommandBase {
   @Override
   public void execute()
   {
-    if(jawsSubsystem.setJawsAngle(Constants.jawsAngleArmsEngagePositionAngle, Constants.jawsAngleArmsEngagePositionTolerance))
+    if(jawsSubsystem.setJawsAngle(Constants.jawsAngleArmsEnguagePositionAngle, Constants.jawsAngleArmsEnguagePositionTolerance))
     {
       angleArmSubsystem.engageJaws();
       if (timer.hasElapsed(Constants.AngleArmTimingSeconds)){

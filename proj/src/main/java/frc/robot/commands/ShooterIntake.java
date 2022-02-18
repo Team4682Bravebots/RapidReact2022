@@ -1,6 +1,6 @@
 // ************************************************************
 // Bishop Blanchet Robotics
-// Home of the Cybears
+// Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
 // File: ShooterIntake.java
 // Intent: Forms a command to intake the ball when the Jaws are at the floor/intake position.

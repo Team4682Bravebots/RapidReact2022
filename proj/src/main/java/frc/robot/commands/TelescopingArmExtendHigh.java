@@ -1,6 +1,6 @@
  // ************************************************************
 // Bishop Blanchet Robotics
-// Home of the Cybears
+// Historic home of the 'BraveBots'
 // FRC - Rapid React - 2022
 // File: TelescopingArmExtendHighTraversal.java
 // Intent: Forms a command to drive the telescoping arms to their retracted position.
