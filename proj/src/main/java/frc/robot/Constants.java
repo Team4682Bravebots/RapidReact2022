@@ -12,7 +12,7 @@ package frc.robot;
 
 import frc.robot.*;
 import frc.robot.common.Gains;
-import frc.robot.common.RoboRioOrentation;
+import frc.robot.common.RoboRioOrientation;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 
 /**
@@ -145,6 +145,6 @@ public final class Constants
   public static final int buttonBoardPort = 0;
 
   // orentation
-  public static final RoboRioOrentation roboRioOrentation = RoboRioOrentation.RelayForward;
+  public static final RoboRioOrientation roboRioOrientation = RoboRioOrientation.RelayForward;
 
 }

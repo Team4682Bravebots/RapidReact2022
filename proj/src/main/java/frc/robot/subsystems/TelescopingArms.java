@@ -37,7 +37,7 @@ public class TelescopingArms extends SubsystemBase
     // TODO - must get this from Simeon/Carter soon-ish
     private static final double telescopingArmsMotorToArmEffectiveGearRatio = 500;
 
-    private static final double minmumTargetHeight = 0.0;
+    private static final double minimumTargetHeight = 0.0;
     // important - this should be the maximum extension of the arms and it must also be the length of the wire on the spool - in inches!
     // TODO - must get this from Simeon/Carter soon-ish
     private static final double maximumTargetHeight = 30.0; 
@@ -215,7 +215,7 @@ public class TelescopingArms extends SubsystemBase
     */
     public boolean setTelescopingArmsHeight(double telescopingArmsHeightInInches, double toleranceInInches)
     {
-      double trimmedHeight = MotorUtils.truncateValue(telescopingArmsHeightInInches, TelescopingArms.minmumTargetHeight, TelescopingArms.maximumTargetHeight);
+      double trimmedHeight = MotorUtils.truncateValue(telescopingArmsHeightInInches, TelescopingArms.minimumTargetHeight, TelescopingArms.maximumTargetHeight);
       // because of follower this will set both motors
       rightPidController.setReference(this.convertTelescopingArmsHeightToMotorEncoderPosition(trimmedHeight), ControlType.kSmartMotion);
       double currentHeight = this.getTelescopingArmsHeight();

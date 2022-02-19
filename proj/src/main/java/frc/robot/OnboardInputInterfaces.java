@@ -95,7 +95,7 @@ public class OnboardInputInterfaces
         double rtnVal = 0.0;
         if(navigationSensor != null)
         {
-            switch(Constants.roboRioOrentation)
+            switch(Constants.roboRioOrientation)
             {
                 // navx - X positive direction, implies roll comes from negative pitch
                 case RelayForward:

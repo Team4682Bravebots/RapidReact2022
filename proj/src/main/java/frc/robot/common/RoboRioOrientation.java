@@ -1,6 +1,6 @@
 package frc.robot.common;
 
-public enum RoboRioOrentation
+public enum RoboRioOrientation
 {
   UsbForward,
   DioForward,
