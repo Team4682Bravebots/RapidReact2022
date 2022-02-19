@@ -193,7 +193,7 @@ public class RobotContainer
   {
     if(InstalledHardware.topJawsDriveMotorInstalled &&
       InstalledHardware.bottomJawsDriveMotorInstalled &&
-      InstalledHardware.intakeStopJawsLimitSwitchInstalled &&
+      InstalledHardware.intakeStopJawsLmitSwitchInstalled &&
       InstalledHardware.jawsClutchCylinderSolenoidPneumaticsInstalled)
     {
       // JAWS!!!
