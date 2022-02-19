@@ -13,12 +13,12 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
+import frc.robot.ManualInputInterfaces;
 import frc.robot.subsystems.BallStorage;
 
 public class BallStorageRetrieveManual extends CommandBase {
 
   private BallStorage ballStorageSubsystem;
-  private Timer timer = new Timer();
   private boolean done = false;
 
   /**
@@ -43,10 +43,7 @@ public class BallStorageRetrieveManual extends CommandBase {
   public void execute()
   {
     ballStorageSubsystem.retrieveBallManual();
-    if (timer.hasElapsed(Constants.BallStorageRetrieveTimingSeconds)){
-      ballStorageSubsystem.stopBallManual();
-      done = true;
-    }
+    done = true;
   }
 
   // Called once the command ends or is interrupted.

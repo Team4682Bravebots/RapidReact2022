@@ -130,8 +130,10 @@ public class ManualInputInterfaces
       }
       if(subsystemCollection.getBallStorageSubsystem() != null)
       {
-        bumperLeft.whenPressed(new BallStorageStoreManual(subsystemCollection.getBallStorageSubsystem()));
-        bumperRight.whenPressed(new BallStorageRetrieveManual(subsystemCollection.getBallStorageSubsystem()));
+        bumperLeft.whenHeld(new BallStorageStoreManual(subsystemCollection.getBallStorageSubsystem()));
+        bumperRight.whenHeld(new BallStorageRetrieveManual(subsystemCollection.getBallStorageSubsystem()));
+        bumperLeft.whenReleased(new BallStorageAllStopManual(subsystemCollection.getBallStorageSubsystem()));
+        bumperRight.whenReleased(new BallStorageAllStopManual(subsystemCollection.getBallStorageSubsystem()));
       }
       if(subsystemCollection.getJawsSubsystem() != null)
       {
@@ -163,8 +165,10 @@ public class ManualInputInterfaces
       }
       if(subsystemCollection.getBallStorageSubsystem() != null)
       {
-        bumperLeft.whenPressed(new BallStorageStoreManual(subsystemCollection.getBallStorageSubsystem()));
-        bumperRight.whenPressed(new BallStorageRetrieveManual(subsystemCollection.getBallStorageSubsystem()));
+        bumperLeft.whenHeld(new BallStorageStoreManual(subsystemCollection.getBallStorageSubsystem()));
+        bumperRight.whenHeld(new BallStorageRetrieveManual(subsystemCollection.getBallStorageSubsystem()));
+        bumperLeft.whenReleased(new BallStorageAllStopManual(subsystemCollection.getBallStorageSubsystem()));
+        bumperRight.whenReleased(new BallStorageAllStopManual(subsystemCollection.getBallStorageSubsystem()));
       }
       if(subsystemCollection.getJawsSubsystem() != null)
       {

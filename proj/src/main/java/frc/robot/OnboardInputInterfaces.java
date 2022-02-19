@@ -13,6 +13,9 @@ package frc.robot;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.SPI;
 import frc.robot.common.*;
+import java.util.*; 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 public class OnboardInputInterfaces
 {
@@ -43,6 +46,48 @@ public class OnboardInputInterfaces
             navigationSensor.zeroYaw();
         }
         yawOffset = yawOffsetFromFieldLongAxis;
+    }
+
+    /**
+     * A method to obtain the current match target color
+     * @return - the target color of the current match
+     */
+    public Color getCurrentMatchTargetColor()
+    {
+        return DriverStation.getAlliance() == Alliance.Blue ? Color.Blue : Color.Red;
+    }
+
+    /**
+     * A method to obtain the balls within the field of vision for the limelight
+     * @return - a vector of all of the balls in the field of vision
+     */
+    public Vector<CoordinateSystemBall> getBallsInFieldOfVision()
+    {
+        Vector<CoordinateSystemBall> balls = new Vector<CoordinateSystemBall>();
+
+        // TODO - OWEN fill in the code here to locate all balls within the field of vision of limelight
+
+        // This is just an example below.  The jist is would be you need to:
+        // 1. determine circular objects with the limelight
+        int countOfBallsFound = 1;
+        for(int inx = 0; inx < countOfBallsFound; ++inx)
+        {
+            // 2. determine each balls centroid in reference to a 0,0 coordinate system in the center of the field of vision
+            double nextXCentroid = -100.5; // pixels? (-x implies left of center)
+            double nextYCentroid = 200.5; // pixels? (+y implies above center)
+            // 3. determine each balls general diameter
+            double nextDiameter = 1.0; // pixels?
+            // 4. determine each balls color
+            Color nextColor = Color.Red;
+            // 5. then create an CoordinateSystemBall object and insert it into the collection
+            CoordinateSystemBall nextBallInField = new CoordinateSystemBall(nextColor, nextDiameter, nextXCentroid, nextYCentroid);
+            // insert the newly created ball into the vector/array
+            balls.add(nextBallInField);
+        }
+
+        // make sure to sort before returning
+        Collections.sort(balls);
+        return balls;
     }
 
     /**

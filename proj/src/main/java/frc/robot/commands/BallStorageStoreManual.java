@@ -18,7 +18,6 @@ import frc.robot.subsystems.BallStorage;
 public class BallStorageStoreManual extends CommandBase {
 
   private BallStorage ballStorageSubsystem;
-  private Timer timer = new Timer();
   private boolean done = false;
 
   /**
@@ -43,10 +42,7 @@ public class BallStorageStoreManual extends CommandBase {
   public void execute()
   {
     ballStorageSubsystem.storeBallManual();
-    if (timer.hasElapsed(Constants.BallStorageStoreTimingSeconds)){
-      ballStorageSubsystem.stopBallManual();
-      done = true;
-    }
+    done = true;
   }
 
   // Called once the command ends or is interrupted.
