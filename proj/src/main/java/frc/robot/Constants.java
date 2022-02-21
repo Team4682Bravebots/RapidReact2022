@@ -61,8 +61,8 @@ public final class Constants
   public static final double telescopingArmsToleranceInches = 0.25;
 
   // Ball storage \\
-  public static final double retrieveSpeed = 0;
-  public static final double storeSpeed = 0;
+  public static final double ballStoreSpeed = -0.4;
+  public static final double ballRetrieveSpeed = 0.4;
   public static final int maximumStoredBallCount = 2;
 
   // CAN BUS NUMBERS \\

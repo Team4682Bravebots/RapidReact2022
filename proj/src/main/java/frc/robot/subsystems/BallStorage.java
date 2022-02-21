@@ -10,15 +10,20 @@
 
 package frc.robot.subsystems;
 
+import javax.lang.model.util.ElementScanner6;
+
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.common.*;
 
-public class BallStorage extends SubsystemBase
+public class BallStorage extends SubsystemBase implements Sendable
 {
   private static final int minimumBallPresentSamples = 3;
 
@@ -73,6 +78,17 @@ public class BallStorage extends SubsystemBase
     return onboardBallCount;
   }
 
+  @Override
+  public void initSendable(SendableBuilder builder)
+  {
+    builder.addDoubleProperty("OnboardBallCount", this::getOnboardBallCount, null);
+    builder.addBooleanProperty("BallInFrontPosition", this::isBallInFrontPosition, null);
+    builder.addBooleanProperty("BallInRearPosition", this::isBallInRearPosition, null);
+    builder.addDoubleProperty("TopMotorSpeedSetting", this::getTopMotorSpeed, null);
+    builder.addDoubleProperty("BottomMotorSpeedSetting", this::getBottomMotorSpeed, null);
+    builder.addStringProperty("BallStorageDirection", this::getBallStorageDirection, null);
+  }
+
   /**
   * A method exposed to callers to retrieve one ball from storage
   *
@@ -96,7 +112,7 @@ public class BallStorage extends SubsystemBase
     else
     {
       // since motors are followers ok to just set one
-      topMotor.set(Constants.retrieveSpeed);
+      topMotor.set(Constants.ballRetrieveSpeed);
     }
 
     return rtnVal;
@@ -125,7 +141,7 @@ public class BallStorage extends SubsystemBase
     else
     {
       // since motors are followers ok to just set one
-      topMotor.set(Constants.storeSpeed);
+      topMotor.set(Constants.ballStoreSpeed);
     }
 
     return rtnVal;
@@ -144,7 +160,7 @@ public class BallStorage extends SubsystemBase
   public void storeBallManual()
   {
       // since motors are followers ok to just set one
-      topMotor.set(Constants.storeSpeed);
+      topMotor.set(Constants.ballStoreSpeed);
   }
 
   /**
@@ -162,9 +178,63 @@ public class BallStorage extends SubsystemBase
   public void retrieveBallManual()
   {
       // since motors are followers ok to just set one
-      topMotor.set(Constants.storeSpeed);
+      topMotor.set(Constants.ballStoreSpeed);
   }
 
+  /**
+   * Gets the top motor speed setting
+   * @return the top motor controller output percent
+   */
+  private double getTopMotorSpeed()
+  {
+    return topMotor.getMotorOutputPercent();
+  }
+
+  /**
+   * Gets the bottom motor speed setting
+   * @return the bottom motor controller output percent
+   */
+  private double getBottomMotorSpeed()
+  {
+    return bottomMotor.getMotorOutputPercent();
+  }
+
+  /**
+   * To get a string that represents what direction the ball is moving in
+   * @return a string representing the ball storage movement direction
+   */
+  private String getBallStorageDirection()
+  {
+    double topMotorSpeed = this.getTopMotorSpeed();
+    double bottomMotorSpeed = this.getTopMotorSpeed();
+    if(topMotorSpeed == 0.0 && bottomMotorSpeed == 0.0)
+    {
+      return "Stopped";
+    }
+    else if((Constants.ballRetrieveSpeed > 0.0 && topMotorSpeed > 0.0) || 
+      (Constants.ballRetrieveSpeed < 0.0 && topMotorSpeed < 0.0))
+    {
+      return "Retrieving";
+    }
+    else if((Constants.ballStoreSpeed > 0.0 && topMotorSpeed > 0.0) || 
+      (Constants.ballStoreSpeed < 0.0 && topMotorSpeed < 0.0))
+    {
+      return "Storing";
+    }
+    else
+    {
+      if(topMotorSpeed > 0.1 && bottomMotorSpeed > 0.1 ||
+        topMotorSpeed < -0.1 && bottomMotorSpeed < -0.1)
+      {
+        return "VERY INVALID";
+      }
+      else
+      {
+        return "INVALID";
+      }
+    }
+  }
+  
   private boolean isBallInFrontPosition()
   {
     // Gets the value of the digital input.  Returns true if the circuit is open.

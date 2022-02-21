@@ -17,18 +17,20 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kForward;
 import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kReverse;
 
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import frc.robot.Constants;
 import frc.robot.InstalledHardware;
 
-public class AngleArms extends SubsystemBase
+public class AngleArms extends SubsystemBase implements Sendable
 {
   private DoubleSolenoid bothChassisAngleArmSolenoid = null;
   private DoubleSolenoid bothJawsAngleArmSolenoid = null; 
   
-  private DoubleSolenoid.Value chassisEnguaged = kForward;
-  private DoubleSolenoid.Value chassisDisenguaged = kReverse;
-  private DoubleSolenoid.Value jawsEnguaged = kForward;
-  private DoubleSolenoid.Value jawsDisnguaged = kReverse;
+  private DoubleSolenoid.Value chassisEngaged = kForward;
+  private DoubleSolenoid.Value chassisDisengaged = kReverse;
+  private DoubleSolenoid.Value jawsEngaged = kForward;
+  private DoubleSolenoid.Value jawsDisengaged = kReverse;
 
   private DoubleSolenoid.Value currentChassisSetting = kReverse;
   private DoubleSolenoid.Value currentJawsSetting = kReverse;
@@ -56,9 +58,9 @@ public class AngleArms extends SubsystemBase
    */
   public void engageChassis()
   {
-    if(currentChassisSetting != this.chassisEnguaged)
+    if(currentChassisSetting != this.chassisEngaged)
     {
-      this.manualChassisConnection(this.chassisEnguaged);
+      this.manualChassisConnection(this.chassisEngaged);
     }
   }
 
@@ -67,9 +69,9 @@ public class AngleArms extends SubsystemBase
    */
   public void disengageChassis()
   {
-    if(currentChassisSetting != this.chassisDisenguaged)
+    if(currentChassisSetting != this.chassisDisengaged)
     {
-      this.manualChassisConnection(this.chassisDisenguaged);
+      this.manualChassisConnection(this.chassisDisengaged);
     }
   }
 
@@ -78,9 +80,9 @@ public class AngleArms extends SubsystemBase
    */
   public void engageJaws()
   {
-    if(this.currentJawsSetting != this.jawsEnguaged)
+    if(this.currentJawsSetting != this.jawsEngaged)
     {
-      this.manualJawsConnection(this.jawsEnguaged);
+      this.manualJawsConnection(this.jawsEngaged);
     }
   }
 
@@ -89,10 +91,17 @@ public class AngleArms extends SubsystemBase
    */
   public void disengageJaws()
   {
-    if(this.currentJawsSetting != this.jawsDisnguaged)
+    if(this.currentJawsSetting != this.jawsDisengaged)
     {
-      this.manualJawsConnection(this.jawsDisnguaged);
+      this.manualJawsConnection(this.jawsDisengaged);
     }
+  }
+
+  @Override
+  public void initSendable(SendableBuilder builder)
+  {
+    builder.addBooleanProperty("AngleArmsAndChassisEngaged", this::getAngleArmsAndChassisEngaged, null);
+    builder.addBooleanProperty("AngleArmsAndJawsEngaged", this::getAngleArmsAndJawsEngaged, null);
   }
 
   /**
@@ -126,6 +135,24 @@ public class AngleArms extends SubsystemBase
       super.setDefaultCommand(myCommand);
   }
 
+  /**
+   * Obtain if the current subsystem has the angle arms engagued with the chassis
+   * @return True if the angle arms are engaged with the chassis, else false (implying disengaged)
+   */
+  private boolean getAngleArmsAndChassisEngaged()
+  {
+    return this.currentChassisSetting == this.chassisEngaged;
+  }
+
+  /**
+   * Obtain if the current subsystem has the angle arms engagued with the jaws
+   * @return True if the angle arms are engaged with the jaws, else false (implying disengaged)
+   */
+  private boolean getAngleArmsAndJawsEngaged()
+  {
+    return this.currentJawsSetting == this.jawsEngaged;
+  }
+  
   private void manualChassisConnection(DoubleSolenoid.Value setting)
   {
     if(this.currentChassisSetting != setting)

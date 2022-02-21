@@ -21,6 +21,8 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kForward;
 import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kReverse;
@@ -29,7 +31,7 @@ import frc.robot.Constants;
 import frc.robot.common.ConsecutiveDigitalInput;
 import frc.robot.common.MotorUtils;
 
-public class Jaws extends SubsystemBase
+public class Jaws extends SubsystemBase implements Sendable
 {
     /* *********************************************************************
     CONSTANTS
@@ -87,6 +89,14 @@ public class Jaws extends SubsystemBase
       return this.convertMotorEncoderPositionToJawsAngle(this.getAverageMotorEncoderPosition());
     }
 
+    @Override
+    public void initSendable(SendableBuilder builder)
+    {
+      builder.addDoubleProperty("JawsAverageMotorOutput", this::getAverageMotorOutput, null);
+      builder.addDoubleProperty("JawsAverageMotorEncoderPosition", this::getAverageMotorEncoderPosition, null);
+      builder.addDoubleProperty("JawsApproximageJawsAngle", this::getApproximateJawsAnglePosition, null);
+    }
+    
     /**
     * a method to continue to watch and find out if the jaws have finished calibration
     *
@@ -243,9 +253,19 @@ public class Jaws extends SubsystemBase
       return (jawsMotorEncoderPosition - motorReferencePosition) / Jaws.jawsMotorEncoderTicksPerDegree / Jaws.jawsMotorToArmEffectiveGearRatio;
     }
 
+    private double getApproximateJawsAnglePosition()
+    {
+      return this.convertJawsAngleToMotorEncoderPosition(this.getAverageMotorEncoderPosition());
+    }
+
     private double getAverageMotorEncoderPosition()
     {
       return (rightMotor.getSelectedSensorPosition() + leftMotor.getSelectedSensorPosition())/2;
+    }
+
+    private double getAverageMotorOutput()
+    {
+      return (rightMotor.getMotorOutputPercent() + leftMotor.getMotorOutputPercent())/2;
     }
 
     // a method devoted to establishing proper startup of the jaws motors

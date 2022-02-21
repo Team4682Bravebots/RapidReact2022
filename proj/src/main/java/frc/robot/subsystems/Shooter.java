@@ -11,12 +11,16 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class Shooter extends SubsystemBase {
+public class Shooter extends SubsystemBase implements Sendable
+{
   
   private WPI_TalonFX topMotor = new WPI_TalonFX(Constants.shooterMotorTopCanId);
   private WPI_TalonFX bottomMotor = new WPI_TalonFX(Constants.shooterMotorBottomCanId);

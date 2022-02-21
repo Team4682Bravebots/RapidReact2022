@@ -21,13 +21,15 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.drive.*;
 import edu.wpi.first.wpilibj.motorcontrol.*;
 
 import frc.robot.Constants;
 import frc.robot.common.MotorUtils;
 
-public class DriveTrain extends SubsystemBase
+public class DriveTrain extends SubsystemBase implements Sendable
 {
   // four matched motors - two for each tank drive side
   private WPI_TalonFX leftFront = new WPI_TalonFX(Constants.driveMotorLeftFrontCanId);
@@ -69,6 +71,17 @@ public class DriveTrain extends SubsystemBase
     drive.arcadeDrive(yAxisValue, xAxisValue);
   }
 
+  @Override
+  public void initSendable(SendableBuilder builder)
+  {
+    builder.addDoubleProperty("DriveTrainAverageLeftMotorOutput", this::getAverageLeftMotorOutput, null);
+    builder.addDoubleProperty("DriveTrainAverageRightMotorOutput", this::getAverageRightMotorOutput, null);
+    builder.addDoubleProperty("DriveTrainAverageLeftMotorEncoderPosition", this::getAverageLeftMotorEncoderPosition, null);
+    builder.addDoubleProperty("DriveTrainAverageRightMotorEncoderPosition", this::getAverageRightMotorEncoderPosition, null);
+    builder.addDoubleProperty("DriveTrainApproximateLeftTravelDistanceInches", this::getApproximateLeftWheelDistance, null);
+    builder.addDoubleProperty("DriveTrainApproximateRightTravelDistanceInches", this::getApproximateRightWheelDistance, null);
+  }
+  
   /**
    * Determines if the motors are performing drive movement
    * @return
@@ -103,7 +116,7 @@ public class DriveTrain extends SubsystemBase
     }
 
     // sets motors to input 
-    moveWheelsDistance(leftDistanceInches, rightDistanceInches, targetTimeSeconds);
+    this.moveWheelsDistance(leftDistanceInches, rightDistanceInches, targetTimeSeconds);
   }
 
   @Override
@@ -149,8 +162,8 @@ public class DriveTrain extends SubsystemBase
 
   private void moveWheelsDistance(double leftWheelDistanceInches, double rightWheelDistanceInches, double targetTimeInSeconds)
   {
-    double leftDeltaEncoderTicks = getEncoderUnitsFromTrackDistanceInInches(leftWheelDistanceInches);
-    double rightDeltaEncoderTicks = getEncoderUnitsFromTrackDistanceInInches(rightWheelDistanceInches);   
+    double leftDeltaEncoderTicks = this.getEncoderUnitsFromTrackDistanceInInches(leftWheelDistanceInches);
+    double rightDeltaEncoderTicks = this.getEncoderUnitsFromTrackDistanceInInches(rightWheelDistanceInches);   
 
     // TODO - with trapazoidal, this won't be fast enough - more work here for sure ...
     double leftAverageVelocityEncoderTicksPer100Milliseconds = leftDeltaEncoderTicks/(targetTimeInSeconds*1000);
@@ -162,12 +175,14 @@ public class DriveTrain extends SubsystemBase
     rightRear.configMotionAcceleration(rightAverageVelocityEncoderTicksPer100Milliseconds, Constants.kTimeoutMs);
 		rightRear.configMotionCruiseVelocity(rightAverageVelocityEncoderTicksPer100Milliseconds, Constants.kTimeoutMs);
 
+    // get ready for error calc
+    double onePercentError = (Math.abs(leftDeltaEncoderTicks) + Math.abs(rightDeltaEncoderTicks)) / 2 * 0.01;
+    double futureLastMotitionMagicError = onePercentError > halfRotationEncoderTicks ? halfRotationEncoderTicks : onePercentError;
+
     // move it with motion magic
     leftRear.set(ControlMode.MotionMagic, leftDeltaEncoderTicks + this.getAverageLeftMotorEncoderPosition());
     rightRear.set(ControlMode.MotionMagic, rightDeltaEncoderTicks + this.getAverageRightMotorEncoderPosition());
-
-    double onePercentError = (Math.abs(leftDeltaEncoderTicks) + Math.abs(rightDeltaEncoderTicks)) / 2 * 0.01;
-    lastMotionMagicTargetError =  onePercentError > halfRotationEncoderTicks ? halfRotationEncoderTicks : onePercentError;
+    lastMotionMagicTargetError =  futureLastMotitionMagicError;
     motionMagicRunning = true;
   }
 
@@ -176,14 +191,39 @@ public class DriveTrain extends SubsystemBase
     return (wheelTrackDistanceInches / (Math.PI * DriveTrain.wheelDiameterInches)) * Constants.CtreTalonFx500EncoderTicksPerRevolution * DriveTrain.effectiveWheelMotorGearBoxRatio;
   }
 
+  private double getTrackDistanceInInchesFromEncoderUnits(double encoderUnits)
+  {
+    return (encoderUnits / Constants.CtreTalonFx500EncoderTicksPerRevolution / DriveTrain.effectiveWheelMotorGearBoxRatio) * (Math.PI * DriveTrain.wheelDiameterInches);
+  }
+
+  private double getApproximateLeftWheelDistance()
+  {
+    return this.getTrackDistanceInInchesFromEncoderUnits(this.getAverageLeftMotorEncoderPosition());
+  }
+
+  private double getApproximateRightWheelDistance()
+  {
+    return this.getTrackDistanceInInchesFromEncoderUnits(this.getAverageRightMotorEncoderPosition());
+  }
+
   private double getAverageLeftMotorEncoderPosition()
   {
     return (leftRear.getSelectedSensorPosition() + leftFront.getSelectedSensorPosition()) / 2;
   }
 
+  private double getAverageLeftMotorOutput()
+  {
+    return (leftRear.getMotorOutputPercent() + leftFront.getMotorOutputPercent()) / 2;
+  }
+
   private double getAverageRightMotorEncoderPosition()
   {
     return (rightRear.getSelectedSensorPosition() + rightFront.getSelectedSensorPosition()) / 2;
+  }
+
+  private double getAverageRightMotorOutput()
+  {
+    return (rightRear.getMotorOutputPercent() + rightFront.getMotorOutputPercent()) / 2;
   }
 
   private void initializeMotors()

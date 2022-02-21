@@ -17,6 +17,8 @@ import com.revrobotics.SparkMaxRelativeEncoder;
 import com.revrobotics.CANSparkMax.*;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -25,7 +27,7 @@ import frc.robot.common.*;
 
 import java.util.*;
 
-public class TelescopingArms extends SubsystemBase
+public class TelescopingArms extends SubsystemBase implements Sendable
 {
     /* *********************************************************************
     CONSTANTS
