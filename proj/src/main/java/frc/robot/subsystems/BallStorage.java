@@ -183,20 +183,20 @@ public class BallStorage extends SubsystemBase implements Sendable
 
   /**
    * Gets the top motor speed setting
-   * @return the top motor controller output percent
+   * @return the top motor controller output as decmil fraction
    */
   private double getTopMotorSpeed()
   {
-    return topMotor.getMotorOutputPercent();
+    return topMotor.getMotorOutputPercent() / 100.0;
   }
 
   /**
    * Gets the bottom motor speed setting
-   * @return the bottom motor controller output percent
+   * @return the bottom motor controller output as decmil fraction
    */
   private double getBottomMotorSpeed()
   {
-    return bottomMotor.getMotorOutputPercent();
+    return bottomMotor.getMotorOutputPercent() / 100.0;
   }
 
   /**
@@ -234,7 +234,7 @@ public class BallStorage extends SubsystemBase implements Sendable
       }
     }
   }
-  
+
   private boolean isBallInFrontPosition()
   {
     // Gets the value of the digital input.  Returns true if the circuit is open.

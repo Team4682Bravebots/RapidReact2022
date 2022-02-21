@@ -74,12 +74,13 @@ public class DriveTrain extends SubsystemBase implements Sendable
   @Override
   public void initSendable(SendableBuilder builder)
   {
-    builder.addDoubleProperty("DriveTrainAverageLeftMotorOutput", this::getAverageLeftMotorOutput, null);
-    builder.addDoubleProperty("DriveTrainAverageRightMotorOutput", this::getAverageRightMotorOutput, null);
+    builder.addDoubleProperty("DriveTrainAverageLeftMotorOutput", this::getAverageLeftMotorOutputSpeed, null);
+    builder.addDoubleProperty("DriveTrainAverageRightMotorOutput", this::getAverageRightMotorOutputSpeed, null);
     builder.addDoubleProperty("DriveTrainAverageLeftMotorEncoderPosition", this::getAverageLeftMotorEncoderPosition, null);
     builder.addDoubleProperty("DriveTrainAverageRightMotorEncoderPosition", this::getAverageRightMotorEncoderPosition, null);
     builder.addDoubleProperty("DriveTrainApproximateLeftTravelDistanceInches", this::getApproximateLeftWheelDistance, null);
     builder.addDoubleProperty("DriveTrainApproximateRightTravelDistanceInches", this::getApproximateRightWheelDistance, null);
+    builder.addStringProperty("DriveTrainMovementDescription", this::describeDriveTrainMovement, null);
   }
   
   /**
@@ -144,6 +145,58 @@ public class DriveTrain extends SubsystemBase implements Sendable
   {
       // TODO Auto-generated method stub
       super.setDefaultCommand(myCommand);
+  }
+
+  private String describeDriveTrainMovement()
+  {
+    double leftMovement = this.getAverageLeftMotorOutputSpeed();
+    double rightMovement = this.getAverageRightMotorOutputSpeed();
+    if(leftMovement == 0.0 && rightMovement == 0.0)
+    {
+      return "Stopped";
+    }
+    else if(leftMovement > 0.0 && leftMovement == rightMovement)
+    {
+      return "Forward";
+    }
+    else if(leftMovement < 0.0 && leftMovement == rightMovement)
+    {
+      return "Reverse";
+    }
+    else if(leftMovement > 0.0 && rightMovement > 0.0)
+    {
+      if(leftMovement > rightMovement)
+      {
+        return "Forward Right Arc";
+      }
+      else
+      {
+        return "Forward Left Arc";
+      }
+    }
+    else if(leftMovement < 0.0 && rightMovement < 0.0)
+    {
+      if(leftMovement < rightMovement)
+      {
+        return "Reverse Right Arc";
+      }
+      else
+      {
+        return "Reverse Left Arc";
+      }
+    }
+    else if(leftMovement > 0.0 && leftMovement > rightMovement)
+    {
+      return "Right Spin";
+    }
+    else if(rightMovement > 0.0 && rightMovement > leftMovement)
+    {
+      return "Left Spin";
+    }
+    else
+    {
+      return "Undefined";
+    }
   }
 
   private double radiusFromArcDistance(double distance, double rotationDegrees)
@@ -211,9 +264,9 @@ public class DriveTrain extends SubsystemBase implements Sendable
     return (leftRear.getSelectedSensorPosition() + leftFront.getSelectedSensorPosition()) / 2;
   }
 
-  private double getAverageLeftMotorOutput()
+  private double getAverageLeftMotorOutputSpeed()
   {
-    return (leftRear.getMotorOutputPercent() + leftFront.getMotorOutputPercent()) / 2;
+    return (leftRear.getMotorOutputPercent() + leftFront.getMotorOutputPercent()) / 200.0;
   }
 
   private double getAverageRightMotorEncoderPosition()
@@ -221,9 +274,9 @@ public class DriveTrain extends SubsystemBase implements Sendable
     return (rightRear.getSelectedSensorPosition() + rightFront.getSelectedSensorPosition()) / 2;
   }
 
-  private double getAverageRightMotorOutput()
+  private double getAverageRightMotorOutputSpeed()
   {
-    return (rightRear.getMotorOutputPercent() + rightFront.getMotorOutputPercent()) / 2;
+    return (rightRear.getMotorOutputPercent() + rightFront.getMotorOutputPercent()) / 200.0;
   }
 
   private void initializeMotors()

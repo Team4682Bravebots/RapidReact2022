@@ -27,6 +27,8 @@ import frc.robot.common.*;
 
 import java.util.*;
 
+import javax.lang.model.util.ElementScanner6;
+
 public class TelescopingArms extends SubsystemBase implements Sendable
 {
     /* *********************************************************************
@@ -56,6 +58,9 @@ public class TelescopingArms extends SubsystemBase implements Sendable
     private static final int powerSampleSizeSufficient = 7;
     private static final int powerSampleSizeMax = 12;
     private static final int extendingMovementMinimumCycles = 10;
+
+    // TODO - need to determine this with testing and talk with folks about gearbox
+    private static final boolean spoolWindingIsPositiveSparkMaxNeoMotorOutput = true;
 
     /* *********************************************************************
     MEMBERS
@@ -111,6 +116,17 @@ public class TelescopingArms extends SubsystemBase implements Sendable
       return this.convertMotorEncoderPositionToTelescopingArmsHeight(this.getAverageMotorEncoderPosition());
     }
 
+    @Override
+    public void initSendable(SendableBuilder builder)
+    {
+      builder.addDoubleProperty("TelescopingArmsLeftMotorSpeed", this::getLeftMotorOutputSpeed, null);
+      builder.addDoubleProperty("TelescopingArmsRightMotorSpeed", this::getRightMotorOutputSpeed, null);
+      builder.addStringProperty("TelescopingArmsLeftArmMotionDescription", this::getLeftArmMotionDescription, null);
+      builder.addStringProperty("TelescopingArmsRightArmMotionDescription", this::getRightArmMotionDescription, null);
+      builder.addDoubleProperty("TelescopingArmsAverageClimberHeightInInches", this::getAverageClimberHeightInInches, null);
+      builder.addDoubleProperty("TelescopingArmsAverageEncoderPosition", this::getAverageMotorEncoderPosition, null);
+    }
+  
     /**
     * a method to continue to watch and find out if the TelescopingArms have finished calibration
     * the two arms will be calibrated independently and depend on the arms bottoming out and watching
@@ -359,9 +375,55 @@ public class TelescopingArms extends SubsystemBase implements Sendable
       return targetHeightInInches;
     }
 
+    private double getAverageClimberHeightInInches()
+    {
+      return this.convertMotorEncoderPositionToTelescopingArmsHeight(this.getAverageMotorEncoderPosition());
+    }
+
     private double getAverageMotorEncoderPosition()
     {
       return (rightEncoder.getPosition() + leftEncoder.getPosition())/2;
+    }
+
+    private double getLeftMotorOutputSpeed()
+    {
+      return leftMotor.getAppliedOutput();
+    }
+
+    private double getRightMotorOutputSpeed()
+    {
+      return rightMotor.getAppliedOutput();
+    }
+
+    private String getLeftArmMotionDescription()
+    {
+      return this.getArmMotionDescription(this.getLeftMotorOutputSpeed());
+    }
+
+    private String getRightArmMotionDescription()
+    {
+      return this.getArmMotionDescription(this.getRightMotorOutputSpeed());
+    }
+
+    private String getArmMotionDescription(double motorAppliedOutput)
+    {
+      double actualMotorOutput = spoolWindingIsPositiveSparkMaxNeoMotorOutput ? motorAppliedOutput : -1.0 * motorAppliedOutput;
+      if(actualMotorOutput == 0.0)
+      {
+        return "Stopped";
+      }
+      else if(actualMotorOutput > 0.0)
+      {
+        return "Retracting";
+      }
+      else if(actualMotorOutput < 0.0)
+      {
+        return "Extending";
+      }
+      else
+      {
+        return "Undefined";
+      }
     }
 
     // a method devoted to establishing proper startup of the jaws motors
