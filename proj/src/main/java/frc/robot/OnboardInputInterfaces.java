@@ -16,8 +16,10 @@ import frc.robot.common.*;
 import java.util.*; 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
 
-public class OnboardInputInterfaces
+public class OnboardInputInterfaces implements Sendable
 {
     private AHRS navigationSensor = null;
     private double yawOffset = 0.0;
@@ -190,4 +192,22 @@ public class OnboardInputInterfaces
         return rtnVal;
     }
 
+    @Override
+    public void initSendable(SendableBuilder builder)
+    {
+        builder.addDoubleProperty("NavxPitchAngle", this::getPitchAngle, null);
+        builder.addDoubleProperty("NavxRollAngle", this::getRollAngle, null);
+        builder.addDoubleProperty("NavxYawAngle", this::getYawAngle, null);
+        builder.addDoubleProperty("NavxYawAngleOffset", this::getYawAngleOffset, this::setYawAngleOffset);
+    }
+
+    private double getYawAngleOffset()
+    {
+        return this.yawOffset;
+    }
+
+    private void setYawAngleOffset(double value)
+    {
+        this.yawOffset = value;
+    }
 }
