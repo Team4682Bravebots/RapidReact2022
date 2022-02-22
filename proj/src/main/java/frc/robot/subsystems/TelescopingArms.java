@@ -39,12 +39,13 @@ public class TelescopingArms extends SubsystemBase implements Sendable
     private static final double telescopingArmsRetractSpeedDuringCalibration = -0.4;
     private static final double telescopingArmsExtendSpeedDuringCalibration = 0.4;
     // TODO - must get this from Simeon/Carter soon-ish
-    private static final double telescopingArmsMotorToArmEffectiveGearRatio = 500;
+    private static final double telescopingArmsMotorToArmEffectiveGearRatio = (60.0/11.0) * (64.0/18.0);
 
-    private static final double minimumTargetHeight = 0.0;
     // important - this should be the maximum extension of the arms and it must also be the length of the wire on the spool - in inches!
     // TODO - must get this from Simeon/Carter soon-ish
-    private static final double maximumTargetHeight = 30.0; 
+    private static final double minimumArmHeightInches = 31.0;
+    private static final double maximumArmHeightInches = 63.0;
+    private static final double maximumHeightFromStoredPositionInches = maximumArmHeightInches - minimumArmHeightInches;
     // measurements of spool diameter in 4 discrete ranges
     // intended to be an average measurement of wire/chord on the spool when the spool is 'fractionaly wound'
     // for example when 0-25% of the wire is wound on the spool we need the diameter of the average winding to be placed in telescopingArmsSpoolDiameterInches0to25
@@ -59,7 +60,7 @@ public class TelescopingArms extends SubsystemBase implements Sendable
     private static final int powerSampleSizeMax = 12;
     private static final int extendingMovementMinimumCycles = 10;
 
-    // TODO - need to determine this with testing and talk with folks about gearbox
+    // Based on discussion with Simeon, this is true
     private static final boolean spoolWindingIsPositiveSparkMaxNeoMotorOutput = true;
 
     /* *********************************************************************
@@ -84,10 +85,10 @@ public class TelescopingArms extends SubsystemBase implements Sendable
     private ArrayDeque<Double> rightPowerList = new ArrayDeque<Double>();
     private ArrayDeque<Double> leftPowerList = new ArrayDeque<Double>();
 
-    private double motorEncoderTicksAt100 = this.convertTelescopingArmsHeightToMotorEncoderPosition(maximumTargetHeight * 1.00);
-    private double motorEncoderTicksAt75 = this.convertTelescopingArmsHeightToMotorEncoderPosition(maximumTargetHeight * 0.75);
-    private double motorEncoderTicksAt50 = this.convertTelescopingArmsHeightToMotorEncoderPosition(maximumTargetHeight * 0.50);
-    private double motorEncoderTicksAt25 = this.convertTelescopingArmsHeightToMotorEncoderPosition(maximumTargetHeight * 0.25);
+    private double motorEncoderTicksAt100 = this.convertTelescopingArmsHeightToMotorEncoderPosition(maximumHeightFromStoredPositionInches * 1.00);
+    private double motorEncoderTicksAt75 = this.convertTelescopingArmsHeightToMotorEncoderPosition(maximumHeightFromStoredPositionInches * 0.75);
+    private double motorEncoderTicksAt50 = this.convertTelescopingArmsHeightToMotorEncoderPosition(maximumHeightFromStoredPositionInches * 0.50);
+    private double motorEncoderTicksAt25 = this.convertTelescopingArmsHeightToMotorEncoderPosition(maximumHeightFromStoredPositionInches * 0.25);
 
     /* *********************************************************************
     CONSTRUCTORS
@@ -114,6 +115,16 @@ public class TelescopingArms extends SubsystemBase implements Sendable
     public double getTelescopingArmsHeight()
     {
       return this.convertMotorEncoderPositionToTelescopingArmsHeight(this.getAverageMotorEncoderPosition());
+    }
+
+    /**
+    * A method to obtain the Arms height
+    *
+    * @return the current TelescopingArms height in Inches from the reference 'stored' position
+    */
+    public double getTelescopingArmsHeightFromBottomOfWheels()
+    {
+      return this.getTelescopingArmsHeight() + TelescopingArms.minimumArmHeightInches;
     }
 
     @Override
@@ -233,9 +244,14 @@ public class TelescopingArms extends SubsystemBase implements Sendable
     */
     public boolean setTelescopingArmsHeight(double telescopingArmsHeightInInches, double toleranceInInches)
     {
-      double trimmedHeight = MotorUtils.truncateValue(telescopingArmsHeightInInches, TelescopingArms.minimumTargetHeight, TelescopingArms.maximumTargetHeight);
+      double trimmedHeight = MotorUtils.truncateValue(
+        telescopingArmsHeightInInches,
+        0.0, // 
+        TelescopingArms.maximumHeightFromStoredPositionInches);
       // because of follower this will set both motors
-      rightPidController.setReference(this.convertTelescopingArmsHeightToMotorEncoderPosition(trimmedHeight), ControlType.kSmartMotion);
+      rightPidController.setReference(
+        this.convertTelescopingArmsHeightToMotorEncoderPosition(trimmedHeight),
+        ControlType.kSmartMotion);
       double currentHeight = this.getTelescopingArmsHeight();
       return (currentHeight - toleranceInInches >= telescopingArmsHeightInInches && currentHeight + toleranceInInches <= telescopingArmsHeightInInches);
     }
@@ -277,7 +293,7 @@ public class TelescopingArms extends SubsystemBase implements Sendable
     // note this includes adding the originating motor reference position (which is hopefully 0.0)
     private double convertTelescopingArmsHeightToMotorEncoderPosition(double telescopingArmsHeightInInches)
     {
-      double remainingFractionUnwound = telescopingArmsHeightInInches / TelescopingArms.maximumTargetHeight;
+      double remainingFractionUnwound = telescopingArmsHeightInInches / TelescopingArms.maximumHeightFromStoredPositionInches;
       double encoderTargetUnits = this.motorReferencePosition;
       double travelingContributionFraction = 0.0;
       double travelingContributionHeight = 0.0;
@@ -313,7 +329,7 @@ public class TelescopingArms extends SubsystemBase implements Sendable
         remainingFractionUnwound -= travelingContributionFraction;
         if(travelingContributionFraction > 0.0)
         {
-          travelingContributionHeight = travelingContributionFraction * TelescopingArms.maximumTargetHeight;
+          travelingContributionHeight = travelingContributionFraction * TelescopingArms.maximumHeightFromStoredPositionInches;
           travelingContributionRevolutions = travelingContributionHeight / (Math.PI * travelingSpoolDiameter);
           encoderTargetUnits += travelingContributionRevolutions * Constants.DegreesPerRevolution * TelescopingArms.telescopingArmsMotorEncoderTicksPerDegree * TelescopingArms.telescopingArmsMotorToArmEffectiveGearRatio;
         }  
