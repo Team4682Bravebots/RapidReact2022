@@ -45,8 +45,6 @@ public class ShooterAutomatic extends CommandBase
   private PIDController bottomPidController;
   private PIDController topPidController;
 
-  private double initialBottomShooterSpeed = 0.4;
-  private double initialTopShooterSpeed = 0.4;
   private double bottomShooterTargetVelocityRpm = 1000;
   private double bottomShooterVelocityToleranceRpm = 10;
   private double topShooterTargetVelocityRpm = 1000;
@@ -81,17 +79,27 @@ public class ShooterAutomatic extends CommandBase
   @Override
   public void initialize()
   {
-      // TODO - mike get this working now !!!
+      // determine the target 
+      double currentJawsAngle = jawsSubsystem.getJawsAngle();
+      for(int inx = 0; inx < shooterIntakeTargets.length; ++inx)
+      {
+          double lowBar = shooterIntakeTargets[inx][0];
+          double highBar = shooterIntakeTargets[inx][1];
+          if(currentJawsAngle >= lowBar && currentJawsAngle <= highBar)
+          {
+            bottomShooterTargetVelocityRpm = shooterIntakeTargets[inx][2];
+            bottomShooterVelocityToleranceRpm = shooterIntakeTargets[inx][3];
+            topShooterTargetVelocityRpm = shooterIntakeTargets[inx][4];
+            topShooterVelocityToleranceRpm = shooterIntakeTargets[inx][5];
+            break;          
+          }
+      }
 
       // determine where the arm is and then map that to the target array values
       bottomPidController.setSetpoint(this.bottomShooterTargetVelocityRpm);
       bottomPidController.setTolerance(this.bottomShooterVelocityToleranceRpm);
       topPidController.setSetpoint(this.topShooterTargetVelocityRpm);
       topPidController.setTolerance(this.topShooterVelocityToleranceRpm);
-
-      // set the initial speeds
-      shooterSubsystem.shooterManualBottom(this.initialBottomShooterSpeed);
-      shooterSubsystem.shooterManualTop(this.initialTopShooterSpeed);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

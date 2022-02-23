@@ -117,8 +117,8 @@ public class ManualInputInterfaces
       // *************************************************************
       // *************************************************************
       // this is just for testing!!! RIP IT OUT LATER!!!
-      JoystickButton buttonB = new JoystickButton(coDriverController, XboxController.Button.kB.value);
-      JoystickButton buttonY = new JoystickButton(coDriverController, XboxController.Button.kY.value);
+      JoystickButton buttonB = new JoystickButton(driverController, XboxController.Button.kB.value);
+      JoystickButton buttonY = new JoystickButton(driverController, XboxController.Button.kY.value);
       JoystickButton bumperLeft = new JoystickButton(driverController, XboxController.Button.kLeftBumper.value);
       JoystickButton bumperRight = new JoystickButton(driverController, XboxController.Button.kRightBumper.value);
       JoystickButton joystickButton = new JoystickButton(driverController, XboxController.Button.kRightStick.value);
@@ -138,6 +138,13 @@ public class ManualInputInterfaces
       if(subsystemCollection.getJawsSubsystem() != null)
       {
         joystickButton.whenPressed(new JawsHoldReleaseManual(subsystemCollection.getJawsSubsystem()));
+
+        // TODO - rip the next 5 lines out as these are only for testing the jaws subsystem!!!
+        JoystickButton buttonA = new JoystickButton(driverController, XboxController.Button.kA.value);
+        JoystickButton buttonX = new JoystickButton(driverController, XboxController.Button.kX.value);
+        buttonX.whenPressed(new JawsForwardLowGoal(subsystemCollection.getJawsSubsystem()));
+        buttonA.whenPressed(new JawsIntake(subsystemCollection.getJawsSubsystem()));
+        buttonB.whenPressed(new JawsAllStop(subsystemCollection.getJawsSubsystem()));
       }
       // *************************************************************
       // *************************************************************

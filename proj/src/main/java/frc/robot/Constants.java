@@ -54,8 +54,8 @@ public final class Constants
 
   // Jaws reach points \\
   public static final double jawsReverseHighGoalPositionAngle = 115.0;
-  public static final double jawsIntakePositionAngle = 5.0;
-  public static final double jawsLowGoalPositionAngle = 40.0;
+  public static final double jawsIntakePositionAngle = 0.0;
+  public static final double jawsLowGoalPositionAngle = 30.0;
   public static final double jawsHighGoalPositionAngle = 65.0; 
   public static final double jawsPositionAngleTolerance = 1.5;
   public static final double jawsAngleArmsEngagePositionAngle = 81.0;
@@ -83,8 +83,8 @@ public final class Constants
   public static int telescopingArmsMotorRightCanId = 14;
 
   //TODO - P0 - fill in proper CAN bus index for shooting motors
-  public static final int shooterMotorBottomCanId = 5;
-  public static final int shooterMotorTopCanId = 6;
+  public static final int shooterMotorBottomCanId = 9;
+  public static final int shooterMotorTopCanId = 10;
 
   //TODO - P0 - fill in proper CAN bus index for ball storage motors
   public static int ballStorageMotorTopCanId = 15;
@@ -124,8 +124,8 @@ public final class Constants
   public static TalonFXInvertType driveMotorRightRearDefaultDirection = TalonFXInvertType.FollowMaster;
 
   // jaws arm motors clockwise is elevate
-  public static TalonFXInvertType jawsLeftMotorDefaultDirection = TalonFXInvertType.Clockwise;
-  public static TalonFXInvertType jawsRightMotorDefaultDirection = TalonFXInvertType.FollowMaster;
+  public static TalonFXInvertType jawsLeftMotorDefaultDirection = TalonFXInvertType.FollowMaster;
+  public static TalonFXInvertType jawsRightMotorDefaultDirection = TalonFXInvertType.Clockwise;
 
   // TIMING AND SPEEDS \\
   // AngleArm timing \\
