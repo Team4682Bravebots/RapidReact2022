@@ -29,7 +29,8 @@ import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 public final class Constants
 {
   public static final double DegreesPerRevolution = 360.0;
-  // Encoder information
+  // Talon maximum RPM 
+  public static final double talonMaximumRevolutionsPerMinute = 6380;
   // this uses the on-motor quadratrue encoder
   // see: https://www.vexrobotics.com/pro/falcon-500 where it says "2048 CPR encoder"
   public static final double CtreTalonFx500EncoderTicksPerRevolution = 2048; 
@@ -39,8 +40,8 @@ public final class Constants
 
   // shooter 
   // inverts - see: https://docs.ctre-phoenix.com/en/stable/ch13_MC.html#talon-fx-specific-inverts
-  public static TalonFXInvertType shooterBottomMotorInverted = TalonFXInvertType.Clockwise;
-  public static TalonFXInvertType shooterTopMotorInverted = TalonFXInvertType.CounterClockwise;
+  public static TalonFXInvertType shooterBottomMotorDefaultDirection = TalonFXInvertType.CounterClockwise;
+  public static TalonFXInvertType shooterTopMotorDefaultDirection = TalonFXInvertType.CounterClockwise;
   // Motor magic numbers
   public static final double bottomMotorForwardLowGoalSpeed = 0.8;
   public static final double topMotorForwardLowGoalSpeed = 0.7;
@@ -117,10 +118,14 @@ public final class Constants
 
   // Drive motor magic numbers
   // inverts - see: https://docs.ctre-phoenix.com/en/stable/ch13_MC.html#talon-fx-specific-inverts
-  public static TalonFXInvertType driveMotorLeftFrontInverted = TalonFXInvertType.CounterClockwise;
-  public static TalonFXInvertType driveMotorLeftRearInverted = TalonFXInvertType.FollowMaster;
-  public static TalonFXInvertType driveMotorRightFrontInverted = TalonFXInvertType.Clockwise;
-  public static TalonFXInvertType driveMotorRightRearInverted = TalonFXInvertType.FollowMaster;
+  public static TalonFXInvertType driveMotorLeftFrontDefaultDirection = TalonFXInvertType.CounterClockwise;
+  public static TalonFXInvertType driveMotorLeftRearDefaultDirection = TalonFXInvertType.FollowMaster;
+  public static TalonFXInvertType driveMotorRightFrontDefaultDirection = TalonFXInvertType.Clockwise;
+  public static TalonFXInvertType driveMotorRightRearDefaultDirection = TalonFXInvertType.FollowMaster;
+
+  // jaws arm motors clockwise is elevate
+  public static TalonFXInvertType jawsLeftMotorDefaultDirection = TalonFXInvertType.Clockwise;
+  public static TalonFXInvertType jawsRightMotorDefaultDirection = TalonFXInvertType.FollowMaster;
 
   // TIMING AND SPEEDS \\
   // AngleArm timing \\

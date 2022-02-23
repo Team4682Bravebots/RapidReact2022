@@ -291,10 +291,10 @@ public class DriveTrain extends SubsystemBase implements Sendable
     rightRear.follow(rightFront);
 
     // setup the inverted values for each motor
-    leftFront.setInverted(Constants.driveMotorLeftFrontInverted);
-    leftRear.setInverted(Constants.driveMotorLeftRearInverted);
-    rightFront.setInverted(Constants.driveMotorRightFrontInverted);
-    rightRear.setInverted(Constants.driveMotorRightRearInverted);
+    leftFront.setInverted(Constants.driveMotorLeftFrontDefaultDirection);
+    leftRear.setInverted(Constants.driveMotorLeftRearDefaultDirection);
+    rightFront.setInverted(Constants.driveMotorRightFrontDefaultDirection);
+    rightRear.setInverted(Constants.driveMotorRightRearDefaultDirection);
     
     // setup the various settings for the motors
     leftFront.setNeutralMode(NeutralMode.Brake);

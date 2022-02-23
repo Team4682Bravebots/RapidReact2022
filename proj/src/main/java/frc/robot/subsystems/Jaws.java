@@ -273,8 +273,8 @@ public class Jaws extends SubsystemBase implements Sendable
     private void initializeMotors()
     {
       rightMotor.configFactoryDefault();
-      leftMotor.setInverted(true);
-      rightMotor.setInverted(true);
+      leftMotor.setInverted(Constants.jawsLeftMotorDefaultDirection);
+      rightMotor.setInverted(Constants.jawsRightMotorDefaultDirection);
       leftMotor.setNeutralMode(NeutralMode.Brake);
       rightMotor.setNeutralMode(NeutralMode.Brake);
 

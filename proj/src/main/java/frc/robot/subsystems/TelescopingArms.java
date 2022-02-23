@@ -38,7 +38,7 @@ public class TelescopingArms extends SubsystemBase implements Sendable
     private static final double telescopingArmsMotorEncoderTicksPerDegree = Constants.RevNeoEncoderTicksPerRevolution / Constants.DegreesPerRevolution; 
     private static final double telescopingArmsRetractSpeedDuringCalibration = -0.4;
     private static final double telescopingArmsExtendSpeedDuringCalibration = 0.4;
-    // TODO - must get this from Simeon/Carter soon-ish
+    // Based on discussion with Simeon on 02/18/2022 - ~20:1
     private static final double telescopingArmsMotorToArmEffectiveGearRatio = (60.0/11.0) * (64.0/18.0);
 
     // important - this should be the maximum extension of the arms and it must also be the length of the wire on the spool - in inches!

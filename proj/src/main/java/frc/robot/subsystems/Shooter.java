@@ -18,30 +18,49 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.common.MotorUtils;
 
 public class Shooter extends SubsystemBase implements Sendable
 {
+  // Talon info
+  private static final double talonMaximumTicksPerSecond = Constants.talonMaximumRevolutionsPerMinute * Constants.CtreTalonFx500EncoderTicksPerRevolution / 60;
+  private static final double velocitySufficientWarmupThreshold = 0.8;
+
+  // Shooter gearing - currently 1:1
+  private static final double topShooterGearRatio = 1.0;
+  private static final double bottomShooterGearRatio = 1.0;
   
   private WPI_TalonFX topMotor = new WPI_TalonFX(Constants.shooterMotorTopCanId);
   private WPI_TalonFX bottomMotor = new WPI_TalonFX(Constants.shooterMotorBottomCanId);
-  private double velocitySufficientWarmupThreshold = 0.8;
-  private double talonMaximumTicksPerSecond = 6380 * Constants.CtreTalonFx500EncoderTicksPerRevolution / 60;
 
-  @Override
-  public void setDefaultCommand(Command myCommand)
-  {
-      // TODO Auto-generated method stub
-      super.setDefaultCommand(myCommand);
-  }
-  
-  /** Creates a new Shooter. */
+  /**
+   * Constructor
+   */
   public Shooter()
   {
-    bottomMotor.setInverted(Constants.shooterBottomMotorInverted);
-    bottomMotor.setInverted(Constants.shooterTopMotorInverted);
+    bottomMotor.setInverted(Constants.shooterBottomMotorDefaultDirection);
+    topMotor.setInverted(Constants.shooterTopMotorDefaultDirection);
     CommandScheduler.getInstance().registerSubsystem(this);
   }
   
+  /**
+   * Gets the most recent bottom shooter RPM
+   * @return the bottom shooter RPM based on the past 100 ms
+   */
+  public double getBottomShooterRevolutionsPerMinute()
+  {
+    return (bottomMotor.getSelectedSensorVelocity() / Constants.CtreTalonFx500EncoderTicksPerRevolution) * 600.0 * Shooter.bottomShooterGearRatio;
+  }
+
+  /**
+   * Gets the most recent top shooter RPM
+   * @return the top shooter RPM based on the past 100 ms
+   */
+  public double getTopShooterRevolutionsPerMinute()
+  {
+    return (topMotor.getSelectedSensorVelocity() / Constants.CtreTalonFx500EncoderTicksPerRevolution) * 600.0 * Shooter.topShooterGearRatio;
+  }
+
   @Override
   public void periodic()
   {
@@ -51,8 +70,10 @@ public class Shooter extends SubsystemBase implements Sendable
   @Override
   public void initSendable(SendableBuilder builder)
   {
-    builder.addDoubleProperty("ShooterTopMotorSpeed", this::getTopMotorSpeed, null);
     builder.addDoubleProperty("ShooterBottomMotorSpeed", this::getBottomMotorSpeed, null);
+    builder.addDoubleProperty("ShooterBottomRevolutionsPerMinute", this::getBottomShooterRevolutionsPerMinute, null);
+    builder.addDoubleProperty("ShooterTopMotorSpeed", this::getTopMotorSpeed, null);
+    builder.addDoubleProperty("ShooterTopRevolutionsPerMinute", this::getTopShooterRevolutionsPerMinute, null);
     builder.addStringProperty("ShooterIntakeDescription", this::getShooterIntakeDescription, null);
   }
 
@@ -65,6 +86,13 @@ public class Shooter extends SubsystemBase implements Sendable
     return rtnVal;
   }
 
+  @Override
+  public void setDefaultCommand(Command myCommand)
+  {
+      // TODO Auto-generated method stub
+      super.setDefaultCommand(myCommand);
+  }
+  
   public boolean shootLow()
   {
     topMotor.set(Constants.topMotorForwardLowGoalSpeed);
@@ -92,12 +120,34 @@ public class Shooter extends SubsystemBase implements Sendable
     return rtnVal;
   }
 
+  /**
+   * Set both motor speeds to to the same value 
+   * @param speed - Range -1.0 to 1.0 where negative values imply intake and positive imply shooting
+   */
   public void shooterManual(double speed)
   {
-    topMotor.set(speed);
-    bottomMotor.set(speed);
+    this.shooterManualBottom(speed);
+    this.shooterManualTop(speed);
   }
-  
+
+  /**
+   * Set the bottom shooter motor to a specific speed 
+   * @param speed - Set the bottom motor speed, -1.0 to 1.0 where negative values imply intake and positive imply shooting
+   */
+  public void shooterManualBottom(double speed)
+  {
+    bottomMotor.set(MotorUtils.truncateValue(speed, -1.0, 1.0));
+  }
+
+  /**
+   * Set the top shooter motor to a specific speed 
+   * @param speed - Set the top motor speed, -1.0 to 1.0 where negative values imply intake and positive imply shooting
+   */
+  public void shooterManualTop(double speed)
+  {
+    topMotor.set(MotorUtils.truncateValue(speed, -1.0, 1.0));
+  }
+
   public void stopShooter()
   {
     topMotor.set(0.0);
@@ -108,16 +158,7 @@ public class Shooter extends SubsystemBase implements Sendable
   {
     double approximateMotorVelocityTicksPerSecond = motor.getSelectedSensorVelocity() * 10;
     return (approximateMotorVelocityTicksPerSecond > 
-      this.talonMaximumTicksPerSecond * targetSpeed * this.velocitySufficientWarmupThreshold);
-  }
-
-  /**
-   * Gets the top motor speed setting
-   * @return the top motor controller output as decmil fraction
-   */
-  private double getTopMotorSpeed()
-  {
-    return topMotor.getMotorOutputPercent() / 100.0;
+      Shooter.talonMaximumTicksPerSecond * targetSpeed * Shooter.velocitySufficientWarmupThreshold);
   }
 
   /**
@@ -127,6 +168,15 @@ public class Shooter extends SubsystemBase implements Sendable
   private double getBottomMotorSpeed()
   {
     return bottomMotor.getMotorOutputPercent() / 100.0;
+  }
+
+  /**
+   * Gets the top motor speed setting
+   * @return the top motor controller output as decmil fraction
+   */
+  private double getTopMotorSpeed()
+  {
+    return topMotor.getMotorOutputPercent() / 100.0;
   }
 
   private String getShooterIntakeDescription()
