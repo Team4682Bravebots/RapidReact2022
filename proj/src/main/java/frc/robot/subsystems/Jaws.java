@@ -50,6 +50,9 @@ public class Jaws extends SubsystemBase implements Sendable
     private final WPI_TalonFX leftMotor = new WPI_TalonFX(Constants.jawsMotorLeftCanId);
     private final ConsecutiveDigitalInput jawsIntakeStopLimitSwitch = 
       new ConsecutiveDigitalInput(Constants.jawsIntakeStopLimitSwitchChannel);
+
+    // TODO - update this code soon to add the commeted out code back in
+    // ALSO - see various lines in this file that comment out jaws clutch solenoid code 
 //    private final DoubleSolenoid jawsClutchSolenoid = new DoubleSolenoid(
 //      Constants.robotPneumaticsControlModuleType,
 //      Constants.jawsClutchSolenoidForwardChannel,
