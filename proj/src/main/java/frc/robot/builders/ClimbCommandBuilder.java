@@ -73,8 +73,8 @@ public class ClimbCommandBuilder
         JawsAngleVariable angleArmBackwardTilt = new JawsAngleVariable(collection.getJawsSubsystem(), 60); 
         TelescopingArmRetract liftRobot = new TelescopingArmRetract(collection.getTelescopingArmsSubsystem());
         JawsAngleVariable angleArmBackward = new JawsAngleVariable(collection.getJawsSubsystem(), 45); 
-        TelescopingArmExtendVariable shiftWeightToAngleArms = new TelescopingArmExtendVariable(collection.getTelescopingArmsSubsystem(), 5);
         JawsAngleVariable angleArmForward = new JawsAngleVariable(collection.getJawsSubsystem(), 90);
+        TelescopingArmExtendVariable shiftWeightToAngleArms = new TelescopingArmExtendVariable(collection.getTelescopingArmsSubsystem(), 5);
         ParallelCommandGroup tiltAndExtendGroup = new ParallelCommandGroup(extendArms, angleArmForwardTilt); 
         ParallelCommandGroup liftAndAngleArmGroup = new ParallelCommandGroup(liftRobot, angleArmBackward);  
         SequentialCommandGroup overallCommandGroup = new SequentialCommandGroup(tiltAndExtendGroup, angleArmBackwardTilt, liftAndAngleArmGroup, angleArmForward, shiftWeightToAngleArms);        
