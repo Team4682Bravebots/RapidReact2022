@@ -151,10 +151,11 @@ public class RobotContainer
 
   private void initializeBallStorage()
   {
+    // TODO - update this code soon to add the commeted out code back in
     if(InstalledHardware.bottomBallStorageMotorInstalled && 
-      InstalledHardware.topBallStorageMotorInstalled && 
+      InstalledHardware.topBallStorageMotorInstalled /* && 
       InstalledHardware.forwardBallStorageBeamBreakSensorInstalled &&
-      InstalledHardware.rearBallStorageBeamBreakSensorInstalled)
+      InstalledHardware.rearBallStorageBeamBreakSensorInstalled */)
     {
       m_ballStorage = new BallStorage();
       System.out.println("SUCCESS: initializeBallStorage");
@@ -167,10 +168,11 @@ public class RobotContainer
 
   private void initializeDriveTrain()
   {
-    if(InstalledHardware.leftFinalDriveShaftEncoderInstalled && 
+    // TODO - update this code soon to add the commeted out code back in
+    if(/* InstalledHardware.leftFinalDriveShaftEncoderInstalled && */ 
       InstalledHardware.leftFrontDriveMotorInstalled && 
       InstalledHardware.leftRearDriveMotorInstalled && 
-      InstalledHardware.rightFinalDriveShaftEncoderInstalled && 
+      /* InstalledHardware.rightFinalDriveShaftEncoderInstalled && */ 
       InstalledHardware.rightFrontDriveMotorInstalled && 
       InstalledHardware.rightRearDriveMotorInstalled)
     {
