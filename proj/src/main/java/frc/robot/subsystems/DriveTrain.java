@@ -49,13 +49,18 @@ public class DriveTrain extends SubsystemBase implements Sendable
 
   private boolean motionMagicRunning = false;
   private double lastMotionMagicTargetError = halfRotationEncoderTicks;
+  private boolean initalizedForMotionMagic = false;
 
   /**
   * No argument constructor for the DriveTrain subsystem.
   */
   public DriveTrain()
   {
-    this.initializeMotors();
+    this.initializeMotorsMotionMagic();
+    leftFront.setSelectedSensorPosition(0.0);
+    leftRear.setSelectedSensorPosition(0.0);
+    rightFront.setSelectedSensorPosition(0.0);
+    rightRear.setSelectedSensorPosition(0.0);
     CommandScheduler.getInstance().registerSubsystem(this);
   }
 
@@ -68,6 +73,7 @@ public class DriveTrain extends SubsystemBase implements Sendable
   */
   public void arcadeDrive(double yAxisValue, double xAxisValue)
   {
+    this.initializeMotorsDirectDrive();
     drive.arcadeDrive(yAxisValue, xAxisValue);
   }
 
@@ -101,6 +107,7 @@ public class DriveTrain extends SubsystemBase implements Sendable
   */
   public void performCircleArcDriveInches(double distanceInches, double rotationDegrees, double targetTimeSeconds)
   {
+    this.initializeMotorsMotionMagic();
     double leftDistanceInches = distanceInches;
     double rightDistanceInches = distanceInches; 
 
@@ -129,6 +136,7 @@ public class DriveTrain extends SubsystemBase implements Sendable
       if(Math.abs(leftRear.getClosedLoopError()) < lastMotionMagicTargetError &&
         Math.abs(rightRear.getClosedLoopError()) < lastMotionMagicTargetError)
       {
+        this.initializeMotorsDirectDrive();
         leftRear.set(ControlMode.PercentOutput, 0.0);
         rightRear.set(ControlMode.PercentOutput, 0.0);
         motionMagicRunning = false;
@@ -279,55 +287,81 @@ public class DriveTrain extends SubsystemBase implements Sendable
     return (rightRear.getMotorOutputPercent() + rightFront.getMotorOutputPercent()) / 200.0;
   }
 
-  private void initializeMotors()
+  private void initializeMotorsMotionMagic()
   {
-    leftFront.configFactoryDefault();
-    leftRear.configFactoryDefault();
-    rightFront.configFactoryDefault();
-    rightRear.configFactoryDefault();
+    if(this.initalizedForMotionMagic)
+    {
+      leftFront.configFactoryDefault();
+      leftRear.configFactoryDefault();
+      rightFront.configFactoryDefault();
+      rightRear.configFactoryDefault();
+  
+      // setup each side with a follower
+      leftRear.follow(leftFront);
+      rightRear.follow(rightFront);
+  
+      // setup the inverted values for each motor
+      leftFront.setInverted(Constants.driveMotorLeftFrontDefaultDirection);
+      leftRear.setInverted(Constants.driveMotorLeftRearDefaultDirection);
+      rightFront.setInverted(Constants.driveMotorRightFrontDefaultDirection);
+      rightRear.setInverted(Constants.driveMotorRightRearDefaultDirection);
+      
+      // setup the various settings for the motors
+      leftFront.setNeutralMode(NeutralMode.Brake);
+      leftFront.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
+      leftFront.overrideLimitSwitchesEnable(true);
+      leftFront.config_kP(0, 5, 10); // TODO - fix these magic numbers!!!
+      leftFront.config_kD(0, 4000, 10); // TODO - fix these magic numbers!!!
+      leftFront.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+      leftFront.configMotionCruiseVelocity(0.01, 0); // TODO - fix these magic numbers!!!
+      leftFront.configMotionAcceleration(0.01, 0); // TODO - fix these magic numbers!!!
+      leftFront.configStatorCurrentLimit(
+        new StatorCurrentLimitConfiguration(
+          true, // enabled | 
+          20, // Limit(amp) |
+          25, // Trigger Threshold(amp) |
+          1.0)); // Trigger Threshold Time(s)
+      //leftFront.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+  
+      rightFront.setNeutralMode(NeutralMode.Brake);
+      rightFront.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
+      rightFront.overrideLimitSwitchesEnable(true);
+      rightFront.config_kP(0, 5, 10);
+      rightFront.config_kD(0, 4000, 10);
+      rightFront.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+      rightFront.configMotionCruiseVelocity(0.01, 0); 
+      rightFront.configMotionAcceleration(0.01, 0);	
+      rightFront.configStatorCurrentLimit(
+        new StatorCurrentLimitConfiguration(
+          true, // enabled | 
+          20, // Limit(amp) |
+          25, // Trigger Threshold(amp) |
+          1.0)); // Trigger Threshold Time(s)
 
-    // setup each side with a follower
-    leftRear.follow(leftFront);
-    rightRear.follow(rightFront);
+      this.initalizedForMotionMagic = true;  
+    }
+  }
+  private void initializeMotorsDirectDrive()
+  {
+    if(this.initalizedForMotionMagic == false)
+    {
+      leftFront.configFactoryDefault();
+      leftRear.configFactoryDefault();
+      rightFront.configFactoryDefault();
+      rightRear.configFactoryDefault();
+  
+      // setup each side with a follower
+      leftRear.follow(leftFront);
+      rightRear.follow(rightFront);
+  
+      // setup the inverted values for each motor
+      leftFront.setInverted(Constants.driveMotorLeftFrontDefaultDirection);
+      leftRear.setInverted(Constants.driveMotorLeftRearDefaultDirection);
+      rightFront.setInverted(Constants.driveMotorRightFrontDefaultDirection);
+      rightRear.setInverted(Constants.driveMotorRightRearDefaultDirection);
 
-    // setup the inverted values for each motor
-    leftFront.setInverted(Constants.driveMotorLeftFrontDefaultDirection);
-    leftRear.setInverted(Constants.driveMotorLeftRearDefaultDirection);
-    rightFront.setInverted(Constants.driveMotorRightFrontDefaultDirection);
-    rightRear.setInverted(Constants.driveMotorRightRearDefaultDirection);
-    
-    // setup the various settings for the motors
-    leftFront.setNeutralMode(NeutralMode.Brake);
-		leftFront.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
-		leftFront.overrideLimitSwitchesEnable(true);
-		leftFront.config_kP(0, 5, 10); // TODO - fix these magic numbers!!!
-		leftFront.config_kD(0, 4000, 10); // TODO - fix these magic numbers!!!
-		leftFront.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
-		leftFront.configMotionCruiseVelocity(0.01, 0); // TODO - fix these magic numbers!!!
-		leftFront.configMotionAcceleration(0.01, 0); // TODO - fix these magic numbers!!!
-    leftFront.configStatorCurrentLimit(
-      new StatorCurrentLimitConfiguration(
-        true, // enabled | 
-        20, // Limit(amp) |
-        25, // Trigger Threshold(amp) |
-        1.0)); // Trigger Threshold Time(s)
-    //leftFront.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
-
-		rightFront.setNeutralMode(NeutralMode.Brake);
-		rightFront.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
-		rightFront.overrideLimitSwitchesEnable(true);
-		rightFront.config_kP(0, 5, 10);
-		rightFront.config_kD(0, 4000, 10);
-		rightFront.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
-		rightFront.configMotionCruiseVelocity(0.01, 0); 
-		rightFront.configMotionAcceleration(0.01, 0);	
-    rightFront.configStatorCurrentLimit(
-      new StatorCurrentLimitConfiguration(
-        true, // enabled | 
-        20, // Limit(amp) |
-        25, // Trigger Threshold(amp) |
-        1.0)); // Trigger Threshold Time(s)
-    //rightFront..configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+      this.initalizedForMotionMagic = true;
+    }
   }
  
 }

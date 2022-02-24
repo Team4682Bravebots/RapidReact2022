@@ -318,8 +318,8 @@ public class Jaws extends SubsystemBase implements Sendable
   
         rightMotor.setNeutralMode(NeutralMode.Brake);
   
-        rightMotor.configMotionCruiseVelocity(15000, Constants.kTimeoutMs);
-        rightMotor.configMotionAcceleration(6000, Constants.kTimeoutMs);
+        rightMotor.configMotionCruiseVelocity(25000, Constants.kTimeoutMs);
+        rightMotor.configMotionAcceleration(10000, Constants.kTimeoutMs);
   
         // current limit enabled | Limit(amp) | Trigger Threshold(amp) | Trigger
         // Threshold Time(s) */

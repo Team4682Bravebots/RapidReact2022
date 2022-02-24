@@ -38,6 +38,8 @@ public class Shooter extends SubsystemBase implements Sendable
    */
   public Shooter()
   {
+    bottomMotor.configFactoryDefault();
+    topMotor.configFactoryDefault();
     bottomMotor.setInverted(Constants.shooterBottomMotorDefaultDirection);
     topMotor.setInverted(Constants.shooterTopMotorDefaultDirection);
     CommandScheduler.getInstance().registerSubsystem(this);
@@ -77,6 +79,10 @@ public class Shooter extends SubsystemBase implements Sendable
     builder.addStringProperty("ShooterIntakeDescription", this::getShooterIntakeDescription, null);
   }
 
+  /**
+   * A non-blocking call to spin up the shooter motors to a preset value for the intake
+   * @return True when the motor is sufficiently up to speed, else false
+   */
   public boolean intake()
   {
     topMotor.set(Constants.topMotorIntakeSpeed);
@@ -93,6 +99,10 @@ public class Shooter extends SubsystemBase implements Sendable
       super.setDefaultCommand(myCommand);
   }
   
+  /**
+   * A non-blocking call to spin up the shooter motors to a preset value for the shoot low
+   * @return True when the motor is sufficiently up to speed, else false
+   */
   public boolean shootLow()
   {
     topMotor.set(Constants.topMotorForwardLowGoalSpeed);
@@ -102,6 +112,10 @@ public class Shooter extends SubsystemBase implements Sendable
     return rtnVal;
   }
 
+  /**
+   * A non-blocking call to spin up the shooter motors to a preset value for the shoot high
+   * @return True when the motor is sufficiently up to speed, else false
+   */
   public boolean shootHigh()
   {
     topMotor.set(Constants.topMotorForwardHighGoalSpeed);
@@ -111,6 +125,10 @@ public class Shooter extends SubsystemBase implements Sendable
     return rtnVal;
   }
 
+  /**
+   * A non-blocking call to spin up the shooter motors to a preset value for the shoot high reverse
+   * @return True when the motor is sufficiently up to speed, else false
+   */
   public boolean shootHighReverse()
   {
     topMotor.set(Constants.topMotorReverseHighGoalSpeed);
@@ -126,8 +144,9 @@ public class Shooter extends SubsystemBase implements Sendable
    */
   public void shooterManual(double speed)
   {
-    this.shooterManualBottom(speed);
-    this.shooterManualTop(speed);
+    double cleanSpeed = MotorUtils.truncateValue(speed, -1.0, 1.0);
+    this.shooterManualBottom(cleanSpeed);
+    this.shooterManualTop(cleanSpeed);
   }
 
   /**
@@ -148,6 +167,9 @@ public class Shooter extends SubsystemBase implements Sendable
     topMotor.set(MotorUtils.truncateValue(speed, -1.0, 1.0));
   }
 
+  /**
+   * Method to stop the shooter motors
+   */
   public void stopShooter()
   {
     topMotor.set(0.0);

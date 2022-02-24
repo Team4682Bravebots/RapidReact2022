@@ -179,8 +179,8 @@ public class RobotContainer
         new RunCommand(
           () ->
           m_driveTrain.arcadeDrive(
-            m_manualInput.getInputArcadeDriveX(),
-            m_manualInput.getInputArcadeDriveY()),
+            m_manualInput.getInputArcadeDriveY() * -1.0,
+            m_manualInput.getInputArcadeDriveX()),
           m_driveTrain));
       System.out.println("SUCCESS: initializeDriveTrain");
     }
