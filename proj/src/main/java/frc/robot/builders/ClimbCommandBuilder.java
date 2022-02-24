@@ -40,10 +40,10 @@ public class ClimbCommandBuilder
         AngleArmsEngageJaws engageJaws = new AngleArmsEngageJaws(collection.getAngleArmsSubsystem(), collection.getJawsSubsystem());
         TelescopingArmExtendMiddle extendArms = new TelescopingArmExtendMiddle(collection.getTelescopingArmsSubsystem());
         JawsAngleVariable angleArmBackward = new JawsAngleVariable(collection.getJawsSubsystem(), 45);
-        DriveCommand driveReverseToBar = new DriveCommand(collection.getDriveTrainSubsystem(), -5, 0, 0);
+        DriveCommand driveReverseToBar = new DriveCommand(collection.getDriveTrainSubsystem(), -12, 0, 0);
         TelescopingArmRetract liftRobot = new TelescopingArmRetract(collection.getTelescopingArmsSubsystem());
         JawsAngleVariable angleArmForward = new JawsAngleVariable(collection.getJawsSubsystem(), 90);
-        TelescopingArmExtendVariable shiftWeightToAngleArms = new TelescopingArmExtendVariable(collection.getTelescopingArmsSubsystem(), 25);
+        TelescopingArmExtendVariable shiftWeightToAngleArms = new TelescopingArmExtendVariable(collection.getTelescopingArmsSubsystem(), 5);
         ParallelCommandGroup engageAndExtendGroup = new ParallelCommandGroup(engageJaws, extendArms);
         ParallelCommandGroup driveAndAngleJawsGroup = new ParallelCommandGroup(angleArmBackward, driveReverseToBar);
         SequentialCommandGroup overallCommandGroup = new SequentialCommandGroup(engageAndExtendGroup, driveAndAngleJawsGroup, liftRobot, angleArmForward, shiftWeightToAngleArms);
@@ -68,15 +68,16 @@ public class ClimbCommandBuilder
     {
         // TODO - Jonathan we need your story to be built into here!!!
         // After the notes above are done,  the idea is to take the actions described there and convert them into a set of steps that use the building block commands.
-        JawsAngleVariable angleArmForwardTilt = new JawsAngleVariable(collection.getJawsSubsystem(), 135);
+        JawsAngleVariable angleArmForwardTilt = new JawsAngleVariable(collection.getJawsSubsystem(), 45);
         TelescopingArmExtendHigh extendArms = new TelescopingArmExtendHigh(collection.getTelescopingArmsSubsystem());
-        JawsAngleVariable angleArmBackwardTilt = new JawsAngleVariable(collection.getJawsSubsystem(), 125); 
+        JawsAngleVariable angleArmBackwardTilt = new JawsAngleVariable(collection.getJawsSubsystem(), 60); 
         TelescopingArmRetract liftRobot = new TelescopingArmRetract(collection.getTelescopingArmsSubsystem());
         JawsAngleVariable angleArmBackward = new JawsAngleVariable(collection.getJawsSubsystem(), 45); 
+        TelescopingArmExtendVariable shiftWeightToAngleArms = new TelescopingArmExtendVariable(collection.getTelescopingArmsSubsystem(), 5);
         JawsAngleVariable angleArmForward = new JawsAngleVariable(collection.getJawsSubsystem(), 90);
         ParallelCommandGroup tiltAndExtendGroup = new ParallelCommandGroup(extendArms, angleArmForwardTilt); 
         ParallelCommandGroup liftAndAngleArmGroup = new ParallelCommandGroup(liftRobot, angleArmBackward);  
-        SequentialCommandGroup overallCommandGroup = new SequentialCommandGroup(tiltAndExtendGroup, angleArmBackwardTilt, liftAndAngleArmGroup, angleArmForward);        
+        SequentialCommandGroup overallCommandGroup = new SequentialCommandGroup(tiltAndExtendGroup, angleArmBackwardTilt, liftAndAngleArmGroup, angleArmForward, shiftWeightToAngleArms);        
         return overallCommandGroup;
     }
     
@@ -95,9 +96,9 @@ public class ClimbCommandBuilder
     {
         // TODO - Jonathan we need your story to be built into here!!!
         // After the notes above are done,  the idea is to take the actions described there and convert them into a set of steps that use the building block commands.
-        JawsAngleVariable angleArmForwardTilt = new JawsAngleVariable(collection.getJawsSubsystem(), 135);
+        JawsAngleVariable angleArmForwardTilt = new JawsAngleVariable(collection.getJawsSubsystem(), 45);
         TelescopingArmExtendHigh extendArms = new TelescopingArmExtendHigh(collection.getTelescopingArmsSubsystem());
-        JawsAngleVariable angleArmBackwardTilt = new JawsAngleVariable(collection.getJawsSubsystem(), 125); 
+        JawsAngleVariable angleArmBackwardTilt = new JawsAngleVariable(collection.getJawsSubsystem(), 60); 
         TelescopingArmRetract liftRobot = new TelescopingArmRetract(collection.getTelescopingArmsSubsystem());
         ParallelCommandGroup tiltAndExtendGroup = new ParallelCommandGroup(extendArms, angleArmForwardTilt);   
         SequentialCommandGroup overallCommandGroup = new SequentialCommandGroup(tiltAndExtendGroup, angleArmBackwardTilt, liftRobot);    
