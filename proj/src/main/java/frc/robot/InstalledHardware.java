@@ -35,7 +35,7 @@ public class InstalledHardware
     // Onboard Hardware - Orentation/Navigation Hardware
     public static final boolean wifiRadioInstalled = false;
     public static final boolean navxInstalled = false;
-    public static final boolean limelightInstalled = false;
+    public static final boolean limelightInstalled = true;
 
     // External Input Hardware
     public static final boolean buttonBoardInstalled = false;
@@ -77,4 +77,5 @@ public class InstalledHardware
     // Angle Arms Related Hardware
     public static final boolean angleArmsToJawsCylinderSolenoidPneumaticsInstalled = false;
     public static final boolean angleArmsToChassisCylinderSolenoidPneumaticsInstalled = false;
+    
 }

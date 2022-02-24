@@ -12,6 +12,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.PS4Controller.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.builders.ClimbCommandBuilder;
 import frc.robot.commands.*;
@@ -117,6 +118,8 @@ public class ManualInputInterfaces
       // *************************************************************
       // *************************************************************
       // this is just for testing!!! RIP IT OUT LATER!!!
+      JoystickButton buttonA = new JoystickButton(driverController, XboxController.Button.kA.value);
+
       JoystickButton buttonB = new JoystickButton(driverController, XboxController.Button.kB.value);
       JoystickButton buttonY = new JoystickButton(driverController, XboxController.Button.kY.value);
       JoystickButton bumperLeft = new JoystickButton(driverController, XboxController.Button.kLeftBumper.value);
@@ -140,11 +143,15 @@ public class ManualInputInterfaces
         joystickButton.whenPressed(new JawsHoldReleaseManual(subsystemCollection.getJawsSubsystem()));
 
         // TODO - rip the next 5 lines out as these are only for testing the jaws subsystem!!!
-        JoystickButton buttonA = new JoystickButton(driverController, XboxController.Button.kA.value);
         JoystickButton buttonX = new JoystickButton(driverController, XboxController.Button.kX.value);
         buttonX.whenPressed(new JawsForwardLowGoal(subsystemCollection.getJawsSubsystem()));
         buttonA.whenPressed(new JawsIntake(subsystemCollection.getJawsSubsystem()));
         buttonB.whenPressed(new JawsAllStop(subsystemCollection.getJawsSubsystem()));
+      }
+
+      if(subsystemCollection.getCameraSubsystem() != null)
+      {
+        buttonA.whenPressed(new Target(subsystemCollection.getCameraSubsystem(), subsystemCollection.getDriveTrainSubsystem()));
       }
       // *************************************************************
       // *************************************************************

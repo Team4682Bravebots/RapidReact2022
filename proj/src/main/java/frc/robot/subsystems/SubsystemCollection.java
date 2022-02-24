@@ -27,6 +27,8 @@ public class SubsystemCollection
     private Shooter shooter = null;
     private TelescopingArms telescopingArms = null;
 
+    private Camera camera = null;
+
     /**
      * Default constructor
      */
@@ -58,4 +60,7 @@ public class SubsystemCollection
 
     public OnboardInputInterfaces getOnboardInputInterfaces() { return onboardInput; }
     public void setOnboardInputInterfaces(OnboardInputInterfaces value) { onboardInput = value; }
+
+    public Camera getCameraSubsystem() { return camera; }
+    public void setCameraSubsystem(Camera value) { camera = value; }
 }
