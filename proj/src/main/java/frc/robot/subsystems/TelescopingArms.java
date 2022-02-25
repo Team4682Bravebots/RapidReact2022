@@ -73,7 +73,7 @@ public class TelescopingArms extends SubsystemBase implements Sendable
     private SparkMaxPIDController leftPidController;
     private RelativeEncoder rightEncoder;
     private RelativeEncoder leftEncoder;
-    public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM, maxVel, minVel, maxAcc, allowedErr;
+    private double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM, maxVel, minVel, maxAcc, allowedErr;
 
     private double motorReferencePosition = 0.0;
     private int extendingMovementCycles = 0;
@@ -90,6 +90,7 @@ public class TelescopingArms extends SubsystemBase implements Sendable
     private double motorEncoderTicksAt50 = this.convertTelescopingArmsHeightToMotorEncoderPosition(maximumHeightFromStoredPositionInches * 0.50);
     private double motorEncoderTicksAt25 = this.convertTelescopingArmsHeightToMotorEncoderPosition(maximumHeightFromStoredPositionInches * 0.25);
 
+    private boolean motorsInitalizedForSmartMotion = false;
     /* *********************************************************************
     CONSTRUCTORS
     ************************************************************************/
@@ -99,7 +100,9 @@ public class TelescopingArms extends SubsystemBase implements Sendable
     */
     public TelescopingArms()
     {
-      initializeMotors();
+      this.initializeMotorsSmartMotion();
+      leftEncoder.setPosition(0.0);
+      rightEncoder.setPosition(0.0);
       CommandScheduler.getInstance().registerSubsystem(this);
     }
 
@@ -208,7 +211,7 @@ public class TelescopingArms extends SubsystemBase implements Sendable
         // join the motors back together and set their encoders to zero
         if(telescopingArmsLeftMotionCalibrated && telescopingArmsRightMotionCalibrated)
         {
-          this.initializeMotors();
+          this.initializeMotorsSmartMotion();
         }
       }
 
@@ -244,6 +247,7 @@ public class TelescopingArms extends SubsystemBase implements Sendable
     */
     public boolean setTelescopingArmsHeight(double telescopingArmsHeightInInches, double toleranceInInches)
     {
+      this.initializeMotorsSmartMotion();
       double trimmedHeight = MotorUtils.truncateValue(
         telescopingArmsHeightInInches,
         0.0, // 
@@ -263,6 +267,7 @@ public class TelescopingArms extends SubsystemBase implements Sendable
     */
     public void setTelescopingArmsSpeedManual(double telescopingArmsSpeed)
     {
+      this.initializeMotorsDirectDrive();
       leftMotor.set(MotorUtils.truncateValue(telescopingArmsSpeed, -1.0, 1.0));
     }
 
@@ -444,47 +449,65 @@ public class TelescopingArms extends SubsystemBase implements Sendable
 
     // a method devoted to establishing proper startup of the jaws motors
     // this method sets all of the key settings that will help in motion magic
-    private void initializeMotors()
+    private void initializeMotorsSmartMotion()
     {
-      rightMotor.restoreFactoryDefaults();  
-      rightPidController = leftMotor.getPIDController();
-      rightEncoder = leftMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, Constants.countPerRevHallSensor);
-      rightMotor.follow(leftMotor);
+      if(motorsInitalizedForSmartMotion == false)
+      {
+        rightMotor.restoreFactoryDefaults();  
+        leftMotor.restoreFactoryDefaults();
+        rightPidController = leftMotor.getPIDController();
+        rightEncoder = leftMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, Constants.countPerRevHallSensor);
+        rightMotor.follow(leftMotor);
+        leftMotor.setIdleMode(IdleMode.kBrake);
+    
+        // initialize PID controller and encoder objects
+        leftPidController = leftMotor.getPIDController();
+        leftEncoder = leftMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, Constants.countPerRevHallSensor);
+    
+        // PID coefficients
+        kP = 5e-5; 
+        kI = 1e-6;
+        kD = 0; 
+        kIz = 0; 
+        kFF = 0.000156; 
+        kMaxOutput = 1; 
+        kMinOutput = -1;
+        maxRPM = 5700;
+    
+        // Smart Motion Coefficients
+        maxVel = 2000; // rpm
+        maxAcc = 1500;
+    
+        // set PID coefficients
+        leftPidController.setP(kP);
+        leftPidController.setI(kI);
+        leftPidController.setD(kD);
+        leftPidController.setIZone(kIz);
+        leftPidController.setFF(kFF);
+        leftPidController.setOutputRange(kMinOutput, kMaxOutput);
+    
+        int smartMotionSlot = 0;
+        leftPidController.setSmartMotionMaxVelocity(maxVel, smartMotionSlot);
+        leftPidController.setSmartMotionMinOutputVelocity(minVel, smartMotionSlot);
+        leftPidController.setSmartMotionMaxAccel(maxAcc, smartMotionSlot);
+        leftPidController.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot);
 
-      leftMotor.restoreFactoryDefaults();
-      leftMotor.setIdleMode(IdleMode.kBrake);
-  
-      // initialize PID controller and encoder objects
-      leftPidController = leftMotor.getPIDController();
-      leftEncoder = leftMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, Constants.countPerRevHallSensor);
-  
-      // PID coefficients
-      kP = 5e-5; 
-      kI = 1e-6;
-      kD = 0; 
-      kIz = 0; 
-      kFF = 0.000156; 
-      kMaxOutput = 1; 
-      kMinOutput = -1;
-      maxRPM = 5700;
-  
-      // Smart Motion Coefficients
-      maxVel = 2000; // rpm
-      maxAcc = 1500;
-  
-      // set PID coefficients
-      leftPidController.setP(kP);
-      leftPidController.setI(kI);
-      leftPidController.setD(kD);
-      leftPidController.setIZone(kIz);
-      leftPidController.setFF(kFF);
-      leftPidController.setOutputRange(kMinOutput, kMaxOutput);
-  
-      int smartMotionSlot = 0;
-      leftPidController.setSmartMotionMaxVelocity(maxVel, smartMotionSlot);
-      leftPidController.setSmartMotionMinOutputVelocity(minVel, smartMotionSlot);
-      leftPidController.setSmartMotionMaxAccel(maxAcc, smartMotionSlot);
-      leftPidController.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot);
+        this.motorsInitalizedForSmartMotion = true;
+      }
+    }
+
+    private void initializeMotorsDirectDrive()
+    {
+      if(motorsInitalizedForSmartMotion == true)
+      {
+        rightMotor.restoreFactoryDefaults();  
+        leftMotor.restoreFactoryDefaults();
+        leftMotor.setIdleMode(IdleMode.kBrake);
+        rightMotor.setIdleMode(IdleMode.kBrake);
+        rightMotor.follow(leftMotor);
+
+        this.motorsInitalizedForSmartMotion = false;
+      }
     }
 
     private void trimAndRecordLeftPower(double currentReading)

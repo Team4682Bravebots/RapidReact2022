@@ -42,6 +42,7 @@ public final class Constants
   // inverts - see: https://docs.ctre-phoenix.com/en/stable/ch13_MC.html#talon-fx-specific-inverts
   public static TalonFXInvertType shooterBottomMotorDefaultDirection = TalonFXInvertType.CounterClockwise;
   public static TalonFXInvertType shooterTopMotorDefaultDirection = TalonFXInvertType.CounterClockwise;
+
   // Motor magic numbers
   public static final double bottomMotorForwardLowGoalSpeed = 0.8;
   public static final double topMotorForwardLowGoalSpeed = 0.7;
@@ -55,9 +56,9 @@ public final class Constants
   // Jaws reach points \\
   public static final double jawsReverseHighGoalPositionAngle = 115.0;
   public static final double jawsIntakePositionAngle = 0.0;
-  public static final double jawsLowGoalPositionAngle = 30.0;
+  public static final double jawsLowGoalPositionAngle = 40.0;
   public static final double jawsHighGoalPositionAngle = 65.0; 
-  public static final double jawsPositionAngleTolerance = 1.5;
+  public static final double jawsPositionAngleTolerance = 1.2;
   public static final double jawsAngleArmsEngagePositionAngle = 81.0;
   public static final double jawsAngleArmsEngagePositionTolerance = 0.9;
 

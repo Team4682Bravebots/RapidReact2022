@@ -41,7 +41,7 @@ public class Jaws extends SubsystemBase implements Sendable
     private static final double jawsMotorToArmEffectiveGearRatio = 212; // according to nathan on 02/08/2022
     private static final int jawsMinimumIsCalibratedConsecutiveCount = 1;
     private static final double minmumTargetAngle = 0.0;
-    private static final double maximumTargetAngle = 160.0;
+    private static final double maximumTargetAngle = 150.0;
 
     /* *********************************************************************
     MEMBERS
@@ -61,9 +61,9 @@ public class Jaws extends SubsystemBase implements Sendable
     private double motorReferencePosition = 0.0;
     private boolean jawsMotionCurrentlyCalibrating = false;
     private boolean jawsMotionCalibrated = false;
-    private boolean clutchEnguaged = false;
-    private DoubleSolenoid.Value clutchEnguagedSetting = kForward;
-    private DoubleSolenoid.Value clutchDisenguagedSetting = kReverse;
+    private boolean clutchEngaged = false;
+    private DoubleSolenoid.Value clutchEngagedSetting = kForward;
+    private DoubleSolenoid.Value clutchDisengagedSetting = kReverse;
     private boolean motorsNeedInit = true;
 
     /* *********************************************************************
@@ -198,9 +198,9 @@ public class Jaws extends SubsystemBase implements Sendable
     */
     public void startCalibration()
     {
-      // make sure the clutch is disenguaged
-//      jawsClutchSolenoid.set(this.clutchDisenguagedSetting);
-      clutchEnguaged = false;
+      // make sure the clutch is disengaged
+//      jawsClutchSolenoid.set(this.clutchDisengagedSetting);
+      clutchEngaged = false;
       if(jawsMotionCurrentlyCalibrating == false && jawsMotionCalibrated == false)
       {
         // power the motors toward the intake position
@@ -214,10 +214,10 @@ public class Jaws extends SubsystemBase implements Sendable
     */
     public void suspendJawMovement()
     {
-      if(!clutchEnguaged)
+      if(!clutchEngaged)
       {
-//        jawsClutchSolenoid.set(this.clutchEnguagedSetting);
-        clutchEnguaged = true;
+//        jawsClutchSolenoid.set(this.clutchEngagedSetting);
+        clutchEngaged = true;
         rightMotor.set(TalonFXControlMode.PercentOutput, 0.0);
       }      
     }
@@ -227,10 +227,10 @@ public class Jaws extends SubsystemBase implements Sendable
     */
     public void resumeJawMovement()
     {
-      if(clutchEnguaged)
+      if(clutchEngaged)
       {
-//        jawsClutchSolenoid.set(this.clutchDisenguagedSetting);
-        clutchEnguaged = false;
+//        jawsClutchSolenoid.set(this.clutchDisengagedSetting);
+        clutchEngaged = false;
       }      
     }
 
@@ -239,7 +239,7 @@ public class Jaws extends SubsystemBase implements Sendable
     */
     public void toggleJawMovement()
     {
-      if(clutchEnguaged)
+      if(clutchEngaged)
       {
         this.resumeJawMovement();
       }
@@ -318,8 +318,8 @@ public class Jaws extends SubsystemBase implements Sendable
   
         rightMotor.setNeutralMode(NeutralMode.Brake);
   
-        rightMotor.configMotionCruiseVelocity(15000, Constants.kTimeoutMs);
-        rightMotor.configMotionAcceleration(6000, Constants.kTimeoutMs);
+        rightMotor.configMotionCruiseVelocity(25000, Constants.kTimeoutMs);
+        rightMotor.configMotionAcceleration(10000, Constants.kTimeoutMs);
   
         // current limit enabled | Limit(amp) | Trigger Threshold(amp) | Trigger
         // Threshold Time(s) */
