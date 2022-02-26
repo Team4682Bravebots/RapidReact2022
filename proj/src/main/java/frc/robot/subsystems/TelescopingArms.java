@@ -475,8 +475,8 @@ public class TelescopingArms extends SubsystemBase implements Sendable
         maxRPM = 5700;
     
         // Smart Motion Coefficients
-        maxVel = 2000; // rpm
-        maxAcc = 1500;
+        maxVel = 100; // rpm
+        maxAcc = 100;
     
         // set PID coefficients
         leftPidController.setP(kP);

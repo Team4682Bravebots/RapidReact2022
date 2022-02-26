@@ -146,6 +146,15 @@ public class ManualInputInterfaces
         buttonA.whenPressed(new JawsIntake(subsystemCollection.getJawsSubsystem()));
         buttonB.whenPressed(new JawsAllStop(subsystemCollection.getJawsSubsystem()));
       }
+        // TODO - rip the next 5 lines out as these are only for testing the jaws subsystem!!!
+        if(subsystemCollection.getTelescopingArmsSubsystem() != null)
+      {
+        JoystickButton buttonA = new JoystickButton(driverController, XboxController.Button.kA.value);
+        JoystickButton buttonX = new JoystickButton(driverController, XboxController.Button.kX.value);
+        buttonX.whenPressed(new TelescopingArmExtendVariable(subsystemCollection.getTelescopingArmsSubsystem(), 20));
+        buttonA.whenPressed(new TelescopingArmExtendVariable(subsystemCollection.getTelescopingArmsSubsystem(), 10));
+        buttonB.whenPressed(new TelescopingArmsAllStop(subsystemCollection.getTelescopingArmsSubsystem()));
+      }
       // *************************************************************
       // *************************************************************
       // *************************************************************
