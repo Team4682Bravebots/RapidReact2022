@@ -13,7 +13,6 @@ import frc.robot.*;
 
 public class SubsystemCollection
 {
-
     // declaring input classes
     private ManualInputInterfaces manualInput = null;
     private OnboardInputInterfaces onboardInput = null;
@@ -26,7 +25,6 @@ public class SubsystemCollection
     private Pneumatics pneumatics  = null;
     private Shooter shooter = null;
     private TelescopingArms telescopingArms = null;
-
     private Camera camera = null;
 
     /**

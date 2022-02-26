@@ -46,7 +46,7 @@ public class RobotContainer
   private Pneumatics m_pneumatics  = null;
   private Shooter m_shooter = null;
   private TelescopingArms m_telescopingArms = null;
-  private Camera m_cCamera = null;
+  private Camera m_camera = null;
 
   private SubsystemCollection m_collection = new SubsystemCollection();
 
@@ -77,6 +77,8 @@ public class RobotContainer
     // initialize the telescoping arms
     this.initializeTelescopingArms();
 
+    // initialize the camera system
+    this.initializeCamera();
     
     // assemble all of the constructed content and insert the references into the subsystem collection
     m_collection.setAngleArmsSubsystem(m_angleArms);
@@ -88,7 +90,7 @@ public class RobotContainer
     m_collection.setTelescopingArmsSubsystem(m_telescopingArms);
     m_collection.setManualInputInterfaces(m_manualInput);
     m_collection.setOnboardInputInterfaces(m_onboardInput);
-
+    m_collection.setCameraSubsystem(m_camera);
 
     // make sure that all of the buttons have appropriate commands bound to them
     if(m_manualInput != null)
@@ -276,5 +278,17 @@ public class RobotContainer
     }
   }
 
+  private void initializeCamera()
+  {
+    if(InstalledHardware.limelightInstalled)
+    {
+      m_camera = new Camera();
+      System.out.println("SUCCESS: initializeCamera");
+    }
+    else
+    {
+      System.out.println("FAIL: initializeCamera");
+    }
+  }
 
 }

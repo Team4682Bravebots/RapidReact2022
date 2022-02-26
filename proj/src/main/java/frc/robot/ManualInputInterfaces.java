@@ -121,7 +121,6 @@ public class ManualInputInterfaces
       // *************************************************************
       // this is just for testing!!! RIP IT OUT LATER!!!
       JoystickButton buttonA = new JoystickButton(driverController, XboxController.Button.kA.value);
-
       JoystickButton buttonB = new JoystickButton(driverController, XboxController.Button.kB.value);
       JoystickButton buttonY = new JoystickButton(driverController, XboxController.Button.kY.value);
       JoystickButton bumperLeft = new JoystickButton(driverController, XboxController.Button.kLeftBumper.value);
@@ -155,13 +154,15 @@ public class ManualInputInterfaces
 
       if(subsystemCollection.getCameraSubsystem() != null)
       {
-        buttonA.whenPressed(new Target(subsystemCollection.getCameraSubsystem(), subsystemCollection.getDriveTrainSubsystem()));
+        buttonA.whenPressed(new Target(
+          subsystemCollection.getCameraSubsystem(),
+          subsystemCollection.getDriveTrainSubsystem(),
+          subsystemCollection.getManualInputInterfaces()));
       }
       
       // TODO - rip the next 8 lines out as these are only for testing the telescoping arms subsystem!!!
       if(subsystemCollection.getTelescopingArmsSubsystem() != null)
       {
-        JoystickButton buttonA = new JoystickButton(driverController, XboxController.Button.kA.value);
         JoystickButton buttonX = new JoystickButton(driverController, XboxController.Button.kX.value);
         buttonX.whenPressed(new TelescopingArmExtendVariable(subsystemCollection.getTelescopingArmsSubsystem(), 31.75));
         buttonA.whenPressed(new TelescopingArmExtendVariable(subsystemCollection.getTelescopingArmsSubsystem(), 1.0));
