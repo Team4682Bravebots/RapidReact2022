@@ -86,9 +86,11 @@ public class ManualInputInterfaces
   public double getInputTelescopingArms()
   {
     // TODO - switch this to use the coDriverController soon!!!
-    // should be: coDriverController.getRightY();
+    XboxController theControllerToUse = driverController;
     // need to invert the y for all xbox controllers due to xbox controler having up as negative y axis
-    return driverController.getRightY() * -1.0;
+    double input = theControllerToUse.getRightY() * -1.0;
+    // avoid xbox controller shadow input drift
+    return (Math.abs(input) > 0.1 ? input : 0.0);
   }
 
   /**
@@ -131,6 +133,7 @@ public class ManualInputInterfaces
         buttonB.whenPressed(new AngleArmsJawsManual(subsystemCollection.getAngleArmsSubsystem()));
         buttonY.whenPressed(new AngleArmsChassisManual(subsystemCollection.getAngleArmsSubsystem())); 
       }
+      
       if(subsystemCollection.getBallStorageSubsystem() != null)
       {
         bumperLeft.whenHeld(new BallStorageStoreManual(subsystemCollection.getBallStorageSubsystem()));
@@ -138,6 +141,7 @@ public class ManualInputInterfaces
         bumperLeft.whenReleased(new BallStorageAllStopManual(subsystemCollection.getBallStorageSubsystem()));
         bumperRight.whenReleased(new BallStorageAllStopManual(subsystemCollection.getBallStorageSubsystem()));
       }
+
       if(subsystemCollection.getJawsSubsystem() != null)
       {
         joystickButton.whenPressed(new JawsHoldReleaseManual(subsystemCollection.getJawsSubsystem()));
@@ -152,6 +156,17 @@ public class ManualInputInterfaces
       if(subsystemCollection.getCameraSubsystem() != null)
       {
         buttonA.whenPressed(new Target(subsystemCollection.getCameraSubsystem(), subsystemCollection.getDriveTrainSubsystem()));
+      }
+      
+      // TODO - rip the next 8 lines out as these are only for testing the telescoping arms subsystem!!!
+      if(subsystemCollection.getTelescopingArmsSubsystem() != null)
+      {
+        JoystickButton buttonA = new JoystickButton(driverController, XboxController.Button.kA.value);
+        JoystickButton buttonX = new JoystickButton(driverController, XboxController.Button.kX.value);
+        buttonX.whenPressed(new TelescopingArmExtendVariable(subsystemCollection.getTelescopingArmsSubsystem(), 31.75));
+        buttonA.whenPressed(new TelescopingArmExtendVariable(subsystemCollection.getTelescopingArmsSubsystem(), 1.0));
+        buttonY.whenPressed(new TelescopingArmExtendVariable(subsystemCollection.getTelescopingArmsSubsystem(), 0.0));
+        buttonB.whenPressed(new TelescopingArmsAllStop(subsystemCollection.getTelescopingArmsSubsystem()));
       }
       // *************************************************************
       // *************************************************************

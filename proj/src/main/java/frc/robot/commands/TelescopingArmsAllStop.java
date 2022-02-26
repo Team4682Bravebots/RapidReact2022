@@ -2,8 +2,8 @@
 // Bishop Blanchet Robotics
 // Home of the Cybears
 // FRC - Rapid React - 2022
-// File: TelescopingArmExtendMiddle.java
-// Intent: Forms a command to drive the telescoping arms to their extended position.
+// File: TelescopingArmRetract.java
+// Intent: Forms a command to drive the telescoping arms to stop.
 // ************************************************************
 
 // ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ 
@@ -11,16 +11,14 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
 import frc.robot.subsystems.TelescopingArms;
 
-
-public class TelescopingArmExtendMiddle extends CommandBase
+public class TelescopingArmsAllStop extends CommandBase
 {
   public TelescopingArms telescopingArmSubsystem;
   boolean done = false;
 
-  public TelescopingArmExtendMiddle(TelescopingArms telescopingArmSubsystem)
+  public TelescopingArmsAllStop(TelescopingArms telescopingArmSubsystem)
   {
     // Use addRequirements() here to declare subsystem dependencies.
     this.telescopingArmSubsystem = telescopingArmSubsystem;
@@ -38,10 +36,9 @@ public class TelescopingArmExtendMiddle extends CommandBase
   @Override
   public void execute()
   {
-    if(telescopingArmSubsystem.setTelescopingArmsHeight(Constants.telescopingArmsMediumExtendHeightInches, Constants.telescopingArmsToleranceInches))
-    {
-      done = true;
-    }
+    telescopingArmSubsystem.setTelescopingArmsSpeedManual(0.0);
+    done = true;
+//    System.out.println("Telescoping arms stop all");
   }
  
   // Called once the command ends or is interrupted.

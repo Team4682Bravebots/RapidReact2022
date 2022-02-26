@@ -63,11 +63,10 @@ public final class Constants
   public static final double jawsAngleArmsEngagePositionTolerance = 0.9;
 
   // telescoping arms reach points \\
-  public static final double telescopingArmsRetractHeightInches = 2.0;
+  public static final double telescopingArmsRetractHeightInches = 0.33;
   public static final double telescopingArmsMediumExtendHeightInches = 30.0;
   public static final double telescopingArmsHighExtendHeightInches = 25.0;
-  public static final double telescopingArmsTraversalExtendHeightInches = 25.0;
-  public static final double telescopingArmsToleranceInches = 0.25;
+  public static final double telescopingArmsToleranceInches = 0.10;
 
   // Ball storage \\
   public static final double ballStoreSpeed = -0.4;

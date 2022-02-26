@@ -32,7 +32,10 @@ public class TelescopingArmExtendVariable extends CommandBase
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize()
+  {
+   done = false; 
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -42,7 +45,7 @@ public class TelescopingArmExtendVariable extends CommandBase
     {
       done = true;
     }
-    System.out.println("Telescoping arms height: " + telescopingArmSubsystem.getTelescopingArmsHeight());
+//    System.out.println("Telescoping arms height (extend variable): " + telescopingArmSubsystem.getTelescopingArmsHeight() + " encoder pos = " + telescopingArmSubsystem.getTelescopingArmsAverageEncoderPosition());
   }
  
   // Called once the command ends or is interrupted.

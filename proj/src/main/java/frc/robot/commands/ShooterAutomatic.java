@@ -79,6 +79,7 @@ public class ShooterAutomatic extends CommandBase
   @Override
   public void initialize()
   {
+      done = false;
       // determine the target 
       double currentJawsAngle = jawsSubsystem.getJawsAngle();
       for(int inx = 0; inx < shooterIntakeTargets.length; ++inx)

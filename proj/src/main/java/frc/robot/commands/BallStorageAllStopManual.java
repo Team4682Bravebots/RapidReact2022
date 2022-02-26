@@ -35,6 +35,7 @@ public class BallStorageAllStopManual extends CommandBase {
   @Override
   public void initialize()
   {
+   done = false; 
   }
 
   // Called every time the scheduler runs while the command is scheduled.
