@@ -34,8 +34,8 @@ public class TelescopingArmsAllStop extends CommandBase
   public void execute()
   {
     telescopingArmSubsystem.setTelescopingArmsSpeedManual(0.0);
-    done = false;
-    System.out.println("Telescoping arms stop all");
+    done = true;
+//    System.out.println("Telescoping arms stop all");
   }
  
   // Called once the command ends or is interrupted.

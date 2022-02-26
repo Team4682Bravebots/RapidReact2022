@@ -111,6 +111,16 @@ public class TelescopingArms extends SubsystemBase implements Sendable
     ************************************************************************/
 
     /**
+    * A method to obtain the Arms average encoder position
+    *
+    * @return the current TelescopingArms height in Inches from the reference 'stored' position
+    */
+    public double getTelescopingArmsAverageEncoderPosition()
+    {
+      return this.getAverageMotorEncoderPosition();
+    }
+
+    /**
     * A method to obtain the Arms height
     *
     * @return the current TelescopingArms height in Inches from the reference 'stored' position
@@ -253,11 +263,11 @@ public class TelescopingArms extends SubsystemBase implements Sendable
         0.0, // 
         TelescopingArms.maximumHeightFromStoredPositionInches);
       // because of follower this will set both motors
-      rightPidController.setReference(
+      leftPidController.setReference(
         this.convertTelescopingArmsHeightToMotorEncoderPosition(trimmedHeight),
         ControlType.kSmartMotion);
       double currentHeight = this.getTelescopingArmsHeight();
-      return (currentHeight - toleranceInInches >= telescopingArmsHeightInInches && currentHeight + toleranceInInches <= telescopingArmsHeightInInches);
+      return (currentHeight >= telescopingArmsHeightInInches - toleranceInInches  && currentHeight <= telescopingArmsHeightInInches + toleranceInInches);
     }
 
     /**
@@ -403,7 +413,9 @@ public class TelescopingArms extends SubsystemBase implements Sendable
 
     private double getAverageMotorEncoderPosition()
     {
-      return (rightEncoder.getPosition() + leftEncoder.getPosition())/2;
+      // TODO - when we know 2 arms on the robot we can update the following line
+//      return (rightEncoder.getPosition() + leftEncoder.getPosition())/2;
+      return leftEncoder.getPosition();
     }
 
     private double getLeftMotorOutputSpeed()
@@ -455,15 +467,20 @@ public class TelescopingArms extends SubsystemBase implements Sendable
       {
         rightMotor.restoreFactoryDefaults();  
         leftMotor.restoreFactoryDefaults();
-        rightPidController = leftMotor.getPIDController();
-        rightEncoder = leftMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, Constants.countPerRevHallSensor);
-        rightMotor.follow(leftMotor);
+
         leftMotor.setIdleMode(IdleMode.kBrake);
-    
-        // initialize PID controller and encoder objects
+        rightMotor.setIdleMode(IdleMode.kBrake);
+
+        rightPidController = rightMotor.getPIDController();
+        rightEncoder = rightMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, Constants.countPerRevHallSensor);
+        rightEncoder.setPositionConversionFactor((double)Constants.RevNeoEncoderTicksPerRevolution);
+
         leftPidController = leftMotor.getPIDController();
         leftEncoder = leftMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, Constants.countPerRevHallSensor);
-    
+        leftEncoder.setPositionConversionFactor((double)Constants.RevNeoEncoderTicksPerRevolution);
+
+        rightMotor.follow(leftMotor);
+  
         // PID coefficients
         kP = 5e-5; 
         kI = 1e-6;
@@ -475,8 +492,8 @@ public class TelescopingArms extends SubsystemBase implements Sendable
         maxRPM = 5700;
     
         // Smart Motion Coefficients
-        maxVel = 100; // rpm
-        maxAcc = 100;
+        maxVel = maxRPM / 2; // rpm
+        maxAcc = maxVel; // 1 second to get up to sp
     
         // set PID coefficients
         leftPidController.setP(kP);

@@ -260,13 +260,11 @@ public class RobotContainer
       InstalledHardware.rightTelescopingArmsDriveMotorInstalled)
     {
       m_telescopingArms = new TelescopingArms();
-      /*
       m_telescopingArms.setDefaultCommand(
           new RunCommand(
             () ->
             m_telescopingArms.setTelescopingArmsSpeedManual(m_manualInput.getInputTelescopingArms()),
           m_telescopingArms));
-          */
       System.out.println("SUCCESS: initializeTelescopingArms");
     }
     else
