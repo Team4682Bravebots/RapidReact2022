@@ -1,0 +1,5 @@
+Questions about rules:
+
+1. G106 - Are we taller than 4'4"? If so we can't block anyones shot with parts that are over that height.
+2. G204 - We need to watch out for using the jaws as a contact tool - can't do that
+3. 
