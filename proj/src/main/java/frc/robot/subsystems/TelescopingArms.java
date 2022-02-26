@@ -50,10 +50,10 @@ public class TelescopingArms extends SubsystemBase implements Sendable
     // intended to be an average measurement of wire/chord on the spool when the spool is 'fractionaly wound'
     // for example when 0-25% of the wire is wound on the spool we need the diameter of the average winding to be placed in telescopingArmsSpoolDiameterInches0to25
     // TODO - must get these from Simeon/Carter soon-ish
-    private static final double telescopingArmsSpoolDiameterInches0to25 = 1.0; 
-    private static final double telescopingArmsSpoolDiameterInches26to50 = 1.1; 
-    private static final double telescopingArmsSpoolDiameterInches51to75 = 1.2; 
-    private static final double telescopingArmsSpoolDiameterInches76to100 = 1.3;
+    private static final double telescopingArmsSpoolDiameterInches0to25 = 1.50; 
+    private static final double telescopingArmsSpoolDiameterInches26to50 = 1.52; 
+    private static final double telescopingArmsSpoolDiameterInches51to75 = 1.54; 
+    private static final double telescopingArmsSpoolDiameterInches76to100 = 1.56;
     
     private static final double telescopingArmsCalibrationCompleteSpikeFromAverageFactor = 3.0;
     private static final int powerSampleSizeSufficient = 7;
@@ -298,102 +298,102 @@ public class TelescopingArms extends SubsystemBase implements Sendable
     // note this includes adding the originating motor reference position (which is hopefully 0.0)
     private double convertTelescopingArmsHeightToMotorEncoderPosition(double telescopingArmsHeightInInches)
     {
-      double remainingFractionUnwound = telescopingArmsHeightInInches / TelescopingArms.maximumHeightFromStoredPositionInches;
-      double encoderTargetUnits = this.motorReferencePosition;
-      double travelingContributionFraction = 0.0;
-      double travelingContributionHeight = 0.0;
-      double travelingContributionRevolutions = 0.0;
-      double travelingSpoolDiameter = 0.0;
+        double remainingFractionUnwound = telescopingArmsHeightInInches / TelescopingArms.maximumHeightFromStoredPositionInches;
+        double encoderTargetUnits = this.motorReferencePosition;
+        double travelingContributionFraction = 0.0;
+        double travelingContributionHeight = 0.0;
+        double travelingContributionRevolutions = 0.0;
+        double travelingSpoolDiameter = 0.0;
 
-      // build encoder units by looping through 4 different spool diameters
-      for(int inx = 0; inx < 4; ++inx)
-      {
-        // determine the spool diameter based on each quarter of the spool
-        switch(inx)
+        // build encoder units by looping through 4 different spool diameters
+        for (int inx = 0; inx < 4; ++inx)
         {
-          case (0):
-            travelingSpoolDiameter = TelescopingArms.telescopingArmsSpoolDiameterInches76to100;
-            break;
-          case (1):
-            travelingSpoolDiameter = TelescopingArms.telescopingArmsSpoolDiameterInches51to75;
-            break;
-          case (2):
-            travelingSpoolDiameter = TelescopingArms.telescopingArmsSpoolDiameterInches26to50;
-            break;
-          case (3):
-            travelingSpoolDiameter = TelescopingArms.telescopingArmsSpoolDiameterInches0to25;
-            break;
-          default:
-            // should we throw ... using max value will drive revolutions toward 0, so its ok for now
-            travelingSpoolDiameter = Double.MAX_VALUE;
-            break;
+            // determine the spool diameter based on each quarter of the spool
+            switch (inx)
+            {
+                case (0):
+                    travelingSpoolDiameter = TelescopingArms.telescopingArmsSpoolDiameterInches76to100;
+                    break;
+                case (1):
+                    travelingSpoolDiameter = TelescopingArms.telescopingArmsSpoolDiameterInches51to75;
+                    break;
+                case (2):
+                    travelingSpoolDiameter = TelescopingArms.telescopingArmsSpoolDiameterInches26to50;
+                    break;
+                case (3):
+                    travelingSpoolDiameter = TelescopingArms.telescopingArmsSpoolDiameterInches0to25;
+                    break;
+                default:
+                    // should we throw ... using max value will drive revolutions toward 0, so its ok for now
+                    travelingSpoolDiameter = Double.MAX_VALUE;
+                    break;
+            }
+
+            // build up each fractional portion of the spool using its differing diameters due to wire wind
+            travelingContributionFraction = remainingFractionUnwound > 0.25 ? 0.25 : remainingFractionUnwound;
+            remainingFractionUnwound -= travelingContributionFraction;
+            if (travelingContributionFraction > 0.0)
+            {
+                travelingContributionHeight = travelingContributionFraction * TelescopingArms.maximumHeightFromStoredPositionInches;
+                travelingContributionRevolutions = travelingContributionHeight / (Math.PI * travelingSpoolDiameter);
+                encoderTargetUnits += travelingContributionRevolutions * Constants.DegreesPerRevolution * TelescopingArms.telescopingArmsMotorEncoderTicksPerDegree * TelescopingArms.telescopingArmsMotorToArmEffectiveGearRatio;
+            }
         }
 
-        // build up each fractional portion of the spool using its differing diameters due to wire wind
-        travelingContributionFraction = remainingFractionUnwound > 0.25 ? 0.25 : remainingFractionUnwound;
-        remainingFractionUnwound -= travelingContributionFraction;
-        if(travelingContributionFraction > 0.0)
-        {
-          travelingContributionHeight = travelingContributionFraction * TelescopingArms.maximumHeightFromStoredPositionInches;
-          travelingContributionRevolutions = travelingContributionHeight / (Math.PI * travelingSpoolDiameter);
-          encoderTargetUnits += travelingContributionRevolutions * Constants.DegreesPerRevolution * TelescopingArms.telescopingArmsMotorEncoderTicksPerDegree * TelescopingArms.telescopingArmsMotorToArmEffectiveGearRatio;
-        }  
-      }
-
-      return encoderTargetUnits;
+        return encoderTargetUnits;
     }
 
     // a method to convert the current motor encoder position for the existing setup into telescoping arms height 
     // note this includes subtracting the originating motor reference position (which is hopefully 0.0)
     private double convertMotorEncoderPositionToTelescopingArmsHeight(double telescopingArmsMotorEncoderPosition)
     {
-      double remainingEncoderTicksUnwound = telescopingArmsMotorEncoderPosition - this.motorReferencePosition;
-      double travelingEncoderMaximumContribution = 0.0;
-      double travelingEncoderTicksUnwound = 0.0;
-      double travelingSpoolDiameter = 0.0;
-      double targetHeightInInches = 0.0;
+        double remainingEncoderTicksUnwound = telescopingArmsMotorEncoderPosition - this.motorReferencePosition;
+        double travelingEncoderMaximumContribution = 0.0;
+        double travelingEncoderTicksUnwound = 0.0;
+        double travelingSpoolDiameter = 0.0;
+        double targetHeightInInches = 0.0;
 
-      // build encoder units by looping through 4 different spool diameters
-      for(int inx = 0; inx < 4; ++inx)
-      {
-        // determine the spool diameter based on each quarter of the spool
-        switch(inx)
+        // build encoder units by looping through 4 different spool diameters
+        for (int inx = 0; inx < 4; ++inx)
         {
-          case (0):
-            travelingEncoderMaximumContribution = this.motorEncoderTicksAt100 - this.motorEncoderTicksAt75;
-            travelingSpoolDiameter = TelescopingArms.telescopingArmsSpoolDiameterInches76to100;
-            break;
-          case (1):
-          travelingEncoderMaximumContribution = this.motorEncoderTicksAt75 - this.motorEncoderTicksAt50;
-          travelingSpoolDiameter = TelescopingArms.telescopingArmsSpoolDiameterInches51to75;
-            break;
-          case (2):
-            travelingEncoderMaximumContribution = this.motorEncoderTicksAt50 - this.motorEncoderTicksAt25;
-            travelingSpoolDiameter = TelescopingArms.telescopingArmsSpoolDiameterInches26to50;
-            break;
-          case (3):
-            travelingEncoderMaximumContribution = this.motorEncoderTicksAt25 - this.motorReferencePosition;
-            travelingSpoolDiameter = TelescopingArms.telescopingArmsSpoolDiameterInches0to25;
-            break;
-          default:
-            // should we throw ... 
-            travelingEncoderMaximumContribution = 0;
-            travelingSpoolDiameter = 0;
-            break;
+            // determine the spool diameter based on each quarter of the spool
+            switch (inx)
+            {
+                case (0):
+                    travelingEncoderMaximumContribution = this.motorEncoderTicksAt100 - this.motorEncoderTicksAt75;
+                    travelingSpoolDiameter = TelescopingArms.telescopingArmsSpoolDiameterInches76to100;
+                    break;
+                case (1):
+                    travelingEncoderMaximumContribution = this.motorEncoderTicksAt75 - this.motorEncoderTicksAt50;
+                    travelingSpoolDiameter = TelescopingArms.telescopingArmsSpoolDiameterInches51to75;
+                    break;
+                case (2):
+                    travelingEncoderMaximumContribution = this.motorEncoderTicksAt50 - this.motorEncoderTicksAt25;
+                    travelingSpoolDiameter = TelescopingArms.telescopingArmsSpoolDiameterInches26to50;
+                    break;
+                case (3):
+                    travelingEncoderMaximumContribution = this.motorEncoderTicksAt25 - this.motorReferencePosition;
+                    travelingSpoolDiameter = TelescopingArms.telescopingArmsSpoolDiameterInches0to25;
+                    break;
+                default:
+                    // should we throw ... 
+                    travelingEncoderMaximumContribution = 0;
+                    travelingSpoolDiameter = 0;
+                    break;
+            }
+
+            // build up each portion of the spool that was unwound
+            travelingEncoderTicksUnwound = remainingEncoderTicksUnwound > travelingEncoderMaximumContribution ? travelingEncoderMaximumContribution : remainingEncoderTicksUnwound;
+            remainingEncoderTicksUnwound -= travelingEncoderTicksUnwound;
+            if (travelingEncoderTicksUnwound > 0.0)
+            {
+                targetHeightInInches +=
+                  (travelingEncoderTicksUnwound / Constants.RevNeoEncoderTicksPerRevolution / TelescopingArms.telescopingArmsMotorToArmEffectiveGearRatio) *
+                  (Math.PI * travelingSpoolDiameter);
+            }
         }
 
-        // build up each portion of the spool that was unwound
-        travelingEncoderTicksUnwound = remainingEncoderTicksUnwound > travelingEncoderMaximumContribution ? travelingEncoderMaximumContribution : remainingEncoderTicksUnwound;
-        remainingEncoderTicksUnwound -= travelingEncoderTicksUnwound;
-        if(travelingEncoderTicksUnwound > 0.0)
-        {
-          targetHeightInInches += 
-            (travelingEncoderTicksUnwound / Constants.RevNeoEncoderTicksPerRevolution / TelescopingArms.telescopingArmsMotorToArmEffectiveGearRatio) *
-            (Math.PI * travelingSpoolDiameter);
-        }  
-      }
-
-      return targetHeightInInches;
+        return targetHeightInInches;
     }
 
     private double getAverageClimberHeightInInches()
