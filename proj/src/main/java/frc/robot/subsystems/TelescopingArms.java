@@ -63,6 +63,9 @@ public class TelescopingArms extends SubsystemBase implements Sendable
     // Based on discussion with Simeon, this is true
     private static final boolean spoolWindingIsPositiveSparkMaxNeoMotorOutput = true;
 
+    // TODO change this to final speed when everyone is read for it
+    private static final double neoMotorSpeedReductionFactor = 0.5;
+
     /* *********************************************************************
     MEMBERS
     ************************************************************************/
@@ -489,11 +492,11 @@ public class TelescopingArms extends SubsystemBase implements Sendable
         kFF = 0.000156; 
         kMaxOutput = 1; 
         kMinOutput = -1;
-        maxRPM = 5700;
+        maxRPM = Constants.neoMaximumRevolutionsPerMinute;
     
         // Smart Motion Coefficients
-        maxVel = maxRPM / 2; // rpm
-        maxAcc = maxVel; // 1 second to get up to sp
+        maxVel = maxRPM * neoMotorSpeedReductionFactor; // rpm
+        maxAcc = maxVel; // 1 second to get up to full speed
     
         // set PID coefficients
         leftPidController.setP(kP);

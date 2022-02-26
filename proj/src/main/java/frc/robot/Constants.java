@@ -30,6 +30,8 @@ public final class Constants
 {
   public static final double DegreesPerRevolution = 360.0;
   // Talon maximum RPM 
+  public static final double neoMaximumRevolutionsPerMinute = 6380;
+  // Talon maximum RPM 
   public static final double talonMaximumRevolutionsPerMinute = 6380;
   // this uses the on-motor quadratrue encoder
   // see: https://www.vexrobotics.com/pro/falcon-500 where it says "2048 CPR encoder"
