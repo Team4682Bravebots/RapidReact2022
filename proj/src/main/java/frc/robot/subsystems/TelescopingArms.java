@@ -43,17 +43,17 @@ public class TelescopingArms extends SubsystemBase implements Sendable
 
     // important - this should be the maximum extension of the arms and it must also be the length of the wire on the spool - in inches!
     // TODO - must get this from Simeon/Carter soon-ish
-    private static final double minimumArmHeightInches = 31.0;
-    private static final double maximumArmHeightInches = 63.0;
+    private static final double minimumArmHeightInches = 7.0 + 0.0;
+    private static final double maximumArmHeightInches = 33.0 + 0.0;
     private static final double maximumHeightFromStoredPositionInches = maximumArmHeightInches - minimumArmHeightInches;
     // measurements of spool diameter in 4 discrete ranges
     // intended to be an average measurement of wire/chord on the spool when the spool is 'fractionaly wound'
     // for example when 0-25% of the wire is wound on the spool we need the diameter of the average winding to be placed in telescopingArmsSpoolDiameterInches0to25
     // TODO - must get these from Simeon/Carter soon-ish
     private static final double telescopingArmsSpoolDiameterInches0to25 = 1.50; 
-    private static final double telescopingArmsSpoolDiameterInches26to50 = 1.52; 
-    private static final double telescopingArmsSpoolDiameterInches51to75 = 1.54; 
-    private static final double telescopingArmsSpoolDiameterInches76to100 = 1.56;
+    private static final double telescopingArmsSpoolDiameterInches26to50 = 1.51; 
+    private static final double telescopingArmsSpoolDiameterInches51to75 = 1.52; 
+    private static final double telescopingArmsSpoolDiameterInches76to100 = 1.53;
     
     private static final double telescopingArmsCalibrationCompleteSpikeFromAverageFactor = 3.0;
     private static final int powerSampleSizeSufficient = 7;

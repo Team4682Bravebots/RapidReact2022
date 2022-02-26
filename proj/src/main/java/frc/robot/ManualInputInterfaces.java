@@ -164,7 +164,7 @@ public class ManualInputInterfaces
       if(subsystemCollection.getTelescopingArmsSubsystem() != null)
       {
         JoystickButton buttonX = new JoystickButton(driverController, XboxController.Button.kX.value);
-        buttonX.whenPressed(new TelescopingArmExtendVariable(subsystemCollection.getTelescopingArmsSubsystem(), 31.75));
+        buttonX.whenPressed(new TelescopingArmExtendVariable(subsystemCollection.getTelescopingArmsSubsystem(), 25.75));
         buttonA.whenPressed(new TelescopingArmExtendVariable(subsystemCollection.getTelescopingArmsSubsystem(), 1.0));
         buttonY.whenPressed(new TelescopingArmExtendVariable(subsystemCollection.getTelescopingArmsSubsystem(), 0.0));
         buttonB.whenPressed(new TelescopingArmsAllStop(subsystemCollection.getTelescopingArmsSubsystem()));
