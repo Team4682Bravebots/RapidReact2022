@@ -137,11 +137,11 @@ public final class Constants
 
   // TIMING AND SPEEDS \\
   // AngleArm timing \\
-  public static final double AngleArmTimingSeconds = 0.3;
+  public static final double angleArmTimingSeconds = 0.3;
 
   // BallStorage timing \\
-  public static final double BallStorageStoreTimingSeconds = 1.0;
-  public static final double BallStorageRetrieveTimingSeconds = 0.3;
+  public static final double ballStorageStoreTimingSeconds = 2.0;
+  public static final double ballStorageRetrieveTimingSeconds = 0.5;
 
   // HIDS \\
   // hid ports \\ 

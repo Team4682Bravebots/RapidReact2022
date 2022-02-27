@@ -256,6 +256,24 @@ public class ManualInputInterfaces
         telescopingArmsDown.whenReleased(new TelescopingArmsManual(subsystemCollection.getTelescopingArmsSubsystem(), Constants.telescopingArmsStopSpeed));
       }
 
+      if(subsystemCollection.getShooterSubsystem() != null && subsystemCollection.getBallStorageSubsystem() != null && subsystemCollection.getJawsSubsystem() != null)
+      {
+        shooterShoot.whenPressed(
+          new ShooterAutomatic(
+            subsystemCollection.getShooterSubsystem(),
+            subsystemCollection.getBallStorageSubsystem(),
+            subsystemCollection.getJawsSubsystem(),
+            true,
+            (InstalledHardware.rearBallStorageBeamBreakSensorInstalled && InstalledHardware.forwardBallStorageBeamBreakSensorInstalled)));
+        shooterShoot.whenPressed(
+          new ShooterAutomatic(
+            subsystemCollection.getShooterSubsystem(),
+            subsystemCollection.getBallStorageSubsystem(),
+            subsystemCollection.getJawsSubsystem(),
+            false,
+            (InstalledHardware.rearBallStorageBeamBreakSensorInstalled && InstalledHardware.forwardBallStorageBeamBreakSensorInstalled)));
+      }
+
       commandStop.whenPressed(AutonomousCommandBuilder.buildAllStop(subsystemCollection));
 
       if(subsystemCollection.getJawsSubsystem() != null)

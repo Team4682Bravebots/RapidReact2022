@@ -53,7 +53,7 @@ public class AngleArmsEngageJaws extends CommandBase {
     if(jawsSubsystem.setJawsAngle(Constants.jawsAngleArmsEngagePositionAngle, Constants.jawsAngleArmsEngagePositionTolerance))
     {
       angleArmSubsystem.engageJaws();
-      if (timer.hasElapsed(Constants.AngleArmTimingSeconds)){
+      if (timer.hasElapsed(Constants.angleArmTimingSeconds)){
         angleArmSubsystem.disengageChassis();
         done = true;
       }
