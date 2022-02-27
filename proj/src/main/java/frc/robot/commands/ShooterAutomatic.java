@@ -32,11 +32,11 @@ public class ShooterAutomatic extends CommandBase
   {
     // format:
     // jaws position minimum, jaws position maximum, bottom wheel RPM target, bottom wheel RPM tolerance, top wheel RPM target, top wheel RPM tolerance
-    {-10.0, 10.0, 500.0, 20.0, 500.0, 20.0}, // intake targets
-    {30.0, 40.0, 1000.0, 20.0, 1000.0, 20.0}, // low ball shooter targets
-    {60.0, 80.0, 1500.0, 20.0, 1500.0, 20.0}, // forward high ball shooter targets
-    {110.0, 130.0, 1500.0, 20.0, 1500.0, 20.0}, // reverse high ball shooter targets
-    {130.1, 150.0, 1000.0, 20.0, 1000.0, 20.0}, // reverse high ball shooter targets
+    {Constants.jawsIntakePositionAngle - 10.0, Constants.jawsIntakePositionAngle + 10.0, 500.0, 20.0, 500.0, 20.0}, // intake targets
+    {Constants.jawsLowGoalPositionAngle - 10.0, Constants.jawsLowGoalPositionAngle + 10.0, 1000.0, 20.0, 1000.0, 20.0}, // low ball shooter targets
+    {Constants.jawsHighGoalPositionAngle - 10.0, Constants.jawsHighGoalPositionAngle + 10.0, 1500.0, 20.0, 1500.0, 20.0}, // forward high ball shooter targets
+    {Constants.jawsReverseHighGoalPositionAngle - 10.0, Constants.jawsReverseHighGoalPositionAngle + 10.0, 1500.0, 20.0, 1500.0, 20.0}, // reverse high ball shooter targets
+    {Constants.jawsReverseLowGoalPositionAngle - 10.0, Constants.jawsReverseLowGoalPositionAngle + 10.0, 1000.0, 20.0, 1000.0, 20.0}, // reverse high ball shooter targets
   };
   private static final double kP = 1.0;
   private static final double kI = 0.01;
