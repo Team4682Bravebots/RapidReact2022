@@ -27,25 +27,35 @@ public class ClimbCommandBuilder
      * Notes (Jonathan to fill in his steps from your notes here!!!):
      * 1. action starts with robot at ground level where, in plan view, the telescoping arms have been placed between the medium bar and the high bar
      * 2. extend telescoping arms to higher than medium bar
-     * 3. robot drives backwards until telescoping arms make contact with the medium bar
-     * 4. retract telescoping arms to lift robot to medium bar
-     * 5. angle arms swing forward until hooks make contact with medium bar
+     * 3. move jaws to angle arms attach position
+     * @param collection - The grouping of subystems and input content necessary to control various operations in the robot
+     * @return The command that represents a succession of commands/steps that form the action associated with this method  
+     */
+    public static Command buildExtensionAndPairing(SubsystemCollection collection)
+    {
+        JawsAngleVariable jawsToEngageAngle = new JawsAngleVariable(collection.getJawsSubsystem(), 105);
+        TelescopingArmExtendMiddle extendArms = new TelescopingArmExtendMiddle(collection.getTelescopingArmsSubsystem());
+        AngleArmsEngageJaws engageJaws = new AngleArmsEngageJaws(collection.getAngleArmsSubsystem(), collection.getJawsSubsystem());
+        ParallelCommandGroup jawsAndExtendGroup = new ParallelCommandGroup(jawsToEngageAngle, extendArms);
+        SequentialCommandGroup overallCommandGroup = new SequentialCommandGroup(jawsAndExtendGroup, engageJaws);
+        return overallCommandGroup;
+    }
+
+    /**
+     * A builder method to assemble a succession of commands/steps that will attain the medium bar climb
+     * Notes (Jonathan to fill in his steps from your notes here!!!):
+     * 1. action starts with robot at ground level where and extended telescoping arms have been driven manually to touch mid bar
+     * 2. retract telescoping arms to lift robot to medium bar
+     * 3. angle arms swing forward until hooks make contact with medium bar
      * @param collection - The grouping of subystems and input content necessary to control various operations in the robot
      * @return The command that represents a succession of commands/steps that form the action associated with this method  
      */
     public static Command buildMediumBarClimb(SubsystemCollection collection)
     {
-        // TODO - Jonathan we need your story to be built into here!!!
-        // After the notes above are done,  the idea is to take the actions described there and convert them into a set of steps that use the building block commands.
-        JawsAngleVariable jawsToEngageAngle = new JawsAngleVariable(collection.getJawsSubsystem(), 105);
-        TelescopingArmExtendMiddle extendArms = new TelescopingArmExtendMiddle(collection.getTelescopingArmsSubsystem());
-        AngleArmsEngageJaws engageJaws = new AngleArmsEngageJaws(collection.getAngleArmsSubsystem(), collection.getJawsSubsystem());
-        DriveCommand driveReverseToBar = new DriveCommand(collection.getDriveTrainSubsystem(), -12, 0, 0);
         TelescopingArmRetract liftRobot = new TelescopingArmRetract(collection.getTelescopingArmsSubsystem());
         JawsAngleVariable angleArmForward = new JawsAngleVariable(collection.getJawsSubsystem(), 90);
         TelescopingArmExtendVariable shiftWeightToAngleArms = new TelescopingArmExtendVariable(collection.getTelescopingArmsSubsystem(), 6);
-        ParallelCommandGroup jawsAndExtendGroup = new ParallelCommandGroup(jawsToEngageAngle, extendArms);
-        SequentialCommandGroup overallCommandGroup = new SequentialCommandGroup(jawsAndExtendGroup, engageJaws, driveReverseToBar, liftRobot, angleArmForward, shiftWeightToAngleArms);
+        SequentialCommandGroup overallCommandGroup = new SequentialCommandGroup(liftRobot, angleArmForward, shiftWeightToAngleArms);
         return overallCommandGroup;
     }
 

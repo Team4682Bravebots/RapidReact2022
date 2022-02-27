@@ -15,8 +15,8 @@ import frc.robot.subsystems.Jaws;
 
 public class JawsHoldReleaseManual extends CommandBase {
 
-  public Jaws jawsSubsystem;
-  boolean done = false;
+  private Jaws jawsSubsystem;
+  private boolean done = false;
 
   /**
    * The constructor for this jaws 

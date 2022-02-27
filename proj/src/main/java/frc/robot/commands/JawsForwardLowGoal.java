@@ -16,7 +16,7 @@ import frc.robot.subsystems.Jaws;
 
 public class JawsForwardLowGoal extends CommandBase
 {
-  public Jaws jawsSubsystem;
+  private Jaws jawsSubsystem;
   private boolean done = false;
   
   public JawsForwardLowGoal(Jaws JawsSubsystem)

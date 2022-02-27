@@ -20,8 +20,8 @@ public class DriveCommand extends CommandBase
   private double targetDistanceInInches;
   private double targetRotationInDegrees;
   private double targetTimeInSeconds;
-  boolean started = false;
-  boolean done = false;
+  private boolean started = false;
+  private boolean done = false;
   
   /** 
   * Creates a new driveCommand. 

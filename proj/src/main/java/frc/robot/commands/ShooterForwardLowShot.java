@@ -18,7 +18,7 @@ public class ShooterForwardLowShot extends CommandBase {
  
   private Shooter shooterSubsystem;
   private BallStorage ballStorageSubsystem;
-  boolean done = false;
+  private boolean done = false;
 
   /**
   * The two argument constructor for the shooter forward low shot

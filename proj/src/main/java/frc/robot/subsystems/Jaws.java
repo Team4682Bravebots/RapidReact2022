@@ -41,7 +41,7 @@ public class Jaws extends SubsystemBase implements Sendable
     private static final double jawsMotorToArmEffectiveGearRatio = 212; // according to nathan on 02/08/2022
     private static final int jawsMinimumIsCalibratedConsecutiveCount = 1;
     private static final double minmumTargetAngle = 0.0;
-    private static final double maximumTargetAngle = 150.0;
+    private static final double maximumTargetAngle = 170.0;
 
     /* *********************************************************************
     MEMBERS

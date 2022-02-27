@@ -17,8 +17,8 @@ import frc.robot.subsystems.TelescopingArms;
 
 public class TelescopingArmExtendMiddle extends CommandBase
 {
-  public TelescopingArms telescopingArmSubsystem;
-  boolean done = false;
+  private TelescopingArms telescopingArmSubsystem;
+  private boolean done = false;
 
   public TelescopingArmExtendMiddle(TelescopingArms telescopingArmSubsystem)
   {

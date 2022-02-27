@@ -16,8 +16,8 @@ import frc.robot.subsystems.Jaws;
 
 public class JawsReverseHighGoal extends CommandBase {
 
-  public Jaws jawsSubsystem;
-  public boolean done;
+  private Jaws jawsSubsystem;
+  private boolean done;
   
   /**
    * Constructor for the jaws reverse high goal score

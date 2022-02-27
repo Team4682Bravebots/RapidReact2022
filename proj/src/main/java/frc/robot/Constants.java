@@ -56,19 +56,25 @@ public final class Constants
   public static final double topMotorIntakeSpeed = -0.4;
 
   // Jaws reach points \\
-  public static final double jawsReverseHighGoalPositionAngle = 115.0;
   public static final double jawsIntakePositionAngle = 0.0;
   public static final double jawsLowGoalPositionAngle = 40.0;
-  public static final double jawsHighGoalPositionAngle = 65.0; 
+  public static final double jawsHighGoalPositionAngle = 75.0; 
+  public static final double jawsReverseHighGoalPositionAngle = 125.0;
+  public static final double jawsReverseLowGoalPositionAngle = 145.0;
   public static final double jawsPositionAngleTolerance = 1.2;
   public static final double jawsAngleArmsEngagePositionAngle = 81.0;
   public static final double jawsAngleArmsEngagePositionTolerance = 0.9;
+  public static final double jawsDefaultPositiveSpeed = 0.8;
+  public static final double jawsDefaultNegativeSpeed = -0.8;
 
   // telescoping arms reach points \\
-  public static final double telescopingArmsRetractHeightInches = 0.33;
-  public static final double telescopingArmsMediumExtendHeightInches = 30.0;
-  public static final double telescopingArmsHighExtendHeightInches = 25.0;
+  public static final double telescopingArmsRetractHeightInches = 0.50;
+  public static final double telescopingArmsMediumExtendHeightInches = 25.75;
+  public static final double telescopingArmsHighExtendHeightInches = 20.0;
   public static final double telescopingArmsToleranceInches = 0.10;
+  public static final double telescopingArmsDefaultExtendSpeed = 0.7;
+  public static final double telescopingArmsDefaultRetractSpeed = -0.7;
+  public static final double telescopingArmsStopSpeed = 0.0;
 
   // Ball storage \\
   public static final double ballStoreSpeed = -0.4;

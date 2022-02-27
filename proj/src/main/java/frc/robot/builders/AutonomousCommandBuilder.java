@@ -22,6 +22,11 @@ import frc.robot.subsystems.*;
 public class AutonomousCommandBuilder
 {
 
+    /**
+     * A method to build an initial set of automated steps for first 15 seconds
+     * @param collection - The grouping of subystems and input content necessary to control various operations in the robot
+     * @return The command that represents a succession of commands/steps that form the action associated with this method  
+     */
     public static Command buildTestCollectAndShoot(SubsystemCollection collection)
     {
         // TODO - much work needed in this command group here!!!
@@ -58,4 +63,39 @@ public class AutonomousCommandBuilder
         return commandGroup;
     }
     
+
+    /**
+     * A method to build all of the stop commands and run them in parallel
+     * @param collection - The grouping of subystems and input content necessary to control various operations in the robot
+     * @return The command that represents a succession of commands/steps that form the action associated with this method  
+     */
+    public static Command buildAllStop(SubsystemCollection collection)
+    {
+        ParallelCommandGroup stopCommands = new ParallelCommandGroup();
+
+        if(collection.getBallStorageSubsystem() != null)
+        {
+            stopCommands.addCommands(new BallStorageAllStopManual(collection.getBallStorageSubsystem()));
+        }
+
+        if(collection.getDriveTrainSubsystem() != null)
+        {
+            stopCommands.addCommands(new RunCommand(
+                () ->
+                collection.getDriveTrainSubsystem().arcadeDrive(0.0, 0.0),
+                collection.getDriveTrainSubsystem()));
+        }
+
+        if(collection.getJawsSubsystem() != null)
+        {
+            stopCommands.addCommands(new JawsAllStop(collection.getJawsSubsystem()));
+        }
+
+        if(collection.getShooterSubsystem() != null)
+        {
+            stopCommands.addCommands(new ShooterAllStop(collection.getShooterSubsystem()));
+        }
+
+        return stopCommands;
+    }
 }

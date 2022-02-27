@@ -2,8 +2,8 @@
 // Bishop Blanchet Robotics
 // Home of the Cybears
 // FRC - Rapid React - 2022
-// File: TelescopingArmRetract.java
-// Intent: Forms a command to drive the telescoping arms to stop.
+// File: JawsManual.java
+// Intent: Forms a command to stop the Jaws.
 // ************************************************************
 
 // ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ 
@@ -11,18 +11,27 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.TelescopingArms;
+import frc.robot.Constants;
+import frc.robot.subsystems.Jaws;
 
-public class TelescopingArmsAllStop extends CommandBase
+public class JawsManual extends CommandBase
 {
-  private TelescopingArms telescopingArmSubsystem;
+  private Jaws jawsSubsystem;
+  private double targetSpeed = 0.0;
   private boolean done = false;
-
-  public TelescopingArmsAllStop(TelescopingArms telescopingArmSubsystem)
+  
+  /**
+   * The ctor
+   * @param JawsSubsystem
+   * @param speed
+   */
+  public JawsManual(Jaws JawsSubsystem, double speed)
   {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.telescopingArmSubsystem = telescopingArmSubsystem;
-    addRequirements(telescopingArmSubsystem);
+    this.jawsSubsystem = JawsSubsystem;
+    addRequirements(JawsSubsystem);
+
+    targetSpeed = speed;
   }
 
   // Called when the command is initially scheduled.
@@ -36,11 +45,10 @@ public class TelescopingArmsAllStop extends CommandBase
   @Override
   public void execute()
   {
-    telescopingArmSubsystem.setTelescopingArmsSpeedManual(0.0);
+    jawsSubsystem.setJawsSpeedManual(targetSpeed);
     done = true;
-//    System.out.println("Telescoping arms stop all");
   }
- 
+
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {}

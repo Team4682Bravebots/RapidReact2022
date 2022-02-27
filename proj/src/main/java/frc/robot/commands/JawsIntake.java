@@ -16,8 +16,8 @@ import frc.robot.subsystems.Jaws;
 
 public class JawsIntake extends CommandBase {
 
-  public Jaws jawsSubsystem;
-  boolean done = false;
+  private Jaws jawsSubsystem;
+  private boolean done = false;
 
   public JawsIntake(Jaws JawsSubsystem)
   {

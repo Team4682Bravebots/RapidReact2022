@@ -16,8 +16,8 @@ import frc.robot.subsystems.TelescopingArms;
 
 public class TelescopingArmRetract extends CommandBase
 {
-  public TelescopingArms telescopingArmSubsystem;
-  boolean done = false;
+  private TelescopingArms telescopingArmSubsystem;
+  private boolean done = false;
 
   public TelescopingArmRetract(TelescopingArms telescopingArmSubsystem)
   {

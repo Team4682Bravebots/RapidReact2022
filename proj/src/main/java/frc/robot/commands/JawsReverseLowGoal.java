@@ -2,8 +2,8 @@
 // Bishop Blanchet Robotics
 // Home of the Cybears
 // FRC - Rapid React - 2022
-// File: TelescopingArmRetract.java
-// Intent: Forms a command to drive the telescoping arms to stop.
+// File: JawsReverseLowGoal.java
+// Intent: Forms a command to drive the Jaws to the reverse low goal position.
 // ************************************************************
 
 // ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ 
@@ -11,18 +11,23 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.TelescopingArms;
+import frc.robot.Constants;
+import frc.robot.subsystems.Jaws;
 
-public class TelescopingArmsAllStop extends CommandBase
-{
-  private TelescopingArms telescopingArmSubsystem;
-  private boolean done = false;
+public class JawsReverseLowGoal extends CommandBase {
 
-  public TelescopingArmsAllStop(TelescopingArms telescopingArmSubsystem)
+  private Jaws jawsSubsystem;
+  private boolean done;
+  
+  /**
+   * Constructor for the jaws reverse high goal score
+   * @param JawsSubsystem
+   */
+  public JawsReverseLowGoal(Jaws JawsSubsystem)
   {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.telescopingArmSubsystem = telescopingArmSubsystem;
-    addRequirements(telescopingArmSubsystem);
+    this.jawsSubsystem = JawsSubsystem;
+    addRequirements(JawsSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -36,11 +41,13 @@ public class TelescopingArmsAllStop extends CommandBase
   @Override
   public void execute()
   {
-    telescopingArmSubsystem.setTelescopingArmsSpeedManual(0.0);
-    done = true;
-//    System.out.println("Telescoping arms stop all");
+    if(jawsSubsystem.setJawsAngle(Constants.jawsReverseLowGoalPositionAngle, Constants.jawsPositionAngleTolerance))
+    {
+      jawsSubsystem.suspendJawMovement();
+      done = true;
+    }
   }
- 
+
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {}

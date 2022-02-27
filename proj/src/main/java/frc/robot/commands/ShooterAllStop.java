@@ -2,8 +2,8 @@
 // Bishop Blanchet Robotics
 // Home of the Cybears
 // FRC - Rapid React - 2022
-// File: TelescopingArmRetract.java
-// Intent: Forms a command to drive the telescoping arms to stop.
+// File: ShooterAllStop.java
+// Intent: Forms a command to stop all shooter motors.
 // ************************************************************
 
 // ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ 
@@ -11,18 +11,24 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.TelescopingArms;
+import frc.robot.subsystems.Shooter;
+import frc.robot.Constants;
+import frc.robot.subsystems.BallStorage;
 
-public class TelescopingArmsAllStop extends CommandBase
-{
-  private TelescopingArms telescopingArmSubsystem;
+public class ShooterAllStop extends CommandBase {
+
+  private Shooter shooterSubsystem;
   private boolean done = false;
 
-  public TelescopingArmsAllStop(TelescopingArms telescopingArmSubsystem)
+  /**
+  * The two argument constructor for the shooter intake
+  *
+  * @param ShooterSubsystem - The shooter subsystem in this robot
+  */
+  public ShooterAllStop(Shooter ShooterSubsystem)
   {
-    // Use addRequirements() here to declare subsystem dependencies.
-    this.telescopingArmSubsystem = telescopingArmSubsystem;
-    addRequirements(telescopingArmSubsystem);
+    this.shooterSubsystem = ShooterSubsystem;
+    addRequirements(ShooterSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -36,14 +42,15 @@ public class TelescopingArmsAllStop extends CommandBase
   @Override
   public void execute()
   {
-    telescopingArmSubsystem.setTelescopingArmsSpeedManual(0.0);
-    done = true;
-//    System.out.println("Telescoping arms stop all");
+      shooterSubsystem.stopShooter();
+      done = true;
   }
- 
+
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted)
+  {
+  }
 
   // Returns true when the command should end.
   @Override
