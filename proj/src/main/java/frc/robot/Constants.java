@@ -14,8 +14,6 @@ import frc.robot.*;
 import frc.robot.common.Gains;
 import frc.robot.common.RoboRioOrientation;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
-
-import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 
 /**
