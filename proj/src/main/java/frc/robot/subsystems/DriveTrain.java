@@ -289,7 +289,7 @@ public class DriveTrain extends SubsystemBase implements Sendable
 
   private void initializeMotorsMotionMagic()
   {
-    if(this.initalizedForMotionMagic)
+    if(this.initalizedForMotionMagic == false)
     {
       leftFront.configFactoryDefault();
       leftRear.configFactoryDefault();
@@ -343,7 +343,7 @@ public class DriveTrain extends SubsystemBase implements Sendable
   }
   private void initializeMotorsDirectDrive()
   {
-    if(this.initalizedForMotionMagic == false)
+    if(this.initalizedForMotionMagic == true)
     {
       leftFront.configFactoryDefault();
       leftRear.configFactoryDefault();
@@ -360,7 +360,7 @@ public class DriveTrain extends SubsystemBase implements Sendable
       rightFront.setInverted(Constants.driveMotorRightFrontDefaultDirection);
       rightRear.setInverted(Constants.driveMotorRightRearDefaultDirection);
 
-      this.initalizedForMotionMagic = true;
+      this.initalizedForMotionMagic = false;
     }
   }
  
