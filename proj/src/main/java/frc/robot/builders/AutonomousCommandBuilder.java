@@ -33,32 +33,50 @@ public class AutonomousCommandBuilder
 
         // example automation to attempt to
         // 1. shoot first ball
-        // 2. pickup another ball
-        // 3. shoot second ball
-        DriveCommand driveReverseToShot = new DriveCommand(collection.getDriveTrainSubsystem(), -22.7, 0.0, 1.9);
-        JawsForwardHighGoal jawsToHighGoal = new JawsForwardHighGoal(collection.getJawsSubsystem());
-        ShooterForwardHighShot shootHighGoal = new ShooterForwardHighShot(collection.getShooterSubsystem(), collection.getBallStorageSubsystem());
-        DriveCommand rotateTowardBall = new DriveCommand(collection.getDriveTrainSubsystem(), 0.0, 130.0, 1.0);
-        DriveCommand driveForwardToBall = new DriveCommand(collection.getDriveTrainSubsystem(), 99.7, 10.0, 2.9);
+        JawsReverseHighGoal jawsToReverseHighGoal = new JawsReverseHighGoal(collection.getJawsSubsystem());
+        ShooterAutomatic shootReverseHighGoal = new ShooterAutomatic(
+            collection.getShooterSubsystem(),
+            collection.getBallStorageSubsystem(),
+            collection.getJawsSubsystem(),
+            true,
+            false);
+
+        // 2. move toward the second ball 
+        DriveCommand driveForwardToBall = new DriveCommand(collection.getDriveTrainSubsystem(), 49.7, 10.0, 1.9);
         JawsIntake jawsIntake = new JawsIntake(collection.getJawsSubsystem());
-        ShooterIntake shooterIntake = new ShooterIntake(collection.getShooterSubsystem(), collection.getBallStorageSubsystem());
-        DriveCommand rotateTowardBasket = new DriveCommand(collection.getDriveTrainSubsystem(), 0.0, -130.0, 1.0);
-        DriveCommand driveForwardToHighGoal = new DriveCommand(collection.getDriveTrainSubsystem(), 99.7, -10.0, 2.9);
-        JawsForwardHighGoal jawsToHighGoal2 = new JawsForwardHighGoal(collection.getJawsSubsystem());
-        ShooterForwardHighShot shootHighGoal2 = new ShooterForwardHighShot(collection.getShooterSubsystem(), collection.getBallStorageSubsystem());
+        ParallelCommandGroup forwardAndIntake = new ParallelCommandGroup(driveForwardToBall, jawsIntake);
+
+        // 3. pickup another ball by intake/storage turned on and move forward to scoop the ball
+        ShooterAutomatic shooterIntake = new ShooterAutomatic(
+            collection.getShooterSubsystem(),
+            collection.getBallStorageSubsystem(),
+            collection.getJawsSubsystem(),
+            false,
+            false);
+        DriveCommand driveForwardBallScoop = new DriveCommand(collection.getDriveTrainSubsystem(), 5.0, 0.0, 0.5);
+        ParallelCommandGroup ballIntakeScoop = new ParallelCommandGroup(driveForwardBallScoop, shooterIntake);
+
+        // 4. move back to the shooting position and move the arms up to 
+        DriveCommand driveReverseToHighGoal = new DriveCommand(collection.getDriveTrainSubsystem(), 54.7, -10.0, 2.1);
+        ParallelCommandGroup returnToShooterSpot = new ParallelCommandGroup(driveReverseToHighGoal, jawsToReverseHighGoal);
+
+        // 5. shoot second ball
+        ShooterAutomatic shootSecondReverseHighGoal = new ShooterAutomatic(
+            collection.getShooterSubsystem(),
+            collection.getBallStorageSubsystem(),
+            collection.getJawsSubsystem(),
+            true,
+            false);
+
+        // 6. build the command group
         SequentialCommandGroup commandGroup = new SequentialCommandGroup(
-            driveReverseToShot,
-            jawsToHighGoal,
-            shootHighGoal,
-            rotateTowardBall,
-            driveForwardToBall,
-            jawsIntake,
-            shooterIntake,
-            rotateTowardBasket,
-            driveForwardToHighGoal,
-            jawsToHighGoal2,
-            shootHighGoal2
-        );        
+            jawsToReverseHighGoal,
+            shootReverseHighGoal,
+            forwardAndIntake,
+            ballIntakeScoop,
+            returnToShooterSpot,
+            shootSecondReverseHighGoal
+        );
 
         return commandGroup;
     }
