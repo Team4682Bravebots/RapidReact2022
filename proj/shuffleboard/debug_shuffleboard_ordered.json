@@ -9,6 +9,7 @@
         "showGrid": true,
         "hgap": 16.0,
         "vgap": 16.0,
+        "titleType": 0,
         "tiles": {
           "12,0": {
             "size": [
@@ -83,7 +84,7 @@
           },
           "3,0": {
             "size": [
-              3,
+              2,
               1
             ],
             "content": {
@@ -95,9 +96,9 @@
               "Visuals/Show value": true
             }
           },
-          "9,0": {
+          "7,0": {
             "size": [
-              3,
+              2,
               1
             ],
             "content": {
@@ -111,22 +112,19 @@
           },
           "3,1": {
             "size": [
-              3,
-              3
+              2,
+              2
             ],
             "content": {
-              "_type": "Graph",
+              "_type": "Simple Dial",
               "_source0": "network_table:///LiveWindow/Jaws/JawsAverageMotorOutput",
               "_title": "Jaws Motors",
-              "Graph/Visible time": 30.0,
-              "Graph/X-axis auto scrolling": true,
-              "Y-axis/Automatic bounds": true,
-              "Y-axis/Upper bound": 1.0,
-              "Y-axis/Lower bound": -1.0,
-              "Y-axis/Unit": "output"
+              "Range/Min": 0.0,
+              "Range/Max": 100.0,
+              "Visuals/Show value": true
             }
           },
-          "9,1": {
+          "9,0": {
             "size": [
               1,
               1
@@ -148,7 +146,7 @@
               "_title": "R. TeleArm Desc."
             }
           },
-          "6,0": {
+          "5,0": {
             "size": [
               1,
               1
@@ -161,7 +159,7 @@
               "Colors/Color when false": "#8B0000FF"
             }
           },
-          "8,0": {
+          "5,5": {
             "size": [
               1,
               1
@@ -172,7 +170,7 @@
               "_title": "Ball Handling"
             }
           },
-          "7,0": {
+          "6,0": {
             "size": [
               1,
               1
@@ -185,72 +183,60 @@
               "Colors/Color when false": "#8B0000FF"
             }
           },
-          "6,4": {
+          "5,3": {
             "size": [
-              3,
-              3
+              2,
+              2
             ],
             "content": {
-              "_type": "Graph",
+              "_type": "Simple Dial",
               "_source0": "network_table:///LiveWindow/BallStorage/BottomMotorSpeedSetting",
               "_title": "Ball Botom Motor",
-              "Graph/Visible time": 30.0,
-              "Graph/X-axis auto scrolling": true,
-              "Y-axis/Automatic bounds": true,
-              "Y-axis/Upper bound": 1.0,
-              "Y-axis/Lower bound": -1.0,
-              "Y-axis/Unit": "output"
+              "Range/Min": 0.0,
+              "Range/Max": 100.0,
+              "Visuals/Show value": true
             }
           },
-          "6,1": {
+          "5,1": {
             "size": [
-              3,
-              3
+              2,
+              2
             ],
             "content": {
-              "_type": "Graph",
+              "_type": "Simple Dial",
               "_source0": "network_table:///LiveWindow/BallStorage/TopMotorSpeedSetting",
               "_title": "Ball Top Motor",
-              "Graph/Visible time": 30.0,
-              "Graph/X-axis auto scrolling": true,
-              "Y-axis/Automatic bounds": true,
-              "Y-axis/Upper bound": 1.0,
-              "Y-axis/Lower bound": -1.0,
-              "Y-axis/Unit": "output"
+              "Range/Min": 0.0,
+              "Range/Max": 100.0,
+              "Visuals/Show value": true
             }
           },
-          "9,2": {
+          "7,1": {
             "size": [
-              3,
-              3
+              2,
+              2
             ],
             "content": {
-              "_type": "Graph",
+              "_type": "Simple Dial",
               "_source0": "network_table:///LiveWindow/TelescopingArms/TelescopingArmsLeftMotorSpeed",
               "_title": "TeleArm Left Motor",
-              "Graph/Visible time": 30.0,
-              "Graph/X-axis auto scrolling": true,
-              "Y-axis/Automatic bounds": true,
-              "Y-axis/Upper bound": 1.0,
-              "Y-axis/Lower bound": -1.0,
-              "Y-axis/Unit": "output"
+              "Range/Min": 0.0,
+              "Range/Max": 100.0,
+              "Visuals/Show value": true
             }
           },
-          "9,5": {
+          "7,3": {
             "size": [
-              3,
-              3
+              2,
+              2
             ],
             "content": {
-              "_type": "Graph",
+              "_type": "Simple Dial",
               "_source0": "network_table:///LiveWindow/TelescopingArms/TelescopingArmsRightMotorSpeed",
               "_title": "TeleArm Right Motor",
-              "Graph/Visible time": 30.0,
-              "Graph/X-axis auto scrolling": true,
-              "Y-axis/Automatic bounds": true,
-              "Y-axis/Upper bound": 1.0,
-              "Y-axis/Lower bound": -1.0,
-              "Y-axis/Unit": "output"
+              "Range/Min": 0.0,
+              "Range/Max": 100.0,
+              "Visuals/Show value": true
             }
           }
         }
@@ -265,6 +251,7 @@
         "showGrid": true,
         "hgap": 16.0,
         "vgap": 16.0,
+        "titleType": 0,
         "tiles": {
           "3,0": {
             "size": [
@@ -367,6 +354,7 @@
         "showGrid": true,
         "hgap": 16.0,
         "vgap": 16.0,
+        "titleType": 0,
         "tiles": {
           "3,0": {
             "size": [
@@ -422,6 +410,7 @@
         "showGrid": true,
         "hgap": 16.0,
         "vgap": 16.0,
+        "titleType": 0,
         "tiles": {
           "1,3": {
             "size": [
@@ -517,6 +506,7 @@
         "showGrid": true,
         "hgap": 16.0,
         "vgap": 16.0,
+        "titleType": 0,
         "tiles": {
           "5,0": {
             "size": [
@@ -608,6 +598,7 @@
         "showGrid": true,
         "hgap": 16.0,
         "vgap": 16.0,
+        "titleType": 0,
         "tiles": {
           "0,0": {
             "size": [
@@ -687,6 +678,7 @@
         "showGrid": true,
         "hgap": 16.0,
         "vgap": 16.0,
+        "titleType": 0,
         "tiles": {
           "0,0": {
             "size": [
@@ -1020,9 +1012,9 @@
     }
   ],
   "windowGeometry": {
-    "x": -8.0,
-    "y": -8.0,
-    "width": 2576.0,
-    "height": 1576.0
+    "x": -5.333333492279053,
+    "y": 4.0,
+    "width": 1486.6666259765625,
+    "height": 950.0
   }
 }
