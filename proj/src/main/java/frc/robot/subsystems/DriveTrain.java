@@ -44,7 +44,9 @@ public class DriveTrain extends SubsystemBase implements Sendable
   private static final double robotTrackWidthInches = 28.7;
   private static final double halfRobotTrackWidthInches = robotTrackWidthInches / 2;
   private static final double wheelDiameterInches = 6.0;
-  private static final double effectiveWheelMotorGearBoxRatio = 100.0;
+  private static final double effectiveWheelMotorGearBoxRatioOption1 = (40.0/12.0) * (40.0/14.0);
+  private static final double effectiveWheelMotorGearBoxRatioOption2 = (40.0/12.0) * (34.0/20.0);
+  private static final double effectiveWheelMotorGearBoxRatioOption3 = (40.0/12.0) * (30.0/24.0);
   private static final double halfRotationEncoderTicks = Constants.CtreTalonFx500EncoderTicksPerRevolution / 2;
 
   private boolean motionMagicRunning = false;

@@ -40,7 +40,7 @@ public class ClimbCommandBuilder
         JawsAngleVariable jawsToEngageAngle = new JawsAngleVariable(collection.getJawsSubsystem(), 105);
         TelescopingArmExtendMiddle extendArms = new TelescopingArmExtendMiddle(collection.getTelescopingArmsSubsystem());
         AngleArmsEngageJaws engageJaws = new AngleArmsEngageJaws(collection.getAngleArmsSubsystem(), collection.getJawsSubsystem());
-        DriveCommand driveReverseToBar = new DriveCommand(collection.getDriveTrainSubsystem(), -12, 0, 0);
+        DriveCommand driveReverseToBar = new DriveCommand(collection.getDriveTrainSubsystem(), -12, 0, 1.0);
         TelescopingArmRetract liftRobot = new TelescopingArmRetract(collection.getTelescopingArmsSubsystem());
         JawsAngleVariable angleArmForward = new JawsAngleVariable(collection.getJawsSubsystem(), 90);
         TelescopingArmExtendVariable shiftWeightToAngleArms = new TelescopingArmExtendVariable(collection.getTelescopingArmsSubsystem(), 6);
