@@ -62,13 +62,10 @@ public class ManualInputInterfaces
    * @return - a double value associated with the magnitude of the x componet
    */
   public double getGtaInputArcadeDriveX()
-  {
-    return
-    this.getInputArcadeDriveX() * 
-    this.getInputArcadeDriveX() * 
-    this.getInputArcadeDriveX() *
-    1;
-  } //cubic to achieve a yaw throttle curve 
+  { 
+    // cubic to achieve a yaw throttle curve
+    return Math.pow(this.getInputArcadeDriveX(), 3.0);
+  } 
 
   /**
    * A method to get the arcade drive X componet being input from humans
@@ -82,7 +79,7 @@ public class ManualInputInterfaces
     }
     else
     {
-      return driverController.getRightTriggerAxis() * -1;
+      return driverController.getRightTriggerAxis() * -1.0;
     }
   }
 
