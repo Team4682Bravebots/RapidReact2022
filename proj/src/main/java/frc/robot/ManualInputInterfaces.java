@@ -159,6 +159,7 @@ public class ManualInputInterfaces
       JoystickButton bumperLeft = new JoystickButton(driverController, XboxController.Button.kLeftBumper.value);
       JoystickButton bumperRight = new JoystickButton(driverController, XboxController.Button.kRightBumper.value);
       JoystickButton joystickButton = new JoystickButton(driverController, XboxController.Button.kRightStick.value);
+      JoystickButton backButton = new JoystickButton(driverController, XboxController.Button.kBack.value);
 
       if(subsystemCollection.getAngleArmsSubsystem() != null)
       {
@@ -202,6 +203,22 @@ public class ManualInputInterfaces
         buttonY.whenPressed(new TelescopingArmExtendVariable(subsystemCollection.getTelescopingArmsSubsystem(), 0.0));
         buttonB.whenPressed(new TelescopingArmsAllStop(subsystemCollection.getTelescopingArmsSubsystem()));
       }
+
+      System.out.println("Attempting back button for auto shooter.");
+      if(subsystemCollection.getBallStorageSubsystem() != null &&
+      subsystemCollection.getJawsSubsystem() != null &&
+      subsystemCollection.getShooterSubsystem() != null)
+      {
+        System.out.println("Initalizing back button for auto shooter.");
+        backButton.whenPressed(
+          new ShooterAutomatic(
+            subsystemCollection.getShooterSubsystem(),
+            subsystemCollection.getBallStorageSubsystem(),
+            subsystemCollection.getJawsSubsystem(),
+            true,
+            (InstalledHardware.rearBallStorageBeamBreakSensorInstalled && InstalledHardware.forwardBallStorageBeamBreakSensorInstalled)));
+      }
+
       // *************************************************************
       // *************************************************************
       // *************************************************************
@@ -267,7 +284,9 @@ public class ManualInputInterfaces
         traversalBarClimb.whenPressed(ClimbCommandBuilder.buildTraversalBarClimb(subsystemCollection));
       }
 
-      if(subsystemCollection.getShooterSubsystem() != null && subsystemCollection.getBallStorageSubsystem() != null && subsystemCollection.getJawsSubsystem() != null)
+      if(subsystemCollection.getShooterSubsystem() != null && 
+         subsystemCollection.getBallStorageSubsystem() != null &&
+         subsystemCollection.getJawsSubsystem() != null)
       {
         shooterShoot.whenPressed(
           new ShooterAutomatic(
@@ -276,7 +295,7 @@ public class ManualInputInterfaces
             subsystemCollection.getJawsSubsystem(),
             true,
             (InstalledHardware.rearBallStorageBeamBreakSensorInstalled && InstalledHardware.forwardBallStorageBeamBreakSensorInstalled)));
-        shooterShoot.whenPressed(
+        shooterIntake.whenPressed(
           new ShooterAutomatic(
             subsystemCollection.getShooterSubsystem(),
             subsystemCollection.getBallStorageSubsystem(),

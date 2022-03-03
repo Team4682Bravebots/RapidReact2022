@@ -40,7 +40,7 @@ public class InstalledHardware
     // External Input Hardware
     public static final boolean testHighLevelButtonBoardInstalled = false;
     public static final boolean testLowLevelButtonBoardInstalled = false;
-    public static final boolean highLevelButtonBoardInstalled = true;
+    public static final boolean highLevelButtonBoardInstalled = false;
     public static final boolean lowLevelButtonBoardInstalled = false;
     public static final boolean driverXboxControllerInstalled = true;
     public static final boolean coDriverXboxControllerInstalled = false;

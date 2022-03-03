@@ -10,6 +10,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.util.sendable.Sendable;
@@ -85,8 +86,8 @@ public class Shooter extends SubsystemBase implements Sendable
    */
   public boolean intake()
   {
-    topMotor.set(Constants.topMotorIntakeSpeed);
-    bottomMotor.set(Constants.bottomMotorIntakeSpeed);
+    topMotor.set(ControlMode.PercentOutput, Constants.topMotorIntakeSpeed);
+    bottomMotor.set(ControlMode.PercentOutput, Constants.bottomMotorIntakeSpeed);
     boolean rtnVal = isMotorUpToSpeed(topMotor, Constants.topMotorIntakeSpeed);
     rtnVal &= isMotorUpToSpeed(bottomMotor, Constants.bottomMotorIntakeSpeed);
     return rtnVal;
@@ -105,8 +106,8 @@ public class Shooter extends SubsystemBase implements Sendable
    */
   public boolean shootLow()
   {
-    topMotor.set(Constants.topMotorForwardLowGoalSpeed);
-    bottomMotor.set(Constants.bottomMotorForwardLowGoalSpeed);
+    topMotor.set(ControlMode.PercentOutput, Constants.topMotorForwardLowGoalSpeed);
+    bottomMotor.set(ControlMode.PercentOutput, Constants.bottomMotorForwardLowGoalSpeed);
     boolean rtnVal = isMotorUpToSpeed(topMotor, Constants.topMotorForwardLowGoalSpeed);
     rtnVal &= isMotorUpToSpeed(bottomMotor, Constants.bottomMotorForwardLowGoalSpeed);
     return rtnVal;
@@ -118,8 +119,8 @@ public class Shooter extends SubsystemBase implements Sendable
    */
   public boolean shootHigh()
   {
-    topMotor.set(Constants.topMotorForwardHighGoalSpeed);
-    bottomMotor.set(Constants.bottomMotorForwardHighGoalSpeed);
+    topMotor.set(ControlMode.PercentOutput, Constants.topMotorForwardHighGoalSpeed);
+    bottomMotor.set(ControlMode.PercentOutput, Constants.bottomMotorForwardHighGoalSpeed);
     boolean rtnVal = isMotorUpToSpeed(topMotor, Constants.topMotorForwardHighGoalSpeed);
     rtnVal &= isMotorUpToSpeed(bottomMotor, Constants.bottomMotorForwardHighGoalSpeed);
     return rtnVal;
@@ -131,8 +132,8 @@ public class Shooter extends SubsystemBase implements Sendable
    */
   public boolean shootHighReverse()
   {
-    topMotor.set(Constants.topMotorReverseHighGoalSpeed);
-    bottomMotor.set(Constants.bottomMotorReverseHighGoalSpeed);
+    topMotor.set(ControlMode.PercentOutput, Constants.topMotorReverseHighGoalSpeed);
+    bottomMotor.set(ControlMode.PercentOutput, Constants.bottomMotorReverseHighGoalSpeed);
     boolean rtnVal = isMotorUpToSpeed(topMotor, Constants.topMotorReverseHighGoalSpeed);
     rtnVal &= isMotorUpToSpeed(bottomMotor, Constants.bottomMotorReverseHighGoalSpeed);
     return rtnVal;
@@ -155,7 +156,7 @@ public class Shooter extends SubsystemBase implements Sendable
    */
   public void shooterManualBottom(double speed)
   {
-    bottomMotor.set(MotorUtils.truncateValue(speed, -1.0, 1.0));
+    bottomMotor.set(ControlMode.PercentOutput, MotorUtils.truncateValue(speed, -1.0, 1.0));
   }
 
   /**
@@ -164,7 +165,7 @@ public class Shooter extends SubsystemBase implements Sendable
    */
   public void shooterManualTop(double speed)
   {
-    topMotor.set(MotorUtils.truncateValue(speed, -1.0, 1.0));
+    topMotor.set(ControlMode.PercentOutput, MotorUtils.truncateValue(speed, -1.0, 1.0));
   }
 
   /**
@@ -213,7 +214,7 @@ public class Shooter extends SubsystemBase implements Sendable
     {
       return "Shooting";
     }
-    else if (topMotorSpeed > 0.0 && bottomMotorSpeed > 0.0)
+    else if (topMotorSpeed < 0.0 && bottomMotorSpeed < 0.0)
     {
       return "Intaking";
     }

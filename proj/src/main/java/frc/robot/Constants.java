@@ -81,7 +81,7 @@ public final class Constants
 
   // CAN BUS NUMBERS \\
   //TODO - P0 - fill in proper CAN bus index for Jaws motors
-  public static int jawsMotorRightCanId = 9;
+  public static int jawsMotorRightCanId = 5;
   public static int jawsMotorLeftCanId = 10;
 
   //TODO - P0 - fill in proper CAN bus index for telescoping arm motors
@@ -89,7 +89,7 @@ public final class Constants
   public static int telescopingArmsMotorRightCanId = 14;
 
   //TODO - P0 - fill in proper CAN bus index for shooting motors
-  public static final int shooterMotorBottomCanId = 5;
+  public static final int shooterMotorBottomCanId = 9;
   public static final int shooterMotorTopCanId = 6;
 
   //TODO - P0 - fill in proper CAN bus index for ball storage motors

@@ -61,6 +61,9 @@ public class RobotContainer
     // initialize the jaws
     this.initializeJaws();
 
+    // initialize the shooter
+    this.initializeShooter();
+    
     // initialize the pneumatics - mostly just turn the compressor on ...
     this.initializePneumatics();
 
