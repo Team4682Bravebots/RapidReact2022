@@ -40,14 +40,17 @@ public class DriveTrain extends SubsystemBase implements Sendable
   private MotorControllerGroup right = new MotorControllerGroup(rightFront, rightRear);
   private DifferentialDrive drive = new DifferentialDrive(left, right);
 
-  // TODO - get this info from Greyson / Adenine
-  private static final double robotTrackWidthInches = 28.7;
+  // TODO - get this info from Greyson / John
+  private static final double robotTrackWidthInches = 21.7;
   private static final double halfRobotTrackWidthInches = robotTrackWidthInches / 2;
-  private static final double wheelDiameterInches = 8.0;
-  // TODO - determine which one is correct here
+
+  private static final double wheelDiameterInches = 6.0;
   private static final double effectiveWheelMotorGearBoxRatio = (40.0 / 12.0) * (40.0 / 14.0);
+
+  // TODO - it seems we will not be using the gearing below, instead the gearing above
 //  private static final double effectiveWheelMotorGearBoxRatio = (40.0 / 12.0) * (34.0 / 20.0);
 //  private static final double effectiveWheelMotorGearBoxRatio = (40.0 / 12.0) * (30.0 / 24.0);
+
   private static final double halfRotationEncoderTicks = Constants.CtreTalonFx500EncoderTicksPerRevolution / 2;
 
   private boolean motionMagicRunning = false;

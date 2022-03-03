@@ -89,8 +89,8 @@ public final class Constants
   public static int telescopingArmsMotorRightCanId = 14;
 
   //TODO - P0 - fill in proper CAN bus index for shooting motors
-  public static final int shooterMotorBottomCanId = 9;
-  public static final int shooterMotorTopCanId = 10;
+  public static final int shooterMotorBottomCanId = 8;
+  public static final int shooterMotorTopCanId = 7;
 
   //TODO - P0 - fill in proper CAN bus index for ball storage motors
   public static int ballStorageMotorTopCanId = 15;
@@ -145,6 +145,8 @@ public final class Constants
   // hid ports \\ 
   public static int portDriverController = 0;
   public static int portCoDriverController = 1;
+  public static final int highLevelButtonBoardPort = 2;
+  public static final int lowLevelButtonBoardPort = 3;
 
   // util \\ //TODO if needed 
   public static final int kPIDLoopIdx = 0;
@@ -154,7 +156,6 @@ public final class Constants
   // gains \\
   public static final Gains kGains = new Gains(0.2, 0.0, 0.0, 0.2, 0, 1.0);
   public static final int countPerRevHallSensor = 42;
-  public static final int buttonBoardPort = 0;
 
   // orentation
   public static final RoboRioOrientation roboRioOrientation = RoboRioOrientation.RelayForward;
