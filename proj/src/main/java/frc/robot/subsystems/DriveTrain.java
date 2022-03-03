@@ -82,7 +82,7 @@ public class DriveTrain extends SubsystemBase implements Sendable
     this.initializeMotorsDirectDrive();
     drive.arcadeDrive(yAxisValue, xAxisValue);
   }
-  
+
   @Override
   public void initSendable(SendableBuilder builder)
   {
