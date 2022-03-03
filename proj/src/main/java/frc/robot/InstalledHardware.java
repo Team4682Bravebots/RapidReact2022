@@ -40,7 +40,7 @@ public class InstalledHardware
     // External Input Hardware
     public static final boolean testHighLevelButtonBoardInstalled = false;
     public static final boolean testLowLevelButtonBoardInstalled = false;
-    public static final boolean highLevelButtonBoardInstalled = false;
+    public static final boolean highLevelButtonBoardInstalled = true;
     public static final boolean lowLevelButtonBoardInstalled = false;
     public static final boolean driverXboxControllerInstalled = true;
     public static final boolean coDriverXboxControllerInstalled = false;
@@ -52,10 +52,10 @@ public class InstalledHardware
     // DriveTrain Related Hardware
     public static final boolean leftFinalDriveShaftEncoderInstalled = false;
     public static final boolean rightFinalDriveShaftEncoderInstalled = false;
-    public static final boolean leftFrontDriveMotorInstalled = false;
-    public static final boolean leftRearDriveMotorInstalled = false;
-    public static final boolean rightFrontDriveMotorInstalled = false;
-    public static final boolean rightRearDriveMotorInstalled = false;
+    public static final boolean leftFrontDriveMotorInstalled = true;
+    public static final boolean leftRearDriveMotorInstalled = true;
+    public static final boolean rightFrontDriveMotorInstalled = true;
+    public static final boolean rightRearDriveMotorInstalled = true;
 
     // TelescopingArms Related Hardware
     public static final boolean leftTelescopingArmsDriveMotorInstalled = false;
@@ -68,12 +68,12 @@ public class InstalledHardware
     public static final boolean jawsClutchCylinderSolenoidPneumaticsInstalled = true;
 
     // Shooter Related Hardware
-    public static final boolean topShooterDriveMotorInstalled = false;
-    public static final boolean bottomShooterDriveMotorInstalled = false;
+    public static final boolean topShooterDriveMotorInstalled = true;
+    public static final boolean bottomShooterDriveMotorInstalled = true;
 
     // Ball Storage Related Hardware
-    public static final boolean topBallStorageMotorInstalled = false;
-    public static final boolean bottomBallStorageMotorInstalled = false;
+    public static final boolean topBallStorageMotorInstalled = true;
+    public static final boolean bottomBallStorageMotorInstalled = true;
     public static final boolean forwardBallStorageBeamBreakSensorInstalled = false;
     public static final boolean rearBallStorageBeamBreakSensorInstalled = false;
 
