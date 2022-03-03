@@ -182,12 +182,26 @@ public class RobotContainer
       InstalledHardware.rightRearDriveMotorInstalled)
     {
       m_driveTrain = new DriveTrain();
+      // TODO - decide if drivers would rather have 'modified GTA' or 'arcade style'
+      // current vote from Simeon is he likes GTA
+      // prior vote from John is that he likes GTA
+      // not sure if this is final or not but for now we comment out arcade and keep GTA
+      /*
       m_driveTrain.setDefaultCommand(
         new RunCommand(
           () ->
           m_driveTrain.arcadeDrive(
             m_manualInput.getInputArcadeDriveY() * -1.0,
             m_manualInput.getInputArcadeDriveX()),
+          m_driveTrain));
+      */
+      m_driveTrain.setDefaultCommand(
+        new RunCommand(
+          () ->
+          m_driveTrain.arcadeDrive(
+            m_manualInput.getGtaInputArcadeDriveY(),
+            m_manualInput.getGtaInputArcadeDriveX()
+            ),
           m_driveTrain));
       System.out.println("SUCCESS: initializeDriveTrain");
     }
