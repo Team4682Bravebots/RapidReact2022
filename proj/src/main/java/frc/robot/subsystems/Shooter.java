@@ -11,6 +11,8 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.util.sendable.Sendable;
@@ -19,6 +21,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.commands.ShooterAutomatic;
+import frc.robot.common.Gains;
 import frc.robot.common.MotorUtils;
 
 public class Shooter extends SubsystemBase implements Sendable
@@ -31,8 +35,15 @@ public class Shooter extends SubsystemBase implements Sendable
   private static final double topShooterGearRatio = 1.0;
   private static final double bottomShooterGearRatio = 1.0;
   
+  private static final double kMinDeadband = 0.001;
+  private static final int kPIDLoopIdx = 0;
+  private static final int kTimeoutMs = 30;
+
   private WPI_TalonFX topMotor = new WPI_TalonFX(Constants.shooterMotorTopCanId);
   private WPI_TalonFX bottomMotor = new WPI_TalonFX(Constants.shooterMotorBottomCanId);
+
+  private Gains topMotorGains = new Gains(0.1, 0.001, 5, 1023/20660.0, 300, 1.00);
+  private Gains bottomMotorGains = new Gains(0.1, 0.001, 5, 1023/20660.0, 300, 1.00);
 
   /**
    * Constructor
@@ -41,29 +52,52 @@ public class Shooter extends SubsystemBase implements Sendable
   {
     bottomMotor.configFactoryDefault();
     topMotor.configFactoryDefault();
+
+    // TODO - not sure we need a neutral mode ... not sure
+    bottomMotor.setNeutralMode(NeutralMode.Coast);
+    topMotor.setNeutralMode(NeutralMode.Coast);
+
+    // based on content found at:
+    // https://github.com/CrossTheRoadElec/Phoenix-Examples-Languages/blob/master/Java%20General/VelocityClosedLoop/src/main/java/frc/robot/Robot.java
+
     bottomMotor.setInverted(Constants.shooterBottomMotorDefaultDirection);
     topMotor.setInverted(Constants.shooterTopMotorDefaultDirection);
+
+    bottomMotor.configNeutralDeadband(Shooter.kMinDeadband);
+    topMotor.configNeutralDeadband(Shooter.kMinDeadband);
+
+    bottomMotor.configSelectedFeedbackSensor(
+      TalonFXFeedbackDevice.IntegratedSensor,
+      Shooter.kPIDLoopIdx,
+      Shooter.kTimeoutMs);
+    topMotor.configSelectedFeedbackSensor(
+      TalonFXFeedbackDevice.IntegratedSensor,
+      Shooter.kPIDLoopIdx,
+      Shooter.kTimeoutMs);
+
+    bottomMotor.configNominalOutputForward(0, Shooter.kTimeoutMs);
+    bottomMotor.configNominalOutputReverse(0, Shooter.kTimeoutMs);
+    bottomMotor.configPeakOutputForward(1.0, Shooter.kTimeoutMs);
+    bottomMotor.configPeakOutputReverse(-1.0, Shooter.kTimeoutMs);
+
+    topMotor.configNominalOutputForward(0, Shooter.kTimeoutMs);
+    topMotor.configNominalOutputReverse(0, Shooter.kTimeoutMs);
+    topMotor.configPeakOutputForward(1.0, Shooter.kTimeoutMs);
+    topMotor.configPeakOutputReverse(-1.0, Shooter.kTimeoutMs);
+
+    bottomMotor.config_kF(Shooter.kPIDLoopIdx, this.topMotorGains.kF, Shooter.kTimeoutMs);
+    bottomMotor.config_kP(Shooter.kPIDLoopIdx, this.topMotorGains.kP, Shooter.kTimeoutMs);
+    bottomMotor.config_kI(Shooter.kPIDLoopIdx, this.topMotorGains.kI, Shooter.kTimeoutMs);
+    bottomMotor.config_kD(Shooter.kPIDLoopIdx, this.topMotorGains.kD, Shooter.kTimeoutMs);
+
+    topMotor.config_kF(Shooter.kPIDLoopIdx, this.topMotorGains.kF, Shooter.kTimeoutMs);
+    topMotor.config_kP(Shooter.kPIDLoopIdx, this.topMotorGains.kP, Shooter.kTimeoutMs);
+    topMotor.config_kI(Shooter.kPIDLoopIdx, this.topMotorGains.kI, Shooter.kTimeoutMs);
+    topMotor.config_kD(Shooter.kPIDLoopIdx, this.topMotorGains.kD, Shooter.kTimeoutMs);
+
     CommandScheduler.getInstance().registerSubsystem(this);
   }
   
-  /**
-   * Gets the most recent bottom shooter RPM
-   * @return the bottom shooter RPM based on the past 100 ms
-   */
-  public double getBottomShooterRevolutionsPerMinute()
-  {
-    return (bottomMotor.getSelectedSensorVelocity() / Constants.CtreTalonFx500EncoderTicksPerRevolution) * 600.0 * Shooter.bottomShooterGearRatio;
-  }
-
-  /**
-   * Gets the most recent top shooter RPM
-   * @return the top shooter RPM based on the past 100 ms
-   */
-  public double getTopShooterRevolutionsPerMinute()
-  {
-    return (topMotor.getSelectedSensorVelocity() / Constants.CtreTalonFx500EncoderTicksPerRevolution) * 600.0 * Shooter.topShooterGearRatio;
-  }
-
   @Override
   public void periodic()
   {
@@ -91,6 +125,40 @@ public class Shooter extends SubsystemBase implements Sendable
     boolean rtnVal = isMotorUpToSpeed(topMotor, Constants.topMotorIntakeSpeed);
     rtnVal &= isMotorUpToSpeed(bottomMotor, Constants.bottomMotorIntakeSpeed);
     return rtnVal;
+  }
+
+  /**
+   * Determine if the the bottom shooter motor velocity 
+   * @param targetToleranceRpm - the tolerance in rpm 
+   * @return true if the error in RPM is within the tolerance else false
+   */
+  public boolean isShooterVelocityUpToSpeedBottom(double targetToleranceRpm)
+  {
+    // need to convert the target RPM to motor encoder units per 100ms
+    double targetToleranceUnitsPer100ms = 
+      MotorUtils.truncateValue(
+        Math.abs(targetToleranceRpm),
+        Constants.talonMaximumRevolutionsPerMinute * -1.0,
+        Constants.talonMaximumRevolutionsPerMinute) *
+      Constants.CtreTalonFx500EncoderTicksPerRevolution / 600.0;
+    return Math.abs(bottomMotor.getClosedLoopError(Shooter.kPIDLoopIdx)) > targetToleranceUnitsPer100ms;
+  }
+
+  /**
+   * Determine if the the top shooter motor velocity 
+   * @param targetToleranceRpm - the tolerance in rpm 
+   * @return true if the error in RPM is within the tolerance else false
+   */
+  public boolean isShooterVelocityUpToSpeedTop(double targetToleranceRpm)
+  {
+    // need to convert the target RPM to motor encoder units per 100ms
+    double targetToleranceUnitsPer100ms = 
+      MotorUtils.truncateValue(
+        Math.abs(targetToleranceRpm),
+        Constants.talonMaximumRevolutionsPerMinute * -1.0,
+        Constants.talonMaximumRevolutionsPerMinute) *
+      Constants.CtreTalonFx500EncoderTicksPerRevolution / 600.0;
+    return Math.abs(topMotor.getClosedLoopError(Shooter.kPIDLoopIdx)) > targetToleranceUnitsPer100ms;
   }
 
   @Override
@@ -143,18 +211,18 @@ public class Shooter extends SubsystemBase implements Sendable
    * Set both motor speeds to to the same value 
    * @param speed - Range -1.0 to 1.0 where negative values imply intake and positive imply shooting
    */
-  public void shooterManual(double speed)
+  public void setShooterManual(double speed)
   {
     double cleanSpeed = MotorUtils.truncateValue(speed, -1.0, 1.0);
-    this.shooterManualBottom(cleanSpeed);
-    this.shooterManualTop(cleanSpeed);
+    this.setShooterManualBottom(cleanSpeed);
+    this.setShooterManualTop(cleanSpeed);
   }
 
   /**
    * Set the bottom shooter motor to a specific speed 
    * @param speed - Set the bottom motor speed, -1.0 to 1.0 where negative values imply intake and positive imply shooting
    */
-  public void shooterManualBottom(double speed)
+  public void setShooterManualBottom(double speed)
   {
     bottomMotor.set(ControlMode.PercentOutput, MotorUtils.truncateValue(speed, -1.0, 1.0));
   }
@@ -163,9 +231,41 @@ public class Shooter extends SubsystemBase implements Sendable
    * Set the top shooter motor to a specific speed 
    * @param speed - Set the top motor speed, -1.0 to 1.0 where negative values imply intake and positive imply shooting
    */
-  public void shooterManualTop(double speed)
+  public void setShooterManualTop(double speed)
   {
     topMotor.set(ControlMode.PercentOutput, MotorUtils.truncateValue(speed, -1.0, 1.0));
+  }
+
+  /**
+   * Set the bottom shooter motor to a specific velocity using the in-built PID controller
+   * @param revolutionsPerMinute - the RPM that the bottom motor should spin
+   */
+  public void setShooterVelocityBottom(double revolutionsPerMinute)
+  {
+    // need to convert the target RPM to motor encoder units per 100ms
+    double targetVelocityUnitsPer100ms = 
+      MotorUtils.truncateValue(
+        revolutionsPerMinute,
+        Constants.talonMaximumRevolutionsPerMinute * -1.0,
+        Constants.talonMaximumRevolutionsPerMinute) *
+      Constants.CtreTalonFx500EncoderTicksPerRevolution / 600.0;
+    bottomMotor.set(ControlMode.Velocity, targetVelocityUnitsPer100ms);
+  }
+
+  /**
+   * Set the top shooter motor to a specific velocity using the in-built PID controller
+   * @param revolutionsPerMinute - the RPM that the top motor should spin
+   */
+  public void setShooterVelocityTop(double revolutionsPerMinute)
+  {
+    // need to convert the target RPM to motor encoder units per 100ms
+    double targetVelocityUnitsPer100ms = 
+      MotorUtils.truncateValue(
+        revolutionsPerMinute,
+        Constants.talonMaximumRevolutionsPerMinute * -1.0,
+        Constants.talonMaximumRevolutionsPerMinute) *
+      Constants.CtreTalonFx500EncoderTicksPerRevolution / 600.0;
+    topMotor.set(ControlMode.Velocity, targetVelocityUnitsPer100ms);
   }
 
   /**
@@ -173,8 +273,8 @@ public class Shooter extends SubsystemBase implements Sendable
    */
   public void stopShooter()
   {
-    topMotor.set(0.0);
-    bottomMotor.set(0.0);
+    topMotor.set(ControlMode.PercentOutput, 0.0);
+    bottomMotor.set(ControlMode.PercentOutput, 0.0);
   }
 
   private boolean isMotorUpToSpeed(WPI_TalonFX motor, double targetSpeed)
@@ -182,6 +282,24 @@ public class Shooter extends SubsystemBase implements Sendable
     double approximateMotorVelocityTicksPerSecond = motor.getSelectedSensorVelocity() * 10;
     return (approximateMotorVelocityTicksPerSecond > 
       Shooter.talonMaximumTicksPerSecond * targetSpeed * Shooter.velocitySufficientWarmupThreshold);
+  }
+
+  /**
+   * Gets the most recent bottom shooter RPM
+   * @return the bottom shooter RPM based on the past 100 ms
+   */
+  private double getBottomShooterRevolutionsPerMinute()
+  {
+    return (bottomMotor.getSelectedSensorVelocity() / Constants.CtreTalonFx500EncoderTicksPerRevolution) * 600.0 * Shooter.bottomShooterGearRatio;
+  }
+
+  /**
+   * Gets the most recent top shooter RPM
+   * @return the top shooter RPM based on the past 100 ms
+   */
+  private double getTopShooterRevolutionsPerMinute()
+  {
+    return (topMotor.getSelectedSensorVelocity() / Constants.CtreTalonFx500EncoderTicksPerRevolution) * 600.0 * Shooter.topShooterGearRatio;
   }
 
   /**

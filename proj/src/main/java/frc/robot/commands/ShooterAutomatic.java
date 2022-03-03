@@ -38,9 +38,6 @@ public class ShooterAutomatic extends CommandBase
     {Constants.jawsReverseHighGoalPositionAngle - 10.0, Constants.jawsReverseHighGoalPositionAngle + 10.0, 1500.0, 20.0, 1500.0, 20.0}, // reverse high ball shooter targets
     {Constants.jawsReverseLowGoalPositionAngle - 10.0, Constants.jawsReverseLowGoalPositionAngle + 10.0, 1000.0, 20.0, 1000.0, 20.0}, // reverse high ball shooter targets
   };
-  private static final double kP = 1.0;
-  private static final double kI = 0.01;
-  private static final double kD = 0.1;
 
   private Shooter shooterSubsystem;
   private BallStorage ballStorageSubsystem;
@@ -50,8 +47,6 @@ public class ShooterAutomatic extends CommandBase
   private Timer timer = new Timer();
   private boolean timerStarted = false;
   private boolean done = false;
-  private PIDController bottomPidController;
-  private PIDController topPidController;
 
   private double bottomShooterTargetVelocityRpm = 1000;
   private double bottomShooterVelocityToleranceRpm = 10;
@@ -85,9 +80,6 @@ public class ShooterAutomatic extends CommandBase
 
     useShootingDirection = directionIsShooting;
     storageUsingBeamBreakSensors = storageHasWorkingBeamBreakSensors;
-
-    bottomPidController = new PIDController(kP, kI, kD);
-    topPidController = new PIDController(kP, kI, kD);
   }
 
   // Called when the command is initially scheduled.
@@ -97,7 +89,7 @@ public class ShooterAutomatic extends CommandBase
       done = false;
       timerStarted = false;
       timer.reset();
-      // determine the target 
+      // determine the target velocities for the current arm angle
       double currentJawsAngle = jawsSubsystem.getJawsAngle();
       for(int inx = 0; inx < shooterIntakeTargets.length; ++inx)
       {
@@ -119,12 +111,6 @@ public class ShooterAutomatic extends CommandBase
   @Override
   public void execute()
   {
-    // determine where the arm is and then map that to the target array values
-    bottomPidController.setSetpoint(this.bottomShooterTargetVelocityRpm);
-    bottomPidController.setTolerance(this.bottomShooterVelocityToleranceRpm);
-    topPidController.setSetpoint(this.topShooterTargetVelocityRpm);
-    topPidController.setTolerance(this.topShooterVelocityToleranceRpm);
-
     // when no balls are present ... just mark this as done
     if(ballStorageSubsystem.getOnboardBallCount() <= 0)
     {
@@ -132,12 +118,12 @@ public class ShooterAutomatic extends CommandBase
     }
     else
     {
-      // set the top and bottom speeds based on the PID
-      shooterSubsystem.shooterManualBottom(this.getNextBottomMotorSpeed());
-      shooterSubsystem.shooterManualTop(this.getNextTopMotorSpeed());
+      shooterSubsystem.setShooterVelocityBottom(this.bottomShooterTargetVelocityRpm);
+      shooterSubsystem.setShooterVelocityTop(this.topShooterTargetVelocityRpm);
 
       // when the PID's say speed is at setpoint / with tolerance then call retrieve
-      if(bottomPidController.atSetpoint() && topPidController.atSetpoint())
+      if(shooterSubsystem.isShooterVelocityUpToSpeedBottom(this.bottomShooterVelocityToleranceRpm) &&
+         shooterSubsystem.isShooterVelocityUpToSpeedTop(this.topShooterVelocityToleranceRpm))
       {
         if(timerStarted == false)
         {
@@ -200,13 +186,4 @@ public class ShooterAutomatic extends CommandBase
     return done;
   }
 
-  private double getNextBottomMotorSpeed()
-  {
-    return bottomPidController.calculate(shooterSubsystem.getBottomShooterRevolutionsPerMinute()) / Constants.talonMaximumRevolutionsPerMinute;
-  }
-
-  private double getNextTopMotorSpeed()
-  {
-    return topPidController.calculate(shooterSubsystem.getTopShooterRevolutionsPerMinute()) / Constants.talonMaximumRevolutionsPerMinute;
-  }
 }
