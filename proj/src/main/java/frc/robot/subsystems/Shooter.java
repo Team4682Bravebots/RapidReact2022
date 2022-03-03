@@ -85,10 +85,10 @@ public class Shooter extends SubsystemBase implements Sendable
     topMotor.configPeakOutputForward(1.0, Shooter.kTimeoutMs);
     topMotor.configPeakOutputReverse(-1.0, Shooter.kTimeoutMs);
 
-    bottomMotor.config_kF(Shooter.kPIDLoopIdx, this.topMotorGains.kF, Shooter.kTimeoutMs);
-    bottomMotor.config_kP(Shooter.kPIDLoopIdx, this.topMotorGains.kP, Shooter.kTimeoutMs);
-    bottomMotor.config_kI(Shooter.kPIDLoopIdx, this.topMotorGains.kI, Shooter.kTimeoutMs);
-    bottomMotor.config_kD(Shooter.kPIDLoopIdx, this.topMotorGains.kD, Shooter.kTimeoutMs);
+    bottomMotor.config_kF(Shooter.kPIDLoopIdx, this.bottomMotorGains.kF, Shooter.kTimeoutMs);
+    bottomMotor.config_kP(Shooter.kPIDLoopIdx, this.bottomMotorGains.kP, Shooter.kTimeoutMs);
+    bottomMotor.config_kI(Shooter.kPIDLoopIdx, this.bottomMotorGains.kI, Shooter.kTimeoutMs);
+    bottomMotor.config_kD(Shooter.kPIDLoopIdx, this.bottomMotorGains.kD, Shooter.kTimeoutMs);
 
     topMotor.config_kF(Shooter.kPIDLoopIdx, this.topMotorGains.kF, Shooter.kTimeoutMs);
     topMotor.config_kP(Shooter.kPIDLoopIdx, this.topMotorGains.kP, Shooter.kTimeoutMs);
@@ -134,14 +134,8 @@ public class Shooter extends SubsystemBase implements Sendable
    */
   public boolean isShooterVelocityUpToSpeedBottom(double targetToleranceRpm)
   {
-    // need to convert the target RPM to motor encoder units per 100ms
-    double targetToleranceUnitsPer100ms = 
-      MotorUtils.truncateValue(
-        Math.abs(targetToleranceRpm),
-        Constants.talonMaximumRevolutionsPerMinute * -1.0,
-        Constants.talonMaximumRevolutionsPerMinute) *
-      Constants.CtreTalonFx500EncoderTicksPerRevolution / 600.0;
-    return Math.abs(bottomMotor.getClosedLoopError(Shooter.kPIDLoopIdx)) > targetToleranceUnitsPer100ms;
+    return Math.abs(bottomMotor.getClosedLoopError(Shooter.kPIDLoopIdx)) > 
+      this.convertShooterRpmToMotorUnitsPer100Ms(targetToleranceRpm, Shooter.bottomShooterGearRatio);
   }
 
   /**
@@ -151,14 +145,8 @@ public class Shooter extends SubsystemBase implements Sendable
    */
   public boolean isShooterVelocityUpToSpeedTop(double targetToleranceRpm)
   {
-    // need to convert the target RPM to motor encoder units per 100ms
-    double targetToleranceUnitsPer100ms = 
-      MotorUtils.truncateValue(
-        Math.abs(targetToleranceRpm),
-        Constants.talonMaximumRevolutionsPerMinute * -1.0,
-        Constants.talonMaximumRevolutionsPerMinute) *
-      Constants.CtreTalonFx500EncoderTicksPerRevolution / 600.0;
-    return Math.abs(topMotor.getClosedLoopError(Shooter.kPIDLoopIdx)) > targetToleranceUnitsPer100ms;
+    return Math.abs(topMotor.getClosedLoopError(Shooter.kPIDLoopIdx)) >
+      this.convertShooterRpmToMotorUnitsPer100Ms(targetToleranceRpm, Shooter.topShooterGearRatio);
   }
 
   @Override
@@ -242,14 +230,9 @@ public class Shooter extends SubsystemBase implements Sendable
    */
   public void setShooterVelocityBottom(double revolutionsPerMinute)
   {
-    // need to convert the target RPM to motor encoder units per 100ms
-    double targetVelocityUnitsPer100ms = 
-      MotorUtils.truncateValue(
-        revolutionsPerMinute,
-        Constants.talonMaximumRevolutionsPerMinute * -1.0,
-        Constants.talonMaximumRevolutionsPerMinute) *
-      Constants.CtreTalonFx500EncoderTicksPerRevolution / 600.0;
-    bottomMotor.set(ControlMode.Velocity, targetVelocityUnitsPer100ms);
+    bottomMotor.set(
+      ControlMode.Velocity,
+      this.convertShooterRpmToMotorUnitsPer100Ms(revolutionsPerMinute, Shooter.bottomShooterGearRatio));
   }
 
   /**
@@ -258,14 +241,9 @@ public class Shooter extends SubsystemBase implements Sendable
    */
   public void setShooterVelocityTop(double revolutionsPerMinute)
   {
-    // need to convert the target RPM to motor encoder units per 100ms
-    double targetVelocityUnitsPer100ms = 
-      MotorUtils.truncateValue(
-        revolutionsPerMinute,
-        Constants.talonMaximumRevolutionsPerMinute * -1.0,
-        Constants.talonMaximumRevolutionsPerMinute) *
-      Constants.CtreTalonFx500EncoderTicksPerRevolution / 600.0;
-    topMotor.set(ControlMode.Velocity, targetVelocityUnitsPer100ms);
+    topMotor.set(
+      ControlMode.Velocity,
+      this.convertShooterRpmToMotorUnitsPer100Ms(revolutionsPerMinute, Shooter.topShooterGearRatio));      
   }
 
   /**
@@ -275,6 +253,18 @@ public class Shooter extends SubsystemBase implements Sendable
   {
     topMotor.set(ControlMode.PercentOutput, 0.0);
     bottomMotor.set(ControlMode.PercentOutput, 0.0);
+  }
+
+  private double convertShooterRpmToMotorUnitsPer100Ms(double targetRpm, double targetGearRatio)
+  {
+    double targetUnitsPer100ms = 
+      MotorUtils.truncateValue(
+        Math.abs(targetRpm),
+        Constants.talonMaximumRevolutionsPerMinute * -1.0,
+        Constants.talonMaximumRevolutionsPerMinute) *
+      Constants.CtreTalonFx500EncoderTicksPerRevolution *
+      targetGearRatio / 600.0;
+    return targetUnitsPer100ms;
   }
 
   private boolean isMotorUpToSpeed(WPI_TalonFX motor, double targetSpeed)

@@ -89,7 +89,7 @@ public class ShooterAutomatic extends CommandBase
       done = false;
       timerStarted = false;
       timer.reset();
-      // determine the target velocities for the current arm angle
+      // determine the target shooter velocities mapped to the current arm angle
       double currentJawsAngle = jawsSubsystem.getJawsAngle();
       for(int inx = 0; inx < shooterIntakeTargets.length; ++inx)
       {
