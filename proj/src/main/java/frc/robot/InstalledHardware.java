@@ -38,7 +38,7 @@ public class InstalledHardware
     public static final boolean limelightInstalled = false;
 
     // External Input Hardware
-    public static final boolean testHighLevelButtonBoardInstalled = true;
+    public static final boolean testHighLevelButtonBoardInstalled = false;
     public static final boolean testLowLevelButtonBoardInstalled = false;
     public static final boolean highLevelButtonBoardInstalled = false;
     public static final boolean lowLevelButtonBoardInstalled = false;
@@ -62,8 +62,8 @@ public class InstalledHardware
     public static final boolean rightTelescopingArmsDriveMotorInstalled = false;
 
     // Jaws Related Hardware
-    public static final boolean topJawsDriveMotorInstalled = false;
-    public static final boolean bottomJawsDriveMotorInstalled = false;
+    public static final boolean topJawsDriveMotorInstalled = true;
+    public static final boolean bottomJawsDriveMotorInstalled = true;
     public static final boolean intakeStopJawsLmitSwitchInstalled = true;
     public static final boolean jawsClutchCylinderSolenoidPneumaticsInstalled = true;
 

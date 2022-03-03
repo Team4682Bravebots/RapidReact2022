@@ -10,21 +10,11 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.builders.*;
-import frc.robot.commands.*;
 import frc.robot.subsystems.*;
-
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kForward;
-import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kReverse;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -107,6 +97,36 @@ public class RobotContainer
   public Command getAutonomousCommand()
   {
     return AutonomousCommandBuilder.buildTestCollectAndShoot(m_collection);
+  }
+
+  public void resetRobotWhenFmsNotPresent()
+  {
+    if(DriverStation.isFMSAttached() == false)
+    {
+      System.out.println("************************************** WARNING ******************************************");
+      System.out.println("************************************** WARNING ******************************************");
+      System.out.println("************************************** WARNING ******************************************");
+      System.out.println("!!FORCE SENSOR RESET!! BE VERY CAREFUL!! MUST PUT ROBOT SYSTEMS IN REFERENCE POSITION!!!!");
+      System.out.println("************************************** WARNING ******************************************");
+      System.out.println("************************************** WARNING ******************************************");
+      System.out.println("************************************** WARNING ******************************************");
+
+      // for each of the sensor driven systems do a reinit of the sensors
+      if(m_driveTrain != null)
+      {
+        m_driveTrain.forceSensorReset();
+      }
+      // for each of the sensor driven systems do a reinit of the sensors
+      if(m_jaws != null)
+      {
+        m_jaws.forceSensorReset();
+      }
+      // for each of the sensor driven systems do a reinit of the sensors
+      if(m_telescopingArms != null)
+      {
+        m_telescopingArms.forceSensorReset();
+      }
+    }
   }
 
   private void initializeManualInputInterfaces()
