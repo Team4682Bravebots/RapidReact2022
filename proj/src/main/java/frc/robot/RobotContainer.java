@@ -61,6 +61,9 @@ public class RobotContainer
     // initialize the jaws
     this.initializeJaws();
 
+    // initialize the shooter
+    this.initializeShooter();
+
     // initialize the pneumatics - mostly just turn the compressor on ...
     this.initializePneumatics();
 
@@ -282,7 +285,7 @@ public class RobotContainer
       m_shooter.setDefaultCommand(
           new RunCommand(
             () ->
-            m_shooter.shooterManual(m_manualInput.getInputShooter()),
+            m_shooter.setShooterManual(m_manualInput.getInputShooter()),
           m_shooter));
       System.out.println("SUCCESS: initializeShooter");
     }
