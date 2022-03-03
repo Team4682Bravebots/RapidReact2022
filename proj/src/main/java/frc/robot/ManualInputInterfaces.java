@@ -337,7 +337,7 @@ public class ManualInputInterfaces
 
   private void testBindCommandsToHighLevelButtonBoard()
   {
-    if(InstalledHardware.highLevelButtonBoardInstalled)
+    if(InstalledHardware.testHighLevelButtonBoardInstalled)
     {
       JoystickButton extendAndPair = new JoystickButton(highLevelButtonBoard, 1);
       JoystickButton midBarClimb = new JoystickButton(highLevelButtonBoard, 2);
@@ -369,7 +369,7 @@ public class ManualInputInterfaces
 
   private void testBindCommandsToLowLevelButtonBoard()
   {
-    if(InstalledHardware.highLevelButtonBoardInstalled)
+    if(InstalledHardware.testLowLevelButtonBoardInstalled)
     {
       JoystickButton angleArmsChassisToggle = new JoystickButton(lowLevelButtonBoard, 1);
       JoystickButton angleArmsJawsToggle = new JoystickButton(lowLevelButtonBoard, 2);

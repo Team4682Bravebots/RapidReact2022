@@ -75,15 +75,22 @@ public class Jaws extends SubsystemBase implements Sendable
     */
     public Jaws()
     {
-      initializeMotors();
-      rightMotor.setSelectedSensorPosition(0.0);
-      leftMotor.setSelectedSensorPosition(0.0);
+      this.forceSensorReset();
       CommandScheduler.getInstance().registerSubsystem(this);
     }
 
     /* *********************************************************************
     PUBLIC METHODS
     ************************************************************************/
+    /**
+     * A method to update the sensors on this device
+     */
+    public void forceSensorReset()
+    {
+      this.initializeMotors();
+      rightMotor.setSelectedSensorPosition(0.0);
+      leftMotor.setSelectedSensorPosition(0.0);
+    }
 
     /**
     * A method to obtain the Jaws current angle

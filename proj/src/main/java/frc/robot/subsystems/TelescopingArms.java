@@ -103,15 +103,22 @@ public class TelescopingArms extends SubsystemBase implements Sendable
     */
     public TelescopingArms()
     {
-      this.initializeMotorsSmartMotion();
-      leftEncoder.setPosition(0.0);
-      rightEncoder.setPosition(0.0);
+      this.forceSensorReset();
       CommandScheduler.getInstance().registerSubsystem(this);
     }
 
     /* *********************************************************************
     PUBLIC METHODS
     ************************************************************************/
+    /**
+     * A method to update the sensors on this device
+     */
+    public void forceSensorReset()
+    {
+      this.initializeMotorsSmartMotion();
+      leftEncoder.setPosition(0.0);
+      rightEncoder.setPosition(0.0);
+    }
 
     /**
     * A method to obtain the Arms average encoder position

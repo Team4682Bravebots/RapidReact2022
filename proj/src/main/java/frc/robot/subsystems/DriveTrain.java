@@ -62,11 +62,7 @@ public class DriveTrain extends SubsystemBase implements Sendable
   */
   public DriveTrain()
   {
-    this.initializeMotorsMotionMagic();
-    leftFront.setSelectedSensorPosition(0.0);
-    leftRear.setSelectedSensorPosition(0.0);
-    rightFront.setSelectedSensorPosition(0.0);
-    rightRear.setSelectedSensorPosition(0.0);
+    this.forceSensorReset();
     CommandScheduler.getInstance().registerSubsystem(this);
   }
 
@@ -81,6 +77,18 @@ public class DriveTrain extends SubsystemBase implements Sendable
   {
     this.initializeMotorsDirectDrive();
     drive.arcadeDrive(yAxisValue, xAxisValue);
+  }
+
+  /**
+   * A method to update the sensors on this device
+   */
+  public void forceSensorReset()
+  {
+    this.initializeMotorsMotionMagic();
+    leftFront.setSelectedSensorPosition(0.0);
+    leftRear.setSelectedSensorPosition(0.0);
+    rightFront.setSelectedSensorPosition(0.0);
+    rightRear.setSelectedSensorPosition(0.0);
   }
 
   @Override
