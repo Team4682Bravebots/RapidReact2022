@@ -182,12 +182,22 @@ public class RobotContainer
       InstalledHardware.rightRearDriveMotorInstalled)
     {
       m_driveTrain = new DriveTrain();
+      /*
       m_driveTrain.setDefaultCommand(
         new RunCommand(
           () ->
           m_driveTrain.arcadeDrive(
             m_manualInput.getInputArcadeDriveY() * -1.0,
             m_manualInput.getInputArcadeDriveX()),
+          m_driveTrain));
+      */
+      m_driveTrain.setDefaultCommand(
+        new RunCommand(
+          () ->
+          m_driveTrain.arcadeDrive(
+            m_manualInput.getGtaInputArcadeDriveY(),
+            m_manualInput.getGtaInputArcadeDriveX()
+            ),
           m_driveTrain));
       System.out.println("SUCCESS: initializeDriveTrain");
     }

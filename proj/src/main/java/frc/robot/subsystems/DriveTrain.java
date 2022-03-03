@@ -67,19 +67,12 @@ public class DriveTrain extends SubsystemBase implements Sendable
     CommandScheduler.getInstance().registerSubsystem(this);
   }
 
-  /**
-  * A method to take in x and y stick inputs and turn them into right and left motor speeds
-  * considering arcade style driving
-  *
-  * @param  yAxisValue - left motor speed, range -1.0 to 1.0 where positive values are forward
-  * @param  xAxisValue - right motor speed, range -1.0 to 1.0 where positive values are forward
-  */
   public void arcadeDrive(double yAxisValue, double xAxisValue)
   {
     this.initializeMotorsDirectDrive();
     drive.arcadeDrive(yAxisValue, xAxisValue);
   }
-
+  
   @Override
   public void initSendable(SendableBuilder builder)
   {
