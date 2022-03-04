@@ -111,8 +111,10 @@ public class ShooterAutomatic extends CommandBase
   @Override
   public void execute()
   {
-    // when no balls are present ... just mark this as done
-    if(ballStorageSubsystem.getOnboardBallCount() <= 0)
+    // when no balls are present and the sensors should be used
+    // ... just mark this as done
+    if(storageUsingBeamBreakSensors == true &&
+      ballStorageSubsystem.getOnboardBallCount() <= 0)
     {
       done = true;
     }
