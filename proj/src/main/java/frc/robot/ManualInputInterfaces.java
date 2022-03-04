@@ -160,7 +160,7 @@ public class ManualInputInterfaces
       JoystickButton bumperRight = new JoystickButton(driverController, XboxController.Button.kRightBumper.value);
       JoystickButton joystickButton = new JoystickButton(driverController, XboxController.Button.kRightStick.value);
       JoystickButton backButton = new JoystickButton(driverController, XboxController.Button.kBack.value);
-
+/*
       if(subsystemCollection.getAngleArmsSubsystem() != null)
       {
         buttonB.whenPressed(new AngleArmsJawsManual(subsystemCollection.getAngleArmsSubsystem()));
@@ -174,7 +174,7 @@ public class ManualInputInterfaces
         bumperLeft.whenReleased(new BallStorageAllStopManual(subsystemCollection.getBallStorageSubsystem()));
         bumperRight.whenReleased(new BallStorageAllStopManual(subsystemCollection.getBallStorageSubsystem()));
       }
-
+*/
       if(subsystemCollection.getJawsSubsystem() != null)
       {
         joystickButton.whenPressed(new JawsHoldReleaseManual(subsystemCollection.getJawsSubsystem()));
@@ -185,7 +185,7 @@ public class ManualInputInterfaces
         buttonA.whenPressed(new JawsIntake(subsystemCollection.getJawsSubsystem()));
         buttonB.whenPressed(new JawsAllStop(subsystemCollection.getJawsSubsystem()));
       }
-
+/*
       if(subsystemCollection.getCameraSubsystem() != null)
       {
         buttonA.whenPressed(new Target(
@@ -218,7 +218,7 @@ public class ManualInputInterfaces
             true,
             (InstalledHardware.rearBallStorageBeamBreakSensorInstalled && InstalledHardware.forwardBallStorageBeamBreakSensorInstalled)));
       }
-
+*/
       // *************************************************************
       // *************************************************************
       // *************************************************************

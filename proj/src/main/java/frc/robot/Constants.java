@@ -55,12 +55,12 @@ public final class Constants
 
   // Jaws reach points \\
   public static final double jawsIntakePositionAngle = 0.0;
-  public static final double jawsLowGoalPositionAngle = 40.0;
-  public static final double jawsHighGoalPositionAngle = 75.0; 
-  public static final double jawsReverseHighGoalPositionAngle = 125.0;
-  public static final double jawsReverseLowGoalPositionAngle = 145.0;
+  public static final double jawsLowGoalPositionAngle = 70.0;
+  public static final double jawsHighGoalPositionAngle = 100.0; 
+  public static final double jawsReverseHighGoalPositionAngle = 145.0;
+  public static final double jawsReverseLowGoalPositionAngle = 155.0;
   public static final double jawsPositionAngleTolerance = 1.2;
-  public static final double jawsAngleArmsEngagePositionAngle = 81.0;
+  public static final double jawsAngleArmsEngagePositionAngle = 125.0;
   public static final double jawsAngleArmsEngagePositionTolerance = 0.9;
   public static final double jawsDefaultPositiveSpeed = 0.8;
   public static final double jawsDefaultNegativeSpeed = -0.8;
@@ -138,7 +138,7 @@ public final class Constants
   public static final double angleArmTimingSeconds = 0.3;
 
   // BallStorage timing \\
-  public static final double ballStorageStoreTimingSeconds = 2.0;
+  public static final double ballStorageStoreTimingSeconds = 3.0;
   public static final double ballStorageRetrieveTimingSeconds = 0.5;
 
   // HIDS \\

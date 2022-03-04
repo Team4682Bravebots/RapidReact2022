@@ -12,6 +12,7 @@ package frc.robot.subsystems;
 
 import javax.lang.model.util.ElementScanner6;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
@@ -41,11 +42,10 @@ public class BallStorage extends SubsystemBase implements Sendable
   public BallStorage()
   {  
     topMotor.configFactoryDefault();
-		bottomMotor.configFactoryDefault(); 
-
-		bottomMotor.follow(topMotor);
-    bottomMotor.setInverted(true);
-		bottomMotor.setNeutralMode(NeutralMode.Brake);
+    bottomMotor.configFactoryDefault();
+    topMotor.setNeutralMode(NeutralMode.Brake);
+    bottomMotor.setNeutralMode(NeutralMode.Brake);
+    topMotor.setInverted(true);
     CommandScheduler.getInstance().registerSubsystem(this);
   }
 
@@ -106,13 +106,14 @@ public class BallStorage extends SubsystemBase implements Sendable
     if(onboardBallCount < historicOnboardBallCount || onboardBallCount <= 0)
     {
       historicOnboardBallCount = onboardBallCount;
-      topMotor.set(0.0);
+      bottomMotor.set(ControlMode.PercentOutput, 0.0);
+      topMotor.set(ControlMode.PercentOutput, 0.0);
       rtnVal = true;
     }
     else
     {
-      // since motors are followers ok to just set one
-      topMotor.set(Constants.ballRetrieveSpeed);
+      bottomMotor.set(ControlMode.PercentOutput, Constants.ballRetrieveSpeed);
+      topMotor.set(ControlMode.PercentOutput, Constants.ballRetrieveSpeed);
     }
 
     return rtnVal;
@@ -135,13 +136,15 @@ public class BallStorage extends SubsystemBase implements Sendable
     if(onboardBallCount > historicOnboardBallCount || onboardBallCount >= Constants.maximumStoredBallCount)
     {
       historicOnboardBallCount = onboardBallCount;
-      topMotor.set(0.0);
+      bottomMotor.set(ControlMode.PercentOutput, 0.0);
+      topMotor.set(ControlMode.PercentOutput, 0.0);
       rtnVal = true;
     }
     else
     {
       // since motors are followers ok to just set one
-      topMotor.set(Constants.ballStoreSpeed);
+      bottomMotor.set(ControlMode.PercentOutput, Constants.ballStoreSpeed);
+      topMotor.set(ControlMode.PercentOutput, Constants.ballStoreSpeed);
     }
 
     return rtnVal;
@@ -160,7 +163,8 @@ public class BallStorage extends SubsystemBase implements Sendable
   public void storeBallManual()
   {
       // since motors are followers ok to just set one
-      topMotor.set(Constants.ballStoreSpeed);
+      bottomMotor.set(ControlMode.PercentOutput, Constants.ballStoreSpeed);
+      topMotor.set(ControlMode.PercentOutput, Constants.ballStoreSpeed);
   }
 
   /**
@@ -169,7 +173,8 @@ public class BallStorage extends SubsystemBase implements Sendable
   public void stopBallManual()
   {
       // since motors are followers ok to just set one
-      topMotor.set(0.0);
+      bottomMotor.set(ControlMode.PercentOutput, 0.0);
+      topMotor.set(ControlMode.PercentOutput, 0.0);
   }
 
   /**
@@ -177,8 +182,8 @@ public class BallStorage extends SubsystemBase implements Sendable
   */
   public void retrieveBallManual()
   {
-      // since motors are followers ok to just set one
-      topMotor.set(Constants.ballStoreSpeed);
+      bottomMotor.set(ControlMode.PercentOutput, Constants.ballRetrieveSpeed);
+      topMotor.set(ControlMode.PercentOutput, Constants.ballRetrieveSpeed);
   }
 
   /**
