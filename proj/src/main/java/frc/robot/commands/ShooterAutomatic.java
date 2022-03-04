@@ -20,6 +20,9 @@ import frc.robot.subsystems.Jaws;
 
 public class ShooterAutomatic extends CommandBase
 {
+  private static final double defaultVelocityRpm = 3500.0;
+  private static final double defaultVelocityTolerance = 20.0;
+
   // target the shooter 
   // format: 
   // 0. minimum arm angle
@@ -32,11 +35,11 @@ public class ShooterAutomatic extends CommandBase
   {
     // format:
     // jaws position minimum, jaws position maximum, bottom wheel RPM target, bottom wheel RPM tolerance, top wheel RPM target, top wheel RPM tolerance
-    {Constants.jawsIntakePositionAngle - 10.0, Constants.jawsIntakePositionAngle + 10.0, 500.0, 20.0, 500.0, 20.0}, // intake targets
-    {Constants.jawsLowGoalPositionAngle - 10.0, Constants.jawsLowGoalPositionAngle + 10.0, 1000.0, 20.0, 1000.0, 20.0}, // low ball shooter targets
-    {Constants.jawsHighGoalPositionAngle - 10.0, Constants.jawsHighGoalPositionAngle + 10.0, 1500.0, 20.0, 1500.0, 20.0}, // forward high ball shooter targets
-    {Constants.jawsReverseHighGoalPositionAngle - 10.0, Constants.jawsReverseHighGoalPositionAngle + 10.0, 1500.0, 20.0, 1500.0, 20.0}, // reverse high ball shooter targets
-    {Constants.jawsReverseLowGoalPositionAngle - 10.0, Constants.jawsReverseLowGoalPositionAngle + 10.0, 1000.0, 20.0, 1000.0, 20.0}, // reverse high ball shooter targets
+    {Constants.jawsIntakePositionAngle - 5.0, Constants.jawsIntakePositionAngle + 5.0, 2000.0, 20.0, 2000.0, 20.0}, // intake targets
+    {Constants.jawsLowGoalPositionAngle - 5.0, Constants.jawsLowGoalPositionAngle + 5.0, 4500.0, 20.0, 3500.0, 20.0}, // low ball shooter targets
+    {Constants.jawsHighGoalPositionAngle - 5.0, Constants.jawsHighGoalPositionAngle + 5.0, 4500.0, 20.0, 3500.0, 20.0}, // forward high ball shooter targets
+    {Constants.jawsReverseHighGoalPositionAngle - 5.0, Constants.jawsReverseHighGoalPositionAngle + 5.0, 4500.0, 20.0, 3500.0, 20.0}, // reverse high ball shooter targets
+    {Constants.jawsReverseLowGoalPositionAngle - 5.0, Constants.jawsReverseLowGoalPositionAngle + 5.0, 4500.0, 20.0, 3500.0, 20.0}, // reverse high ball shooter targets
   };
 
   private Shooter shooterSubsystem;
@@ -48,10 +51,10 @@ public class ShooterAutomatic extends CommandBase
   private boolean timerStarted = false;
   private boolean done = false;
 
-  private double bottomShooterTargetVelocityRpm = 1000;
-  private double bottomShooterVelocityToleranceRpm = 10;
-  private double topShooterTargetVelocityRpm = 1000;
-  private double topShooterVelocityToleranceRpm = 10;
+  private double bottomShooterTargetVelocityRpm = ShooterAutomatic.defaultVelocityRpm;
+  private double bottomShooterVelocityToleranceRpm = ShooterAutomatic.defaultVelocityTolerance;
+  private double topShooterTargetVelocityRpm = ShooterAutomatic.defaultVelocityRpm;
+  private double topShooterVelocityToleranceRpm = ShooterAutomatic.defaultVelocityTolerance;
 
   /**
   * The two argument constructor for the shooter forward low shot
@@ -86,6 +89,7 @@ public class ShooterAutomatic extends CommandBase
   @Override
   public void initialize()
   {
+      boolean useDefault = true;
       done = false;
       timerStarted = false;
       timer.reset();
@@ -102,8 +106,16 @@ public class ShooterAutomatic extends CommandBase
             bottomShooterVelocityToleranceRpm = shooterIntakeTargets[inx][3];
             topShooterTargetVelocityRpm = shooterIntakeTargets[inx][4] * velocityFactor;
             topShooterVelocityToleranceRpm = shooterIntakeTargets[inx][5];
-            break;          
+            useDefault = false;
+            break;
           }
+      }
+      if(useDefault)
+      {
+        bottomShooterTargetVelocityRpm = ShooterAutomatic.defaultVelocityRpm;
+        bottomShooterVelocityToleranceRpm = ShooterAutomatic.defaultVelocityTolerance;
+        topShooterTargetVelocityRpm = ShooterAutomatic.defaultVelocityRpm;
+        topShooterVelocityToleranceRpm = ShooterAutomatic.defaultVelocityTolerance;
       }
   }
 
@@ -111,8 +123,10 @@ public class ShooterAutomatic extends CommandBase
   @Override
   public void execute()
   {
-    // when no balls are present ... just mark this as done
-    if(ballStorageSubsystem.getOnboardBallCount() <= 0)
+    // when no balls are present and the sensors should be used
+    // ... just mark this as done
+    if(storageUsingBeamBreakSensors == true &&
+      ballStorageSubsystem.getOnboardBallCount() <= 0)
     {
       done = true;
     }

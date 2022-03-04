@@ -153,72 +153,8 @@ public class ManualInputInterfaces
       // *************************************************************
       // *************************************************************
       // this is just for testing!!! RIP IT OUT LATER!!!
-      JoystickButton buttonA = new JoystickButton(driverController, XboxController.Button.kA.value);
-      JoystickButton buttonB = new JoystickButton(driverController, XboxController.Button.kB.value);
-      JoystickButton buttonY = new JoystickButton(driverController, XboxController.Button.kY.value);
-      JoystickButton bumperLeft = new JoystickButton(driverController, XboxController.Button.kLeftBumper.value);
-      JoystickButton bumperRight = new JoystickButton(driverController, XboxController.Button.kRightBumper.value);
-      JoystickButton joystickButton = new JoystickButton(driverController, XboxController.Button.kRightStick.value);
-      JoystickButton backButton = new JoystickButton(driverController, XboxController.Button.kBack.value);
-
-      if(subsystemCollection.getAngleArmsSubsystem() != null)
-      {
-        buttonB.whenPressed(new AngleArmsJawsManual(subsystemCollection.getAngleArmsSubsystem()));
-        buttonY.whenPressed(new AngleArmsChassisManual(subsystemCollection.getAngleArmsSubsystem())); 
-      }
-      
-      if(subsystemCollection.getBallStorageSubsystem() != null)
-      {
-        bumperLeft.whenHeld(new BallStorageStoreManual(subsystemCollection.getBallStorageSubsystem()));
-        bumperRight.whenHeld(new BallStorageRetrieveManual(subsystemCollection.getBallStorageSubsystem()));
-        bumperLeft.whenReleased(new BallStorageAllStopManual(subsystemCollection.getBallStorageSubsystem()));
-        bumperRight.whenReleased(new BallStorageAllStopManual(subsystemCollection.getBallStorageSubsystem()));
-      }
-
-      if(subsystemCollection.getJawsSubsystem() != null)
-      {
-        joystickButton.whenPressed(new JawsHoldReleaseManual(subsystemCollection.getJawsSubsystem()));
-
-        // TODO - rip the next 5 lines out as these are only for testing the jaws subsystem!!!
-        JoystickButton buttonX = new JoystickButton(driverController, XboxController.Button.kX.value);
-        buttonX.whenPressed(new JawsForwardLowGoal(subsystemCollection.getJawsSubsystem()));
-        buttonA.whenPressed(new JawsIntake(subsystemCollection.getJawsSubsystem()));
-        buttonB.whenPressed(new JawsAllStop(subsystemCollection.getJawsSubsystem()));
-      }
-
-      if(subsystemCollection.getCameraSubsystem() != null)
-      {
-        buttonA.whenPressed(new Target(
-          subsystemCollection.getCameraSubsystem(),
-          subsystemCollection.getDriveTrainSubsystem(),
-          subsystemCollection.getManualInputInterfaces()));
-      }
-      
-      // TODO - rip the next 8 lines out as these are only for testing the telescoping arms subsystem!!!
-      if(subsystemCollection.getTelescopingArmsSubsystem() != null)
-      {
-        JoystickButton buttonX = new JoystickButton(driverController, XboxController.Button.kX.value);
-        buttonX.whenPressed(new TelescopingArmExtendVariable(subsystemCollection.getTelescopingArmsSubsystem(), 25.75));
-        buttonA.whenPressed(new TelescopingArmExtendVariable(subsystemCollection.getTelescopingArmsSubsystem(), 1.0));
-        buttonY.whenPressed(new TelescopingArmExtendVariable(subsystemCollection.getTelescopingArmsSubsystem(), 0.0));
-        buttonB.whenPressed(new TelescopingArmsAllStop(subsystemCollection.getTelescopingArmsSubsystem()));
-      }
-
-      System.out.println("Attempting back button for auto shooter.");
-      if(subsystemCollection.getBallStorageSubsystem() != null &&
-      subsystemCollection.getJawsSubsystem() != null &&
-      subsystemCollection.getShooterSubsystem() != null)
-      {
-        System.out.println("Initalizing back button for auto shooter.");
-        backButton.whenPressed(
-          new ShooterAutomatic(
-            subsystemCollection.getShooterSubsystem(),
-            subsystemCollection.getBallStorageSubsystem(),
-            subsystemCollection.getJawsSubsystem(),
-            true,
-            (InstalledHardware.rearBallStorageBeamBreakSensorInstalled && InstalledHardware.forwardBallStorageBeamBreakSensorInstalled)));
-      }
-
+      JoystickButton buttonX = new JoystickButton(driverController, XboxController.Button.kX.value);
+      buttonX.whenPressed(AutonomousCommandBuilder.buildAllStop(subsystemCollection));
       // *************************************************************
       // *************************************************************
       // *************************************************************
