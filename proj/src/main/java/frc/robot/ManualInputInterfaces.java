@@ -144,6 +144,14 @@ public class ManualInputInterfaces
    */
   private void bindCommandsToDriverXboxButtons()
   {
+    if(InstalledHardware.driverXboxControllerInstalled)
+    {
+      JoystickButton buttonBack = new JoystickButton(driverController, XboxController.Button.kBack.value);
+      if(subsystemCollection.getJawsSubsystem() != null)
+      {
+        buttonBack.whenPressed(new JawsAngleVariable(subsystemCollection.getJawsSubsystem(), subsystemCollection.getJawsSubsystem().getJawsReferencePositionAngle()));
+      }
+    }
   }
 
   /**
@@ -270,7 +278,9 @@ public class ManualInputInterfaces
         jawsNegative.whenPressed(new JawsManual(subsystemCollection.getJawsSubsystem(), Constants.jawsDefaultNegativeSpeed));
         jawsPositive.whenReleased(new JawsAllStop(subsystemCollection.getJawsSubsystem()));
         jawsNegative.whenReleased(new JawsAllStop(subsystemCollection.getJawsSubsystem()));
-        jawsClutchToggle.whenPressed(new JawsHoldReleaseManual(subsystemCollection.getJawsSubsystem()));
+        // TODO for now no clutches on robot - use this button for returning robot jaws to reference position
+//        jawsClutchToggle.whenPressed(new JawsHoldReleaseManual(subsystemCollection.getJawsSubsystem()));
+        jawsClutchToggle.whenPressed(new JawsAngleVariable(subsystemCollection.getJawsSubsystem(), subsystemCollection.getJawsSubsystem().getJawsReferencePositionAngle()));
       }
     }
   }

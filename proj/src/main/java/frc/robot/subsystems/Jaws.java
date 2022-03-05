@@ -102,6 +102,14 @@ public class Jaws extends SubsystemBase implements Sendable
       return this.convertMotorEncoderPositionToJawsAngle(this.getAverageMotorEncoderPosition());
     }
 
+    /**
+     * A method to return the jaws subsystem to the reference position
+     */
+    public double getJawsReferencePositionAngle()
+    {
+      return this.convertMotorEncoderPositionToJawsAngle(Constants.jawsReferencePositionMotorEncoderUnits);
+    }
+
     @Override
     public void initSendable(SendableBuilder builder)
     {
