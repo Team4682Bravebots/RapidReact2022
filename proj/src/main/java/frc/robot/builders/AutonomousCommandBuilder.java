@@ -92,7 +92,76 @@ public class AutonomousCommandBuilder
         return commandGroup;
     }
     
+    /**
+     * A method to build an initial set of automated steps for first 15 seconds - very simple auto
+     * @param collection - The grouping of subystems and input content necessary to control various operations in the robot
+     * @return The command that represents a succession of commands/steps that form the action associated with this method  
+     */
+    public static Command buildSimpleShootAndDrive(SubsystemCollection collection)
+    {
+        SequentialCommandGroup commandGroup = new SequentialCommandGroup();
 
+        if(collection.getBallStorageSubsystem() != null && 
+           collection.getDriveTrainSubsystem() != null &&
+           collection.getJawsSubsystem() != null &&
+           collection.getShooterSubsystem() != null)
+        {
+            // 1. shoot first ball
+            JawsReverseHighGoal jawsToReverseHighGoal = new JawsReverseHighGoal(collection.getJawsSubsystem());
+            ShooterAutomatic shootReverseHighGoal = new ShooterAutomatic(
+                collection.getShooterSubsystem(),
+                collection.getBallStorageSubsystem(),
+                collection.getJawsSubsystem(),
+                true,
+                false);
+
+            // 2. move toward the second ball 
+            DriveCommand driveForwardToBall = new DriveCommand(collection.getDriveTrainSubsystem(), 38.0, 0.0, 1.5);
+            JawsIntake jawsIntake = new JawsIntake(collection.getJawsSubsystem());
+            ParallelCommandGroup forwardAndIntake = new ParallelCommandGroup(driveForwardToBall, jawsIntake);
+
+            // 3. pickup another ball by intake/storage turned on and move forward to scoop the ball
+            ShooterAutomatic shooterIntake = new ShooterAutomatic(
+                collection.getShooterSubsystem(),
+                collection.getBallStorageSubsystem(),
+                collection.getJawsSubsystem(),
+                false,
+                false);
+            DriveCommand driveForwardBallScoop = new DriveCommand(collection.getDriveTrainSubsystem(), 3.0, 0.0, 0.333);
+            ParallelCommandGroup ballIntakeScoop = new ParallelCommandGroup(driveForwardBallScoop, shooterIntake);
+
+            // 4. move back to the shooting position and move the arms up to 
+            ShooterAutomatic shooterIntakeAgain = new ShooterAutomatic(
+                collection.getShooterSubsystem(),
+                collection.getBallStorageSubsystem(),
+                collection.getJawsSubsystem(),
+                false,
+                false);
+            DriveCommand driveForwardBallScoopAgain = new DriveCommand(collection.getDriveTrainSubsystem(), 3.0, 0.0, 0.333);
+            ParallelCommandGroup ballIntakeScoopAgain = new ParallelCommandGroup(driveForwardBallScoopAgain, shooterIntakeAgain);
+
+            // 5. shoot second ball
+            ShooterAutomatic shootReverseHighGoalAgain = new ShooterAutomatic(
+                collection.getShooterSubsystem(),
+                collection.getBallStorageSubsystem(),
+                collection.getJawsSubsystem(),
+                true,
+                false);
+
+            // 6. build the command group
+            commandGroup.addCommands(
+                jawsToReverseHighGoal,
+                shootReverseHighGoal,
+                forwardAndIntake,
+                ballIntakeScoop,
+                ballIntakeScoopAgain,
+                shootReverseHighGoalAgain
+            );
+        }
+        
+        return commandGroup;
+    }
+    
     /**
      * A method to build all of the stop commands and run them in parallel
      * @param collection - The grouping of subystems and input content necessary to control various operations in the robot
