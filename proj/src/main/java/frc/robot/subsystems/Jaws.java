@@ -99,7 +99,7 @@ public class Jaws extends SubsystemBase implements Sendable
     */
     public double getJawsAngle()
     {
-      return this.convertMotorEncoderPositionToJawsAngle(Constants.jawsReferencePositionMotorEncoderUnits);
+      return this.convertMotorEncoderPositionToJawsAngle(this.getAverageMotorEncoderPosition());
     }
 
     /**
@@ -107,7 +107,7 @@ public class Jaws extends SubsystemBase implements Sendable
      */
     public double getJawsReferencePositionAngle()
     {
-      return this.convertMotorEncoderPositionToJawsAngle(this.getAverageMotorEncoderPosition());
+      return this.convertMotorEncoderPositionToJawsAngle(Constants.jawsReferencePositionMotorEncoderUnits);
     }
 
     @Override
