@@ -74,6 +74,9 @@ public class AutonomousCommandBuilder
                 true,
                 false);
 
+            // 6. get out of the box
+            DriveCommand driveForwardOutOfBox = new DriveCommand(collection.getDriveTrainSubsystem(), 48.0, 0.0, 1);
+
             // 6. build the command group
             commandGroup.addCommands(
                 jawsToReverseHighGoal,
@@ -81,7 +84,8 @@ public class AutonomousCommandBuilder
                 forwardAndIntake,
                 ballIntakeScoop,
                 returnToShooterSpot,
-                shootSecondReverseHighGoal
+                shootSecondReverseHighGoal,
+                driveForwardOutOfBox
             );
         }
         

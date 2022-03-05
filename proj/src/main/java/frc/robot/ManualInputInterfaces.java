@@ -100,8 +100,7 @@ public class ManualInputInterfaces
    */
   public double getInputShooter()
   {
-    // TODO - switch this to use the coDriverController soon!!!
-    XboxController theControllerToUse = driverController;
+    XboxController theControllerToUse = coDriverController;
     return theControllerToUse.getLeftTriggerAxis() > theControllerToUse.getRightTriggerAxis() ? 
            -1.0 * theControllerToUse.getLeftTriggerAxis() : 
            theControllerToUse.getRightTriggerAxis();
@@ -113,8 +112,7 @@ public class ManualInputInterfaces
    */
   public double getInputTelescopingArms()
   {
-    // TODO - switch this to use the coDriverController soon!!!
-    XboxController theControllerToUse = driverController;
+    XboxController theControllerToUse = coDriverController;
     // need to invert the y for all xbox controllers due to xbox controler having up as negative y axis
     double input = theControllerToUse.getRightY() * -1.0;
     // avoid xbox controller shadow input drift
@@ -132,7 +130,6 @@ public class ManualInputInterfaces
     this.bindLowLevelCommandsToButtonBoardButtons();
 
     // TODO - remove this when we are no longer needing to confirm the button board is working properly
-    this.testBindCommandsToHighLevelButtonBoard();
     this.testBindCommandsToLowLevelButtonBoard();
 
     // Configure the driver xbox controller bindings
@@ -147,18 +144,6 @@ public class ManualInputInterfaces
    */
   private void bindCommandsToDriverXboxButtons()
   {
-    if(InstalledHardware.driverXboxControllerInstalled)
-    {
-      // *************************************************************
-      // *************************************************************
-      // *************************************************************
-      // this is just for testing!!! RIP IT OUT LATER!!!
-      JoystickButton buttonX = new JoystickButton(driverController, XboxController.Button.kX.value);
-      buttonX.whenPressed(AutonomousCommandBuilder.buildAllStop(subsystemCollection));
-      // *************************************************************
-      // *************************************************************
-      // *************************************************************
-    }
   }
 
   /**

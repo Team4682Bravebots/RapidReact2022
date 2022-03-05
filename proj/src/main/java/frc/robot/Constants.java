@@ -55,15 +55,16 @@ public final class Constants
 
   // Jaws reach points \\
   public static final double jawsIntakePositionAngle = 0.0;
-  public static final double jawsLowGoalPositionAngle = 70.0;
-  public static final double jawsHighGoalPositionAngle = 100.0; 
+  public static final double jawsLowGoalPositionAngle = 90.0;
+  public static final double jawsHighGoalPositionAngle = 110.0; 
   public static final double jawsReverseHighGoalPositionAngle = 145.0;
-  public static final double jawsReverseLowGoalPositionAngle = 155.0;
+  public static final double jawsReverseLowGoalPositionAngle = 160.0;
   public static final double jawsPositionAngleTolerance = 1.2;
   public static final double jawsAngleArmsEngagePositionAngle = 125.0;
   public static final double jawsAngleArmsEngagePositionTolerance = 0.9;
   public static final double jawsDefaultPositiveSpeed = 0.8;
   public static final double jawsDefaultNegativeSpeed = -0.8;
+  public static final double jawsReferencePositionMotorEncoderUnits = 141000; // 151972 and 152037
 
   // telescoping arms reach points \\
   public static final double telescopingArmsRetractHeightInches = 0.50;
@@ -80,7 +81,6 @@ public final class Constants
   public static final int maximumStoredBallCount = 2;
 
   // CAN BUS NUMBERS \\
-  //TODO - P0 - fill in proper CAN bus index for Jaws motors
   public static int jawsMotorRightCanId = 9;
   public static int jawsMotorLeftCanId = 10;
 
@@ -88,15 +88,12 @@ public final class Constants
   public static int telescopingArmsMotorLeftCanId = 13;
   public static int telescopingArmsMotorRightCanId = 14;
 
-  //TODO - P0 - fill in proper CAN bus index for shooting motors
   public static final int shooterMotorBottomCanId = 5;
   public static final int shooterMotorTopCanId = 6;
 
-  //TODO - P0 - fill in proper CAN bus index for ball storage motors
   public static int ballStorageMotorTopCanId = 15;
   public static int ballStorageMotorBottomCanId = 16;
 
-  //TODO - P0 - fill in proper CAN bus index for drive motors
   public static int driveMotorLeftFrontCanId = 7;
   public static int driveMotorLeftRearCanId = 8;
   public static int driveMotorRightFrontCanId = 11;
@@ -138,8 +135,8 @@ public final class Constants
   public static final double angleArmTimingSeconds = 0.3;
 
   // BallStorage timing \\
-  public static final double ballStorageStoreTimingSeconds = 3.0;
-  public static final double ballStorageRetrieveTimingSeconds = 0.5;
+  public static final double ballStorageStoreTimingSeconds = 0.5;
+  public static final double ballStorageRetrieveTimingSeconds = 1.5;
 
   // HIDS \\
   // hid ports \\ 
