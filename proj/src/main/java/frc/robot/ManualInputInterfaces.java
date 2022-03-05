@@ -130,7 +130,7 @@ public class ManualInputInterfaces
     this.bindLowLevelCommandsToButtonBoardButtons();
 
     // TODO - remove this when we are no longer needing to confirm the button board is working properly
-    this.testBindCommandsToLowLevelButtonBoard();
+//    this.testBindCommandsToLowLevelButtonBoard();
 
     // Configure the driver xbox controller bindings
     this.bindCommandsToCoDriverXboxButtons();
@@ -182,6 +182,15 @@ public class ManualInputInterfaces
       if(subsystemCollection.getJawsSubsystem() != null)
       {
         joystickButton.whenPressed(new JawsHoldReleaseManual(subsystemCollection.getJawsSubsystem()));
+      }
+
+      JoystickButton buttonA = new JoystickButton(coDriverController, XboxController.Button.kA.value);
+      JoystickButton buttonX = new JoystickButton(coDriverController, XboxController.Button.kX.value);
+
+      if(subsystemCollection.getBallStorageSubsystem() != null)
+      {
+        buttonX.whenPressed(new TelescopingArmExtendMiddle(subsystemCollection.getTelescopingArmsSubsystem()));
+        buttonA.whenPressed(new TelescopingArmRetract(subsystemCollection.getTelescopingArmsSubsystem()));
       }
     }
   }
