@@ -58,7 +58,7 @@ public class Jaws extends SubsystemBase implements Sendable
 //      Constants.jawsClutchSolenoidForwardChannel,
 //      Constants.jawsClutchSolenoidReverseChannel); 
 
-    private double motorReferencePosition = Constants.jawsReferencePositionMotorEncoderUnits;
+    private double motorReferencePosition = 0.0;
     private boolean jawsMotionCurrentlyCalibrating = false;
     private boolean jawsMotionCalibrated = false;
     private boolean clutchEngaged = false;
@@ -88,8 +88,8 @@ public class Jaws extends SubsystemBase implements Sendable
     public void forceSensorReset()
     {
       this.initializeMotors();
-      rightMotor.setSelectedSensorPosition(0.0);
-      leftMotor.setSelectedSensorPosition(0.0);
+      rightMotor.setSelectedSensorPosition(Constants.jawsReferencePositionMotorEncoderUnits);
+      leftMotor.setSelectedSensorPosition(Constants.jawsReferencePositionMotorEncoderUnits);
     }
 
     /**
