@@ -35,11 +35,11 @@ public class ShooterAutomatic extends CommandBase
   {
     // format:
     // jaws position minimum, jaws position maximum, bottom wheel RPM target, bottom wheel RPM tolerance, top wheel RPM target, top wheel RPM tolerance
-    {Constants.jawsIntakePositionAngle - 5.0, Constants.jawsIntakePositionAngle + 5.0, 2500.0, 20.0, 2500.0, 20.0}, // intake targets
-    {Constants.jawsLowGoalPositionAngle - 5.0, Constants.jawsLowGoalPositionAngle + 5.0, 1000.0, 20.0, 10.0, 20.0}, // low ball shooter targets
-    {Constants.jawsHighGoalPositionAngle - 5.0, Constants.jawsHighGoalPositionAngle + 5.0, 5000.0, 20.0, 5000.0, 20.0}, // forward high ball shooter targets
-    {Constants.jawsReverseHighGoalPositionAngle - 5.0, Constants.jawsReverseHighGoalPositionAngle + 5.0, 5000.0, 20.0, 5000.0, 20.0}, // reverse high ball shooter targets
-    {Constants.jawsReverseLowGoalPositionAngle - 5.0, Constants.jawsReverseLowGoalPositionAngle + 5.0, 250.0, 20.0, 10.0, 20.0}, // reverse high ball shooter targets
+    {Constants.jawsIntakePositionAngle - 5.0, Constants.jawsIntakePositionAngle + 5.0, 250.0, 20.0, 250.0, 20.0}, // intake targets
+    {Constants.jawsLowGoalPositionAngle - 5.0, Constants.jawsLowGoalPositionAngle + 5.0, 200.0, 20.0, 10.0, 20.0}, // low ball shooter targets
+    {Constants.jawsHighGoalPositionAngle - 5.0, Constants.jawsHighGoalPositionAngle + 5.0, 500.0, 20.0, 500.0, 20.0}, // forward high ball shooter targets
+    {Constants.jawsReverseHighGoalPositionAngle - 5.0, Constants.jawsReverseHighGoalPositionAngle + 5.0, 500.0, 20.0, 500.0, 20.0}, // reverse high ball shooter targets
+    {Constants.jawsReverseLowGoalPositionAngle - 5.0, Constants.jawsReverseLowGoalPositionAngle + 5.0, 200.0, 20.0, 10.0, 20.0}, // reverse high ball shooter targets
   };
 
   private Shooter shooterSubsystem;
