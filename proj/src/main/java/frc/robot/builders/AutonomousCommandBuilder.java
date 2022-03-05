@@ -107,8 +107,8 @@ public class AutonomousCommandBuilder
            collection.getShooterSubsystem() != null)
         {
             // 1. shoot first ball
-            JawsReverseHighGoal jawsToReverseHighGoal = new JawsReverseHighGoal(collection.getJawsSubsystem());
-            ShooterAutomatic shootReverseHighGoal = new ShooterAutomatic(
+            JawsReverseLowGoal jawsToReverseLowGoal = new JawsReverseLowGoal(collection.getJawsSubsystem());
+            ShooterAutomatic shootReverseLowGoal = new ShooterAutomatic(
                 collection.getShooterSubsystem(),
                 collection.getBallStorageSubsystem(),
                 collection.getJawsSubsystem(),
@@ -150,8 +150,8 @@ public class AutonomousCommandBuilder
 
             // 6. build the command group
             commandGroup.addCommands(
-                jawsToReverseHighGoal,
-                shootReverseHighGoal,
+                jawsToReverseLowGoal,
+                shootReverseLowGoal,
                 forwardAndIntake,
                 ballIntakeScoop,
                 ballIntakeScoopAgain,
