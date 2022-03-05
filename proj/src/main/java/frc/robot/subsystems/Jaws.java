@@ -179,7 +179,9 @@ public class Jaws extends SubsystemBase implements Sendable
       rightMotor.set(TalonFXControlMode.MotionMagic, convertJawsAngleToMotorEncoderPosition(trimmedAngle));
       double currentAngle = this.getJawsAngle();
 
-      return (currentAngle - toleranceInDegrees >= targetAngleInDegrees && currentAngle + toleranceInDegrees <= targetAngleInDegrees);
+      boolean result = (currentAngle - toleranceInDegrees >= targetAngleInDegrees && currentAngle + toleranceInDegrees <= targetAngleInDegrees); 
+//      System.out.println("target angle = " + targetAngleInDegrees + " current angle = " + currentAngle + " result = " + result);
+      return result;
     }
 
     /**
@@ -280,14 +282,14 @@ public class Jaws extends SubsystemBase implements Sendable
 
     private double getAverageMotorEncoderPosition()
     {
-      return (rightMotor.getSelectedSensorPosition() + leftMotor.getSelectedSensorPosition())/2;
-//      return rightMotor.getSelectedSensorPosition();
+//      return (rightMotor.getSelectedSensorPosition() + leftMotor.getSelectedSensorPosition())/2;
+      return rightMotor.getSelectedSensorPosition();
     }
 
     private double getAverageMotorOutput()
     {
-      return (rightMotor.getMotorOutputPercent() + leftMotor.getMotorOutputPercent())/2;
-//      return rightMotor.getMotorOutputPercent();
+//      return (rightMotor.getMotorOutputPercent() + leftMotor.getMotorOutputPercent())/2;
+      return rightMotor.getMotorOutputPercent();
     }
 
     // a method devoted to establishing proper startup of the jaws motors

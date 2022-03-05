@@ -138,8 +138,8 @@ public final class Constants
   public static final double angleArmTimingSeconds = 0.3;
 
   // BallStorage timing \\
-  public static final double ballStorageStoreTimingSeconds = 3.0;
-  public static final double ballStorageRetrieveTimingSeconds = 0.5;
+  public static final double ballStorageStoreTimingSeconds = 1.0;
+  public static final double ballStorageRetrieveTimingSeconds = 1.5;
 
   // HIDS \\
   // hid ports \\ 
