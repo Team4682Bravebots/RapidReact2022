@@ -146,7 +146,7 @@ public class ManualInputInterfaces
   {
     if(InstalledHardware.driverXboxControllerInstalled)
     {
-      JoystickButton buttonBack = new JoystickButton(coDriverController, XboxController.Button.kBack.value);
+      JoystickButton buttonBack = new JoystickButton(driverController, XboxController.Button.kBack.value);
       if(subsystemCollection.getJawsSubsystem() != null)
       {
         buttonBack.whenPressed(new JawsAngleVariable(subsystemCollection.getJawsSubsystem(), subsystemCollection.getJawsSubsystem().getJawsReferencePositionAngle()));
