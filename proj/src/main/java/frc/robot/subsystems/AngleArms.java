@@ -131,7 +131,6 @@ public class AngleArms extends SubsystemBase implements Sendable
   @Override
   public void setDefaultCommand(Command myCommand)
   {
-      // TODO Auto-generated method stub
       super.setDefaultCommand(myCommand);
   }
 

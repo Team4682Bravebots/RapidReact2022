@@ -81,7 +81,6 @@ public final class Constants
   public static final int maximumStoredBallCount = 2;
 
   // CAN BUS NUMBERS \\
-  //TODO - P0 - fill in proper CAN bus index for Jaws motors
   public static int jawsMotorRightCanId = 9;
   public static int jawsMotorLeftCanId = 10;
 
@@ -89,15 +88,12 @@ public final class Constants
   public static int telescopingArmsMotorLeftCanId = 13;
   public static int telescopingArmsMotorRightCanId = 14;
 
-  //TODO - P0 - fill in proper CAN bus index for shooting motors
   public static final int shooterMotorBottomCanId = 5;
   public static final int shooterMotorTopCanId = 6;
 
-  //TODO - P0 - fill in proper CAN bus index for ball storage motors
   public static int ballStorageMotorTopCanId = 15;
   public static int ballStorageMotorBottomCanId = 16;
 
-  //TODO - P0 - fill in proper CAN bus index for drive motors
   public static int driveMotorLeftFrontCanId = 7;
   public static int driveMotorLeftRearCanId = 8;
   public static int driveMotorRightFrontCanId = 11;

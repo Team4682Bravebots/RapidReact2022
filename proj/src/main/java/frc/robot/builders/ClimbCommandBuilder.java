@@ -71,7 +71,6 @@ public class ClimbCommandBuilder
      */
     public static Command buildHighBarClimb(SubsystemCollection collection)
     {
-        // TODO - Jonathan we need your story to be built into here!!!
         // After the notes above are done,  the idea is to take the actions described there and convert them into a set of steps that use the building block commands.
         JawsAngleVariable angleArmForwardTilt = new JawsAngleVariable(collection.getJawsSubsystem(), 155);
         TelescopingArmExtendHigh extendArms = new TelescopingArmExtendHigh(collection.getTelescopingArmsSubsystem());
@@ -99,7 +98,6 @@ public class ClimbCommandBuilder
      */
     public static Command buildTraversalBarClimb(SubsystemCollection collection)
     {
-        // TODO - Jonathan we need your story to be built into here!!!
         // After the notes above are done,  the idea is to take the actions described there and convert them into a set of steps that use the building block commands.
         JawsAngleVariable angleArmForwardTilt = new JawsAngleVariable(collection.getJawsSubsystem(), 155);
         TelescopingArmExtendHigh extendArms = new TelescopingArmExtendHigh(collection.getTelescopingArmsSubsystem());
