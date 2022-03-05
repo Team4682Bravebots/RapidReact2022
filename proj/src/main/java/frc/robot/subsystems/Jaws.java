@@ -58,7 +58,7 @@ public class Jaws extends SubsystemBase implements Sendable
 //      Constants.jawsClutchSolenoidForwardChannel,
 //      Constants.jawsClutchSolenoidReverseChannel); 
 
-    private double motorReferencePosition = 0.0;
+    private double motorReferencePosition = Constants.jawsReferencePositionMotorEncoderUnits;
     private boolean jawsMotionCurrentlyCalibrating = false;
     private boolean jawsMotionCalibrated = false;
     private boolean clutchEngaged = false;

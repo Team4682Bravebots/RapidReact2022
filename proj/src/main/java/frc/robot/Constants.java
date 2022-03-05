@@ -64,6 +64,7 @@ public final class Constants
   public static final double jawsAngleArmsEngagePositionTolerance = 0.9;
   public static final double jawsDefaultPositiveSpeed = 0.8;
   public static final double jawsDefaultNegativeSpeed = -0.8;
+  public static final double jawsReferencePositionMotorEncoderUnits = 152000; // 151972 and 152037
 
   // telescoping arms reach points \\
   public static final double telescopingArmsRetractHeightInches = 0.50;
