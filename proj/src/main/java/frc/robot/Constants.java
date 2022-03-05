@@ -55,16 +55,16 @@ public final class Constants
 
   // Jaws reach points \\
   public static final double jawsIntakePositionAngle = 0.0;
-  public static final double jawsLowGoalPositionAngle = 70.0;
-  public static final double jawsHighGoalPositionAngle = 100.0; 
+  public static final double jawsLowGoalPositionAngle = 90.0;
+  public static final double jawsHighGoalPositionAngle = 110.0; 
   public static final double jawsReverseHighGoalPositionAngle = 145.0;
-  public static final double jawsReverseLowGoalPositionAngle = 155.0;
+  public static final double jawsReverseLowGoalPositionAngle = 160.0;
   public static final double jawsPositionAngleTolerance = 1.2;
   public static final double jawsAngleArmsEngagePositionAngle = 125.0;
   public static final double jawsAngleArmsEngagePositionTolerance = 0.9;
   public static final double jawsDefaultPositiveSpeed = 0.8;
   public static final double jawsDefaultNegativeSpeed = -0.8;
-  public static final double jawsReferencePositionMotorEncoderUnits = 152000; // 151972 and 152037
+  public static final double jawsReferencePositionMotorEncoderUnits = 141000; // 151972 and 152037
 
   // telescoping arms reach points \\
   public static final double telescopingArmsRetractHeightInches = 0.50;
