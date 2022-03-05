@@ -101,7 +101,7 @@ public class ManualInputInterfaces
   public double getInputShooter()
   {
     // TODO - switch this to use the coDriverController soon!!!
-    XboxController theControllerToUse = driverController;
+    XboxController theControllerToUse = coDriverController;
     return theControllerToUse.getLeftTriggerAxis() > theControllerToUse.getRightTriggerAxis() ? 
            -1.0 * theControllerToUse.getLeftTriggerAxis() : 
            theControllerToUse.getRightTriggerAxis();
