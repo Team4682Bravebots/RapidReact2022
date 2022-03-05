@@ -134,7 +134,8 @@ public class RobotContainer
 
   private void initializeManualInputInterfaces()
   {
-    if(InstalledHardware.buttonBoardInstalled &&
+    if(InstalledHardware.highLevelButtonBoardInstalled &&
+      InstalledHardware.lowLevelButtonBoardInstalled &&
       InstalledHardware.coDriverXboxControllerInstalled &&
       InstalledHardware.driverXboxControllerInstalled)
     {
