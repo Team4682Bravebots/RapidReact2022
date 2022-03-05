@@ -126,12 +126,8 @@ public class ManualInputInterfaces
   public void initializeButtonCommandBindings()
   {
     // Configure the button board bindings
-//    this.bindHighLevelCommandsToButtonBoardButtons();
-//    this.bindLowLevelCommandsToButtonBoardButtons();
-
-    // TODO - remove this when we are no longer needing to confirm the button board is working properly
-    this.testBindCommandsToLowLevelButtonBoard();
-    this.testBindCommandsToHighLevelButtonBoard();
+    this.bindHighLevelCommandsToButtonBoardButtons();
+    this.bindLowLevelCommandsToButtonBoardButtons();
 
     // Configure the driver xbox controller bindings
     this.bindCommandsToCoDriverXboxButtons();

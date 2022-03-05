@@ -289,6 +289,7 @@ public class TelescopingArms extends SubsystemBase implements Sendable
     {
       this.initializeMotorsDirectDrive();
       leftMotor.set(MotorUtils.truncateValue(telescopingArmsSpeed, -1.0, 1.0));
+      rightMotor.set(MotorUtils.truncateValue(telescopingArmsSpeed, -1.0, 1.0));
     }
 
     /**
@@ -489,7 +490,9 @@ public class TelescopingArms extends SubsystemBase implements Sendable
         leftEncoder = leftMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, Constants.countPerRevHallSensor);
         leftEncoder.setPositionConversionFactor((double)Constants.RevNeoEncoderTicksPerRevolution);
 
+        rightMotor.setInverted(true);
         rightMotor.follow(leftMotor);
+        rightMotor.setInverted(true);
   
         // PID coefficients
         kP = 5e-5; 
@@ -531,8 +534,6 @@ public class TelescopingArms extends SubsystemBase implements Sendable
         leftMotor.restoreFactoryDefaults();
         leftMotor.setIdleMode(IdleMode.kBrake);
         rightMotor.setIdleMode(IdleMode.kBrake);
-        rightMotor.follow(leftMotor);
-
         this.motorsInitalizedForSmartMotion = false;
       }
     }
