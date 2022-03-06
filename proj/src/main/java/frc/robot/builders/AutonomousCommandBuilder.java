@@ -192,6 +192,43 @@ public class AutonomousCommandBuilder
      * @param collection - The grouping of subystems and input content necessary to control various operations in the robot
      * @return The command that represents a succession of commands/steps that form the action associated with this method  
      */
+    public static Command buildSimpleShootHighAndForwardDriveDistance(SubsystemCollection collection)
+    {
+        SequentialCommandGroup commandGroup = new SequentialCommandGroup();
+
+        if(collection.getBallStorageSubsystem() != null && 
+           collection.getDriveTrainSubsystem() != null &&
+           collection.getJawsSubsystem() != null &&
+           collection.getShooterSubsystem() != null)
+        {
+            // 1. shoot first ball
+            JawsForwardHighGoal jawsToForwardLowGoal = new JawsForwardHighGoal(collection.getJawsSubsystem());
+            ShooterAutomatic shootForwardHighGoal = new ShooterAutomatic(
+                collection.getShooterSubsystem(),
+                collection.getBallStorageSubsystem(),
+                collection.getJawsSubsystem(),
+                true,
+                false);
+
+            // 2. move toward the second ball 
+            DriveTimeCommand driveTimeCommand = new DriveTimeCommand(
+                collection.getDriveTrainSubsystem(),
+                0.7,
+                0.0,
+                2.0);
+
+            // 3. build the command group
+            commandGroup.addCommands(jawsToForwardLowGoal, shootForwardHighGoal, driveTimeCommand);
+        }
+        
+        return commandGroup;
+    }
+
+    /**
+     * A method to build an initial set of automated steps for first 15 seconds - very simple auto
+     * @param collection - The grouping of subystems and input content necessary to control various operations in the robot
+     * @return The command that represents a succession of commands/steps that form the action associated with this method  
+     */
     public static Command buildSimpleForwardDrive(SubsystemCollection collection)
     {
         SequentialCommandGroup commandGroup = new SequentialCommandGroup();
