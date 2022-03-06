@@ -72,7 +72,7 @@ public class DriveTrain extends SubsystemBase implements Sendable
   public void arcadeDrive(double yAxisValue, double xAxisValue)
   {
     this.initializeMotorsDirectDrive();
-    drive.arcadeDrive(yAxisValue, xAxisValue);
+    drive.arcadeDrive(xAxisValue, yAxisValue);
   }
 
   /**
@@ -386,10 +386,10 @@ public class DriveTrain extends SubsystemBase implements Sendable
       rightRear.configFactoryDefault();
   
       // setup the inverted values for each motor
-      leftFront.setInverted(Constants.driveMotorLeftFrontDefaultDirection);
-      leftRear.setInverted(Constants.driveMotorLeftRearDefaultDirection);
-      rightFront.setInverted(Constants.driveMotorRightFrontDefaultDirection);
-      rightRear.setInverted(Constants.driveMotorRightRearDefaultDirection);
+      leftFront.setInverted(true);
+      leftRear.setInverted(true);
+      rightFront.setInverted(false);
+      rightRear.setInverted(false);
 
       // setup each side with a follower
       leftRear.follow(leftFront);
