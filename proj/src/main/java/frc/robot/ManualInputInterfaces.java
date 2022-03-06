@@ -184,7 +184,7 @@ public class ManualInputInterfaces
       JoystickButton buttonA = new JoystickButton(coDriverController, XboxController.Button.kA.value);
       JoystickButton buttonX = new JoystickButton(coDriverController, XboxController.Button.kX.value);
 
-      if(subsystemCollection.getBallStorageSubsystem() != null)
+      if(subsystemCollection.getTelescopingArmsSubsystem() != null)
       {
         buttonX.whenPressed(new TelescopingArmExtendMiddle(subsystemCollection.getTelescopingArmsSubsystem()));
         buttonA.whenPressed(new TelescopingArmRetract(subsystemCollection.getTelescopingArmsSubsystem()));
