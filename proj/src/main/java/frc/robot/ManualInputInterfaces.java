@@ -44,7 +44,7 @@ public class ManualInputInterfaces
    */
   public double getInputArcadeDriveX()
   {
-    return driverController.getLeftX();
+    return driverController.getLeftX() * Constants.drivePowerReductionFactor;
   }
 
   /**
@@ -54,7 +54,7 @@ public class ManualInputInterfaces
   public double getInputArcadeDriveY()
   {
     // need to invert the y for all xbox controllers due to xbox controler having up as negative y axis
-    return driverController.getLeftY() * -1.0;
+    return driverController.getLeftY() * -1.0 * Constants.drivePowerReductionFactor;
   }
 
   /**
@@ -64,7 +64,7 @@ public class ManualInputInterfaces
   public double getGtaInputArcadeDriveX()
   { 
     // cubic to achieve a yaw throttle curve
-    return Math.pow(this.getInputArcadeDriveX(), 3.0);
+    return Math.pow(this.getInputArcadeDriveX(), 3.0) * Constants.drivePowerReductionFactor;
   } 
 
   /**
@@ -75,11 +75,11 @@ public class ManualInputInterfaces
   {
     if(driverController.getLeftTriggerAxis() > driverController.getRightTriggerAxis())
     {
-      return driverController.getLeftTriggerAxis();
+      return driverController.getLeftTriggerAxis() * Constants.drivePowerReductionFactor;
     }
     else
     {
-      return driverController.getRightTriggerAxis() * -1.0;
+      return driverController.getRightTriggerAxis() * -1.0 * Constants.drivePowerReductionFactor;
     }
   }
 

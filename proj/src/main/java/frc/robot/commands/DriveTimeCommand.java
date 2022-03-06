@@ -18,6 +18,9 @@ public class DriveTimeCommand extends CommandBase
   private DriveTrain driveTrain;
   private Timer timer = new Timer();
   private boolean done = false;
+  private double powerValue = 0.0;
+  private double spinValue = 0.0;
+  private double durationSecondsValue = 0.0;
   
   /** 
   * Creates a new driveCommand. 
@@ -25,30 +28,46 @@ public class DriveTimeCommand extends CommandBase
   * @param driveTrainSubsystem - the drive train subsystem
   */
   public DriveTimeCommand(
-    DriveTrain driveTrainSubsystem)
+    DriveTrain driveTrainSubsystem,
+    double power,
+    double spin,
+    double durationSeconds)
   {
     // Use addRequirements() here to declare subsystem dependencies.
     this.driveTrain = driveTrainSubsystem;
     addRequirements(driveTrain);
+
+    powerValue = power;
+    spinValue = spin;
+    durationSecondsValue = durationSeconds;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize()
   {
-   done = false; 
+    timer.reset();
+    timer.start();
+    done = false;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute()
   {
-      // TODO
-  }
+    this.driveTrain.arcadeDrive(powerValue, spinValue);
+    if (timer.hasElapsed(this.durationSecondsValue))
+    {
+      done = true;
+    }
+}
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted)
+  {
+    this.driveTrain.arcadeDrive(0.0, 0.0);
+  }
 
   // Returns true when the command should end.
   @Override

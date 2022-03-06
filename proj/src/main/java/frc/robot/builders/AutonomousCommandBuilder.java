@@ -174,10 +174,10 @@ public class AutonomousCommandBuilder
         if(collection.getDriveTrainSubsystem() != null)
         {
             // 2. move toward the second ball 
-            DriveCommand driveReverseAway = new DriveCommand(collection.getDriveTrainSubsystem(), 24.0, 0.0, 1.5);
+            DriveTimeCommand driveTimeCommand = new DriveTimeCommand(collection.getDriveTrainSubsystem(), 0.4, 0.0, 1.0);
 
             // 3. build the command group
-            commandGroup.addCommands(driveReverseAway);
+            commandGroup.addCommands(driveTimeCommand);
         }
         
         return commandGroup;
