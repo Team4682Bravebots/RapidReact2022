@@ -130,7 +130,7 @@ public class ManualInputInterfaces
     this.bindLowLevelCommandsToButtonBoardButtons();
 
     // Configure the driver xbox controller bindings
-    this.bindCommandsToCoDriverXboxButtons();
+//    this.bindCommandsToCoDriverXboxButtons();
 
     // Configure the co-driver xbox controller bindings
     this.bindCommandsToDriverXboxButtons();
