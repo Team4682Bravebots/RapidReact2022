@@ -171,10 +171,7 @@ public class AutonomousCommandBuilder
     {
         SequentialCommandGroup commandGroup = new SequentialCommandGroup();
 
-        if(collection.getBallStorageSubsystem() != null && 
-           collection.getDriveTrainSubsystem() != null &&
-           collection.getJawsSubsystem() != null &&
-           collection.getShooterSubsystem() != null)
+        if(collection.getDriveTrainSubsystem() != null)
         {
             // 2. move toward the second ball 
             DriveCommand driveReverseAway = new DriveCommand(collection.getDriveTrainSubsystem(), -48.0, 0.0, 1.5);
