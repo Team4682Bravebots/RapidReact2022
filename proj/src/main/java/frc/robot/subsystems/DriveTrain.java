@@ -385,16 +385,16 @@ public class DriveTrain extends SubsystemBase implements Sendable
       rightFront.configFactoryDefault();
       rightRear.configFactoryDefault();
   
-      // setup each side with a follower
-      leftRear.follow(leftFront);
-      rightRear.follow(rightFront);
-  
       // setup the inverted values for each motor
       leftFront.setInverted(Constants.driveMotorLeftFrontDefaultDirection);
       leftRear.setInverted(Constants.driveMotorLeftRearDefaultDirection);
       rightFront.setInverted(Constants.driveMotorRightFrontDefaultDirection);
       rightRear.setInverted(Constants.driveMotorRightRearDefaultDirection);
 
+      // setup each side with a follower
+      leftRear.follow(leftFront);
+      rightRear.follow(rightFront);
+  
       this.initalizedForMotionMagic = false;
       System.out.println("initalizedForMotionMagic = false");
     }
