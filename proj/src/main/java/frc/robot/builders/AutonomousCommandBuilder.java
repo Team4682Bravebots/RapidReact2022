@@ -167,14 +167,43 @@ public class AutonomousCommandBuilder
      * @param collection - The grouping of subystems and input content necessary to control various operations in the robot
      * @return The command that represents a succession of commands/steps that form the action associated with this method  
      */
-    public static Command buildSimpleReverseDrive(SubsystemCollection collection)
+    public static Command buildSimpleForwardDriveDistance(SubsystemCollection collection)
+    {
+        SequentialCommandGroup commandGroup = new SequentialCommandGroup();
+
+        if(collection.getDriveTrainSubsystem() != null)
+        {
+            // 1. move forward 
+            DriveCommand driveCommand = new DriveCommand(
+                collection.getDriveTrainSubsystem(),
+                36.0,
+                0.0,
+                2.0);
+
+            // 3. build the command group
+            commandGroup.addCommands(driveCommand);
+        }
+        
+        return commandGroup;
+    }
+
+    /**
+     * A method to build an initial set of automated steps for first 15 seconds - very simple auto
+     * @param collection - The grouping of subystems and input content necessary to control various operations in the robot
+     * @return The command that represents a succession of commands/steps that form the action associated with this method  
+     */
+    public static Command buildSimpleForwardDrive(SubsystemCollection collection)
     {
         SequentialCommandGroup commandGroup = new SequentialCommandGroup();
 
         if(collection.getDriveTrainSubsystem() != null)
         {
             // 2. move toward the second ball 
-            DriveTimeCommand driveTimeCommand = new DriveTimeCommand(collection.getDriveTrainSubsystem(), 0.4, 0.0, 1.0);
+            DriveTimeCommand driveTimeCommand = new DriveTimeCommand(
+                collection.getDriveTrainSubsystem(),
+                0.5,
+                0.0,
+                1.0);
 
             // 3. build the command group
             commandGroup.addCommands(driveTimeCommand);

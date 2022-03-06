@@ -55,7 +55,10 @@ public class DriveCommand extends CommandBase
   {
     if(!started)
     {
-      driveTrain.performCircleArcDriveInches(targetDistanceInInches, targetRotationInDegrees, targetTimeInSeconds);
+      driveTrain.performCircleArcDriveInches(
+        targetDistanceInInches,
+        targetRotationInDegrees,
+        targetTimeInSeconds);
     }
     done = driveTrain.isCurrentlyPerformingDriveMovement();
   }
