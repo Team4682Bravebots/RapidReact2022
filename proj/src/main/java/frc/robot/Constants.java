@@ -52,7 +52,7 @@ public final class Constants
   public static final double topMotorReverseHighGoalSpeed = 0.95;
   public static final double bottomMotorIntakeSpeed = -0.5;
   public static final double topMotorIntakeSpeed = -0.4;
-  public static final double drivePowerReductionFactor = 0.6;
+  public static final double drivePowerReductionFactor = 0.75;
   
   // Jaws reach points \\
   public static final double jawsIntakePositionAngle = 0.0;

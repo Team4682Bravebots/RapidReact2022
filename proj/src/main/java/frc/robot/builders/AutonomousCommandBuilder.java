@@ -201,9 +201,9 @@ public class AutonomousCommandBuilder
             // 2. move toward the second ball 
             DriveTimeCommand driveTimeCommand = new DriveTimeCommand(
                 collection.getDriveTrainSubsystem(),
-                0.5,
+                0.7,
                 0.0,
-                1.0);
+                2.0);
 
             // 3. build the command group
             commandGroup.addCommands(driveTimeCommand);
