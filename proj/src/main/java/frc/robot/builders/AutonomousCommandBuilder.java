@@ -167,7 +167,7 @@ public class AutonomousCommandBuilder
      * @param collection - The grouping of subystems and input content necessary to control various operations in the robot
      * @return The command that represents a succession of commands/steps that form the action associated with this method  
      */
-    public static Command buildSimpleReverseShootAndDrive(SubsystemCollection collection)
+    public static Command buildSimpleReverseDrive(SubsystemCollection collection)
     {
         SequentialCommandGroup commandGroup = new SequentialCommandGroup();
 
@@ -176,26 +176,11 @@ public class AutonomousCommandBuilder
            collection.getJawsSubsystem() != null &&
            collection.getShooterSubsystem() != null)
         {
-            // 1. shoot first ball
-            JawsForwardHighGoal jawsToJawsForwardHighGoal = new JawsForwardHighGoal(collection.getJawsSubsystem());
-            ShooterAutomatic shootJawsForwardHighGoal = new ShooterAutomatic(
-                collection.getShooterSubsystem(),
-                collection.getBallStorageSubsystem(),
-                collection.getJawsSubsystem(),
-                true,
-                false);
-
             // 2. move toward the second ball 
             DriveCommand driveReverseAway = new DriveCommand(collection.getDriveTrainSubsystem(), -48.0, 0.0, 1.5);
-            JawsIntake jawsIntake = new JawsIntake(collection.getJawsSubsystem());
-            ParallelCommandGroup reverseAndIntake = new ParallelCommandGroup(driveReverseAway, jawsIntake);
 
             // 3. build the command group
-            commandGroup.addCommands(
-                jawsToJawsForwardHighGoal,
-                shootJawsForwardHighGoal,
-                reverseAndIntake
-            );
+            commandGroup.addCommands(driveReverseAway);
         }
         
         return commandGroup;

@@ -99,7 +99,7 @@ public class RobotContainer
    */
   public Command getAutonomousCommand()
   {
-    return AutonomousCommandBuilder.buildSimpleShootAndDrive(m_collection);
+    return AutonomousCommandBuilder.buildSimpleReverseDrive(m_collection);
   }
 
   public void resetRobotWhenFmsNotPresent()
