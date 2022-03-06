@@ -62,7 +62,7 @@ public class DriveTrain extends SubsystemBase implements Sendable
     CommandScheduler.getInstance().registerSubsystem(this);
   }
 
-  /**
+  /**arcade
   * A method to take in x and y stick inputs and turn them into right and left motor speeds
   * considering arcade style driving
   *
@@ -71,6 +71,7 @@ public class DriveTrain extends SubsystemBase implements Sendable
   */
   public void arcadeDrive(double yAxisValue, double xAxisValue)
   {
+    //this.initializeMotorsDirectDrive();
     this.initializeMotorsDirectDrive();
     drive.arcadeDrive(xAxisValue, yAxisValue);
   }
@@ -392,8 +393,8 @@ public class DriveTrain extends SubsystemBase implements Sendable
       rightRear.setInverted(false);
 
       // setup each side with a follower
-      leftRear.follow(leftFront);
-      rightRear.follow(rightFront);
+     leftRear.follow(leftFront);
+     rightRear.follow(rightFront);
   
       this.initalizedForMotionMagic = false;
       System.out.println("initalizedForMotionMagic = false");
