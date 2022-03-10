@@ -281,6 +281,10 @@ public class AutonomousCommandBuilder
             stopCommands.addCommands(new ShooterAllStop(collection.getShooterSubsystem()));
         }
 
+        if(collection.getAngleArmsSubsystem() != null)
+        {
+            stopCommands.addCommands(new AngleArmsAllStop(collection.getAngleArmsSubsystem()));
+        }
         return stopCommands;
     }
 }

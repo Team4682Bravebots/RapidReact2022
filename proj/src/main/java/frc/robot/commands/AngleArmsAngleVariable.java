@@ -2,8 +2,8 @@
 // Bishop Blanchet Robotics
 // Home of the Cybears
 // FRC - Rapid React - 2022
-// File: AngleArmsEngageJaws.java
-// Intent: Forms a command to have the AngleArm attach to the Jaws and disconnect from the chassis.
+// File: AngleArmsAngleVariable.java
+// Intent: Forms a command to have the AngleArm angle to be set to a variable angle within its range of motion.
 // ************************************************************
 
 // ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ 
@@ -16,11 +16,10 @@ import frc.robot.Constants;
 import frc.robot.subsystems.AngleArms;
 import frc.robot.subsystems.Jaws;
 
-public class AngleArmsEngageJaws extends CommandBase {
+public class AngleArmsAngleVariable extends CommandBase {
 
   private AngleArms angleArmSubsystem;
-  private Jaws jawsSubsystem;
-  private Timer timer = new Timer();
+  private double angleArmsTargetAngleSetpoint;
   private boolean done;
 
   /**
@@ -28,21 +27,18 @@ public class AngleArmsEngageJaws extends CommandBase {
    * @param AngleArmSubsystem - must hand in the enabled angle arms subsystem
    * @param JawsSubsystem - must hand in the enabled jaws subsystem
    */
-  public AngleArmsEngageJaws(
-    AngleArms AngleArmSubsystem,
-    Jaws JawsSubsystem)
+  public AngleArmsAngleVariable(AngleArms AngleArmSubsystem, double angleArmsTargetAngle)
   {
-    // Use addRequirements() here to declare subsystem dependencies.
-    this.angleArmSubsystem = AngleArmSubsystem;
-    addRequirements(AngleArmSubsystem);
+      // Use addRequirements() here to declare subsystem dependencies.
+      this.angleArmSubsystem = AngleArmSubsystem;
+      addRequirements(AngleArmSubsystem);
+      angleArmsTargetAngleSetpoint = angleArmsTargetAngle;
   }  
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize()
   {
-    timer.reset();
-    timer.start();
     done = false;
   }
 
@@ -50,13 +46,9 @@ public class AngleArmsEngageJaws extends CommandBase {
   @Override
   public void execute()
   {
-    if(jawsSubsystem.setJawsAngle(Constants.jawsAngleArmsEngagePositionAngle, Constants.jawsAngleArmsEngagePositionTolerance))
+    if(done == false)
     {
-      angleArmSubsystem.engageJaws();
-      if (timer.hasElapsed(Constants.angleArmTimingSeconds)){
-        angleArmSubsystem.disengageChassis();
-        done = true;
-      }
+      done = angleArmSubsystem.setAngleArmsAngle(this.angleArmsTargetAngleSetpoint, Constants.angleArmsSetpointTolerance);
     }
   }
 
@@ -64,13 +56,8 @@ public class AngleArmsEngageJaws extends CommandBase {
   @Override
   public void end(boolean interrupted)
   {
-    // in the event that we are being interrupted and the operation is not complete, we want to revert it
-    if(interrupted == true && done == false)
-    {
-      // revert the change - seemingly we should order in the same way just reverse the operations
-      angleArmSubsystem.disengageJaws();
-      angleArmSubsystem.engageChassis();
-    }
+    done = true;
+    angleArmSubsystem.setAngleArmsSpeedManual(Constants.angleArmsManualMotorStopSpeed);
   }
 
   // Returns true when the command should end.

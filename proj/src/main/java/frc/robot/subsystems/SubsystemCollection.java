@@ -22,7 +22,6 @@ public class SubsystemCollection
     private BallStorage ballStorage = null;
     private DriveTrain driveTrain = null;
     private Jaws jaws = null;
-    private Pneumatics pneumatics  = null;
     private Shooter shooter = null;
     private TelescopingArms telescopingArms = null;
     private Camera camera = null;
@@ -43,9 +42,6 @@ public class SubsystemCollection
 
     public Jaws getJawsSubsystem() { return jaws; }
     public void setJawsSubsystem(Jaws value) { jaws = value; }
-
-    public Pneumatics getPneumaticsSubsystem() { return pneumatics; }
-    public void setPneumaticsSubsystem(Pneumatics value) { pneumatics = value; }
 
     public Shooter getShooterSubsystem() { return shooter; }
     public void setShooterSubsystem(Shooter value) { shooter = value; }

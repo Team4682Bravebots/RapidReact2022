@@ -590,7 +590,7 @@
       }
     },
     {
-      "title": "Pneumatics + AngleArms",
+      "title": "AngleArms",
       "autoPopulate": false,
       "autoPopulatePrefix": "",
       "widgetPane": {
@@ -600,70 +600,46 @@
         "vgap": 16.0,
         "titleType": 0,
         "tiles": {
-          "0,0": {
+          "3,0": {
             "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///LiveWindow/AngleArms/AngleArmsAndChassisEngaged",
-              "_title": "Angle + Chassis",
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
-            }
-          },
-          "1,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///LiveWindow/AngleArms/AngleArmsAndJawsEngaged",
-              "_title": "Angle + Jaws",
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
-            }
-          },
-          "0,2": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///LiveWindow/Pneumatics/CompressorIsCompressorEnergized",
-              "_title": "Compressor On",
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
-            }
-          },
-          "1,2": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///LiveWindow/Pneumatics/CompressorIsPressureSwitchEnabled",
-              "_title": "Pres. Switch On",
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
-            }
-          },
-          "2,2": {
-            "size": [
-              1,
-              1
+              2,
+              2
             ],
             "content": {
               "_type": "Simple Dial",
-              "_source0": "network_table:///LiveWindow/Pneumatics/CompressorTankPressure",
-              "_title": "Tank Pressure",
+              "_source0": "network_table:///LiveWindow/AngleArms/AngleArmsCurrentAngleArmsAngle",
+              "_title": "Angle Arms Angle",
               "Range/Min": 0.0,
-              "Range/Max": 100.0,
+              "Range/Max": 180.0,
               "Visuals/Show value": true
+            }
+          },
+          "3,2": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///LiveWindow/AngleArms/AngleArmsAverageMotorEncoderPosition",
+              "_title": "Average Encoder Position"
+            }
+          },
+          "0,0": {
+            "size": [
+              3,
+              3
+            ],
+            "content": {
+              "_type": "Graph",
+              "_source0": "network_table:///LiveWindow/AngleArms/AngleArmsAverageMotorOutput",
+              "_title": "Angle Arms Average Motor Output",
+              "Graph/Visible time": 30.0,
+              "Graph/X-axis auto scrolling": true,
+              "Y-axis/Automatic bounds": true,
+              "Y-axis/Upper bound": 1.0,
+              "Y-axis/Lower bound": -1.0,
+              "Y-axis/Unit": "output"
             }
           }
         }
@@ -876,39 +852,6 @@
             ],
             "content": {
               "_type": "Subsystem Layout",
-              "_source0": "network_table:///LiveWindow/Pneumatics",
-              "_title": "Pneumatics",
-              "Layout/Label position": "BOTTOM",
-              "_children": [
-                {
-                  "_type": "Boolean Box",
-                  "_source0": "network_table:///LiveWindow/Pneumatics/CompressorIsPressureSwitchEnabled",
-                  "_title": "CompressorIsPressureSwitchEnabled",
-                  "Colors/Color when true": "#7CFC00FF",
-                  "Colors/Color when false": "#8B0000FF"
-                },
-                {
-                  "_type": "Boolean Box",
-                  "_source0": "network_table:///LiveWindow/Pneumatics/CompressorIsCompressorEnergized",
-                  "_title": "CompressorIsCompressorEnergized",
-                  "Colors/Color when true": "#7CFC00FF",
-                  "Colors/Color when false": "#8B0000FF"
-                },
-                {
-                  "_type": "Text View",
-                  "_source0": "network_table:///LiveWindow/Pneumatics/CompressorTankPressure",
-                  "_title": "CompressorTankPressure"
-                }
-              ]
-            }
-          },
-          "8,0": {
-            "size": [
-              2,
-              4
-            ],
-            "content": {
-              "_type": "Subsystem Layout",
               "_source0": "network_table:///LiveWindow/BallStorage",
               "_title": "BallStorage",
               "Layout/Label position": "BOTTOM",
@@ -950,7 +893,7 @@
               ]
             }
           },
-          "10,0": {
+          "8,0": {
             "size": [
               2,
               4
@@ -962,18 +905,19 @@
               "Layout/Label position": "BOTTOM",
               "_children": [
                 {
-                  "_type": "Boolean Box",
-                  "_source0": "network_table:///LiveWindow/AngleArms/AngleArmsAndJawsEngaged",
-                  "_title": "AngleArmsAndJawsEngaged",
-                  "Colors/Color when true": "#7CFC00FF",
-                  "Colors/Color when false": "#8B0000FF"
+                  "_type": "Text View",
+                  "_source0": "network_table:///LiveWindow/AngleArms/AngleArmsAverageMotorOutput",
+                  "_title": "AngleArmsAverageMotorOutput"
                 },
                 {
-                  "_type": "Boolean Box",
-                  "_source0": "network_table:///LiveWindow/AngleArms/AngleArmsAndChassisEngaged",
-                  "_title": "AngleArmsAndChassisEngaged",
-                  "Colors/Color when true": "#7CFC00FF",
-                  "Colors/Color when false": "#8B0000FF"
+                  "_type": "Text View",
+                  "_source0": "network_table:///LiveWindow/AngleArms/AngleArmsAverageMotorEncoderPosition",
+                  "_title": "AngleArmsAverageMotorEncoderPosition"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///LiveWindow/AngleArms/AngleArmsCurrentAngleArmsAngle",
+                  "_title": "AngleArmsCurrentAngleArmsAngle"
                 }
               ]
             }
@@ -1012,9 +956,9 @@
     }
   ],
   "windowGeometry": {
-    "x": -5.333333492279053,
-    "y": 4.0,
-    "width": 1486.6666259765625,
-    "height": 950.0
+    "x": -7.333333492279053,
+    "y": -7.333333492279053,
+    "width": 1518.6666259765625,
+    "height": 977.3333129882812
   }
 }

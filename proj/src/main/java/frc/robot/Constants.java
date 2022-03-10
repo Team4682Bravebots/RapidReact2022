@@ -43,6 +43,20 @@ public final class Constants
   public static TalonFXInvertType shooterBottomMotorDefaultDirection = TalonFXInvertType.CounterClockwise;
   public static TalonFXInvertType shooterTopMotorDefaultDirection = TalonFXInvertType.CounterClockwise;
 
+  // Angle arms magic numbers
+  public static final double angleArmsManualMotorStopSpeed = 0.0;
+  public static final double angleArmsManualMotorForwardSpeed = 0.8;
+  public static final double angleArmsManualMotorReverseSpeed = 0.8;
+  public static final double angleArmsMinimumPositionAngle = -5.0;
+  public static final double angleArmsReferencePositionAngle = 0.0;
+  public static final double angleArmsMaximumPositionAngle = 90.0;
+  public static final double angleArmsReadyPositionAngle = 20.0;
+  public static final double angleArmsBarPositionAngle = 0.0;
+  public static final double angleArmsTiltPositionAngle = 60.0;
+  public static final double angleArmsMotorEffectiveGearRatio = 50.0;
+  public static final double angleArmsSetpointTolerance = 1.0;
+  public static final double angleArmsReferencePositionMotorEncoderUnits = 0.0;
+
   // Motor magic numbers
   public static final double bottomMotorForwardLowGoalSpeed = 0.8;
   public static final double topMotorForwardLowGoalSpeed = 0.7;
@@ -77,8 +91,8 @@ public final class Constants
   public static final double telescopingArmsStopSpeed = 0.0;
 
   // Ball storage \\
-  public static final double ballStoreSpeed = -0.4;
-  public static final double ballRetrieveSpeed = 0.4;
+  public static final double ballStoreSpeed = -0.5;
+  public static final double ballRetrieveSpeed = 0.5;
   public static final int maximumStoredBallCount = 2;
 
   // CAN BUS NUMBERS \\
@@ -99,19 +113,6 @@ public final class Constants
   public static int driveMotorLeftRearCanId = 8;
   public static int driveMotorRightFrontCanId = 11;
   public static int driveMotorRightRearCanId = 12;
-
-  // Pneumatics Control Module
-  public static final PneumaticsModuleType robotPneumaticsControlModuleType = PneumaticsModuleType.CTREPCM;
-  public static final int ctrePneumaticsControlModuleCanId = 0;
-  public static final int revPneumaticsControlModuleCanId = 1;
-  public static final int robotPneumaticsControlModuleCanId = 
-    robotPneumaticsControlModuleType == PneumaticsModuleType.CTREPCM ? ctrePneumaticsControlModuleCanId : revPneumaticsControlModuleCanId;
-  public static final int bothChassisAngleArmSolenoidForwardChannel = 0;
-  public static final int bothChassisAngleArmSolenoidReverseChannel = 1;
-  public static final int bothJawsAngleArmSolenoidForwardChannel = 4;
-  public static final int bothJawsAngleArmSolenoidReverseChannel = 5;
-  public static final int jawsClutchSolenoidForwardChannel = 6;
-  public static final int jawsClutchSolenoidReverseChannel = 7;
 
   // Digital Input Channel Numbers
   public static final int jawsIntakeStopLimitSwitchChannel = 0;

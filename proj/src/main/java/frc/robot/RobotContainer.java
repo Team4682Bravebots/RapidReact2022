@@ -33,7 +33,6 @@ public class RobotContainer
   private BallStorage m_ballStorage = null;
   private DriveTrain m_driveTrain = null;
   private Jaws m_jaws = null;
-  private Pneumatics m_pneumatics  = null;
   private Shooter m_shooter = null;
   private TelescopingArms m_telescopingArms = null;
   private Camera m_camera = null;
@@ -64,9 +63,6 @@ public class RobotContainer
     // initialize the shooter
     this.initializeShooter();
 
-    // initialize the pneumatics - mostly just turn the compressor on ...
-    this.initializePneumatics();
-
     // initialize the telescoping arms
     this.initializeTelescopingArms();
 
@@ -78,7 +74,6 @@ public class RobotContainer
     m_collection.setBallStorageSubsystem(m_ballStorage);
     m_collection.setDriveTrainSubsystem(m_driveTrain);
     m_collection.setJawsSubsystem(m_jaws);
-    m_collection.setPneumaticsSubsystem(m_pneumatics);
     m_collection.setShooterSubsystem(m_shooter);
     m_collection.setTelescopingArmsSubsystem(m_telescopingArms);
     m_collection.setManualInputInterfaces(m_manualInput);
@@ -114,21 +109,29 @@ public class RobotContainer
       System.out.println("************************************** WARNING ******************************************");
       System.out.println("************************************** WARNING ******************************************");
 
-      // for each of the sensor driven systems do a reinit of the sensors
+      // reset drive train sensors
       if(m_driveTrain != null)
       {
         m_driveTrain.forceSensorReset();
       }
-      // for each of the sensor driven systems do a reinit of the sensors
+
+      // reset jaws sensors
       if(m_jaws != null)
       {
         m_jaws.forceSensorReset();
       }
-      // for each of the sensor driven systems do a reinit of the sensors
+
+      // reset telescoping arms sensors
       if(m_telescopingArms != null)
       {
         m_telescopingArms.forceSensorReset();
       }
+
+      // reset angle arms sensors
+      if(m_angleArms != null)
+      {
+        m_angleArms.forceSensorReset();
+      }      
     }
   }
 
@@ -256,25 +259,6 @@ public class RobotContainer
     }
   }
 
-  private void initializePneumatics()
-  {
-    if(InstalledHardware.compressorInstalled &&
-      InstalledHardware.pressureReliefSwitchInstalled)
-    {
-      m_pneumatics = new Pneumatics();
-      m_pneumatics.setDefaultCommand(
-          new RunCommand(
-            () ->
-            m_pneumatics.compressorOn(),
-          m_pneumatics));    
-      System.out.println("SUCCESS: initializePneumatics");
-    }
-    else
-    {
-      System.out.println("FAIL: initializePneumatics");
-    }
-  }
-
 
   private void initializeShooter()
   {
@@ -294,7 +278,6 @@ public class RobotContainer
       System.out.println("FAIL: initializeShooter");
     }
   }
-
 
   private void initializeTelescopingArms()
   {
