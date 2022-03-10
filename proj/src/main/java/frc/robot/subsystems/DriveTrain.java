@@ -11,11 +11,10 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
-import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
+import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -47,10 +46,7 @@ public class DriveTrain extends SubsystemBase implements Sendable
   private static final double wheelDiameterInches = 6.0;
   private static final double effectiveWheelMotorGearBoxRatio = (40.0 / 12.0) * (40.0 / 14.0);
 
-  // TODO - it seems we will not be using the gearing below, instead the gearing above
-//  private static final double effectiveWheelMotorGearBoxRatio = (40.0 / 12.0) * (34.0 / 20.0);
-//  private static final double effectiveWheelMotorGearBoxRatio = (40.0 / 12.0) * (30.0 / 24.0);
-
+  private static final int motorSettingTimeout = 0; //Constants.kTimeoutMs;
   private static final double halfRotationEncoderTicks = Constants.CtreTalonFx500EncoderTicksPerRevolution / 2;
 
   private boolean motionMagicRunning = false;
@@ -66,7 +62,7 @@ public class DriveTrain extends SubsystemBase implements Sendable
     CommandScheduler.getInstance().registerSubsystem(this);
   }
 
-  /**
+  /**arcade
   * A method to take in x and y stick inputs and turn them into right and left motor speeds
   * considering arcade style driving
   *
@@ -75,8 +71,9 @@ public class DriveTrain extends SubsystemBase implements Sendable
   */
   public void arcadeDrive(double yAxisValue, double xAxisValue)
   {
+    //this.initializeMotorsDirectDrive();
     this.initializeMotorsDirectDrive();
-    drive.arcadeDrive(yAxisValue, xAxisValue);
+    drive.arcadeDrive(xAxisValue, yAxisValue);
   }
 
   /**
@@ -151,8 +148,8 @@ public class DriveTrain extends SubsystemBase implements Sendable
         Math.abs(rightRear.getClosedLoopError()) < lastMotionMagicTargetError)
       {
         this.initializeMotorsDirectDrive();
-        leftRear.set(ControlMode.PercentOutput, 0.0);
-        rightRear.set(ControlMode.PercentOutput, 0.0);
+        leftFront.set(ControlMode.PercentOutput, 0.0);
+        rightFront.set(ControlMode.PercentOutput, 0.0);
         motionMagicRunning = false;
       }
     }
@@ -237,28 +234,32 @@ public class DriveTrain extends SubsystemBase implements Sendable
 
   private void moveWheelsDistance(double leftWheelDistanceInches, double rightWheelDistanceInches, double targetTimeInSeconds)
   {
+    System.out.println("START moveWheelsDistance!");
     double leftDeltaEncoderTicks = this.getEncoderUnitsFromTrackDistanceInInches(leftWheelDistanceInches);
     double rightDeltaEncoderTicks = this.getEncoderUnitsFromTrackDistanceInInches(rightWheelDistanceInches);   
 
+    /*
     // TODO - with trapazoidal, this won't be fast enough - more work here for sure ...
     double leftAverageVelocityEncoderTicksPer100Milliseconds = leftDeltaEncoderTicks/(targetTimeInSeconds*1000);
     double rightAverageVelocityEncoderTicksPer100Milliseconds = rightDeltaEncoderTicks/(targetTimeInSeconds*1000);
 
     // Motion Magic Configurations
-    leftRear.configMotionAcceleration(leftAverageVelocityEncoderTicksPer100Milliseconds, Constants.kTimeoutMs);
-		leftRear.configMotionCruiseVelocity(leftAverageVelocityEncoderTicksPer100Milliseconds, Constants.kTimeoutMs);
-    rightRear.configMotionAcceleration(rightAverageVelocityEncoderTicksPer100Milliseconds, Constants.kTimeoutMs);
-		rightRear.configMotionCruiseVelocity(rightAverageVelocityEncoderTicksPer100Milliseconds, Constants.kTimeoutMs);
+    leftFront.configMotionAcceleration(leftAverageVelocityEncoderTicksPer100Milliseconds, Constants.kTimeoutMs);
+		leftFront.configMotionCruiseVelocity(leftAverageVelocityEncoderTicksPer100Milliseconds, Constants.kTimeoutMs);
+    rightFront.configMotionAcceleration(rightAverageVelocityEncoderTicksPer100Milliseconds, Constants.kTimeoutMs);
+		rightFront.configMotionCruiseVelocity(rightAverageVelocityEncoderTicksPer100Milliseconds, Constants.kTimeoutMs);
+    */
 
     // get ready for error calc
     double onePercentError = (Math.abs(leftDeltaEncoderTicks) + Math.abs(rightDeltaEncoderTicks)) / 2 * 0.01;
     double futureLastMotitionMagicError = onePercentError > halfRotationEncoderTicks ? halfRotationEncoderTicks : onePercentError;
 
     // move it with motion magic
-    leftRear.set(ControlMode.MotionMagic, leftDeltaEncoderTicks + this.getAverageLeftMotorEncoderPosition());
-    rightRear.set(ControlMode.MotionMagic, rightDeltaEncoderTicks + this.getAverageRightMotorEncoderPosition());
+    leftFront.set(ControlMode.MotionMagic, leftDeltaEncoderTicks + this.getAverageLeftMotorEncoderPosition());
+    rightFront.set(ControlMode.MotionMagic, rightDeltaEncoderTicks + this.getAverageRightMotorEncoderPosition());
     lastMotionMagicTargetError =  futureLastMotitionMagicError;
     motionMagicRunning = true;
+    System.out.println("END moveWheelsDistance!");
   }
 
   private double getEncoderUnitsFromTrackDistanceInInches(double wheelTrackDistanceInches)
@@ -283,78 +284,99 @@ public class DriveTrain extends SubsystemBase implements Sendable
 
   private double getAverageLeftMotorEncoderPosition()
   {
-    return (leftRear.getSelectedSensorPosition() + leftFront.getSelectedSensorPosition()) / 2;
+    return leftFront.getSelectedSensorPosition();
   }
 
   private double getAverageLeftMotorOutputSpeed()
   {
-    return (leftRear.getMotorOutputPercent() + leftFront.getMotorOutputPercent()) / 200.0;
+    return leftFront.getMotorOutputPercent() / 100.0;
   }
 
   private double getAverageRightMotorEncoderPosition()
   {
-    return (rightRear.getSelectedSensorPosition() + rightFront.getSelectedSensorPosition()) / 2;
+    return rightFront.getSelectedSensorPosition();
   }
 
   private double getAverageRightMotorOutputSpeed()
   {
-    return (rightRear.getMotorOutputPercent() + rightFront.getMotorOutputPercent()) / 200.0;
+    return rightFront.getMotorOutputPercent() / 100.0;
   }
 
   private void initializeMotorsMotionMagic()
   {
+    /*
     if(this.initalizedForMotionMagic == false)
     {
       leftFront.configFactoryDefault();
       leftRear.configFactoryDefault();
       rightFront.configFactoryDefault();
       rightRear.configFactoryDefault();
-  
+        
       // setup each side with a follower
       leftRear.follow(leftFront);
       rightRear.follow(rightFront);
-  
+
+      // LEFT FRONT LEADER
       // setup the inverted values for each motor
       leftFront.setInverted(Constants.driveMotorLeftFrontDefaultDirection);
-      leftRear.setInverted(Constants.driveMotorLeftRearDefaultDirection);
-      rightFront.setInverted(Constants.driveMotorRightFrontDefaultDirection);
-      rightRear.setInverted(Constants.driveMotorRightRearDefaultDirection);
-      
-      // setup the various settings for the motors
       leftFront.setNeutralMode(NeutralMode.Brake);
-      leftFront.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
-      leftFront.overrideLimitSwitchesEnable(true);
-      leftFront.config_kP(0, 5, 10); // TODO - fix these magic numbers!!!
-      leftFront.config_kD(0, 4000, 10); // TODO - fix these magic numbers!!!
-      leftFront.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
-      leftFront.configMotionCruiseVelocity(0.01, 0); // TODO - fix these magic numbers!!!
-      leftFront.configMotionAcceleration(0.01, 0); // TODO - fix these magic numbers!!!
-      leftFront.configStatorCurrentLimit(
-        new StatorCurrentLimitConfiguration(
-          true, // enabled | 
-          20, // Limit(amp) |
-          25, // Trigger Threshold(amp) |
-          1.0)); // Trigger Threshold Time(s)
-      //leftFront.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
-  
-      rightFront.setNeutralMode(NeutralMode.Brake);
-      rightFront.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
-      rightFront.overrideLimitSwitchesEnable(true);
-      rightFront.config_kP(0, 5, 10);
-      rightFront.config_kD(0, 4000, 10);
-      rightFront.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
-      rightFront.configMotionCruiseVelocity(0.01, 0); 
-      rightFront.configMotionAcceleration(0.01, 0);	
-      rightFront.configStatorCurrentLimit(
-        new StatorCurrentLimitConfiguration(
-          true, // enabled | 
-          20, // Limit(amp) |
-          25, // Trigger Threshold(amp) |
-          1.0)); // Trigger Threshold Time(s)
 
-      this.initalizedForMotionMagic = true;  
+      leftFront.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, Constants.kPIDLoopIdx, DriveTrain.motorSettingTimeout);
+      leftFront.setSensorPhase(false);
+      leftFront.configNeutralDeadband(0.001, DriveTrain.motorSettingTimeout);
+      leftFront.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, DriveTrain.motorSettingTimeout);
+      leftFront.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, DriveTrain.motorSettingTimeout);
+
+      // Set the peak and nominal outputs
+      leftFront.configNominalOutputForward(0.0, DriveTrain.motorSettingTimeout);
+      leftFront.configNominalOutputReverse(-0.0, DriveTrain.motorSettingTimeout);
+      leftFront.configPeakOutputForward(1.0, DriveTrain.motorSettingTimeout);
+      leftFront.configPeakOutputReverse(-1.0, DriveTrain.motorSettingTimeout);
+
+      leftFront.selectProfileSlot(Constants.kSlotIdx, Constants.kPIDLoopIdx);
+      leftFront.config_kF(Constants.kSlotIdx, Constants.kGains.kF, DriveTrain.motorSettingTimeout);
+      leftFront.config_kP(Constants.kSlotIdx, Constants.kGains.kP, DriveTrain.motorSettingTimeout);
+      leftFront.config_kI(Constants.kSlotIdx, Constants.kGains.kI, DriveTrain.motorSettingTimeout);
+      leftFront.config_kD(Constants.kSlotIdx, Constants.kGains.kD, DriveTrain.motorSettingTimeout);
+
+      leftFront.configMotionCruiseVelocity(25000, DriveTrain.motorSettingTimeout);
+      leftFront.configMotionAcceleration(10000, DriveTrain.motorSettingTimeout);
+
+      // current limit enabled | Limit(amp) | Trigger Threshold(amp) | Trigger
+      leftFront.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(false, 20, 25, 1.0));
+
+      // RIGHT FRONT LEADER
+      // setup the inverted values for each motor
+      rightFront.setInverted(Constants.driveMotorRightFrontDefaultDirection);
+      rightFront.setNeutralMode(NeutralMode.Brake);
+
+      rightFront.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, Constants.kPIDLoopIdx, DriveTrain.motorSettingTimeout);
+      rightFront.setSensorPhase(false);
+      rightFront.configNeutralDeadband(0.001, DriveTrain.motorSettingTimeout);
+      rightFront.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, DriveTrain.motorSettingTimeout);
+      rightFront.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, DriveTrain.motorSettingTimeout);
+
+      // Set the peak and nominal outputs 
+      rightFront.configNominalOutputForward(0.0, DriveTrain.motorSettingTimeout);
+      rightFront.configNominalOutputReverse(-0.0, DriveTrain.motorSettingTimeout);
+      rightFront.configPeakOutputForward(1.0, DriveTrain.motorSettingTimeout);
+      rightFront.configPeakOutputReverse(-1.0, DriveTrain.motorSettingTimeout);
+
+      rightFront.selectProfileSlot(Constants.kSlotIdx, Constants.kPIDLoopIdx);
+      rightFront.config_kF(Constants.kSlotIdx, Constants.kGains.kF, DriveTrain.motorSettingTimeout);
+      rightFront.config_kP(Constants.kSlotIdx, Constants.kGains.kP, DriveTrain.motorSettingTimeout);
+      rightFront.config_kI(Constants.kSlotIdx, Constants.kGains.kI, DriveTrain.motorSettingTimeout);
+      rightFront.config_kD(Constants.kSlotIdx, Constants.kGains.kD, DriveTrain.motorSettingTimeout);
+
+      rightFront.configMotionCruiseVelocity(25000, DriveTrain.motorSettingTimeout);
+      rightFront.configMotionAcceleration(10000, DriveTrain.motorSettingTimeout);
+
+      this.initalizedForMotionMagic = true;
+      System.out.println("initalizedForMotionMagic = true");
     }
+    */
   }
+
   private void initializeMotorsDirectDrive()
   {
     if(this.initalizedForMotionMagic == true)
@@ -364,17 +386,18 @@ public class DriveTrain extends SubsystemBase implements Sendable
       rightFront.configFactoryDefault();
       rightRear.configFactoryDefault();
   
-      // setup each side with a follower
-      leftRear.follow(leftFront);
-      rightRear.follow(rightFront);
-  
       // setup the inverted values for each motor
-      leftFront.setInverted(Constants.driveMotorLeftFrontDefaultDirection);
-      leftRear.setInverted(Constants.driveMotorLeftRearDefaultDirection);
-      rightFront.setInverted(Constants.driveMotorRightFrontDefaultDirection);
-      rightRear.setInverted(Constants.driveMotorRightRearDefaultDirection);
+      leftFront.setInverted(true);
+      leftRear.setInverted(true);
+      rightFront.setInverted(false);
+      rightRear.setInverted(false);
 
+      // setup each side with a follower
+     leftRear.follow(leftFront);
+     rightRear.follow(rightFront);
+  
       this.initalizedForMotionMagic = false;
+      System.out.println("initalizedForMotionMagic = false");
     }
   }
  

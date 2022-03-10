@@ -44,7 +44,7 @@ public class ManualInputInterfaces
    */
   public double getInputArcadeDriveX()
   {
-    return driverController.getLeftX();
+    return driverController.getLeftX() ;
   }
 
   /**
@@ -64,7 +64,7 @@ public class ManualInputInterfaces
   public double getGtaInputArcadeDriveX()
   { 
     // cubic to achieve a yaw throttle curve
-    return Math.pow(this.getInputArcadeDriveX(), 3.0);
+    return this.getInputArcadeDriveX() * 0.75;
   } 
 
   /**
@@ -129,11 +129,8 @@ public class ManualInputInterfaces
     this.bindHighLevelCommandsToButtonBoardButtons();
     this.bindLowLevelCommandsToButtonBoardButtons();
 
-    // TODO - remove this when we are no longer needing to confirm the button board is working properly
-    this.testBindCommandsToLowLevelButtonBoard();
-
     // Configure the driver xbox controller bindings
-    this.bindCommandsToCoDriverXboxButtons();
+//    this.bindCommandsToCoDriverXboxButtons();
 
     // Configure the co-driver xbox controller bindings
     this.bindCommandsToDriverXboxButtons();
@@ -182,6 +179,15 @@ public class ManualInputInterfaces
       if(subsystemCollection.getJawsSubsystem() != null)
       {
         joystickButton.whenPressed(new JawsHoldReleaseManual(subsystemCollection.getJawsSubsystem()));
+      }
+
+      JoystickButton buttonA = new JoystickButton(coDriverController, XboxController.Button.kA.value);
+      JoystickButton buttonX = new JoystickButton(coDriverController, XboxController.Button.kX.value);
+
+      if(subsystemCollection.getTelescopingArmsSubsystem() != null)
+      {
+        buttonX.whenPressed(new TelescopingArmExtendMiddle(subsystemCollection.getTelescopingArmsSubsystem()));
+        buttonA.whenPressed(new TelescopingArmRetract(subsystemCollection.getTelescopingArmsSubsystem()));
       }
     }
   }
@@ -266,8 +272,8 @@ public class ManualInputInterfaces
 
       if(subsystemCollection.getTelescopingArmsSubsystem() != null)
       {
-        telescopingArmsUp.whenPressed(new TelescopingArmsManual(subsystemCollection.getTelescopingArmsSubsystem(), Constants.telescopingArmsDefaultExtendSpeed));
-        telescopingArmsDown.whenPressed(new TelescopingArmsManual(subsystemCollection.getTelescopingArmsSubsystem(), Constants.telescopingArmsDefaultRetractSpeed));
+        telescopingArmsUp.whileHeld(new TelescopingArmsManual(subsystemCollection.getTelescopingArmsSubsystem(), Constants.telescopingArmsDefaultExtendSpeed));
+        telescopingArmsDown.whileHeld(new TelescopingArmsManual(subsystemCollection.getTelescopingArmsSubsystem(), Constants.telescopingArmsDefaultRetractSpeed));
         telescopingArmsUp.whenReleased(new TelescopingArmsManual(subsystemCollection.getTelescopingArmsSubsystem(), Constants.telescopingArmsStopSpeed));
         telescopingArmsDown.whenReleased(new TelescopingArmsManual(subsystemCollection.getTelescopingArmsSubsystem(), Constants.telescopingArmsStopSpeed));
       }
