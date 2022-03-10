@@ -13,6 +13,7 @@ package frc.robot.builders;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import frc.robot.Constants;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 
@@ -21,19 +22,19 @@ public class ClimbCommandBuilder
     /**
      * A builder method to assemble a succession of commands/steps that will attain the medium bar climb
      * Notes (Jonathan to fill in his steps from your notes here!!!):
-     * 1. action starts with robot at ground level where, in plan view, the telescoping arms have been placed between the medium bar and the high bar
-     * 2. extend telescoping arms to higher than medium bar
-     * 3. move jaws to angle arms attach position
+     * 1. move the jaws out of the way to the intake position
+     * 2. extend the climber arms
+     * 3. get the angle arms to the ready position
      * @param collection - The grouping of subystems and input content necessary to control various operations in the robot
      * @return The command that represents a succession of commands/steps that form the action associated with this method  
      */
     public static Command buildExtensionAndPairing(SubsystemCollection collection)
     {
-        JawsAngleVariable jawsToEngageAngle = new JawsAngleVariable(collection.getJawsSubsystem(), 105);
+        JawsIntake jawsOutOfTheWay = new JawsIntake(collection.getJawsSubsystem());
         TelescopingArmExtendMiddle extendArms = new TelescopingArmExtendMiddle(collection.getTelescopingArmsSubsystem());
-        AngleArmsEngageJaws engageJaws = new AngleArmsEngageJaws(collection.getAngleArmsSubsystem(), collection.getJawsSubsystem());
-        ParallelCommandGroup jawsAndExtendGroup = new ParallelCommandGroup(jawsToEngageAngle, extendArms);
-        SequentialCommandGroup overallCommandGroup = new SequentialCommandGroup(jawsAndExtendGroup, engageJaws);
+        AngleArmsAngleVariable angleArmsToReadyPosition = new AngleArmsAngleVariable(collection.getAngleArmsSubsystem(), Constants.angleArmsReadyPositionAngle);
+        ParallelCommandGroup jawsAndExtendGroup = new ParallelCommandGroup(jawsOutOfTheWay, extendArms);
+        SequentialCommandGroup overallCommandGroup = new SequentialCommandGroup(jawsAndExtendGroup, angleArmsToReadyPosition);
         return overallCommandGroup;
     }
 

@@ -14,162 +14,180 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kForward;
-import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kReverse;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
+import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
+import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import frc.robot.Constants;
 import frc.robot.InstalledHardware;
+import frc.robot.common.MotorUtils;
 
 public class AngleArms extends SubsystemBase implements Sendable
 {
-  private DoubleSolenoid bothChassisAngleArmSolenoid = null;
-  private DoubleSolenoid bothJawsAngleArmSolenoid = null; 
+  private final WPI_TalonFX rightMotor = new WPI_TalonFX(Constants.jawsMotorRightCanId);
+  private boolean motorsNeedInit = true;
+
+    /**
+     * The constructor for AngleArms
+     */
+    public AngleArms()
+    {
+        CommandScheduler.getInstance().registerSubsystem(this);
+    }
+
+    /**
+     * A method to update the sensors on this device
+     */
+    public void forceSensorReset()
+    {
+      this.initializeMotors();
+      rightMotor.setSelectedSensorPosition(Constants.angleArmsReferencePositionMotorEncoderUnits);
+    }
+
+    /**
+    * A method to obtain the Jaws current angle
+    *
+    * @return the current jaws angle
+    */
+    public double getCurrentAngleArmsAngle()
+    {
+        return this.convertMotorEncoderPositionToAngleArmsAngle(this.getAverageMotorEncoderPosition());
+    }
+
+    /**
+     * A method to return the jaws subsystem to the reference position
+     */
+    public double getAngleArmsReferencePositionAngle()
+    {
+        return Constants.angleArmsReferencePositionAngle;
+    }
+
+    @Override
+    public void initSendable(SendableBuilder builder)
+    {
+      builder.addDoubleProperty("AngleArmsAverageMotorOutput", this::getAverageMotorOutput, null);
+      builder.addDoubleProperty("AngleArmsAverageMotorEncoderPosition", this::getAverageMotorEncoderPosition, null);
+      builder.addDoubleProperty("AngleArmsCurrentAngleArmsAngle", this::getCurrentAngleArmsAngle, null);
+    }
+
+    @Override
+    public void setDefaultCommand(Command myCommand)
+    {
+        super.setDefaultCommand(myCommand);
+    }
+
+    /**
+    * a method exposed to callers to set the angle arms angle
+    *
+    * @param  targetAngle - target angle of the angle arms measured from front limit switch position
+    * @param  toleranceInDegrees - the tolerance bounds in degrees that determine if the jaws have reached the proper setting
+    * @return if the angle arms have attained the target angle setpoint and are within the tolerance threashold
+    */
+    public boolean setAngleArmsAngle(double targetAngleInDegrees, double toleranceInDegrees)
+    {
+        this.initializeMotors();
+        double trimmedAngle = MotorUtils.truncateValue(targetAngleInDegrees, Constants.angleArmsMinimumPositionAngle, Constants.angleArmsMaximumPositionAngle);
+
+        // because of follower this will set both motors
+        rightMotor.set(TalonFXControlMode.MotionMagic, convertAngleArmsAngleToMotorEncoderPosition(trimmedAngle));
+        double currentAngle = this.getCurrentAngleArmsAngle();
+
+        boolean result = (currentAngle - toleranceInDegrees >= targetAngleInDegrees && currentAngle + toleranceInDegrees <= targetAngleInDegrees); 
+  //      System.out.println("target angle = " + targetAngleInDegrees + " current angle = " + currentAngle + " result = " + result);
+        return result;
+    }
+
+    /**
+    * a method to drive the jaws motors manually
+    *
+    * @param  angleArmsSpeed - the target jaws speed
+    */
+    public void setAngleArmsSpeedManual(double angleArmsSpeed)
+    {
+        if(this.motorsNeedInit == false)
+        {
+            rightMotor.configFactoryDefault(0);
+            this.motorsNeedInit = true;
+        }
+        rightMotor.set(TalonFXControlMode.PercentOutput, MotorUtils.truncateValue(angleArmsSpeed, -1.0, 1.0));
+    }
+
+    /* *********************************************************************
+    PRIVATE METHODS
+    ************************************************************************/
+    // a method to convert a angle arms angle into the motor encoder position for the existing setup
+    private double convertAngleArmsAngleToMotorEncoderPosition(double angleArmsAngle)
+    {
+      // TODO - fix this to properly approximate what the mechanism that will be used on the robot
+      // for instance if there is a wire and a spool this might be more of a trig type function to approximate
+      // straight line movement vs on an arc - not sure what mechanical will look like
+      return angleArmsAngle * Constants.CtreTalonFx500EncoderTicksPerRevolution / Constants.DegreesPerRevolution * Constants.angleArmsMotorEffectiveGearRatio;
+    }
+
+    // a method to convert the current motor encoder position for the existing setup into angle arms angle position
+    private double convertMotorEncoderPositionToAngleArmsAngle(double angleArmsMotorEncoderPosition)
+    {
+      // TODO - fix this to properly approximate what the mechanism that will be used on the robot
+      // for instance if there is a wire and a spool this might be more of a trig type function to approximate
+      // straight line movement vs on an arc - not sure what mechanical will look like
+      return angleArmsMotorEncoderPosition / Constants.CtreTalonFx500EncoderTicksPerRevolution * Constants.DegreesPerRevolution / Constants.angleArmsMotorEffectiveGearRatio;
+    }
+
+    private double getAverageMotorEncoderPosition()
+    {
+      return rightMotor.getSelectedSensorPosition();
+    }
+
+    private double getAverageMotorOutput()
+    {
+      return rightMotor.getMotorOutputPercent();
+    }
+
+    // a method devoted to establishing proper startup of the jaws motors
+    // this method sets all of the key settings that will help in motion magic
+    private void initializeMotors()
+    {
+      if(motorsNeedInit)
+      {
+        rightMotor.configFactoryDefault();
+        rightMotor.setNeutralMode(NeutralMode.Brake);
+        rightMotor.setInverted(Constants.jawsRightMotorDefaultDirection);
   
-  private DoubleSolenoid.Value chassisEngaged = kForward;
-  private DoubleSolenoid.Value chassisDisengaged = kReverse;
-  private DoubleSolenoid.Value jawsEngaged = kForward;
-  private DoubleSolenoid.Value jawsDisengaged = kReverse;
-
-  private DoubleSolenoid.Value currentChassisSetting = kReverse;
-  private DoubleSolenoid.Value currentJawsSetting = kReverse;
-
-  /**
-   * The constructor for AngleArms
-   */
-  public AngleArms()
-  {
-    bothChassisAngleArmSolenoid = new DoubleSolenoid(
-      Constants.robotPneumaticsControlModuleType,
-      Constants.bothChassisAngleArmSolenoidForwardChannel,
-      Constants.bothChassisAngleArmSolenoidReverseChannel);
-    this.engageChassis();
-    bothJawsAngleArmSolenoid = new DoubleSolenoid(
-      Constants.robotPneumaticsControlModuleType,
-      Constants.bothJawsAngleArmSolenoidForwardChannel,
-      Constants.bothJawsAngleArmSolenoidReverseChannel);
-    this.disengageJaws();
-  CommandScheduler.getInstance().registerSubsystem(this);
-  }
-
-  /**
-   * A method to tell the the solenoid to engage the chassis
-   */
-  public void engageChassis()
-  {
-    if(currentChassisSetting != this.chassisEngaged)
-    {
-      this.manualChassisConnection(this.chassisEngaged);
-    }
-  }
-
-  /**
-   * A method to tell the the solenoid to disengage the chassis
-   */
-  public void disengageChassis()
-  {
-    if(currentChassisSetting != this.chassisDisengaged)
-    {
-      this.manualChassisConnection(this.chassisDisengaged);
-    }
-  }
-
-  /**
-   * A method to tell the the solenoid to engage the chassis
-   */
-  public void engageJaws()
-  {
-    if(this.currentJawsSetting != this.jawsEngaged)
-    {
-      this.manualJawsConnection(this.jawsEngaged);
-    }
-  }
-
-  /**
-   * A method to tell the the solenoid to disengage the chassis
-   */
-  public void disengageJaws()
-  {
-    if(this.currentJawsSetting != this.jawsDisengaged)
-    {
-      this.manualJawsConnection(this.jawsDisengaged);
-    }
-  }
-
-  @Override
-  public void initSendable(SendableBuilder builder)
-  {
-    builder.addBooleanProperty("AngleArmsAndChassisEngaged", this::getAngleArmsAndChassisEngaged, null);
-    builder.addBooleanProperty("AngleArmsAndJawsEngaged", this::getAngleArmsAndJawsEngaged, null);
-  }
-
-  /**
-   * A method to tell tell the chassis connection to do the opposite of its current setting
-   * If currently set to engaged it will disengage
-   * If currently set to disengage it will engage
-   */
-  public void toggleChassisConnection()
-  {
-    this.manualChassisConnection(
-      currentJawsSetting == DoubleSolenoid.Value.kForward ? DoubleSolenoid.Value.kReverse : DoubleSolenoid.Value.kForward
-    );
-  }
-
-  /**
-   * A method to tell tell the jaws connection to do the opposite of its current setting
-   * If currently set to engaged it will disengage
-   * If currently set to disengage it will engage
-   */
-  public void toggleJawsConnection()
-  {
-    this.manualJawsConnection(
-      currentJawsSetting == DoubleSolenoid.Value.kForward ? DoubleSolenoid.Value.kReverse : DoubleSolenoid.Value.kForward
-    );
-  }
-
-  @Override
-  public void setDefaultCommand(Command myCommand)
-  {
-      super.setDefaultCommand(myCommand);
-  }
-
-  /**
-   * Obtain if the current subsystem has the angle arms engagued with the chassis
-   * @return True if the angle arms are engaged with the chassis, else false (implying disengaged)
-   */
-  private boolean getAngleArmsAndChassisEngaged()
-  {
-    return this.currentChassisSetting == this.chassisEngaged;
-  }
-
-  /**
-   * Obtain if the current subsystem has the angle arms engagued with the jaws
-   * @return True if the angle arms are engaged with the jaws, else false (implying disengaged)
-   */
-  private boolean getAngleArmsAndJawsEngaged()
-  {
-    return this.currentJawsSetting == this.jawsEngaged;
-  }
+        rightMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+        rightMotor.setSensorPhase(false);
+        rightMotor.configNeutralDeadband(0.001, Constants.kTimeoutMs);
+        rightMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, Constants.kTimeoutMs);
+        rightMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, Constants.kTimeoutMs);
   
-  private void manualChassisConnection(DoubleSolenoid.Value setting)
-  {
-    if(this.currentChassisSetting != setting)
-    {
-      bothChassisAngleArmSolenoid.set(setting);
-      this.currentChassisSetting = setting;
-      System.out.println("Setting bothChassisAngleArmSolenoid to: " + currentJawsSetting.toString());
-    }
-  }
-
-  private void manualJawsConnection(DoubleSolenoid.Value setting)
-  {
-    if(this.currentJawsSetting != setting)
-    {
-      bothJawsAngleArmSolenoid.set(setting);
-      this.currentJawsSetting = setting;
-      System.out.println("Setting bothJawsAngleArmSolenoid to: " + currentJawsSetting.toString());
-    }
-  }
-
+        /* Set the peak and nominal outputs */
+        rightMotor.configNominalOutputForward(0.0, Constants.kTimeoutMs);
+        rightMotor.configNominalOutputReverse(-0.0, Constants.kTimeoutMs);
+        rightMotor.configPeakOutputForward(1.0, Constants.kTimeoutMs);
+        rightMotor.configPeakOutputReverse(-1.0, Constants.kTimeoutMs);
+  
+        rightMotor.selectProfileSlot(Constants.kSlotIdx, Constants.kPIDLoopIdx);
+        rightMotor.config_kF(Constants.kSlotIdx, Constants.kGains.kF, Constants.kTimeoutMs);
+        rightMotor.config_kP(Constants.kSlotIdx, Constants.kGains.kP, Constants.kTimeoutMs);
+        rightMotor.config_kI(Constants.kSlotIdx, Constants.kGains.kI, Constants.kTimeoutMs);
+        rightMotor.config_kD(Constants.kSlotIdx, Constants.kGains.kD, Constants.kTimeoutMs);
+  
+        rightMotor.setNeutralMode(NeutralMode.Brake);
+  
+        rightMotor.configMotionCruiseVelocity(25000, Constants.kTimeoutMs);
+        rightMotor.configMotionAcceleration(10000, Constants.kTimeoutMs);
+  
+        // current limit enabled | Limit(amp) | Trigger Threshold(amp) | Trigger
+        // Threshold Time(s) */
+        rightMotor.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(false, 20, 25, 1.0));
+   
+        motorsNeedInit = false;
+      }
+   }
 }

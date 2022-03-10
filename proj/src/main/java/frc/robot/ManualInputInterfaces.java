@@ -166,8 +166,8 @@ public class ManualInputInterfaces
 
       if(subsystemCollection.getAngleArmsSubsystem() != null)
       {
-        buttonB.whenPressed(new AngleArmsJawsManual(subsystemCollection.getAngleArmsSubsystem()));
-        buttonY.whenPressed(new AngleArmsChassisManual(subsystemCollection.getAngleArmsSubsystem())); 
+        buttonB.whenPressed(new AngleArmsManual(subsystemCollection.getAngleArmsSubsystem(), Constants.angleArmsManualMotorReverseSpeed));
+        buttonY.whenPressed(new AngleArmsManual(subsystemCollection.getAngleArmsSubsystem(), Constants.angleArmsManualMotorForwardSpeed)); 
       }
       if(subsystemCollection.getBallStorageSubsystem() != null)
       {
@@ -175,10 +175,6 @@ public class ManualInputInterfaces
         bumperRight.whenHeld(new BallStorageRetrieveManual(subsystemCollection.getBallStorageSubsystem()));
         bumperLeft.whenReleased(new BallStorageAllStopManual(subsystemCollection.getBallStorageSubsystem()));
         bumperRight.whenReleased(new BallStorageAllStopManual(subsystemCollection.getBallStorageSubsystem()));
-      }
-      if(subsystemCollection.getJawsSubsystem() != null)
-      {
-        joystickButton.whenPressed(new JawsHoldReleaseManual(subsystemCollection.getJawsSubsystem()));
       }
 
       JoystickButton buttonA = new JoystickButton(coDriverController, XboxController.Button.kA.value);
@@ -256,8 +252,8 @@ public class ManualInputInterfaces
   {
     if(InstalledHardware.lowLevelButtonBoardInstalled)
     {
-      JoystickButton angleArmsChassisToggle = new JoystickButton(lowLevelButtonBoard, 1);
-      JoystickButton angleArmsJawsToggle = new JoystickButton(lowLevelButtonBoard, 2);
+      JoystickButton angleArmsForward = new JoystickButton(lowLevelButtonBoard, 1);
+      JoystickButton angleArmsReverse = new JoystickButton(lowLevelButtonBoard, 2);
       JoystickButton telescopingArmsUp = new JoystickButton(lowLevelButtonBoard, 3);
       JoystickButton telescopingArmsDown = new JoystickButton(lowLevelButtonBoard, 4);
       JoystickButton jawsPositive = new JoystickButton(lowLevelButtonBoard, 5);
@@ -266,8 +262,10 @@ public class ManualInputInterfaces
 
       if(subsystemCollection.getAngleArmsSubsystem() != null)
       {
-        angleArmsChassisToggle.whenPressed(new AngleArmsChassisManual(subsystemCollection.getAngleArmsSubsystem()));
-        angleArmsJawsToggle.whenPressed(new AngleArmsJawsManual(subsystemCollection.getAngleArmsSubsystem()));
+        angleArmsForward.whileHeld(new AngleArmsManual(subsystemCollection.getAngleArmsSubsystem(), Constants.angleArmsManualMotorReverseSpeed));
+        angleArmsReverse.whileHeld(new AngleArmsManual(subsystemCollection.getAngleArmsSubsystem(), Constants.angleArmsManualMotorForwardSpeed)); 
+        angleArmsForward.whenReleased(new AngleArmsManual(subsystemCollection.getAngleArmsSubsystem(), Constants.angleArmsManualMotorStopSpeed));
+        angleArmsReverse.whenReleased(new AngleArmsManual(subsystemCollection.getAngleArmsSubsystem(), Constants.angleArmsManualMotorStopSpeed));
       }
 
       if(subsystemCollection.getTelescopingArmsSubsystem() != null)
@@ -327,16 +325,16 @@ public class ManualInputInterfaces
   {
     if(InstalledHardware.testLowLevelButtonBoardInstalled)
     {
-      JoystickButton angleArmsChassisToggle = new JoystickButton(lowLevelButtonBoard, 1);
-      JoystickButton angleArmsJawsToggle = new JoystickButton(lowLevelButtonBoard, 2);
+      JoystickButton angleArmsForward = new JoystickButton(lowLevelButtonBoard, 1);
+      JoystickButton angleArmsReverse = new JoystickButton(lowLevelButtonBoard, 2);
       JoystickButton telescopingArmsUp = new JoystickButton(lowLevelButtonBoard, 3);
       JoystickButton telescopingArmsDown = new JoystickButton(lowLevelButtonBoard, 4);
       JoystickButton jawsPositive = new JoystickButton(lowLevelButtonBoard, 5);
       JoystickButton jawsNegative = new JoystickButton(lowLevelButtonBoard, 6);
       JoystickButton jawsClutchToggle = new JoystickButton(lowLevelButtonBoard, 7);
 
-      angleArmsChassisToggle.whenPressed(new ButtonBoardButtonPress("lowLevelButtonBoard", 1));
-      angleArmsJawsToggle.whenPressed(new ButtonBoardButtonPress("lowLevelButtonBoard", 2));
+      angleArmsForward.whenPressed(new ButtonBoardButtonPress("lowLevelButtonBoard", 1));
+      angleArmsReverse.whenPressed(new ButtonBoardButtonPress("lowLevelButtonBoard", 2));
       telescopingArmsUp.whenPressed(new ButtonBoardButtonPress("lowLevelButtonBoard", 3));
       telescopingArmsDown.whenPressed(new ButtonBoardButtonPress("lowLevelButtonBoard", 4));
       jawsPositive.whenPressed(new ButtonBoardButtonPress("lowLevelButtonBoard", 5));

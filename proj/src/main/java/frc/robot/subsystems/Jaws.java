@@ -23,9 +23,6 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kForward;
-import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kReverse;
 
 import frc.robot.Constants;
 import frc.robot.common.ConsecutiveDigitalInput;
@@ -51,19 +48,9 @@ public class Jaws extends SubsystemBase implements Sendable
     private final ConsecutiveDigitalInput jawsIntakeStopLimitSwitch = 
       new ConsecutiveDigitalInput(Constants.jawsIntakeStopLimitSwitchChannel);
 
-    // TODO - update this code soon to add the commeted out code back in
-    // ALSO - see various lines in this file that comment out jaws clutch solenoid code 
-//    private final DoubleSolenoid jawsClutchSolenoid = new DoubleSolenoid(
-//      Constants.robotPneumaticsControlModuleType,
-//      Constants.jawsClutchSolenoidForwardChannel,
-//      Constants.jawsClutchSolenoidReverseChannel); 
-
     private double motorReferencePosition = 0.0;
     private boolean jawsMotionCurrentlyCalibrating = false;
     private boolean jawsMotionCalibrated = false;
-    private boolean clutchEngaged = false;
-    private DoubleSolenoid.Value clutchEngagedSetting = kForward;
-    private DoubleSolenoid.Value clutchDisengagedSetting = kReverse;
     private boolean motorsNeedInit = true;
 
     /* *********************************************************************
@@ -180,7 +167,6 @@ public class Jaws extends SubsystemBase implements Sendable
     public boolean setJawsAngle(double targetAngleInDegrees, double toleranceInDegrees)
     {
       this.initializeMotors();
-      this.resumeJawMovement();
       double trimmedAngle = MotorUtils.truncateValue(targetAngleInDegrees, Jaws.minmumTargetAngle, Jaws.maximumTargetAngle);
 
       // because of follower this will set both motors
@@ -206,7 +192,6 @@ public class Jaws extends SubsystemBase implements Sendable
         leftMotor.follow(rightMotor);
         this.motorsNeedInit = true;
       }
-      this.resumeJawMovement();
       rightMotor.set(TalonFXControlMode.PercentOutput, MotorUtils.truncateValue(jawsSpeed, -1.0, 1.0));
     }
 
@@ -216,8 +201,6 @@ public class Jaws extends SubsystemBase implements Sendable
     public void startCalibration()
     {
       // make sure the clutch is disengaged
-//      jawsClutchSolenoid.set(this.clutchDisengagedSetting);
-      clutchEngaged = false;
       if(jawsMotionCurrentlyCalibrating == false && jawsMotionCalibrated == false)
       {
         // power the motors toward the intake position
@@ -231,41 +214,9 @@ public class Jaws extends SubsystemBase implements Sendable
     */
     public void suspendJawMovement()
     {
-      if(!clutchEngaged)
-      {
-//        jawsClutchSolenoid.set(this.clutchEngagedSetting);
-        clutchEngaged = true;
-        rightMotor.set(TalonFXControlMode.PercentOutput, 0.0);
-      }      
+      rightMotor.set(TalonFXControlMode.PercentOutput, 0.0);
     }
     
-    /**
-    * a method exposed to callers to release/unlock the current jaws angle
-    */
-    public void resumeJawMovement()
-    {
-      if(clutchEngaged)
-      {
-//        jawsClutchSolenoid.set(this.clutchDisengagedSetting);
-        clutchEngaged = false;
-      }      
-    }
-
-    /**
-    * A method exposed to callers to toggle between locking and unlocking movement on the jaws
-    */
-    public void toggleJawMovement()
-    {
-      if(clutchEngaged)
-      {
-        this.resumeJawMovement();
-      }
-      else
-      {
-        this.suspendJawMovement();
-      }
-    }
-
     /* *********************************************************************
     PRIVATE METHODS
     ************************************************************************/
