@@ -2,8 +2,8 @@
 // Bishop Blanchet Robotics
 // Home of the Cybears
 // FRC - Rapid React - 2022
-// File: AngleArmsEngageJaws.java
-// Intent: Forms a command to have the AngleArm attach to the Jaws and disconnect from the chassis.
+// File: AngleArmsAngleVariable.java
+// Intent: Forms a command to have the AngleArm angle to be set to a variable angle within its range of motion.
 // ************************************************************
 
 // ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ 

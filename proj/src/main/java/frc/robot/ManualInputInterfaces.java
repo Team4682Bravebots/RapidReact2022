@@ -162,12 +162,13 @@ public class ManualInputInterfaces
       JoystickButton buttonY = new JoystickButton(coDriverController, XboxController.Button.kY.value);
       JoystickButton bumperLeft = new JoystickButton(coDriverController, XboxController.Button.kLeftBumper.value);
       JoystickButton bumperRight = new JoystickButton(coDriverController, XboxController.Button.kRightBumper.value);
-      JoystickButton joystickButton = new JoystickButton(coDriverController, XboxController.Button.kLeftStick.value);
 
       if(subsystemCollection.getAngleArmsSubsystem() != null)
       {
         buttonB.whenPressed(new AngleArmsManual(subsystemCollection.getAngleArmsSubsystem(), Constants.angleArmsManualMotorReverseSpeed));
         buttonY.whenPressed(new AngleArmsManual(subsystemCollection.getAngleArmsSubsystem(), Constants.angleArmsManualMotorForwardSpeed)); 
+        buttonB.whenReleased(new AngleArmsAllStop(subsystemCollection.getAngleArmsSubsystem()));
+        buttonY.whenReleased(new AngleArmsAllStop(subsystemCollection.getAngleArmsSubsystem()));
       }
       if(subsystemCollection.getBallStorageSubsystem() != null)
       {
@@ -262,10 +263,10 @@ public class ManualInputInterfaces
 
       if(subsystemCollection.getAngleArmsSubsystem() != null)
       {
-        angleArmsForward.whileHeld(new AngleArmsManual(subsystemCollection.getAngleArmsSubsystem(), Constants.angleArmsManualMotorReverseSpeed));
-        angleArmsReverse.whileHeld(new AngleArmsManual(subsystemCollection.getAngleArmsSubsystem(), Constants.angleArmsManualMotorForwardSpeed)); 
-        angleArmsForward.whenReleased(new AngleArmsManual(subsystemCollection.getAngleArmsSubsystem(), Constants.angleArmsManualMotorStopSpeed));
-        angleArmsReverse.whenReleased(new AngleArmsManual(subsystemCollection.getAngleArmsSubsystem(), Constants.angleArmsManualMotorStopSpeed));
+        angleArmsForward.whenPressed(new AngleArmsManual(subsystemCollection.getAngleArmsSubsystem(), Constants.angleArmsManualMotorReverseSpeed));
+        angleArmsReverse.whenPressed(new AngleArmsManual(subsystemCollection.getAngleArmsSubsystem(), Constants.angleArmsManualMotorForwardSpeed)); 
+        angleArmsForward.whenReleased(new AngleArmsAllStop(subsystemCollection.getAngleArmsSubsystem()));
+        angleArmsReverse.whenReleased(new AngleArmsAllStop(subsystemCollection.getAngleArmsSubsystem()));
       }
 
       if(subsystemCollection.getTelescopingArmsSubsystem() != null)
