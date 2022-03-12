@@ -74,8 +74,6 @@ public class InstalledHardware
     // Ball Storage Related Hardware
     public static final boolean topBallStorageMotorInstalled = true;
     public static final boolean bottomBallStorageMotorInstalled = true;
-    public static final boolean forwardBallStorageBeamBreakSensorInstalled = false;
-    public static final boolean rearBallStorageBeamBreakSensorInstalled = false;
 
     // Angle Arms Related Hardware
     public static final boolean angleArmsToJawsCylinderSolenoidPneumaticsInstalled = false;

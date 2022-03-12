@@ -28,7 +28,7 @@ public class ClimbCommandBuilder
      * @param collection - The grouping of subystems and input content necessary to control various operations in the robot
      * @return The command that represents a succession of commands/steps that form the action associated with this method  
      */
-    public static Command buildExtensionAndPairing(SubsystemCollection collection)
+    public static Command buildExtensionAndReadyPosition(SubsystemCollection collection)
     {
         JawsIntake jawsOutOfTheWay = new JawsIntake(collection.getJawsSubsystem());
         TelescopingArmExtendMiddle extendArms = new TelescopingArmExtendMiddle(collection.getTelescopingArmsSubsystem());

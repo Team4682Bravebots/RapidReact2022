@@ -46,11 +46,12 @@ public class ShooterAutomatic extends CommandBase
   private BallStorage ballStorageSubsystem;
   private Jaws jawsSubsystem;
   private boolean useShootingDirection = true;
-  private boolean storageUsingBeamBreakSensors = true;
   private Timer timer = new Timer();
   private boolean timerStarted = false;
   private boolean done = false;
-
+  private boolean jawsTestMode = false;
+  private double jawsTestAngle = 0.0;
+  
   private double bottomShooterTargetVelocityRpm = ShooterAutomatic.defaultVelocityRpm;
   private double bottomShooterVelocityToleranceRpm = ShooterAutomatic.defaultVelocityTolerance;
   private double topShooterTargetVelocityRpm = ShooterAutomatic.defaultVelocityRpm;
@@ -69,8 +70,7 @@ public class ShooterAutomatic extends CommandBase
       Shooter ShooterSubsystem,
       BallStorage BallStorageSubsystem,
       Jaws JawsSubsystem,
-      boolean directionIsShooting,
-      boolean storageHasWorkingBeamBreakSensors)
+      boolean directionIsShooting)
   {
     this.shooterSubsystem = ShooterSubsystem;
     addRequirements(ShooterSubsystem);
@@ -82,7 +82,31 @@ public class ShooterAutomatic extends CommandBase
     addRequirements(JawsSubsystem); 
 
     useShootingDirection = directionIsShooting;
-    storageUsingBeamBreakSensors = storageHasWorkingBeamBreakSensors;
+  }
+
+  // TODO - remove this after testing!!!
+  /**
+   * ONLY USE THIS CTOR DURING TESTING!!!!
+   * @param ShooterSubsystem
+   * @param BallStorageSubsystem
+   * @param directionIsShooting
+   * @param jawsTestAngle
+   */
+  public ShooterAutomatic(
+      Shooter ShooterSubsystem,
+      BallStorage BallStorageSubsystem,
+      boolean directionIsShooting,
+      double jawsTargetTestAngle)
+  {
+    this.shooterSubsystem = ShooterSubsystem;
+    addRequirements(ShooterSubsystem);
+
+    this.ballStorageSubsystem = BallStorageSubsystem;
+    addRequirements(BallStorageSubsystem); 
+
+    useShootingDirection = directionIsShooting;
+    jawsTestMode = true;
+    jawsTestAngle = jawsTargetTestAngle;
   }
 
   // Called when the command is initially scheduled.
@@ -94,7 +118,7 @@ public class ShooterAutomatic extends CommandBase
       timerStarted = false;
       timer.reset();
       // determine the target shooter velocities mapped to the current arm angle
-      double currentJawsAngle = jawsSubsystem.getJawsAngle();
+      double currentJawsAngle = jawsTestMode ? jawsTestAngle : jawsSubsystem.getJawsAngle();
       for(int inx = 0; inx < shooterIntakeTargets.length; ++inx)
       {
           double lowBar = shooterIntakeTargets[inx][0];
@@ -116,21 +140,14 @@ public class ShooterAutomatic extends CommandBase
         bottomShooterVelocityToleranceRpm = ShooterAutomatic.defaultVelocityTolerance;
         topShooterTargetVelocityRpm = ShooterAutomatic.defaultVelocityRpm;
         topShooterVelocityToleranceRpm = ShooterAutomatic.defaultVelocityTolerance;
-    }
+      }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute()
   {
-    // when no balls are present and the sensors should be used
-    // ... just mark this as done
-    if(storageUsingBeamBreakSensors == true &&
-      ballStorageSubsystem.getOnboardBallCount() <= 0)
-    {
-      done = true;
-    }
-    else
+    if(done == false)
     {
       shooterSubsystem.setShooterVelocityBottom(this.bottomShooterTargetVelocityRpm);
       shooterSubsystem.setShooterVelocityTop(this.topShooterTargetVelocityRpm);
@@ -144,42 +161,23 @@ public class ShooterAutomatic extends CommandBase
           timer.start();
           timerStarted = true;
         }
-        // when the ball storage store method returns true a ball has been stored
-        if(storageUsingBeamBreakSensors == true)
+        double targetElapsedTime = 0.0;
+        if(this.useShootingDirection)
         {
-          if(this.useShootingDirection)
-          {
-            if(ballStorageSubsystem.retrieve())
-            {
-                done = true;
-            }
-          }
-          else
-          {
-            if(ballStorageSubsystem.store())
-            {
-                done = true;
-            }
-          }
+          ballStorageSubsystem.retrieveBallManual();
+          targetElapsedTime = Constants.ballStorageRetrieveTimingSeconds;
         }
         else
         {
-          double elapsedTime = 0.0;
-          if(this.useShootingDirection)
-          {
-            ballStorageSubsystem.retrieveBallManual();
-            elapsedTime = Constants.ballStorageRetrieveTimingSeconds;
-          }
-          else
-          {
-            ballStorageSubsystem.storeBallManual();
-            elapsedTime = Constants.ballStorageStoreTimingSeconds;
-          }
+          ballStorageSubsystem.storeBallManual();
+          targetElapsedTime = Constants.ballStorageStoreTimingSeconds;
+        }
 
-          if (timer.hasElapsed(elapsedTime))
-          {
-            done = true;
-          }
+        if (timer.hasElapsed(targetElapsedTime) || done == true)
+        {
+          done = true;
+          ballStorageSubsystem.stopBallManual();
+          shooterSubsystem.stopShooter();
         }
       }
     }
@@ -189,6 +187,10 @@ public class ShooterAutomatic extends CommandBase
   @Override
   public void end(boolean interrupted)
   {
+    if(interrupted == true)
+    {
+      done = true;
+    }
     ballStorageSubsystem.stopBallManual();
     shooterSubsystem.stopShooter();
   }
