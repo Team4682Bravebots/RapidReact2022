@@ -38,10 +38,10 @@ public class InstalledHardware
     public static final boolean limelightInstalled = false;
 
     // External Input Hardware
-    public static final boolean highLevelButtonBoardInstalled = true;
-    public static final boolean lowLevelButtonBoardInstalled = true;
+    public static final boolean highLevelButtonBoardInstalled = false;
+    public static final boolean lowLevelButtonBoardInstalled = false;
     public static final boolean driverXboxControllerInstalled = true;
-    public static final boolean coDriverXboxControllerInstalled = true;
+    public static final boolean coDriverXboxControllerInstalled = false;
 
     // Pnematics Hardware
     public static final boolean compressorInstalled = false;
