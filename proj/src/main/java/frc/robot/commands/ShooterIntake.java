@@ -10,16 +10,19 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
 import frc.robot.Constants;
+import frc.robot.Constants;
 import frc.robot.subsystems.BallStorage;
 
-public class ShooterIntake extends CommandBase {
-
+public class ShooterIntake extends CommandBase
+{
+ 
   private Shooter shooterSubsystem;
   private BallStorage ballStorageSubsystem;
-  private boolean done = false;
+  private Timer timer = new Timer();
 
   /**
   * The two argument constructor for the shooter intake
@@ -40,26 +43,19 @@ public class ShooterIntake extends CommandBase {
   @Override
   public void initialize()
   {
-   done = false; 
+    timer.stop();
+    timer.reset();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute()
   {
-    // when no more balls can be stored ... just mark this as done
-    if(ballStorageSubsystem.getOnboardBallCount() >= Constants.maximumStoredBallCount)
+    // when the shot method returns true it is up to sufficient speed
+    if(shooterSubsystem.shootHighReverse())
     {
-      done = true;
-    }
-    // when the intake method returns true it is up to sufficient speed
-    else if(shooterSubsystem.intake())
-    {
-      // when the ball storage store method returns true a ball has been stored
-      if(ballStorageSubsystem.store())
-      {
-        done = true;
-      }
+      timer.start();
+      ballStorageSubsystem.store();
     }
   }
 
@@ -67,12 +63,14 @@ public class ShooterIntake extends CommandBase {
   @Override
   public void end(boolean interrupted)
   {
+    shooterSubsystem.stopShooter();
+    ballStorageSubsystem.stopBallManual();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished()
   {
-    return done;
+    return timer.get() >= Constants.ballStorageStoreTimingSeconds;
   }
 }

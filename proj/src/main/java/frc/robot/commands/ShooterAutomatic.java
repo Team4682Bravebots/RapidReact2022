@@ -47,7 +47,6 @@ public class ShooterAutomatic extends CommandBase
   private Jaws jawsSubsystem;
   private boolean useShootingDirection = true;
   private Timer timer = new Timer();
-  private boolean timerStarted = false;
   private boolean done = false;
   private boolean jawsTestMode = false;
   private double jawsTestAngle = 0.0;
@@ -115,9 +114,9 @@ public class ShooterAutomatic extends CommandBase
   {
       boolean useDefault = true;
       done = false;
-      timerStarted = false;
+      timer.stop();
       timer.reset();
-      // determine the target shooter velocities mapped to the current arm angle
+        // determine the target shooter velocities mapped to the current arm angle
       double currentJawsAngle = jawsTestMode ? jawsTestAngle : jawsSubsystem.getJawsAngle();
       for(int inx = 0; inx < shooterIntakeTargets.length; ++inx)
       {
@@ -156,11 +155,7 @@ public class ShooterAutomatic extends CommandBase
       if(shooterSubsystem.isShooterVelocityUpToSpeedBottom(this.bottomShooterVelocityToleranceRpm) &&
          shooterSubsystem.isShooterVelocityUpToSpeedTop(this.topShooterVelocityToleranceRpm))
       {
-        if(timerStarted == false)
-        {
-          timer.start();
-          timerStarted = true;
-        }
+        timer.start();
         double targetElapsedTime = 0.0;
         if(this.useShootingDirection)
         {

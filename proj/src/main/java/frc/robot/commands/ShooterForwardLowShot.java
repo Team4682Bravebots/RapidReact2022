@@ -10,15 +10,18 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
+import frc.robot.Constants;
 import frc.robot.subsystems.BallStorage;
 
-public class ShooterForwardLowShot extends CommandBase {
+public class ShooterForwardLowShot extends CommandBase
+{
  
   private Shooter shooterSubsystem;
   private BallStorage ballStorageSubsystem;
-  private boolean done = false;
+  private Timer timer = new Timer();
 
   /**
   * The two argument constructor for the shooter forward low shot
@@ -39,26 +42,19 @@ public class ShooterForwardLowShot extends CommandBase {
   @Override
   public void initialize()
   {
-   done = false; 
+    timer.stop();
+    timer.reset();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute()
   {
-    // when no balls are present ... just mark this as done
-    if(ballStorageSubsystem.getOnboardBallCount() <= 0)
-    {
-      done = true;
-    }
     // when the shot method returns true it is up to sufficient speed
-    else if(shooterSubsystem.shootLow())
+    if(shooterSubsystem.shootLow())
     {
-      // when the ball storage store method returns true a ball has been stored
-      if(ballStorageSubsystem.retrieve())
-      {
-        done = true;
-      }
+      timer.start();
+      ballStorageSubsystem.retrieve();
     }
   }
 
@@ -66,12 +62,14 @@ public class ShooterForwardLowShot extends CommandBase {
   @Override
   public void end(boolean interrupted)
   {
+    shooterSubsystem.stopShooter();
+    ballStorageSubsystem.stopBallManual();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished()
   {
-    return done;
+    return timer.get() >= Constants.ballStorageRetrieveTimingSeconds;
   }
 }

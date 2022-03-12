@@ -95,29 +95,25 @@ public final class Constants
   public static final double ballRetrieveSpeed = 0.5;
   public static final int maximumStoredBallCount = 2;
 
+  // *********************************************
   // CAN BUS NUMBERS \\
-  public static int jawsMotorRightCanId = 9;
-  public static int jawsMotorLeftCanId = 10;
-
-  //TODO - P0 - fill in proper CAN bus index for telescoping arm motors
-  public static int telescopingArmsMotorLeftCanId = 13;
-  public static int telescopingArmsMotorRightCanId = 14;
-
+  // *********************************************
   public static final int shooterMotorBottomCanId = 5;
   public static final int shooterMotorTopCanId = 6;
-
-  public static int ballStorageMotorTopCanId = 15;
-  public static int ballStorageMotorBottomCanId = 16;
 
   public static int driveMotorLeftFrontCanId = 7;
   public static int driveMotorLeftRearCanId = 8;
   public static int driveMotorRightFrontCanId = 11;
   public static int driveMotorRightRearCanId = 12;
 
-  // Digital Input Channel Numbers
-  public static final int jawsIntakeStopLimitSwitchChannel = 0;
-  public static final int ballStorageFrontBeamBreakSensorChannel = 1;
-  public static final int ballStorageRearBeamBreakSensorChannel = 2;
+  public static int jawsMotorRightCanId = 9;
+  public static int jawsMotorLeftCanId = 10;
+
+  public static int telescopingArmsMotorLeftCanId = 13;
+  public static int telescopingArmsMotorRightCanId = 14;
+
+  public static int ballStorageMotorTopCanId = 15;
+  public static int ballStorageMotorBottomCanId = 16;
 
   // MOTOR SETTINGS \\
 

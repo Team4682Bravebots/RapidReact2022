@@ -45,8 +45,6 @@ public class Jaws extends SubsystemBase implements Sendable
     ************************************************************************/
     private final WPI_TalonFX rightMotor = new WPI_TalonFX(Constants.jawsMotorRightCanId);
     private final WPI_TalonFX leftMotor = new WPI_TalonFX(Constants.jawsMotorLeftCanId);
-    private final ConsecutiveDigitalInput jawsIntakeStopLimitSwitch = 
-      new ConsecutiveDigitalInput(Constants.jawsIntakeStopLimitSwitchChannel);
 
     private double motorReferencePosition = 0.0;
     private boolean jawsMotionCurrentlyCalibrating = false;
@@ -103,38 +101,6 @@ public class Jaws extends SubsystemBase implements Sendable
       builder.addDoubleProperty("JawsAverageMotorOutput", this::getAverageMotorOutput, null);
       builder.addDoubleProperty("JawsAverageMotorEncoderPosition", this::getAverageMotorEncoderPosition, null);
       builder.addDoubleProperty("JawsApproximageJawsAngle", this::getApproximateJawsAnglePosition, null);
-    }
-    
-    /**
-    * a method to continue to watch and find out if the jaws have finished calibration
-    *
-    * @return true if calibration is complete, else false
-    */
-    public boolean isCalibrationComplete()
-    {
-      if(jawsMotionCalibrated == false)
-      {
-        // make sure the limit switch is set - switch is closed
-        // also make sure it has been closed on at least two successive calls
-        if(jawsIntakeStopLimitSwitch.get() &&
-          jawsIntakeStopLimitSwitch.getStatusCount() >= Jaws.jawsMinimumIsCalibratedConsecutiveCount)
-        {
-          // stop the motors
-          rightMotor.set(ControlMode.PercentOutput, 0.0); 
-
-          // set the motor encoders to zero
-          rightMotor.setSelectedSensorPosition(0);
-          leftMotor.setSelectedSensorPosition(0);
-
-          // get the motor encoders reference position
-          motorReferencePosition = this.getAverageMotorEncoderPosition();
-      
-          // mark things as calibrated
-          jawsMotionCalibrated = true;
-          jawsMotionCurrentlyCalibrating = false;
-        }
-      }
-      return jawsMotionCalibrated;
     }
 
     /**

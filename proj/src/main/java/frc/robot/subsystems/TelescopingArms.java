@@ -36,8 +36,6 @@ public class TelescopingArms extends SubsystemBase implements Sendable
     ************************************************************************/
     // expected to be < 1.0 due to encoder granularity being lower for Rev/Neo
     private static final double telescopingArmsMotorEncoderTicksPerDegree = Constants.RevNeoEncoderTicksPerRevolution / Constants.DegreesPerRevolution; 
-    private static final double telescopingArmsRetractSpeedDuringCalibration = -0.4;
-    private static final double telescopingArmsExtendSpeedDuringCalibration = 0.4;
     // Based on discussion with Simeon on 02/18/2022 - ~20:1
     private static final double telescopingArmsMotorToArmEffectiveGearRatio = (60.0/11.0) * (64.0/18.0);
 
@@ -55,10 +53,7 @@ public class TelescopingArms extends SubsystemBase implements Sendable
     private static final double telescopingArmsSpoolDiameterInches51to75 = 1.52; 
     private static final double telescopingArmsSpoolDiameterInches76to100 = 1.53;
     
-    private static final double telescopingArmsCalibrationCompleteSpikeFromAverageFactor = 3.0;
-    private static final int powerSampleSizeSufficient = 7;
     private static final int powerSampleSizeMax = 12;
-    private static final int extendingMovementMinimumCycles = 10;
 
     // Based on discussion with Simeon, this is true
     private static final boolean spoolWindingIsPositiveSparkMaxNeoMotorOutput = true;
@@ -79,12 +74,6 @@ public class TelescopingArms extends SubsystemBase implements Sendable
     private double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM, maxVel, minVel, maxAcc, allowedErr;
 
     private double motorReferencePosition = 0.0;
-    private int extendingMovementCycles = 0;
-    private boolean telescopingArmsMotionExtending = false;
-    private boolean telescopingArmsLeftMotionRetracting = false;
-    private boolean telescopingArmsRightMotionRetracting = false;
-    private boolean telescopingArmsLeftMotionCalibrated = false;
-    private boolean telescopingArmsRightMotionCalibrated = false;
     private ArrayDeque<Double> rightPowerList = new ArrayDeque<Double>();
     private ArrayDeque<Double> leftPowerList = new ArrayDeque<Double>();
 
@@ -120,124 +109,19 @@ public class TelescopingArms extends SubsystemBase implements Sendable
       rightEncoder.setPosition(0.0);
     }
 
-    /**
-    * A method to obtain the Arms average encoder position
-    *
-    * @return the current TelescopingArms height in Inches from the reference 'stored' position
-    */
-    public double getTelescopingArmsAverageEncoderPosition()
-    {
-      return this.getAverageMotorEncoderPosition();
-    }
-
-    /**
-    * A method to obtain the Arms height
-    *
-    * @return the current TelescopingArms height in Inches from the reference 'stored' position
-    */
-    public double getTelescopingArmsHeight()
-    {
-      return this.convertMotorEncoderPositionToTelescopingArmsHeight(this.getAverageMotorEncoderPosition());
-    }
-
-    /**
-    * A method to obtain the Arms height
-    *
-    * @return the current TelescopingArms height in Inches from the reference 'stored' position
-    */
-    public double getTelescopingArmsHeightFromBottomOfWheels()
-    {
-      return this.getTelescopingArmsHeight() + TelescopingArms.minimumArmHeightInches;
-    }
-
     @Override
     public void initSendable(SendableBuilder builder)
     {
       builder.addDoubleProperty("TelescopingArmsLeftMotorSpeed", this::getLeftMotorOutputSpeed, null);
-      builder.addDoubleProperty("TelescopingArmsRightMotorSpeed", this::getRightMotorOutputSpeed, null);
       builder.addStringProperty("TelescopingArmsLeftArmMotionDescription", this::getLeftArmMotionDescription, null);
-      builder.addStringProperty("TelescopingArmsRightArmMotionDescription", this::getRightArmMotionDescription, null);
-      builder.addDoubleProperty("TelescopingArmsAverageClimberHeightInInches", this::getAverageClimberHeightInInches, null);
-      builder.addDoubleProperty("TelescopingArmsAverageEncoderPosition", this::getAverageMotorEncoderPosition, null);
+      builder.addDoubleProperty("TelescopingArmsLeftClimberHeightInInches", this::getLeftClimberHeightInInches, null);
+      builder.addDoubleProperty("TelescopingArmsLeftEncoderPosition", this::getLeftMotorEncoderPosition, null);
+      builder.addDoubleProperty("TelescopingArmsRightMotorSpeed", this::getRightMotorOutputSpeed, null);
+      builder.addStringProperty("TelescopingArmsRightArmMotionDescription", this::getRightArmMotionDescription, null);     
+      builder.addDoubleProperty("TelescopingArmsRightClimberHeightInInches", this::getRightClimberHeightInInches, null);
+      builder.addDoubleProperty("TelescopingArmsRightEncoderPosition", this::getRightMotorEncoderPosition, null);
     }
   
-    /**
-    * a method to continue to watch and find out if the TelescopingArms have finished calibration
-    * the two arms will be calibrated independently and depend on the arms bottoming out and watching
-    * the motor current spike at the stop well above the average of previous measurements
-    *
-    * @return true if calibration is complete, else false
-    */
-    public boolean isCalibrationComplete()
-    {
-      if(telescopingArmsLeftMotionCalibrated == false || telescopingArmsRightMotionCalibrated == false)
-      {
-        // allow the arms to extend a bit so we can determine retract ending
-        if(this.telescopingArmsMotionExtending)
-        {
-          if(this.extendingMovementCycles < TelescopingArms.extendingMovementMinimumCycles)
-          {
-            ++extendingMovementCycles;
-          }
-          else
-          {
-            // power the motors toward retracted direction
-            leftMotor.set(TelescopingArms.telescopingArmsRetractSpeedDuringCalibration);
-            telescopingArmsLeftMotionRetracting = true;
-            rightMotor.set(TelescopingArms.telescopingArmsRetractSpeedDuringCalibration);
-            telescopingArmsRightMotionRetracting = true;
-            telescopingArmsMotionExtending = false;
-          }
-          this.trimAndRecordLeftPower(leftMotor.getOutputCurrent());
-          this.trimAndRecordRightPower(rightMotor.getOutputCurrent());
-        }
-
-        // determine if left motor has bottomed out and when it has stop it
-        if(telescopingArmsLeftMotionRetracting)
-        {
-          double leftCurrent = leftMotor.getOutputCurrent();
-          if(leftPowerList.size() >= TelescopingArms.powerSampleSizeSufficient)
-          {
-            double leftCurrentAverage = this.obtainAveragePowerLeft();
-            if(leftCurrentAverage * TelescopingArms.telescopingArmsCalibrationCompleteSpikeFromAverageFactor < leftCurrent)
-            {
-              // left side is complete
-              leftMotor.set(0.0);
-              telescopingArmsLeftMotionCalibrated = true;
-              telescopingArmsLeftMotionRetracting = false;
-            }
-          }
-          this.trimAndRecordLeftPower(leftCurrent);
-        }
-
-        // determine if right motor has bottomed out and when it has stop it
-        if(telescopingArmsRightMotionRetracting)
-        {
-          double rightCurrent = rightMotor.getOutputCurrent();
-          if(rightPowerList.size() >= TelescopingArms.powerSampleSizeSufficient)
-          {
-            double rightCurrentAverage = this.obtainAveragePowerRight();
-            if(rightCurrentAverage * TelescopingArms.telescopingArmsCalibrationCompleteSpikeFromAverageFactor < rightCurrent)
-            {
-              // left side is complete
-              rightMotor.set(0.0);
-              telescopingArmsRightMotionCalibrated = true;
-              telescopingArmsRightMotionRetracting = false;
-            }
-          }
-          this.trimAndRecordRightPower(rightCurrent);
-        }
-
-        // join the motors back together and set their encoders to zero
-        if(telescopingArmsLeftMotionCalibrated && telescopingArmsRightMotionCalibrated)
-        {
-          this.initializeMotorsSmartMotion();
-        }
-      }
-
-      return (telescopingArmsLeftMotionCalibrated && telescopingArmsRightMotionCalibrated);
-    }
-
     /**
     * This method will be called once per scheduler run
     */
@@ -272,12 +156,17 @@ public class TelescopingArms extends SubsystemBase implements Sendable
         telescopingArmsHeightInInches,
         0.0, // 
         TelescopingArms.maximumHeightFromStoredPositionInches);
-      // because of follower this will set both motors
       leftPidController.setReference(
         this.convertTelescopingArmsHeightToMotorEncoderPosition(trimmedHeight),
         ControlType.kSmartMotion);
-      double currentHeight = this.getTelescopingArmsHeight();
-      return (currentHeight >= telescopingArmsHeightInInches - toleranceInInches  && currentHeight <= telescopingArmsHeightInInches + toleranceInInches);
+      rightPidController.setReference(
+        this.convertTelescopingArmsHeightToMotorEncoderPosition(trimmedHeight),
+        ControlType.kSmartMotion);
+      double leftHeight = this.getLeftClimberHeightInInches();
+      double rightHeight = this.getRightClimberHeightInInches();
+      boolean isLeftDone =  (leftHeight >= telescopingArmsHeightInInches - toleranceInInches  && leftHeight <= telescopingArmsHeightInInches + toleranceInInches);
+      boolean isRightDone =  (rightHeight >= telescopingArmsHeightInInches - toleranceInInches  && rightHeight <= telescopingArmsHeightInInches + toleranceInInches);
+      return isLeftDone && isRightDone;
     }
 
     /**
@@ -290,26 +179,6 @@ public class TelescopingArms extends SubsystemBase implements Sendable
       this.initializeMotorsDirectDrive();
       leftMotor.set(MotorUtils.truncateValue(telescopingArmsSpeed, -1.0, 1.0));
       rightMotor.set(MotorUtils.truncateValue(telescopingArmsSpeed, -1.0, 1.0));
-    }
-
-    /**
-    * a method to start telescopingArms on the path toward calibration
-    */
-    public void startCalibration()
-    {
-      if(telescopingArmsMotionExtending == false &&
-        telescopingArmsLeftMotionCalibrated == false && 
-        telescopingArmsRightMotionCalibrated == false )
-      {
-        // break motors apart from one another
-        leftMotor.restoreFactoryDefaults();
-        rightMotor.restoreFactoryDefaults();
-        // power the motors toward extended direction
-        leftMotor.set(TelescopingArms.telescopingArmsExtendSpeedDuringCalibration);
-        rightMotor.set(TelescopingArms.telescopingArmsExtendSpeedDuringCalibration);
-        telescopingArmsMotionExtending = true;
-        extendingMovementCycles = 0;
-      }
     }
 
     /* *********************************************************************
@@ -417,15 +286,13 @@ public class TelescopingArms extends SubsystemBase implements Sendable
         return targetHeightInInches;
     }
 
-    private double getAverageClimberHeightInInches()
+    private double getLeftClimberHeightInInches()
     {
-      return this.convertMotorEncoderPositionToTelescopingArmsHeight(this.getAverageMotorEncoderPosition());
+      return this.convertMotorEncoderPositionToTelescopingArmsHeight(this.getLeftMotorEncoderPosition());
     }
 
-    private double getAverageMotorEncoderPosition()
+    private double getLeftMotorEncoderPosition()
     {
-      // TODO - when we know 2 arms on the robot we can update the following line
-//      return (rightEncoder.getPosition() + leftEncoder.getPosition())/2;
       return leftEncoder.getPosition();
     }
 
@@ -434,14 +301,24 @@ public class TelescopingArms extends SubsystemBase implements Sendable
       return leftMotor.getAppliedOutput();
     }
 
-    private double getRightMotorOutputSpeed()
-    {
-      return rightMotor.getAppliedOutput();
-    }
-
     private String getLeftArmMotionDescription()
     {
       return this.getArmMotionDescription(this.getLeftMotorOutputSpeed());
+    }
+
+    private double getRightClimberHeightInInches()
+    {
+      return this.convertMotorEncoderPositionToTelescopingArmsHeight(this.getRightMotorEncoderPosition());
+    }
+
+    private double getRightMotorEncoderPosition()
+    {
+      return rightEncoder.getPosition();
+    }
+
+    private double getRightMotorOutputSpeed()
+    {
+      return rightMotor.getAppliedOutput();
     }
 
     private String getRightArmMotionDescription()
@@ -476,24 +353,7 @@ public class TelescopingArms extends SubsystemBase implements Sendable
     {
       if(motorsInitalizedForSmartMotion == false)
       {
-        rightMotor.restoreFactoryDefaults();  
-        leftMotor.restoreFactoryDefaults();
-
-        leftMotor.setIdleMode(IdleMode.kBrake);
-        rightMotor.setIdleMode(IdleMode.kBrake);
-
-        rightPidController = rightMotor.getPIDController();
-        rightEncoder = rightMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, Constants.countPerRevHallSensor);
-        rightEncoder.setPositionConversionFactor((double)Constants.RevNeoEncoderTicksPerRevolution);
-
-        leftPidController = leftMotor.getPIDController();
-        leftEncoder = leftMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, Constants.countPerRevHallSensor);
-        leftEncoder.setPositionConversionFactor((double)Constants.RevNeoEncoderTicksPerRevolution);
-
-        rightMotor.setInverted(true);
-        rightMotor.follow(leftMotor);
-        rightMotor.setInverted(true);
-  
+ 
         // PID coefficients
         kP = 5e-5; 
         kI = 1e-6;
@@ -503,11 +363,18 @@ public class TelescopingArms extends SubsystemBase implements Sendable
         kMaxOutput = 1; 
         kMinOutput = -1;
         maxRPM = Constants.neoMaximumRevolutionsPerMinute;
+        int smartMotionSlot = 0;
     
         // Smart Motion Coefficients
         maxVel = maxRPM * neoMotorSpeedReductionFactor; // rpm
         maxAcc = maxVel; // 1 second to get up to full speed
-    
+
+        leftMotor.restoreFactoryDefaults();
+        leftMotor.setIdleMode(IdleMode.kBrake);
+        leftPidController = leftMotor.getPIDController();
+        leftEncoder = leftMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, Constants.countPerRevHallSensor);
+        leftEncoder.setPositionConversionFactor((double)Constants.RevNeoEncoderTicksPerRevolution);
+   
         // set PID coefficients
         leftPidController.setP(kP);
         leftPidController.setI(kI);
@@ -516,11 +383,29 @@ public class TelescopingArms extends SubsystemBase implements Sendable
         leftPidController.setFF(kFF);
         leftPidController.setOutputRange(kMinOutput, kMaxOutput);
     
-        int smartMotionSlot = 0;
         leftPidController.setSmartMotionMaxVelocity(maxVel, smartMotionSlot);
         leftPidController.setSmartMotionMinOutputVelocity(minVel, smartMotionSlot);
         leftPidController.setSmartMotionMaxAccel(maxAcc, smartMotionSlot);
         leftPidController.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot);
+
+        rightMotor.restoreFactoryDefaults();
+        rightMotor.setIdleMode(IdleMode.kBrake);
+        rightPidController = rightMotor.getPIDController();
+        rightEncoder = rightMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, Constants.countPerRevHallSensor);
+        rightEncoder.setPositionConversionFactor((double)Constants.RevNeoEncoderTicksPerRevolution);
+   
+        // set PID coefficients
+        rightPidController.setP(kP);
+        rightPidController.setI(kI);
+        rightPidController.setD(kD);
+        rightPidController.setIZone(kIz);
+        rightPidController.setFF(kFF);
+        rightPidController.setOutputRange(kMinOutput, kMaxOutput);
+    
+        rightPidController.setSmartMotionMaxVelocity(maxVel, smartMotionSlot);
+        rightPidController.setSmartMotionMinOutputVelocity(minVel, smartMotionSlot);
+        rightPidController.setSmartMotionMaxAccel(maxAcc, smartMotionSlot);
+        rightPidController.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot);
 
         this.motorsInitalizedForSmartMotion = true;
       }
