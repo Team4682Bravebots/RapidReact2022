@@ -31,8 +31,8 @@ import frc.robot.common.MotorUtils;
 
 public class AngleArms extends SubsystemBase implements Sendable
 {
-  private final WPI_TalonFX rightMotor = new WPI_TalonFX(Constants.jawsMotorRightCanId);
-  private boolean motorsNeedInit = true;
+    private final WPI_TalonFX rightMotor = new WPI_TalonFX(Constants.jawsMotorRightCanId);
+    private boolean motorsNeedInit = true;
 
     /**
      * The constructor for AngleArms
@@ -40,6 +40,7 @@ public class AngleArms extends SubsystemBase implements Sendable
     public AngleArms()
     {
         CommandScheduler.getInstance().registerSubsystem(this);
+        this.initializeMotors();
     }
 
     /**

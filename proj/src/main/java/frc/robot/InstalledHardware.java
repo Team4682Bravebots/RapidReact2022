@@ -38,8 +38,6 @@ public class InstalledHardware
     public static final boolean limelightInstalled = false;
 
     // External Input Hardware
-    public static final boolean testHighLevelButtonBoardInstalled = false;
-    public static final boolean testLowLevelButtonBoardInstalled = false;
     public static final boolean highLevelButtonBoardInstalled = true;
     public static final boolean lowLevelButtonBoardInstalled = true;
     public static final boolean driverXboxControllerInstalled = true;
@@ -50,22 +48,18 @@ public class InstalledHardware
     public static final boolean pressureReliefSwitchInstalled = false;
 
     // DriveTrain Related Hardware
-    public static final boolean leftFinalDriveShaftEncoderInstalled = false;
-    public static final boolean rightFinalDriveShaftEncoderInstalled = false;
-    public static final boolean leftFrontDriveMotorInstalled = true;
-    public static final boolean leftRearDriveMotorInstalled = true;
-    public static final boolean rightFrontDriveMotorInstalled = true;
-    public static final boolean rightRearDriveMotorInstalled = true;
+    public static final boolean leftFrontDriveMotorInstalled = false;
+    public static final boolean leftRearDriveMotorInstalled = false;
+    public static final boolean rightFrontDriveMotorInstalled = false;
+    public static final boolean rightRearDriveMotorInstalled = false;
 
     // TelescopingArms Related Hardware
     public static final boolean leftTelescopingArmsDriveMotorInstalled = true;
     public static final boolean rightTelescopingArmsDriveMotorInstalled = true;
 
     // Jaws Related Hardware
-    public static final boolean topJawsDriveMotorInstalled = true;
-    public static final boolean bottomJawsDriveMotorInstalled = true;
-    public static final boolean intakeStopJawsLmitSwitchInstalled = true;
-    public static final boolean jawsClutchCylinderSolenoidPneumaticsInstalled = true;
+    public static final boolean topJawsDriveMotorInstalled = false;
+    public static final boolean bottomJawsDriveMotorInstalled = false;
 
     // Shooter Related Hardware
     public static final boolean topShooterDriveMotorInstalled = true;
@@ -76,7 +70,6 @@ public class InstalledHardware
     public static final boolean bottomBallStorageMotorInstalled = true;
 
     // Angle Arms Related Hardware
-    public static final boolean angleArmsToJawsCylinderSolenoidPneumaticsInstalled = false;
-    public static final boolean angleArmsToChassisCylinderSolenoidPneumaticsInstalled = false;
-    
+    public static final boolean angleArmsMotorInstalled = false;
+   
 }

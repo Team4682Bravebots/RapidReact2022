@@ -44,8 +44,7 @@ public class AutonomousCommandBuilder
                 collection.getShooterSubsystem(),
                 collection.getBallStorageSubsystem(),
                 collection.getJawsSubsystem(),
-                true,
-                false);
+                true);
 
             // 2. move toward the second ball 
             DriveCommand driveForwardToBall = new DriveCommand(collection.getDriveTrainSubsystem(), 49.7, 10.0, 1.9);
@@ -57,7 +56,6 @@ public class AutonomousCommandBuilder
                 collection.getShooterSubsystem(),
                 collection.getBallStorageSubsystem(),
                 collection.getJawsSubsystem(),
-                false,
                 false);
             DriveCommand driveForwardBallScoop = new DriveCommand(collection.getDriveTrainSubsystem(), 5.0, 0.0, 0.5);
             ParallelCommandGroup ballIntakeScoop = new ParallelCommandGroup(driveForwardBallScoop, shooterIntake);
@@ -71,8 +69,7 @@ public class AutonomousCommandBuilder
                 collection.getShooterSubsystem(),
                 collection.getBallStorageSubsystem(),
                 collection.getJawsSubsystem(),
-                true,
-                false);
+                true);
 
             // 6. get out of the box
             DriveCommand driveForwardOutOfBox = new DriveCommand(collection.getDriveTrainSubsystem(), 48.0, 0.0, 1);
@@ -112,8 +109,7 @@ public class AutonomousCommandBuilder
                 collection.getShooterSubsystem(),
                 collection.getBallStorageSubsystem(),
                 collection.getJawsSubsystem(),
-                true,
-                false);
+                true);
 
             // 2. move toward the second ball 
             DriveCommand driveForwardToBall = new DriveCommand(collection.getDriveTrainSubsystem(), 38.0, 0.0, 1.5);
@@ -125,7 +121,6 @@ public class AutonomousCommandBuilder
                 collection.getShooterSubsystem(),
                 collection.getBallStorageSubsystem(),
                 collection.getJawsSubsystem(),
-                false,
                 false);
             DriveCommand driveForwardBallScoop = new DriveCommand(collection.getDriveTrainSubsystem(), 3.0, 0.0, 0.333);
             ParallelCommandGroup ballIntakeScoop = new ParallelCommandGroup(driveForwardBallScoop, shooterIntake);
@@ -135,7 +130,6 @@ public class AutonomousCommandBuilder
                 collection.getShooterSubsystem(),
                 collection.getBallStorageSubsystem(),
                 collection.getJawsSubsystem(),
-                false,
                 false);
             DriveCommand driveForwardBallScoopAgain = new DriveCommand(collection.getDriveTrainSubsystem(), 3.0, 0.0, 0.333);
             ParallelCommandGroup ballIntakeScoopAgain = new ParallelCommandGroup(driveForwardBallScoopAgain, shooterIntakeAgain);
@@ -145,8 +139,7 @@ public class AutonomousCommandBuilder
                 collection.getShooterSubsystem(),
                 collection.getBallStorageSubsystem(),
                 collection.getJawsSubsystem(),
-                true,
-                false);
+                true);
 
             // 6. build the command group
             commandGroup.addCommands(
@@ -207,8 +200,7 @@ public class AutonomousCommandBuilder
                 collection.getShooterSubsystem(),
                 collection.getBallStorageSubsystem(),
                 collection.getJawsSubsystem(),
-                true,
-                false);
+                true);
 
             // 2. move toward the second ball 
             DriveTimeCommand driveTimeCommand = new DriveTimeCommand(
