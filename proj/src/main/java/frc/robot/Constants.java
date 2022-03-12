@@ -58,15 +58,14 @@ public final class Constants
   public static final double angleArmsReferencePositionMotorEncoderUnits = 0.0;
 
   // Motor magic numbers
-  public static final double bottomMotorForwardLowGoalSpeed = 0.8;
-  public static final double topMotorForwardLowGoalSpeed = 0.7;
-  public static final double bottomMotorForwardHighGoalSpeed = 1.0;
-  public static final double topMotorForwardHighGoalSpeed = 0.95;
-  public static final double bottomMotorReverseHighGoalSpeed = 1.0;
-  public static final double topMotorReverseHighGoalSpeed = 0.95;
-  public static final double bottomMotorIntakeSpeed = -0.5;
-  public static final double topMotorIntakeSpeed = -0.4;
-  public static final double drivePowerReductionFactor = 0.75;
+  public static final double bottomMotorForwardLowGoalSpeedRpm = 700.0;
+  public static final double topMotorForwardLowGoalSpeedRpm = 600.0;
+  public static final double bottomMotorForwardHighGoalSpeedRpm = 1300.0;
+  public static final double topMotorForwardHighGoalSpeedRpm = 1000.0;
+  public static final double bottomMotorReverseHighGoalSpeedRpm = 1300.0;
+  public static final double topMotorReverseHighGoalSpeedRpm = 1000.0;
+  public static final double bottomMotorIntakeSpeedRpm = -500.0;
+  public static final double topMotorIntakeSpeedRpm = -500.0;
   
   // Jaws reach points \\
   public static final double jawsIntakePositionAngle = 0.0;

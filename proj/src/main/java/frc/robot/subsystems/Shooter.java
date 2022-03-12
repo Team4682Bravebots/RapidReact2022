@@ -120,11 +120,10 @@ public class Shooter extends SubsystemBase implements Sendable
    */
   public boolean intake()
   {
-    topMotor.set(ControlMode.PercentOutput, Constants.topMotorIntakeSpeed);
-    bottomMotor.set(ControlMode.PercentOutput, Constants.bottomMotorIntakeSpeed);
-    boolean rtnVal = isMotorUpToSpeed(topMotor, Constants.topMotorIntakeSpeed);
-    rtnVal &= isMotorUpToSpeed(bottomMotor, Constants.bottomMotorIntakeSpeed);
-    return rtnVal;
+    this.setShooterVelocityTop(Constants.topMotorIntakeSpeedRpm);
+    this.setShooterVelocityBottom(Constants.bottomMotorIntakeSpeedRpm);
+    return this.isShooterVelocityUpToSpeedTop(Constants.topMotorIntakeSpeedRpm) &&
+     this.isShooterVelocityUpToSpeedBottom(Constants.bottomMotorIntakeSpeedRpm);
   }
 
   /**
@@ -162,11 +161,10 @@ public class Shooter extends SubsystemBase implements Sendable
    */
   public boolean shootLow()
   {
-    topMotor.set(ControlMode.PercentOutput, Constants.topMotorForwardLowGoalSpeed);
-    bottomMotor.set(ControlMode.PercentOutput, Constants.bottomMotorForwardLowGoalSpeed);
-    boolean rtnVal = isMotorUpToSpeed(topMotor, Constants.topMotorForwardLowGoalSpeed);
-    rtnVal &= isMotorUpToSpeed(bottomMotor, Constants.bottomMotorForwardLowGoalSpeed);
-    return rtnVal;
+    this.setShooterVelocityTop(Constants.topMotorForwardLowGoalSpeedRpm);
+    this.setShooterVelocityBottom(Constants.bottomMotorForwardLowGoalSpeedRpm);
+    return this.isShooterVelocityUpToSpeedTop(Constants.topMotorForwardLowGoalSpeedRpm) &&
+     this.isShooterVelocityUpToSpeedBottom(Constants.bottomMotorForwardLowGoalSpeedRpm);
   }
 
   /**
@@ -175,11 +173,10 @@ public class Shooter extends SubsystemBase implements Sendable
    */
   public boolean shootHigh()
   {
-    topMotor.set(ControlMode.PercentOutput, Constants.topMotorForwardHighGoalSpeed);
-    bottomMotor.set(ControlMode.PercentOutput, Constants.bottomMotorForwardHighGoalSpeed);
-    boolean rtnVal = isMotorUpToSpeed(topMotor, Constants.topMotorForwardHighGoalSpeed);
-    rtnVal &= isMotorUpToSpeed(bottomMotor, Constants.bottomMotorForwardHighGoalSpeed);
-    return rtnVal;
+    this.setShooterVelocityTop(Constants.topMotorForwardHighGoalSpeedRpm);
+    this.setShooterVelocityBottom(Constants.bottomMotorForwardHighGoalSpeedRpm);
+    return this.isShooterVelocityUpToSpeedTop(Constants.topMotorForwardHighGoalSpeedRpm) &&
+     this.isShooterVelocityUpToSpeedBottom(Constants.bottomMotorForwardHighGoalSpeedRpm);
   }
 
   /**
@@ -188,11 +185,10 @@ public class Shooter extends SubsystemBase implements Sendable
    */
   public boolean shootHighReverse()
   {
-    topMotor.set(ControlMode.PercentOutput, Constants.topMotorReverseHighGoalSpeed);
-    bottomMotor.set(ControlMode.PercentOutput, Constants.bottomMotorReverseHighGoalSpeed);
-    boolean rtnVal = isMotorUpToSpeed(topMotor, Constants.topMotorReverseHighGoalSpeed);
-    rtnVal &= isMotorUpToSpeed(bottomMotor, Constants.bottomMotorReverseHighGoalSpeed);
-    return rtnVal;
+    this.setShooterVelocityTop(Constants.topMotorReverseHighGoalSpeedRpm);
+    this.setShooterVelocityBottom(Constants.bottomMotorReverseHighGoalSpeedRpm);
+    return this.isShooterVelocityUpToSpeedTop(Constants.topMotorReverseHighGoalSpeedRpm) &&
+     this.isShooterVelocityUpToSpeedBottom(Constants.bottomMotorReverseHighGoalSpeedRpm);
   }
 
   /**
@@ -265,13 +261,6 @@ public class Shooter extends SubsystemBase implements Sendable
       Constants.CtreTalonFx500EncoderTicksPerRevolution *
       targetGearRatio / 600.0;
     return targetUnitsPer100ms;
-  }
-
-  private boolean isMotorUpToSpeed(WPI_TalonFX motor, double targetSpeed)
-  {
-    double approximateMotorVelocityTicksPerSecond = motor.getSelectedSensorVelocity() * 10;
-    return (approximateMotorVelocityTicksPerSecond > 
-      Shooter.talonMaximumTicksPerSecond * targetSpeed * Shooter.velocitySufficientWarmupThreshold);
   }
 
   /**
