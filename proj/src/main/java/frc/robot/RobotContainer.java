@@ -257,11 +257,6 @@ public class RobotContainer
       InstalledHardware.bottomShooterDriveMotorInstalled)
     {
       m_shooter = new Shooter();
-      m_shooter.setDefaultCommand(
-          new RunCommand(
-            () ->
-            m_shooter.setShooterManual(m_manualInput.getInputShooter()),
-          m_shooter));
       System.out.println("SUCCESS: initializeShooter");
     }
     else

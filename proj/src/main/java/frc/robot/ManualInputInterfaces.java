@@ -24,7 +24,7 @@ public class ManualInputInterfaces
 {
   // sets joystick variables to joysticks
   private XboxController driverController = new XboxController(Constants.portDriverController); 
-  private XboxController coDriverController = new XboxController(Constants.portCoDriverController);
+  private XboxController coDriverController = new XboxController(Constants.portCoDriverController); 
   private Joystick highLevelButtonBoard = new Joystick(Constants.highLevelButtonBoardPort);
   private Joystick lowLevelButtonBoard = new Joystick(Constants.lowLevelButtonBoardPort);
 
@@ -45,7 +45,7 @@ public class ManualInputInterfaces
    */
   public double getInputArcadeDriveX()
   {
-    return driverController.getLeftX() ;
+    return driverController.getLeftX();
   }
 
   /**
@@ -96,24 +96,12 @@ public class ManualInputInterfaces
   }
 
   /**
-   * A method to get the jaws up/down input from humans
-   * @return - a double value associated with the magnitude of the jaws up/down
-   */
-  public double getInputShooter()
-  {
-    XboxController theControllerToUse = coDriverController;
-    return theControllerToUse.getLeftTriggerAxis() > theControllerToUse.getRightTriggerAxis() ? 
-           -1.0 * theControllerToUse.getLeftTriggerAxis() : 
-           theControllerToUse.getRightTriggerAxis();
-  }
-
-  /**
    * A method to get the telescoping arms up/down input from humans
    * @return - a double value associated with the magnitude of the telescoping arms up/down
    */
   public double getInputTelescopingArms()
   {
-    XboxController theControllerToUse = coDriverController;
+    XboxController theControllerToUse = driverController;
     // need to invert the y for all xbox controllers due to xbox controler having up as negative y axis
     double input = theControllerToUse.getRightY() * -1.0;
     // avoid xbox controller shadow input drift
@@ -163,8 +151,8 @@ public class ManualInputInterfaces
       JoystickButton buttonB = new JoystickButton(driverController, XboxController.Button.kB.value);
       JoystickButton buttonX = new JoystickButton(driverController, XboxController.Button.kX.value);
       JoystickButton buttonY = new JoystickButton(driverController, XboxController.Button.kY.value);
-      JoystickButton bumperLeft = new JoystickButton(coDriverController, XboxController.Button.kLeftBumper.value);
-      JoystickButton bumperRight = new JoystickButton(coDriverController, XboxController.Button.kRightBumper.value);
+      JoystickButton bumperLeft = new JoystickButton(driverController, XboxController.Button.kLeftBumper.value);
+      JoystickButton bumperRight = new JoystickButton(driverController, XboxController.Button.kRightBumper.value);
       if(subsystemCollection.getBallStorageSubsystem() != null && subsystemCollection.getShooterSubsystem() != null)
       {
         buttonA.whenPressed(
