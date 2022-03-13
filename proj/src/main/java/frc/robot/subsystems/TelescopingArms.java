@@ -66,11 +66,11 @@ public class TelescopingArms extends SubsystemBase implements Sendable
     ************************************************************************/
     // two matched motors - one for each climber side
     private CANSparkMax leftMotor = new CANSparkMax(Constants.telescopingArmsMotorLeftCanId, MotorType.kBrushless);
-//    private CANSparkMax rightMotor = new CANSparkMax(Constants.telescopingArmsMotorRightCanId, MotorType.kBrushless);
-    private SparkMaxPIDController rightPidController;
     private SparkMaxPIDController leftPidController;
-    private RelativeEncoder rightEncoder;
     private RelativeEncoder leftEncoder;
+//    private CANSparkMax rightMotor = new CANSparkMax(Constants.telescopingArmsMotorRightCanId, MotorType.kBrushless);
+//    private SparkMaxPIDController rightPidController;
+//    private RelativeEncoder rightEncoder;
     private double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM, maxVel, minVel, maxAcc, allowedErr;
 
     private double motorReferencePosition = 0.0;
@@ -106,7 +106,7 @@ public class TelescopingArms extends SubsystemBase implements Sendable
     {
       this.initializeMotorsSmartMotion();
       leftEncoder.setPosition(0.0);
-      rightEncoder.setPosition(0.0);
+//      rightEncoder.setPosition(0.0);
     }
 
     @Override
@@ -319,7 +319,8 @@ public class TelescopingArms extends SubsystemBase implements Sendable
 
     private double getRightMotorEncoderPosition()
     {
-      return rightEncoder.getPosition();
+      return 0.0;
+//      return rightEncoder.getPosition();   
     }
 
     private double getRightMotorOutputSpeed()
