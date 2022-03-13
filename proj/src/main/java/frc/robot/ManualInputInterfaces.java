@@ -167,7 +167,7 @@ public class ManualInputInterfaces
       JoystickButton bumperRight = new JoystickButton(coDriverController, XboxController.Button.kRightBumper.value);
       if(subsystemCollection.getBallStorageSubsystem() != null && subsystemCollection.getShooterSubsystem() != null)
       {
-        buttonA.whenHeld(
+        buttonA.whenPressed(
           new ParallelCommandGroup(
             new ShooterAutomatic(
               subsystemCollection.getShooterSubsystem(),
@@ -175,7 +175,7 @@ public class ManualInputInterfaces
               false,
               Constants.jawsIntakePositionAngle),
             new ButtonPress("driverController.kA", "buttonA.whenPressed")));
-        buttonB.whenHeld(
+        buttonB.whenPressed(
           new ParallelCommandGroup(
             new ShooterAutomatic(
               subsystemCollection.getShooterSubsystem(),
@@ -183,7 +183,7 @@ public class ManualInputInterfaces
               false,
               Constants.jawsLowGoalPositionAngle),
               new ButtonPress("driverController.kB", "buttonB.whenPressed")));
-        buttonX.whenHeld(
+        buttonX.whenPressed(
           new ParallelCommandGroup(
             new ShooterAutomatic(
               subsystemCollection.getShooterSubsystem(),
@@ -191,7 +191,7 @@ public class ManualInputInterfaces
               false,
               Constants.jawsHighGoalPositionAngle),
             new ButtonPress("driverController.kX", "buttonX.whenPressed")));
-        buttonY.whenHeld(
+        buttonY.whenPressed(
           new ParallelCommandGroup(
             new ShooterAutomatic(
               subsystemCollection.getShooterSubsystem(),
