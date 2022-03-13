@@ -22,7 +22,7 @@ import java.util.Iterator;
 public class ButtonPress extends CommandBase implements Sendable
 {
   private static final int maxPreviousButtonCount = 10;
-  private static final double roundFactor = 100.0;
+  private static final double roundPrecision = 100.0;
   private static ArrayDeque<String> previousButtons = new ArrayDeque<String>(ButtonPress.maxPreviousButtonCount);
   private static Timer timer = new Timer();
   private static boolean timerStarted = false;
@@ -103,9 +103,9 @@ public class ButtonPress extends CommandBase implements Sendable
   {
     return inputDevice + ":" +
       inputAction + ":" +
-      Math.round(initTime*ButtonPress.roundFactor)/ButtonPress.roundFactor + ":" +
-      Math.round(executeTime*ButtonPress.roundFactor)/ButtonPress.roundFactor + ":" +
-      Math.round(finalTime*ButtonPress.roundFactor)/ButtonPress.roundFactor;
+      Math.round(initTime*ButtonPress.roundPrecision)/ButtonPress.roundPrecision + ":" +
+      Math.round(executeTime*ButtonPress.roundPrecision)/ButtonPress.roundPrecision + ":" +
+      Math.round(finalTime*ButtonPress.roundPrecision)/ButtonPress.roundPrecision;
   }
 
 
