@@ -13,7 +13,6 @@ package frc.robot.commands;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.PS4Controller.Button;
 
@@ -23,16 +22,16 @@ import java.util.Iterator;
 public class ButtonPress extends CommandBase implements Sendable
 {
   private static final int maxPreviousButtonCount = 10;
-  private static ArrayDeque<ButtonPress> previousButtons = new ArrayDeque<ButtonPress>(ButtonPress.maxPreviousButtonCount);
+  private static final double roundFactor = 100.0;
+  private static ArrayDeque<String> previousButtons = new ArrayDeque<String>(ButtonPress.maxPreviousButtonCount);
   private static Timer timer = new Timer();
-  private boolean timerStarted = false;
+  private static boolean timerStarted = false;
 
   private String inputDevice = "";
   private String inputAction = "";
   private double initTime = 0.0;
   private double executeTime = 0.0;
   private double finalTime = 0.0;
-  private boolean didAddMe = false;
 
   /**
    * The constructor 
@@ -43,12 +42,11 @@ public class ButtonPress extends CommandBase implements Sendable
   {
       inputDevice = inputDeviceDescription;
       inputAction = inputActionDescription;
-
-      if(!timerStarted)
+      if(timerStarted == false)
       {
+        timerStarted = true;
         timer.reset();
         timer.start();
-        timerStarted = true;
       }
   }
 
@@ -56,8 +54,9 @@ public class ButtonPress extends CommandBase implements Sendable
   @Override
   public void initialize()
   {
-    didAddMe = false;
     initTime = timer.get();
+    executeTime = 0.0;
+    finalTime = 0.0;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -70,22 +69,16 @@ public class ButtonPress extends CommandBase implements Sendable
   @Override
   public void initSendable(SendableBuilder builder)
   {
-    if(didAddMe == false)
-    {
-      previousButtons.addFirst(this);
-      didAddMe = true;
-    }
-
     int inx = 0;
     for (Iterator buttonIter = previousButtons.iterator(); buttonIter.hasNext(); ++inx)
     {
-      ButtonPress pastButtonPress = (ButtonPress)buttonIter.next();
+      String pastButtonPressDescr = (String)buttonIter.next();
       if(inx < ButtonPress.maxPreviousButtonCount)
       {
-        builder.addStringProperty("PreviousButtonPress" + inx, pastButtonPress::toString, null);
+        builder.addStringProperty("PreviousButtonPress" + inx, pastButtonPressDescr::toString, null);
       }
     }
-    for(int jnx = inx - ButtonPress.maxPreviousButtonCount; inx >= 0; --jnx)
+    for(int jnx = inx - ButtonPress.maxPreviousButtonCount; jnx > 0; --jnx)
     {
       previousButtons.removeLast();
     }
@@ -96,6 +89,9 @@ public class ButtonPress extends CommandBase implements Sendable
   public void end(boolean interrupted)
   {
     finalTime = timer.get();
+    String buttonPressDescription = this.toString();
+    System.out.println(buttonPressDescription);
+    previousButtons.addFirst(buttonPressDescription);
   }
 
   // Returns true when the command should end.
@@ -108,6 +104,10 @@ public class ButtonPress extends CommandBase implements Sendable
   @Override
   public String toString()
   {
-    return inputDevice + ":" + inputAction + ":" + Math.round(initTime*10.0)/10.0 + ":" + Math.round(executeTime*10)/10 + ":" + Math.round(finalTime*10.0)/10.0;
+    return inputDevice + ":" +
+      inputAction + ":" +
+      Math.round(initTime*ButtonPress.roundFactor)/ButtonPress.roundFactor + ":" +
+      Math.round(executeTime*ButtonPress.roundFactor)/ButtonPress.roundFactor + ":" +
+      Math.round(finalTime*ButtonPress.roundFactor)/ButtonPress.roundFactor;
   }
 }
