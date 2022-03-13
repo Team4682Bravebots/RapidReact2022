@@ -69,19 +69,16 @@ public class ButtonPress extends CommandBase implements Sendable
   @Override
   public void initSendable(SendableBuilder builder)
   {
-    int inx = 0;
-    for (Iterator buttonIter = previousButtons.iterator(); buttonIter.hasNext(); ++inx)
-    {
-      String pastButtonPressDescr = (String)buttonIter.next();
-      if(inx < ButtonPress.maxPreviousButtonCount)
-      {
-        builder.addStringProperty("PreviousButtonPress" + inx, pastButtonPressDescr::toString, null);
-      }
-    }
-    for(int jnx = inx - ButtonPress.maxPreviousButtonCount; jnx > 0; --jnx)
-    {
-      previousButtons.removeLast();
-    }
+    builder.addStringProperty("PreviousButtonPress0", ButtonPress::getButtonDescription0, null);
+    builder.addStringProperty("PreviousButtonPress1", ButtonPress::getButtonDescription1, null);
+    builder.addStringProperty("PreviousButtonPress2", ButtonPress::getButtonDescription2, null);
+    builder.addStringProperty("PreviousButtonPress3", ButtonPress::getButtonDescription3, null);
+    builder.addStringProperty("PreviousButtonPress4", ButtonPress::getButtonDescription4, null);
+    builder.addStringProperty("PreviousButtonPress5", ButtonPress::getButtonDescription5, null);
+    builder.addStringProperty("PreviousButtonPress6", ButtonPress::getButtonDescription6, null);
+    builder.addStringProperty("PreviousButtonPress7", ButtonPress::getButtonDescription7, null);
+    builder.addStringProperty("PreviousButtonPress8", ButtonPress::getButtonDescription8, null);
+    builder.addStringProperty("PreviousButtonPress9", ButtonPress::getButtonDescription9, null);
   }
   
   // Called once the command ends or is interrupted.
@@ -109,5 +106,73 @@ public class ButtonPress extends CommandBase implements Sendable
       Math.round(initTime*ButtonPress.roundFactor)/ButtonPress.roundFactor + ":" +
       Math.round(executeTime*ButtonPress.roundFactor)/ButtonPress.roundFactor + ":" +
       Math.round(finalTime*ButtonPress.roundFactor)/ButtonPress.roundFactor;
+  }
+
+
+  private static String getButtonDescription0()
+  {
+    return ButtonPress.getButtonDescription(0);
+  }
+
+  private static String getButtonDescription1()
+  {
+    return ButtonPress.getButtonDescription(1);
+  }
+
+  private static String getButtonDescription2()
+  {
+    return ButtonPress.getButtonDescription(2);
+  }
+
+  private static String getButtonDescription3()
+  {
+    return ButtonPress.getButtonDescription(3);
+  }
+
+  private static String getButtonDescription4()
+  {
+    return ButtonPress.getButtonDescription(4);
+  }
+
+  private static String getButtonDescription5()
+  {
+    return ButtonPress.getButtonDescription(5);
+  }
+
+  private static String getButtonDescription6()
+  {
+    return ButtonPress.getButtonDescription(6);
+  }
+
+  private static String getButtonDescription7()
+  {
+    return ButtonPress.getButtonDescription(7);
+  }
+
+  private static String getButtonDescription8()
+  {
+    return ButtonPress.getButtonDescription(8);
+  }
+
+  private static String getButtonDescription9()
+  {
+    return ButtonPress.getButtonDescription(9);
+  }
+
+  private static String getButtonDescription(int index)
+  {
+    // keep the button descriptions pruned to the right size
+    for(int jnx = previousButtons.size() - ButtonPress.maxPreviousButtonCount; jnx > 0; --jnx)
+    {
+      previousButtons.removeLast();
+    }
+
+    String rtnVal = "";
+    if(previousButtons.size() > index)
+    {
+      String[] values = previousButtons.toArray(new String[0]);
+      rtnVal = values[index];
+    }
+    return rtnVal;
   }
 }
