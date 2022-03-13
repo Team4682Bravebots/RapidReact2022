@@ -40,7 +40,7 @@ public class Shooter extends SubsystemBase implements Sendable
   private static final int kTimeoutMs = 30;
 
   private WPI_TalonFX topMotor = new WPI_TalonFX(Constants.shooterMotorTopCanId);
-  private WPI_TalonFX bottomMotor = new WPI_TalonFX(Constants.shooterMotorBottomCanId);
+//  private WPI_TalonFX bottomMotor = new WPI_TalonFX(Constants.shooterMotorBottomCanId);
 
   private Gains topMotorGains = new Gains(0.1, 0.001, 5, 1023/20660.0, 300, 1.00);
   private Gains bottomMotorGains = new Gains(0.1, 0.001, 5, 1023/20660.0, 300, 1.00);
@@ -50,27 +50,34 @@ public class Shooter extends SubsystemBase implements Sendable
    */
   public Shooter()
   {
-    bottomMotor.configFactoryDefault();
-    topMotor.configFactoryDefault();
-
-    // TODO - not sure we need a neutral mode ... not sure
-    bottomMotor.setNeutralMode(NeutralMode.Coast);
-    topMotor.setNeutralMode(NeutralMode.Coast);
-
     // based on content found at:
     // https://github.com/CrossTheRoadElec/Phoenix-Examples-Languages/blob/master/Java%20General/VelocityClosedLoop/src/main/java/frc/robot/Robot.java
 
-    bottomMotor.setInverted(Constants.shooterBottomMotorDefaultDirection);
+    topMotor.configFactoryDefault();
+    topMotor.setNeutralMode(NeutralMode.Coast);
     topMotor.setInverted(Constants.shooterTopMotorDefaultDirection);
-
-    bottomMotor.configNeutralDeadband(Shooter.kMinDeadband);
     topMotor.configNeutralDeadband(Shooter.kMinDeadband);
-
-    bottomMotor.configSelectedFeedbackSensor(
+    topMotor.configSelectedFeedbackSensor(
       TalonFXFeedbackDevice.IntegratedSensor,
       Shooter.kPIDLoopIdx,
       Shooter.kTimeoutMs);
-    topMotor.configSelectedFeedbackSensor(
+
+    topMotor.configNominalOutputForward(0, Shooter.kTimeoutMs);
+    topMotor.configNominalOutputReverse(0, Shooter.kTimeoutMs);
+    topMotor.configPeakOutputForward(1.0, Shooter.kTimeoutMs);
+    topMotor.configPeakOutputReverse(-1.0, Shooter.kTimeoutMs);
+
+    topMotor.config_kF(Shooter.kPIDLoopIdx, this.topMotorGains.kF, Shooter.kTimeoutMs);
+    topMotor.config_kP(Shooter.kPIDLoopIdx, this.topMotorGains.kP, Shooter.kTimeoutMs);
+    topMotor.config_kI(Shooter.kPIDLoopIdx, this.topMotorGains.kI, Shooter.kTimeoutMs);
+    topMotor.config_kD(Shooter.kPIDLoopIdx, this.topMotorGains.kD, Shooter.kTimeoutMs);
+
+    /*
+    bottomMotor.configFactoryDefault();
+    bottomMotor.setNeutralMode(NeutralMode.Coast);
+    bottomMotor.setInverted(Constants.shooterBottomMotorDefaultDirection);
+    bottomMotor.configNeutralDeadband(Shooter.kMinDeadband);
+    bottomMotor.configSelectedFeedbackSensor(
       TalonFXFeedbackDevice.IntegratedSensor,
       Shooter.kPIDLoopIdx,
       Shooter.kTimeoutMs);
@@ -80,20 +87,11 @@ public class Shooter extends SubsystemBase implements Sendable
     bottomMotor.configPeakOutputForward(1.0, Shooter.kTimeoutMs);
     bottomMotor.configPeakOutputReverse(-1.0, Shooter.kTimeoutMs);
 
-    topMotor.configNominalOutputForward(0, Shooter.kTimeoutMs);
-    topMotor.configNominalOutputReverse(0, Shooter.kTimeoutMs);
-    topMotor.configPeakOutputForward(1.0, Shooter.kTimeoutMs);
-    topMotor.configPeakOutputReverse(-1.0, Shooter.kTimeoutMs);
-
     bottomMotor.config_kF(Shooter.kPIDLoopIdx, this.bottomMotorGains.kF, Shooter.kTimeoutMs);
     bottomMotor.config_kP(Shooter.kPIDLoopIdx, this.bottomMotorGains.kP, Shooter.kTimeoutMs);
     bottomMotor.config_kI(Shooter.kPIDLoopIdx, this.bottomMotorGains.kI, Shooter.kTimeoutMs);
     bottomMotor.config_kD(Shooter.kPIDLoopIdx, this.bottomMotorGains.kD, Shooter.kTimeoutMs);
-
-    topMotor.config_kF(Shooter.kPIDLoopIdx, this.topMotorGains.kF, Shooter.kTimeoutMs);
-    topMotor.config_kP(Shooter.kPIDLoopIdx, this.topMotorGains.kP, Shooter.kTimeoutMs);
-    topMotor.config_kI(Shooter.kPIDLoopIdx, this.topMotorGains.kI, Shooter.kTimeoutMs);
-    topMotor.config_kD(Shooter.kPIDLoopIdx, this.topMotorGains.kD, Shooter.kTimeoutMs);
+    */
 
     CommandScheduler.getInstance().registerSubsystem(this);
   }
@@ -133,8 +131,9 @@ public class Shooter extends SubsystemBase implements Sendable
    */
   public boolean isShooterVelocityUpToSpeedBottom(double targetToleranceRpm)
   {
-    return Math.abs(bottomMotor.getClosedLoopError(Shooter.kPIDLoopIdx)) < 
-      this.convertShooterRpmToMotorUnitsPer100Ms(Math.abs(targetToleranceRpm), Shooter.bottomShooterGearRatio);
+    return true;
+//    return Math.abs(bottomMotor.getClosedLoopError(Shooter.kPIDLoopIdx)) < 
+//      this.convertShooterRpmToMotorUnitsPer100Ms(Math.abs(targetToleranceRpm), Shooter.bottomShooterGearRatio);
   }
 
   /**
@@ -208,7 +207,7 @@ public class Shooter extends SubsystemBase implements Sendable
    */
   public void setShooterManualBottom(double speed)
   {
-    bottomMotor.set(ControlMode.PercentOutput, MotorUtils.truncateValue(speed, -1.0, 1.0));
+//    bottomMotor.set(ControlMode.PercentOutput, MotorUtils.truncateValue(speed, -1.0, 1.0));
   }
 
   /**
@@ -226,9 +225,11 @@ public class Shooter extends SubsystemBase implements Sendable
    */
   public void setShooterVelocityBottom(double revolutionsPerMinute)
   {
+    /*
     bottomMotor.set(
       ControlMode.Velocity,
       this.convertShooterRpmToMotorUnitsPer100Ms(revolutionsPerMinute, Shooter.bottomShooterGearRatio));
+      */
   }
 
   /**
@@ -248,7 +249,7 @@ public class Shooter extends SubsystemBase implements Sendable
   public void stopShooter()
   {
     topMotor.set(ControlMode.PercentOutput, 0.0);
-    bottomMotor.set(ControlMode.PercentOutput, 0.0);
+//    bottomMotor.set(ControlMode.PercentOutput, 0.0);
   }
 
   private double convertShooterRpmToMotorUnitsPer100Ms(double targetRpm, double targetGearRatio)
@@ -269,7 +270,8 @@ public class Shooter extends SubsystemBase implements Sendable
    */
   private double getBottomShooterRevolutionsPerMinute()
   {
-    return (bottomMotor.getSelectedSensorVelocity() / Constants.CtreTalonFx500EncoderTicksPerRevolution) * 600.0 * Shooter.bottomShooterGearRatio;
+    return 0.0;
+//    return (bottomMotor.getSelectedSensorVelocity() / Constants.CtreTalonFx500EncoderTicksPerRevolution) * 600.0 * Shooter.bottomShooterGearRatio;
   }
 
   /**
@@ -287,7 +289,8 @@ public class Shooter extends SubsystemBase implements Sendable
    */
   private double getBottomMotorSpeed()
   {
-    return bottomMotor.getMotorOutputPercent() / 100.0;
+    return 0.0;
+//    return bottomMotor.getMotorOutputPercent() / 100.0;
   }
 
   /**

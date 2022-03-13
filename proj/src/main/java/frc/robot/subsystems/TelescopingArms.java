@@ -66,7 +66,7 @@ public class TelescopingArms extends SubsystemBase implements Sendable
     ************************************************************************/
     // two matched motors - one for each climber side
     private CANSparkMax leftMotor = new CANSparkMax(Constants.telescopingArmsMotorLeftCanId, MotorType.kBrushless);
-    private CANSparkMax rightMotor = new CANSparkMax(Constants.telescopingArmsMotorRightCanId, MotorType.kBrushless);
+//    private CANSparkMax rightMotor = new CANSparkMax(Constants.telescopingArmsMotorRightCanId, MotorType.kBrushless);
     private SparkMaxPIDController rightPidController;
     private SparkMaxPIDController leftPidController;
     private RelativeEncoder rightEncoder;
@@ -151,22 +151,28 @@ public class TelescopingArms extends SubsystemBase implements Sendable
     */
     public boolean setTelescopingArmsHeight(double telescopingArmsHeightInInches, double toleranceInInches)
     {
-      this.initializeMotorsSmartMotion();
+//      this.initializeMotorsSmartMotion();
       double trimmedHeight = MotorUtils.truncateValue(
         telescopingArmsHeightInInches,
         0.0, // 
         TelescopingArms.maximumHeightFromStoredPositionInches);
+
+      // left
       leftPidController.setReference(
         this.convertTelescopingArmsHeightToMotorEncoderPosition(trimmedHeight),
         ControlType.kSmartMotion);
+      double leftHeight = this.getLeftClimberHeightInInches();
+      boolean isLeftDone =  (leftHeight >= telescopingArmsHeightInInches - toleranceInInches  && leftHeight <= telescopingArmsHeightInInches + toleranceInInches);
+
+      // right
+      /*
       rightPidController.setReference(
         this.convertTelescopingArmsHeightToMotorEncoderPosition(trimmedHeight),
         ControlType.kSmartMotion);
-      double leftHeight = this.getLeftClimberHeightInInches();
       double rightHeight = this.getRightClimberHeightInInches();
-      boolean isLeftDone =  (leftHeight >= telescopingArmsHeightInInches - toleranceInInches  && leftHeight <= telescopingArmsHeightInInches + toleranceInInches);
       boolean isRightDone =  (rightHeight >= telescopingArmsHeightInInches - toleranceInInches  && rightHeight <= telescopingArmsHeightInInches + toleranceInInches);
-      return isLeftDone && isRightDone;
+      */
+      return isLeftDone; // && isRightDone;
     }
 
     /**
@@ -176,9 +182,9 @@ public class TelescopingArms extends SubsystemBase implements Sendable
     */
     public void setTelescopingArmsSpeedManual(double telescopingArmsSpeed)
     {
-      this.initializeMotorsDirectDrive();
+//      this.initializeMotorsDirectDrive();
       leftMotor.set(MotorUtils.truncateValue(telescopingArmsSpeed, -1.0, 1.0));
-      rightMotor.set(MotorUtils.truncateValue(telescopingArmsSpeed, -1.0, 1.0));
+//      rightMotor.set(MotorUtils.truncateValue(telescopingArmsSpeed, -1.0, 1.0));
     }
 
     /* *********************************************************************
@@ -318,7 +324,8 @@ public class TelescopingArms extends SubsystemBase implements Sendable
 
     private double getRightMotorOutputSpeed()
     {
-      return rightMotor.getAppliedOutput();
+      return 0.0;
+//      return rightMotor.getAppliedOutput();
     }
 
     private String getRightArmMotionDescription()
@@ -388,6 +395,7 @@ public class TelescopingArms extends SubsystemBase implements Sendable
         leftPidController.setSmartMotionMaxAccel(maxAcc, smartMotionSlot);
         leftPidController.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot);
 
+        /*
         rightMotor.restoreFactoryDefaults();
         rightMotor.setIdleMode(IdleMode.kBrake);
         rightPidController = rightMotor.getPIDController();
@@ -406,6 +414,7 @@ public class TelescopingArms extends SubsystemBase implements Sendable
         rightPidController.setSmartMotionMinOutputVelocity(minVel, smartMotionSlot);
         rightPidController.setSmartMotionMaxAccel(maxAcc, smartMotionSlot);
         rightPidController.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot);
+        */
 
         this.motorsInitalizedForSmartMotion = true;
       }
@@ -415,10 +424,12 @@ public class TelescopingArms extends SubsystemBase implements Sendable
     {
       if(motorsInitalizedForSmartMotion == true)
       {
-        rightMotor.restoreFactoryDefaults();  
         leftMotor.restoreFactoryDefaults();
         leftMotor.setIdleMode(IdleMode.kBrake);
+        /*
+        rightMotor.restoreFactoryDefaults();  
         rightMotor.setIdleMode(IdleMode.kBrake);
+        */
         this.motorsInitalizedForSmartMotion = false;
       }
     }
