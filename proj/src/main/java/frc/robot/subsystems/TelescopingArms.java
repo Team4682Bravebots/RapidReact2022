@@ -53,8 +53,6 @@ public class TelescopingArms extends SubsystemBase implements Sendable
     private static final double telescopingArmsSpoolDiameterInches51to75 = 1.52; 
     private static final double telescopingArmsSpoolDiameterInches76to100 = 1.53;
     
-    private static final int powerSampleSizeMax = 12;
-
     // Based on discussion with Simeon, this is true
     private static final boolean spoolWindingIsPositiveSparkMaxNeoMotorOutput = true;
 
@@ -68,9 +66,9 @@ public class TelescopingArms extends SubsystemBase implements Sendable
     private CANSparkMax leftMotor = new CANSparkMax(Constants.telescopingArmsMotorLeftCanId, MotorType.kBrushless);
     private SparkMaxPIDController leftPidController;
     private RelativeEncoder leftEncoder;
-//    private CANSparkMax rightMotor = new CANSparkMax(Constants.telescopingArmsMotorRightCanId, MotorType.kBrushless);
-//    private SparkMaxPIDController rightPidController;
-//    private RelativeEncoder rightEncoder;
+    private CANSparkMax rightMotor = new CANSparkMax(Constants.telescopingArmsMotorRightCanId, MotorType.kBrushless);
+    private SparkMaxPIDController rightPidController;
+    private RelativeEncoder rightEncoder;
     private double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM, maxVel, minVel, maxAcc, allowedErr;
 
     private double motorReferencePosition = 0.0;
@@ -106,7 +104,7 @@ public class TelescopingArms extends SubsystemBase implements Sendable
     {
       this.initializeMotorsSmartMotion();
       leftEncoder.setPosition(0.0);
-//      rightEncoder.setPosition(0.0);
+      rightEncoder.setPosition(0.0);
     }
 
     @Override
@@ -151,7 +149,6 @@ public class TelescopingArms extends SubsystemBase implements Sendable
     */
     public boolean setTelescopingArmsHeight(double telescopingArmsHeightInInches, double toleranceInInches)
     {
-//      this.initializeMotorsSmartMotion();
       double trimmedHeight = MotorUtils.truncateValue(
         telescopingArmsHeightInInches,
         0.0, // 
@@ -165,14 +162,13 @@ public class TelescopingArms extends SubsystemBase implements Sendable
       boolean isLeftDone =  (leftHeight >= telescopingArmsHeightInInches - toleranceInInches  && leftHeight <= telescopingArmsHeightInInches + toleranceInInches);
 
       // right
-      /*
       rightPidController.setReference(
         this.convertTelescopingArmsHeightToMotorEncoderPosition(trimmedHeight),
         ControlType.kSmartMotion);
       double rightHeight = this.getRightClimberHeightInInches();
       boolean isRightDone =  (rightHeight >= telescopingArmsHeightInInches - toleranceInInches  && rightHeight <= telescopingArmsHeightInInches + toleranceInInches);
-      */
-      return isLeftDone; // && isRightDone;
+
+      return isLeftDone && isRightDone;
     }
 
     /**
@@ -182,9 +178,8 @@ public class TelescopingArms extends SubsystemBase implements Sendable
     */
     public void setTelescopingArmsSpeedManual(double telescopingArmsSpeed)
     {
-//      this.initializeMotorsDirectDrive();
       leftMotor.set(MotorUtils.truncateValue(telescopingArmsSpeed, -1.0, 1.0));
-//      rightMotor.set(MotorUtils.truncateValue(telescopingArmsSpeed, -1.0, 1.0));
+      rightMotor.set(MotorUtils.truncateValue(telescopingArmsSpeed, -1.0, 1.0));
     }
 
     /* *********************************************************************
@@ -319,14 +314,12 @@ public class TelescopingArms extends SubsystemBase implements Sendable
 
     private double getRightMotorEncoderPosition()
     {
-      return 0.0;
-//      return rightEncoder.getPosition();   
+      return rightEncoder.getPosition();   
     }
 
     private double getRightMotorOutputSpeed()
     {
-      return 0.0;
-//      return rightMotor.getAppliedOutput();
+      return rightMotor.getAppliedOutput();
     }
 
     private String getRightArmMotionDescription()
@@ -396,7 +389,6 @@ public class TelescopingArms extends SubsystemBase implements Sendable
         leftPidController.setSmartMotionMaxAccel(maxAcc, smartMotionSlot);
         leftPidController.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot);
 
-        /*
         rightMotor.restoreFactoryDefaults();
         rightMotor.setIdleMode(IdleMode.kBrake);
         rightPidController = rightMotor.getPIDController();
@@ -415,62 +407,8 @@ public class TelescopingArms extends SubsystemBase implements Sendable
         rightPidController.setSmartMotionMinOutputVelocity(minVel, smartMotionSlot);
         rightPidController.setSmartMotionMaxAccel(maxAcc, smartMotionSlot);
         rightPidController.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot);
-        */
 
         this.motorsInitalizedForSmartMotion = true;
       }
-    }
-
-    private void initializeMotorsDirectDrive()
-    {
-      if(motorsInitalizedForSmartMotion == true)
-      {
-        leftMotor.restoreFactoryDefaults();
-        leftMotor.setIdleMode(IdleMode.kBrake);
-        /*
-        rightMotor.restoreFactoryDefaults();  
-        rightMotor.setIdleMode(IdleMode.kBrake);
-        */
-        this.motorsInitalizedForSmartMotion = false;
-      }
-    }
-
-    private void trimAndRecordLeftPower(double currentReading)
-    {
-      while(this.leftPowerList.size() > TelescopingArms.powerSampleSizeMax)
-      {
-        this.leftPowerList.removeLast();
-      }
-      this.leftPowerList.push(currentReading);
-    }
-
-    private void trimAndRecordRightPower(double currentReading)
-    {
-      while(this.rightPowerList.size() > TelescopingArms.powerSampleSizeMax)
-      {
-        this.rightPowerList.removeLast();
-      }
-      this.rightPowerList.push(currentReading);
-    }
-
-    private double obtainAveragePowerLeft()
-    {
-      return obtainAveragePowerFromQueue(leftPowerList);
-    }
-
-    private double obtainAveragePowerRight()
-    {
-      return obtainAveragePowerFromQueue(rightPowerList);
-    }
-
-    private double obtainAveragePowerFromQueue(ArrayDeque<Double> list)
-    {
-      double sum = 0.0;
-      Iterator iterator = list.iterator();
-      while (iterator.hasNext())
-      {
-        sum += (Double)iterator.next();
-      }
-      return sum/list.size();
     }
 }
