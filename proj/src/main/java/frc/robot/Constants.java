@@ -59,16 +59,16 @@ public final class Constants
 
   // Motor magic numbers
   public static final double defaultMotorSpeedToleranceRpm = 50.0;
-  public static final double bottomMotorForwardLowGoalSpeedRpm = 700.0;
-  public static final double topMotorForwardLowGoalSpeedRpm = 600.0;
-  public static final double bottomMotorForwardHighGoalSpeedRpm = 1300.0;
-  public static final double topMotorForwardHighGoalSpeedRpm = 1000.0;
-  public static final double bottomMotorReverseHighGoalSpeedRpm = 1300.0;
-  public static final double topMotorReverseHighGoalSpeedRpm = 1000.0;
-  public static final double bottomMotorReverseLowGoalSpeedRpm = 700.0;
-  public static final double topMotorReverseLowGoalSpeedRpm = 600.0;
-  public static final double bottomMotorIntakeSpeedRpm = -500.0;
-  public static final double topMotorIntakeSpeedRpm = -500.0;
+  public static final double bottomMotorForwardLowGoalSpeedRpm = 1700.0;
+  public static final double topMotorForwardLowGoalSpeedRpm = 1600.0;
+  public static final double bottomMotorForwardHighGoalSpeedRpm = 3300.0;
+  public static final double topMotorForwardHighGoalSpeedRpm = 3000.0;
+  public static final double bottomMotorReverseHighGoalSpeedRpm = 3300.0;
+  public static final double topMotorReverseHighGoalSpeedRpm = 3000.0;
+  public static final double bottomMotorReverseLowGoalSpeedRpm = 1700.0;
+  public static final double topMotorReverseLowGoalSpeedRpm = 1600.0;
+  public static final double bottomMotorIntakeSpeedRpm = -1500.0;
+  public static final double topMotorIntakeSpeedRpm = -1500.0;
   
   // Jaws reach points \\
   public static final double jawsIntakePositionAngle = 0.0;
