@@ -35,11 +35,11 @@ public class ShooterAutomatic extends CommandBase
   {
     // format:
     // jaws position minimum, jaws position maximum, bottom wheel RPM target, bottom wheel RPM tolerance, top wheel RPM target, top wheel RPM tolerance
-    {Constants.jawsIntakePositionAngle - 5.0, Constants.jawsIntakePositionAngle + 5.0, 350.0, 20.0, 350.0, 20.0}, // intake targets
-    {Constants.jawsLowGoalPositionAngle - 5.0, Constants.jawsLowGoalPositionAngle + 5.0, 660.0, 20.0, 600.0, 20.0}, // low ball shooter targets
-    {Constants.jawsHighGoalPositionAngle - 5.0, Constants.jawsHighGoalPositionAngle + 5.0, 2000.0, 20.0, 2000.0, 20.0}, // forward high ball shooter targets
-    {Constants.jawsReverseHighGoalPositionAngle - 5.0, Constants.jawsReverseHighGoalPositionAngle + 5.0, 2200.0, 20.0, 2000.0, 20.0}, // reverse high ball shooter targets
-    {Constants.jawsReverseLowGoalPositionAngle - 5.0, Constants.jawsReverseLowGoalPositionAngle + 5.0, 770.0, 20.0, 700.0, 20.0}, // reverse high ball shooter targets
+    {Constants.jawsIntakePositionAngle - 5.0, Constants.jawsIntakePositionAngle + 5.0, Constants.bottomMotorIntakeSpeedRpm, 20.0, Constants.topMotorIntakeSpeedRpm, 20.0}, // intake targets
+    {Constants.jawsLowGoalPositionAngle - 5.0, Constants.jawsLowGoalPositionAngle + 5.0, Constants.bottomMotorForwardLowGoalSpeedRpm, 20.0, Constants.topMotorForwardLowGoalSpeedRpm, 20.0}, // low ball shooter targets
+    {Constants.jawsHighGoalPositionAngle - 5.0, Constants.jawsHighGoalPositionAngle + 5.0, Constants.bottomMotorForwardHighGoalSpeedRpm, 20.0, Constants.topMotorForwardHighGoalSpeedRpm, 20.0}, // forward high ball shooter targets
+    {Constants.jawsReverseHighGoalPositionAngle - 5.0, Constants.jawsReverseHighGoalPositionAngle + 5.0, Constants.bottomMotorReverseHighGoalSpeedRpm, 20.0, Constants.topMotorReverseHighGoalSpeedRpm, 20.0}, // reverse high ball shooter targets
+    {Constants.jawsReverseLowGoalPositionAngle - 5.0, Constants.jawsReverseLowGoalPositionAngle + 5.0, Constants.bottomMotorReverseLowGoalSpeedRpm, 20.0, Constants.topMotorReverseLowGoalSpeedRpm, 20.0}, // reverse high ball shooter targets
   };
 
   private Shooter shooterSubsystem;

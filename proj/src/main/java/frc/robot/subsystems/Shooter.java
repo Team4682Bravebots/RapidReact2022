@@ -131,8 +131,10 @@ public class Shooter extends SubsystemBase implements Sendable
    */
   public boolean isShooterVelocityUpToSpeedBottom(double targetToleranceRpm)
   {
-    return Math.abs(bottomMotor.getClosedLoopError(Shooter.kPIDLoopIdx)) < 
-      this.convertShooterRpmToMotorUnitsPer100Ms(Math.abs(targetToleranceRpm), Shooter.bottomShooterGearRatio);
+    return this.isMotorErrorWithinTolerance(
+      bottomMotor.getClosedLoopError(Shooter.kPIDLoopIdx),
+      targetToleranceRpm,
+      Shooter.bottomShooterGearRatio);
   }
 
   /**
@@ -143,8 +145,10 @@ public class Shooter extends SubsystemBase implements Sendable
   public boolean isShooterVelocityUpToSpeedTop(double targetToleranceRpm)
   {
     return true;
-//    return Math.abs(topMotor.getClosedLoopError(Shooter.kPIDLoopIdx)) <
-//      this.convertShooterRpmToMotorUnitsPer100Ms(Math.abs(targetToleranceRpm), Shooter.topShooterGearRatio);
+//    return this.isMotorErrorWithinTolerance(
+//      topMotor.getClosedLoopError(Shooter.kPIDLoopIdx),
+//      targetToleranceRpm,
+//      Shooter.topShooterGearRatio);
   }
 
   @Override
@@ -322,5 +326,17 @@ public class Shooter extends SubsystemBase implements Sendable
     {
       return "Undefined";
     }
+  }
+
+  private boolean isMotorErrorWithinTolerance(double motorErrorUnits, double targetToleranceRpm, double gearRatio)
+  {
+    double motorErrorUnitsAbs = Math.abs(motorErrorUnits);
+    double targetToleranceRpmInMotorUnits = this.convertShooterRpmToMotorUnitsPer100Ms(Math.abs(targetToleranceRpm), gearRatio);
+    boolean rtnVal = motorErrorUnits < targetToleranceRpmInMotorUnits;
+    System.out.println(
+      "|MotorUnitsError|=" + motorErrorUnitsAbs +
+      " |MotorUnitsTolerance|=" + targetToleranceRpmInMotorUnits +
+      (rtnVal ? " within tolerance" : " outside tolerance"));
+    return rtnVal;
   }
 }
