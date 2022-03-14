@@ -10,6 +10,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.PS4Controller.Button;
@@ -23,7 +24,7 @@ public class ManualInputInterfaces
 {
   // sets joystick variables to joysticks
   private XboxController driverController = new XboxController(Constants.portDriverController); 
-  private XboxController coDriverController = new XboxController(Constants.portCoDriverController);
+  private XboxController coDriverController = new XboxController(Constants.portCoDriverController); 
   private Joystick highLevelButtonBoard = new Joystick(Constants.highLevelButtonBoardPort);
   private Joystick lowLevelButtonBoard = new Joystick(Constants.lowLevelButtonBoardPort);
 
@@ -44,7 +45,7 @@ public class ManualInputInterfaces
    */
   public double getInputArcadeDriveX()
   {
-    return driverController.getLeftX() ;
+    return driverController.getLeftX();
   }
 
   /**
@@ -91,19 +92,8 @@ public class ManualInputInterfaces
   {
     // TODO - switch this to use the coDriverController soon!!!
     // should be: coDriverController.getLeftY();
-    return driverController.getRightX();
-  }
-
-  /**
-   * A method to get the jaws up/down input from humans
-   * @return - a double value associated with the magnitude of the jaws up/down
-   */
-  public double getInputShooter()
-  {
-    XboxController theControllerToUse = coDriverController;
-    return theControllerToUse.getLeftTriggerAxis() > theControllerToUse.getRightTriggerAxis() ? 
-           -1.0 * theControllerToUse.getLeftTriggerAxis() : 
-           theControllerToUse.getRightTriggerAxis();
+    double inputValue = driverController.getRightX();
+    return ((inputValue > 0.070 || inputValue < -0.070) ? inputValue : 0.0);
   }
 
   /**
@@ -112,7 +102,7 @@ public class ManualInputInterfaces
    */
   public double getInputTelescopingArms()
   {
-    XboxController theControllerToUse = coDriverController;
+    XboxController theControllerToUse = driverController;
     // need to invert the y for all xbox controllers due to xbox controler having up as negative y axis
     double input = theControllerToUse.getRightY() * -1.0;
     // avoid xbox controller shadow input drift
@@ -126,14 +116,26 @@ public class ManualInputInterfaces
   public void initializeButtonCommandBindings()
   {
     // Configure the button board bindings
-    this.bindHighLevelCommandsToButtonBoardButtons();
-    this.bindLowLevelCommandsToButtonBoardButtons();
+    if(InstalledHardware.highLevelButtonBoardInstalled)
+    {
+      this.bindHighLevelCommandsToButtonBoardButtons();
+    }
+    if(InstalledHardware.highLevelButtonBoardInstalled)
+    {
+      this.bindLowLevelCommandsToButtonBoardButtons();
+    }
 
     // Configure the driver xbox controller bindings
-//    this.bindCommandsToCoDriverXboxButtons();
+    if(InstalledHardware.driverXboxControllerInstalled)
+    {
+      this.bindCommandsToDriverXboxButtons();
+    }
 
     // Configure the co-driver xbox controller bindings
-    this.bindCommandsToDriverXboxButtons();
+    if(InstalledHardware.coDriverXboxControllerInstalled)
+    {
+      this.bindCommandsToCoDriverXboxButtons();
+    }
   }
 
   /**
@@ -141,14 +143,114 @@ public class ManualInputInterfaces
    */
   private void bindCommandsToDriverXboxButtons()
   {
+    // *************************************************************
+    // TODO - REMOVE THIS WHOLE IF STATEMENT AFTER HOME TESTING!!!!!
+    // *************************************************************
+    /*
     if(InstalledHardware.driverXboxControllerInstalled)
     {
+      JoystickButton buttonA = new JoystickButton(driverController, XboxController.Button.kA.value);
+      JoystickButton buttonB = new JoystickButton(driverController, XboxController.Button.kB.value);
+      JoystickButton buttonX = new JoystickButton(driverController, XboxController.Button.kX.value);
+      JoystickButton buttonY = new JoystickButton(driverController, XboxController.Button.kY.value);
+      JoystickButton bumperLeft = new JoystickButton(driverController, XboxController.Button.kLeftBumper.value);
+      JoystickButton bumperRight = new JoystickButton(driverController, XboxController.Button.kRightBumper.value);
       JoystickButton buttonBack = new JoystickButton(driverController, XboxController.Button.kBack.value);
+      JoystickButton buttonStart = new JoystickButton(driverController, XboxController.Button.kStart.value);
+
+      if(subsystemCollection.getBallStorageSubsystem() != null && subsystemCollection.getShooterSubsystem() != null)
+      {
+        buttonA.whenPressed(
+          new ParallelCommandGroup(
+            new ShooterAutomatic(
+              subsystemCollection.getShooterSubsystem(),
+              subsystemCollection.getBallStorageSubsystem(),
+              false,
+              Constants.jawsIntakePositionAngle),
+            new ButtonPress("driverController.kA", "buttonA.whenPressed")));
+        buttonB.whenPressed(
+          new ParallelCommandGroup(
+            new ShooterAutomatic(
+              subsystemCollection.getShooterSubsystem(),
+              subsystemCollection.getBallStorageSubsystem(),
+              true,
+              Constants.jawsLowGoalPositionAngle),
+              new ButtonPress("driverController.kB", "buttonB.whenPressed")));
+        buttonX.whenPressed(
+          new ParallelCommandGroup(
+            new ShooterAutomatic(
+              subsystemCollection.getShooterSubsystem(),
+              subsystemCollection.getBallStorageSubsystem(),
+              true,
+              Constants.jawsHighGoalPositionAngle),
+            new ButtonPress("driverController.kX", "buttonX.whenPressed")));
+        buttonY.whenPressed(
+          new ParallelCommandGroup(
+            new ShooterAutomatic(
+              subsystemCollection.getShooterSubsystem(),
+              subsystemCollection.getBallStorageSubsystem(),
+              true,
+              Constants.jawsReverseHighGoalPositionAngle),
+            new ButtonPress("driverController.kY", "buttonY.whenPressed")));
+      }
+
+      if(subsystemCollection.getTelescopingArmsSubsystem() != null)
+      {
+        bumperLeft.whenPressed(
+          new ParallelCommandGroup(
+            new TelescopingArmRetract(
+              subsystemCollection.getTelescopingArmsSubsystem()),
+            new ButtonPress("driverController.kLeftBumper", "bumperLeft.whenPressed")));
+        bumperRight.whenPressed(
+          new ParallelCommandGroup(
+            new TelescopingArmExtendMiddle(
+              subsystemCollection.getTelescopingArmsSubsystem()),
+            new ButtonPress("driverController.kRightBumper", "bumperRight.whenPressed")));
+      }
+
       if(subsystemCollection.getJawsSubsystem() != null)
       {
-        buttonBack.whenPressed(new JawsAngleVariable(subsystemCollection.getJawsSubsystem(), subsystemCollection.getJawsSubsystem().getJawsReferencePositionAngle()));
+        buttonBack.whenPressed(
+          new ParallelCommandGroup(
+            new JawsIntake(
+              subsystemCollection.getJawsSubsystem()),
+            new ButtonPress("driverController.kBack", "buttonBack.whenPressed")));
+        buttonStart.whenPressed(
+          new ParallelCommandGroup(
+            new JawsReverseLowGoal(
+              subsystemCollection.getJawsSubsystem()),
+            new ButtonPress("driverController.kStart", "buttonStart.whenPressed")));
+      }
+
+      if(subsystemCollection.getAngleArmsSubsystem() != null)
+      {
+        buttonB.whenPressed(
+          new ParallelCommandGroup(
+            new AngleArmsManual(subsystemCollection.getAngleArmsSubsystem(), Constants.angleArmsManualMotorReverseSpeed),
+            new ButtonPress("driverController.kB", "buttonB.whenPressed")));
+        buttonY.whenPressed(
+          new ParallelCommandGroup(
+            new AngleArmsManual(subsystemCollection.getAngleArmsSubsystem(), Constants.angleArmsManualMotorForwardSpeed),
+            new ButtonPress("driverController.kY", "buttonY.whenPressed")));
+        buttonB.whenReleased(
+          new ParallelCommandGroup(
+            new AngleArmsAllStop(subsystemCollection.getAngleArmsSubsystem()),
+            new ButtonPress("driverController.kB", "buttonB.whenReleased")));
+        buttonY.whenReleased(
+          new ParallelCommandGroup(
+            new AngleArmsAllStop(subsystemCollection.getAngleArmsSubsystem()),
+            new ButtonPress("driverController.kY", "buttonY.whenReleased")));
+        buttonX.whenPressed(
+          new ParallelCommandGroup(
+            new AngleArmsAngleVariable(subsystemCollection.getAngleArmsSubsystem(), Constants.angleArmsBarPositionAngle),
+            new ButtonPress("driverController.kX", "buttonX.whenPressed")));
+        buttonA.whenPressed(
+          new ParallelCommandGroup(
+            new AngleArmsAngleVariable(subsystemCollection.getAngleArmsSubsystem(), Constants.angleArmsMaximumPositionAngle),
+            new ButtonPress("driverController.kA", "buttonA.whenPressed")));
       }
     }
+    */
   }
 
   /**
@@ -165,17 +267,41 @@ public class ManualInputInterfaces
 
       if(subsystemCollection.getAngleArmsSubsystem() != null)
       {
-        buttonB.whenPressed(new AngleArmsManual(subsystemCollection.getAngleArmsSubsystem(), Constants.angleArmsManualMotorReverseSpeed));
-        buttonY.whenPressed(new AngleArmsManual(subsystemCollection.getAngleArmsSubsystem(), Constants.angleArmsManualMotorForwardSpeed)); 
-        buttonB.whenReleased(new AngleArmsAllStop(subsystemCollection.getAngleArmsSubsystem()));
-        buttonY.whenReleased(new AngleArmsAllStop(subsystemCollection.getAngleArmsSubsystem()));
+        buttonB.whenPressed(
+          new ParallelCommandGroup(
+            new AngleArmsManual(subsystemCollection.getAngleArmsSubsystem(), Constants.angleArmsManualMotorReverseSpeed),
+            new ButtonPress("coDriverController", "kB.whenPressed")));
+        buttonY.whenPressed(
+          new ParallelCommandGroup(
+            new AngleArmsManual(subsystemCollection.getAngleArmsSubsystem(), Constants.angleArmsManualMotorForwardSpeed),
+            new ButtonPress("coDriverController", "kY.whenPressed")));
+        buttonB.whenReleased(
+          new ParallelCommandGroup(
+            new AngleArmsAllStop(subsystemCollection.getAngleArmsSubsystem()),
+            new ButtonPress("coDriverController", "kB.whenPressed")));
+        buttonY.whenReleased(
+          new ParallelCommandGroup(
+            new AngleArmsAllStop(subsystemCollection.getAngleArmsSubsystem()),
+            new ButtonPress("coDriverController", "kY.whenPressed")));
       }
       if(subsystemCollection.getBallStorageSubsystem() != null)
       {
-        bumperLeft.whenHeld(new BallStorageStoreManual(subsystemCollection.getBallStorageSubsystem()));
-        bumperRight.whenHeld(new BallStorageRetrieveManual(subsystemCollection.getBallStorageSubsystem()));
-        bumperLeft.whenReleased(new BallStorageAllStopManual(subsystemCollection.getBallStorageSubsystem()));
-        bumperRight.whenReleased(new BallStorageAllStopManual(subsystemCollection.getBallStorageSubsystem()));
+        bumperLeft.whenHeld(
+          new ParallelCommandGroup(
+            new BallStorageStoreManual(subsystemCollection.getBallStorageSubsystem()),
+            new ButtonPress("coDriverController", "kLeftBumper.whenHeld")));
+        bumperRight.whenHeld(
+          new ParallelCommandGroup(
+            new BallStorageRetrieveManual(subsystemCollection.getBallStorageSubsystem()),
+            new ButtonPress("coDriverController", "kRightBumper.whenHeld")));
+        bumperLeft.whenReleased(
+          new ParallelCommandGroup(
+            new BallStorageAllStopManual(subsystemCollection.getBallStorageSubsystem()),
+            new ButtonPress("coDriverController", "kLeftBumper.whenPressed")));
+        bumperRight.whenReleased(
+          new ParallelCommandGroup(
+            new BallStorageAllStopManual(subsystemCollection.getBallStorageSubsystem()),
+            new ButtonPress("coDriverController", "kRightBumper.whenPressed")));
       }
 
       JoystickButton buttonA = new JoystickButton(coDriverController, XboxController.Button.kA.value);
@@ -183,8 +309,14 @@ public class ManualInputInterfaces
 
       if(subsystemCollection.getTelescopingArmsSubsystem() != null)
       {
-        buttonX.whenPressed(new TelescopingArmExtendMiddle(subsystemCollection.getTelescopingArmsSubsystem()));
-        buttonA.whenPressed(new TelescopingArmRetract(subsystemCollection.getTelescopingArmsSubsystem()));
+        buttonX.whenPressed(
+          new ParallelCommandGroup(
+            new TelescopingArmExtendMiddle(subsystemCollection.getTelescopingArmsSubsystem()),
+            new ButtonPress("coDriverController", "kX.whenPressed")));
+        buttonA.whenPressed(
+          new ParallelCommandGroup(
+            new TelescopingArmRetract(subsystemCollection.getTelescopingArmsSubsystem()),
+            new ButtonPress("coDriverController", "kA.whenPressed")));
       }
     }
   }
@@ -193,7 +325,7 @@ public class ManualInputInterfaces
   {
     if(InstalledHardware.highLevelButtonBoardInstalled)
     {
-      JoystickButton extendAndPair = new JoystickButton(highLevelButtonBoard, 1);
+      JoystickButton extendAndReady = new JoystickButton(highLevelButtonBoard, 1);
       JoystickButton midBarClimb = new JoystickButton(highLevelButtonBoard, 2);
       JoystickButton highBarClimb = new JoystickButton(highLevelButtonBoard, 3);
       JoystickButton traversalBarClimb = new JoystickButton(highLevelButtonBoard, 4);
@@ -210,10 +342,22 @@ public class ManualInputInterfaces
         subsystemCollection.getJawsSubsystem() != null &&
         subsystemCollection.getTelescopingArmsSubsystem() != null)
       {
-        extendAndPair.whenPressed(ClimbCommandBuilder.buildExtensionAndPairing(subsystemCollection));
-        midBarClimb.whenPressed(ClimbCommandBuilder.buildMediumBarClimb(subsystemCollection));
-        highBarClimb.whenPressed(ClimbCommandBuilder.buildHighBarClimb(subsystemCollection));
-        traversalBarClimb.whenPressed(ClimbCommandBuilder.buildTraversalBarClimb(subsystemCollection));
+        extendAndReady.whenPressed(
+          new ParallelCommandGroup(
+            ClimbCommandBuilder.buildExtensionAndReadyPosition(subsystemCollection),
+            new ButtonPress("buttonBoardHigh.1", "extendAndReady.whenPressed")).withTimeout(Constants.maximumClimbTimeOperationSeconds));
+        midBarClimb.whenPressed(
+          new ParallelCommandGroup(
+            ClimbCommandBuilder.buildMediumBarClimb(subsystemCollection),
+            new ButtonPress("buttonBoardHigh.2", "midBarClimb.whenPressed")).withTimeout(Constants.maximumClimbTimeOperationSeconds));
+        highBarClimb.whenPressed(
+          new ParallelCommandGroup(
+            ClimbCommandBuilder.buildHighBarClimb(subsystemCollection),
+            new ButtonPress("buttonBoardHigh.3", "highBarClimb.whenPressed")).withTimeout(Constants.maximumClimbTimeOperationSeconds));
+        traversalBarClimb.whenPressed(
+          new ParallelCommandGroup(
+            ClimbCommandBuilder.buildTraversalBarClimb(subsystemCollection),
+            new ButtonPress("buttonBoardHigh.4", "traversalBarClimb.whenPressed")).withTimeout(Constants.maximumClimbTimeOperationSeconds));
       }
 
       if(subsystemCollection.getShooterSubsystem() != null && 
@@ -221,30 +365,50 @@ public class ManualInputInterfaces
          subsystemCollection.getJawsSubsystem() != null)
       {
         shooterShoot.whenPressed(
-          new ShooterAutomatic(
-            subsystemCollection.getShooterSubsystem(),
-            subsystemCollection.getBallStorageSubsystem(),
-            subsystemCollection.getJawsSubsystem(),
-            true,
-            (InstalledHardware.rearBallStorageBeamBreakSensorInstalled && InstalledHardware.forwardBallStorageBeamBreakSensorInstalled)));
+          new ParallelCommandGroup(           
+            new ShooterAutomatic(
+              subsystemCollection.getShooterSubsystem(),
+              subsystemCollection.getBallStorageSubsystem(),
+              subsystemCollection.getJawsSubsystem(),
+              true),
+            new ButtonPress("buttonBoardHigh.5", "shooterShoot.whenPressed")).withTimeout(Constants.maximumShooterTimeOperationSeconds));
         shooterIntake.whenPressed(
-          new ShooterAutomatic(
-            subsystemCollection.getShooterSubsystem(),
-            subsystemCollection.getBallStorageSubsystem(),
-            subsystemCollection.getJawsSubsystem(),
-            false,
-            (InstalledHardware.rearBallStorageBeamBreakSensorInstalled && InstalledHardware.forwardBallStorageBeamBreakSensorInstalled)));
+          new ParallelCommandGroup(
+            new ShooterAutomatic(
+              subsystemCollection.getShooterSubsystem(),
+              subsystemCollection.getBallStorageSubsystem(),
+              subsystemCollection.getJawsSubsystem(),
+              false),
+            new ButtonPress("buttonBoardHigh.6", "shooterIntake.whenPressed")).withTimeout(Constants.maximumShooterTimeOperationSeconds));
       }
 
-      commandStop.whenPressed(AutonomousCommandBuilder.buildAllStop(subsystemCollection));
+      commandStop.whenPressed(
+        new ParallelCommandGroup(
+          AutonomousCommandBuilder.buildAllStop(subsystemCollection),
+          new ButtonPress("buttonBoardHigh.7", "commandStop.whenPressed")));
 
       if(subsystemCollection.getJawsSubsystem() != null)
       {
-        jawsForwardIntake.whenPressed(new JawsIntake(subsystemCollection.getJawsSubsystem()));
-        jawsForwardLow.whenPressed(new JawsForwardLowGoal(subsystemCollection.getJawsSubsystem()));
-        jawsForwardHigh.whenPressed(new JawsForwardHighGoal(subsystemCollection.getJawsSubsystem()));
-        jawsReverseHigh.whenPressed(new JawsReverseHighGoal(subsystemCollection.getJawsSubsystem()));
-        jawsReverseLow.whenPressed(new JawsReverseLowGoal(subsystemCollection.getJawsSubsystem()));
+        jawsForwardIntake.whenPressed(
+          new ParallelCommandGroup(
+            new JawsIntake(subsystemCollection.getJawsSubsystem()),
+            new ButtonPress("buttonBoardHigh.8", "jawsForwardIntake.whenPressed")).withTimeout(Constants.maximumJawsTimeOperationSeconds));
+        jawsForwardLow.whenPressed(
+          new ParallelCommandGroup(
+            new JawsForwardLowGoal(subsystemCollection.getJawsSubsystem()),
+            new ButtonPress("buttonBoardHigh.9", "jawsForwardLow.whenPressed")).withTimeout(Constants.maximumJawsTimeOperationSeconds));
+        jawsForwardHigh.whenPressed(
+          new ParallelCommandGroup(
+            new JawsForwardHighGoal(subsystemCollection.getJawsSubsystem()),
+            new ButtonPress("buttonBoardHigh.10", "jawsForwardHigh.whenPressed")).withTimeout(Constants.maximumJawsTimeOperationSeconds));
+        jawsReverseHigh.whenPressed(
+          new ParallelCommandGroup(
+            new JawsReverseHighGoal(subsystemCollection.getJawsSubsystem()),
+            new ButtonPress("buttonBoardHigh.11", "jawsReverseHigh.whenPressed")).withTimeout(Constants.maximumJawsTimeOperationSeconds));
+        jawsReverseLow.whenPressed(
+          new ParallelCommandGroup(
+            new JawsReverseLowGoal(subsystemCollection.getJawsSubsystem()),
+            new ButtonPress("buttonBoardHigh.12", "jawsReverseLow.whenPressed")).withTimeout(Constants.maximumJawsTimeOperationSeconds));
       }
     }
   }
@@ -259,88 +423,71 @@ public class ManualInputInterfaces
       JoystickButton telescopingArmsDown = new JoystickButton(lowLevelButtonBoard, 4);
       JoystickButton jawsPositive = new JoystickButton(lowLevelButtonBoard, 5);
       JoystickButton jawsNegative = new JoystickButton(lowLevelButtonBoard, 6);
-      JoystickButton jawsClutchToggle = new JoystickButton(lowLevelButtonBoard, 7);
+      JoystickButton jawsReferencePosition = new JoystickButton(lowLevelButtonBoard, 7);
 
       if(subsystemCollection.getAngleArmsSubsystem() != null)
       {
-        angleArmsForward.whenPressed(new AngleArmsManual(subsystemCollection.getAngleArmsSubsystem(), Constants.angleArmsManualMotorReverseSpeed));
-        angleArmsReverse.whenPressed(new AngleArmsManual(subsystemCollection.getAngleArmsSubsystem(), Constants.angleArmsManualMotorForwardSpeed)); 
-        angleArmsForward.whenReleased(new AngleArmsAllStop(subsystemCollection.getAngleArmsSubsystem()));
-        angleArmsReverse.whenReleased(new AngleArmsAllStop(subsystemCollection.getAngleArmsSubsystem()));
+        angleArmsForward.whenPressed(
+          new ParallelCommandGroup(
+            new AngleArmsManual(subsystemCollection.getAngleArmsSubsystem(), Constants.angleArmsManualMotorReverseSpeed),
+            new ButtonPress("buttonBoardLow.1", "angleArmsForward.whenPressed")));
+        angleArmsReverse.whenPressed(
+          new ParallelCommandGroup(
+            new AngleArmsManual(subsystemCollection.getAngleArmsSubsystem(), Constants.angleArmsManualMotorForwardSpeed),
+            new ButtonPress("buttonBoardLow.2", "angleArmsReverse.whenPressed")));
+        angleArmsForward.whenReleased(
+          new ParallelCommandGroup(
+            new AngleArmsAllStop(subsystemCollection.getAngleArmsSubsystem()),
+            new ButtonPress("buttonBoardLow.1", "angleArmsForward.whenReleased")));
+        angleArmsReverse.whenReleased(
+          new ParallelCommandGroup(
+            new AngleArmsAllStop(subsystemCollection.getAngleArmsSubsystem()),
+            new ButtonPress("buttonBoardLow.2", "angleArmsReverse.whenReleased")));
       }
 
       if(subsystemCollection.getTelescopingArmsSubsystem() != null)
       {
-        telescopingArmsUp.whileHeld(new TelescopingArmsManual(subsystemCollection.getTelescopingArmsSubsystem(), Constants.telescopingArmsDefaultExtendSpeed));
-        telescopingArmsDown.whileHeld(new TelescopingArmsManual(subsystemCollection.getTelescopingArmsSubsystem(), Constants.telescopingArmsDefaultRetractSpeed));
-        telescopingArmsUp.whenReleased(new TelescopingArmsManual(subsystemCollection.getTelescopingArmsSubsystem(), Constants.telescopingArmsStopSpeed));
-        telescopingArmsDown.whenReleased(new TelescopingArmsManual(subsystemCollection.getTelescopingArmsSubsystem(), Constants.telescopingArmsStopSpeed));
+        telescopingArmsUp.whileHeld(
+          new ParallelCommandGroup(
+            new TelescopingArmsManual(subsystemCollection.getTelescopingArmsSubsystem(), Constants.telescopingArmsDefaultExtendSpeed),
+            new ButtonPress("buttonBoardLow.3", "3.whileHeld")));
+        telescopingArmsDown.whileHeld(
+          new ParallelCommandGroup(
+            new TelescopingArmsManual(subsystemCollection.getTelescopingArmsSubsystem(), Constants.telescopingArmsDefaultRetractSpeed),
+            new ButtonPress("buttonBoardLow.4", "4.whileHeld")));
+        telescopingArmsUp.whenReleased(
+          new ParallelCommandGroup(
+            new TelescopingArmsManual(subsystemCollection.getTelescopingArmsSubsystem(), Constants.telescopingArmsStopSpeed),
+            new ButtonPress("buttonBoardLow.3", "3.whenReleased")));
+        telescopingArmsDown.whenReleased(
+          new ParallelCommandGroup(
+            new TelescopingArmsManual(subsystemCollection.getTelescopingArmsSubsystem(), Constants.telescopingArmsStopSpeed),
+            new ButtonPress("buttonBoardLow.4", "4.whenReleased")));
       }
 
       if(subsystemCollection.getJawsSubsystem() != null)
       {
-        jawsPositive.whenPressed(new JawsManual(subsystemCollection.getJawsSubsystem(), Constants.jawsDefaultPositiveSpeed));
-        jawsNegative.whenPressed(new JawsManual(subsystemCollection.getJawsSubsystem(), Constants.jawsDefaultNegativeSpeed));
-        jawsPositive.whenReleased(new JawsAllStop(subsystemCollection.getJawsSubsystem()));
-        jawsNegative.whenReleased(new JawsAllStop(subsystemCollection.getJawsSubsystem()));
-        // TODO for now no clutches on robot - use this button for returning robot jaws to reference position
-//        jawsClutchToggle.whenPressed(new JawsHoldReleaseManual(subsystemCollection.getJawsSubsystem()));
-        jawsClutchToggle.whenPressed(new JawsAngleVariable(subsystemCollection.getJawsSubsystem(), subsystemCollection.getJawsSubsystem().getJawsReferencePositionAngle()));
+        jawsPositive.whenPressed(
+          new ParallelCommandGroup(
+            new JawsManual(subsystemCollection.getJawsSubsystem(), Constants.jawsDefaultPositiveSpeed),
+            new ButtonPress("buttonBoardLow.5", "jawsPositive.whenPressed")));
+        jawsNegative.whenPressed(
+          new ParallelCommandGroup(
+            new JawsManual(subsystemCollection.getJawsSubsystem(), Constants.jawsDefaultNegativeSpeed),
+            new ButtonPress("buttonBoardLow.6", "jawsNegative.whenPressed")));
+        jawsPositive.whenReleased(
+          new ParallelCommandGroup(
+            new JawsAllStop(subsystemCollection.getJawsSubsystem()),
+            new ButtonPress("buttonBoardLow.5", "jawsPositive.whenReleased")));
+        jawsNegative.whenReleased(
+          new ParallelCommandGroup(
+            new JawsAllStop(subsystemCollection.getJawsSubsystem()),
+            new ButtonPress("buttonBoardLow.6", "jawsNegative.whenReleased")));
+        jawsReferencePosition.whenPressed(
+          new ParallelCommandGroup(
+            new JawsAngleVariable(subsystemCollection.getJawsSubsystem(), subsystemCollection.getJawsSubsystem().getJawsReferencePositionAngle()),
+            new ButtonPress("buttonBoardLow.7", "jawsReferencePosition.whenPressed")).withTimeout(Constants.maximumJawsTimeOperationSeconds));
       }
-    }
-  }
-
-  private void testBindCommandsToHighLevelButtonBoard()
-  {
-    if(InstalledHardware.testHighLevelButtonBoardInstalled)
-    {
-      JoystickButton extendAndPair = new JoystickButton(highLevelButtonBoard, 1);
-      JoystickButton midBarClimb = new JoystickButton(highLevelButtonBoard, 2);
-      JoystickButton highBarClimb = new JoystickButton(highLevelButtonBoard, 3);
-      JoystickButton traversalBarClimb = new JoystickButton(highLevelButtonBoard, 4);
-      JoystickButton shooterShoot = new JoystickButton(highLevelButtonBoard, 5);
-      JoystickButton shooterIntake = new JoystickButton(highLevelButtonBoard, 6);
-      JoystickButton commandStop = new JoystickButton(highLevelButtonBoard, 7);
-      JoystickButton jawsForwardIntake = new JoystickButton(highLevelButtonBoard, 8);
-      JoystickButton jawsForwardLow = new JoystickButton(highLevelButtonBoard, 9);
-      JoystickButton jawsForwardHigh = new JoystickButton(highLevelButtonBoard, 10);
-      JoystickButton jawsReverseHigh = new JoystickButton(highLevelButtonBoard, 11);
-      JoystickButton jawsReverseLow = new JoystickButton(highLevelButtonBoard, 12);
-
-      extendAndPair.whenPressed(new ButtonBoardButtonPress("highLevelButtonBoard", 1));
-      midBarClimb.whenPressed(new ButtonBoardButtonPress("highLevelButtonBoard", 2));
-      highBarClimb.whenPressed(new ButtonBoardButtonPress("highLevelButtonBoard", 3));
-      traversalBarClimb.whenPressed(new ButtonBoardButtonPress("highLevelButtonBoard", 4));
-      shooterShoot.whenPressed(new ButtonBoardButtonPress("highLevelButtonBoard", 5));
-      shooterIntake.whenPressed(new ButtonBoardButtonPress("highLevelButtonBoard", 6));
-      commandStop.whenPressed(new ButtonBoardButtonPress("highLevelButtonBoard", 7));
-      jawsForwardIntake.whenPressed(new ButtonBoardButtonPress("highLevelButtonBoard", 8));
-      jawsForwardLow.whenPressed(new ButtonBoardButtonPress("highLevelButtonBoard", 9));
-      jawsForwardHigh.whenPressed(new ButtonBoardButtonPress("highLevelButtonBoard", 10));
-      jawsReverseHigh.whenPressed(new ButtonBoardButtonPress("highLevelButtonBoard", 11));
-      jawsReverseLow.whenPressed(new ButtonBoardButtonPress("highLevelButtonBoard", 12));
-    }
-  }
-
-  private void testBindCommandsToLowLevelButtonBoard()
-  {
-    if(InstalledHardware.testLowLevelButtonBoardInstalled)
-    {
-      JoystickButton angleArmsForward = new JoystickButton(lowLevelButtonBoard, 1);
-      JoystickButton angleArmsReverse = new JoystickButton(lowLevelButtonBoard, 2);
-      JoystickButton telescopingArmsUp = new JoystickButton(lowLevelButtonBoard, 3);
-      JoystickButton telescopingArmsDown = new JoystickButton(lowLevelButtonBoard, 4);
-      JoystickButton jawsPositive = new JoystickButton(lowLevelButtonBoard, 5);
-      JoystickButton jawsNegative = new JoystickButton(lowLevelButtonBoard, 6);
-      JoystickButton jawsClutchToggle = new JoystickButton(lowLevelButtonBoard, 7);
-
-      angleArmsForward.whenPressed(new ButtonBoardButtonPress("lowLevelButtonBoard", 1));
-      angleArmsReverse.whenPressed(new ButtonBoardButtonPress("lowLevelButtonBoard", 2));
-      telescopingArmsUp.whenPressed(new ButtonBoardButtonPress("lowLevelButtonBoard", 3));
-      telescopingArmsDown.whenPressed(new ButtonBoardButtonPress("lowLevelButtonBoard", 4));
-      jawsPositive.whenPressed(new ButtonBoardButtonPress("lowLevelButtonBoard", 5));
-      jawsNegative.whenPressed(new ButtonBoardButtonPress("lowLevelButtonBoard", 6));
-      jawsClutchToggle.whenPressed(new ButtonBoardButtonPress("lowLevelButtonBoard", 7));
     }
   }
 }

@@ -10,12 +10,10 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
@@ -31,14 +29,18 @@ import frc.robot.common.MotorUtils;
 
 public class AngleArms extends SubsystemBase implements Sendable
 {
-  private final WPI_TalonFX rightMotor = new WPI_TalonFX(Constants.jawsMotorRightCanId);
-  private boolean motorsNeedInit = true;
+    // update this when folks are ready for it
+    private static final double talonFxMotorSpeedReductionFactor = 0.75;
+    
+    private final WPI_TalonFX rightMotor = new WPI_TalonFX(Constants.angleArmsMotorCanId);
+    private boolean motorsNeedInit = true;
 
     /**
      * The constructor for AngleArms
      */
     public AngleArms()
     {
+        this.forceSensorReset();
         CommandScheduler.getInstance().registerSubsystem(this);
     }
 
@@ -99,8 +101,8 @@ public class AngleArms extends SubsystemBase implements Sendable
         rightMotor.set(TalonFXControlMode.MotionMagic, convertAngleArmsAngleToMotorEncoderPosition(trimmedAngle));
         double currentAngle = this.getCurrentAngleArmsAngle();
 
-        boolean result = (currentAngle - toleranceInDegrees >= targetAngleInDegrees && currentAngle + toleranceInDegrees <= targetAngleInDegrees); 
-  //      System.out.println("target angle = " + targetAngleInDegrees + " current angle = " + currentAngle + " result = " + result);
+        boolean result = (currentAngle >= targetAngleInDegrees - toleranceInDegrees && currentAngle <= targetAngleInDegrees + toleranceInDegrees); 
+//      System.out.println("target angle = " + targetAngleInDegrees + " current angle = " + currentAngle + " tolerance degrees = " + toleranceInDegrees + " result = " + result);
         return result;
     }
 
@@ -156,10 +158,11 @@ public class AngleArms extends SubsystemBase implements Sendable
     {
       if(motorsNeedInit)
       {
+        double maxVelocity = Constants.talonMaximumRevolutionsPerMinute * Constants.CtreTalonFx500EncoderTicksPerRevolution / 10.0 * AngleArms.talonFxMotorSpeedReductionFactor;
+
         rightMotor.configFactoryDefault();
         rightMotor.setNeutralMode(NeutralMode.Brake);
-        rightMotor.setInverted(Constants.jawsRightMotorDefaultDirection);
-  
+        rightMotor.setInverted(Constants.angleArmsRightMotorDefaultDirection);
         rightMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
         rightMotor.setSensorPhase(false);
         rightMotor.configNeutralDeadband(0.001, Constants.kTimeoutMs);
@@ -177,17 +180,14 @@ public class AngleArms extends SubsystemBase implements Sendable
         rightMotor.config_kP(Constants.kSlotIdx, Constants.kGains.kP, Constants.kTimeoutMs);
         rightMotor.config_kI(Constants.kSlotIdx, Constants.kGains.kI, Constants.kTimeoutMs);
         rightMotor.config_kD(Constants.kSlotIdx, Constants.kGains.kD, Constants.kTimeoutMs);
-  
-        rightMotor.setNeutralMode(NeutralMode.Brake);
-  
-        rightMotor.configMotionCruiseVelocity(25000, Constants.kTimeoutMs);
-        rightMotor.configMotionAcceleration(10000, Constants.kTimeoutMs);
+        rightMotor.configMotionCruiseVelocity(maxVelocity, Constants.kTimeoutMs);
+        rightMotor.configMotionAcceleration(maxVelocity, Constants.kTimeoutMs);
   
         // current limit enabled | Limit(amp) | Trigger Threshold(amp) | Trigger
-        // Threshold Time(s) */
         rightMotor.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(false, 20, 25, 1.0));
-   
+
         motorsNeedInit = false;
       }
    }
+
 }

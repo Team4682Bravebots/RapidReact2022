@@ -46,7 +46,7 @@ public final class Constants
   // Angle arms magic numbers
   public static final double angleArmsManualMotorStopSpeed = 0.0;
   public static final double angleArmsManualMotorForwardSpeed = 0.8;
-  public static final double angleArmsManualMotorReverseSpeed = 0.8;
+  public static final double angleArmsManualMotorReverseSpeed = -0.8;
   public static final double angleArmsMinimumPositionAngle = -5.0;
   public static final double angleArmsReferencePositionAngle = 0.0;
   public static final double angleArmsMaximumPositionAngle = 90.0;
@@ -58,22 +58,24 @@ public final class Constants
   public static final double angleArmsReferencePositionMotorEncoderUnits = 0.0;
 
   // Motor magic numbers
-  public static final double bottomMotorForwardLowGoalSpeed = 0.8;
-  public static final double topMotorForwardLowGoalSpeed = 0.7;
-  public static final double bottomMotorForwardHighGoalSpeed = 1.0;
-  public static final double topMotorForwardHighGoalSpeed = 0.95;
-  public static final double bottomMotorReverseHighGoalSpeed = 1.0;
-  public static final double topMotorReverseHighGoalSpeed = 0.95;
-  public static final double bottomMotorIntakeSpeed = -0.5;
-  public static final double topMotorIntakeSpeed = -0.4;
-  public static final double drivePowerReductionFactor = 0.75;
+  public static final double defaultMotorSpeedToleranceRpm = 50.0;
+  public static final double bottomMotorForwardLowGoalSpeedRpm = 1700.0;
+  public static final double topMotorForwardLowGoalSpeedRpm = 1600.0;
+  public static final double bottomMotorForwardHighGoalSpeedRpm = 3300.0;
+  public static final double topMotorForwardHighGoalSpeedRpm = 3000.0;
+  public static final double bottomMotorReverseHighGoalSpeedRpm = 3300.0;
+  public static final double topMotorReverseHighGoalSpeedRpm = 3000.0;
+  public static final double bottomMotorReverseLowGoalSpeedRpm = 1700.0;
+  public static final double topMotorReverseLowGoalSpeedRpm = 1600.0;
+  public static final double bottomMotorIntakeSpeedRpm = -1500.0;
+  public static final double topMotorIntakeSpeedRpm = -1500.0;
   
   // Jaws reach points \\
   public static final double jawsIntakePositionAngle = 0.0;
   public static final double jawsLowGoalPositionAngle = 90.0;
   public static final double jawsHighGoalPositionAngle = 110.0; 
   public static final double jawsReverseHighGoalPositionAngle = 145.0;
-  public static final double jawsReverseLowGoalPositionAngle = 160.0;
+  public static final double jawsReverseLowGoalPositionAngle = 150.0;
   public static final double jawsPositionAngleTolerance = 1.2;
   public static final double jawsAngleArmsEngagePositionAngle = 125.0;
   public static final double jawsAngleArmsEngagePositionTolerance = 0.9;
@@ -95,29 +97,35 @@ public final class Constants
   public static final double ballRetrieveSpeed = 0.5;
   public static final int maximumStoredBallCount = 2;
 
+  // *********************************************
   // CAN BUS NUMBERS \\
-  public static int jawsMotorRightCanId = 9;
-  public static int jawsMotorLeftCanId = 10;
-
-  //TODO - P0 - fill in proper CAN bus index for telescoping arm motors
-  public static int telescopingArmsMotorLeftCanId = 13;
-  public static int telescopingArmsMotorRightCanId = 14;
+  // *********************************************
+  public static final int angleArmsMotorCanId = 4;
 
   public static final int shooterMotorBottomCanId = 5;
   public static final int shooterMotorTopCanId = 6;
 
-  public static int ballStorageMotorTopCanId = 15;
-  public static int ballStorageMotorBottomCanId = 16;
+  public static final int driveMotorLeftFrontCanId = 7;
+  public static final int driveMotorLeftRearCanId = 8;
+  public static final int driveMotorRightFrontCanId = 11;
+  public static final int driveMotorRightRearCanId = 12;
 
-  public static int driveMotorLeftFrontCanId = 7;
-  public static int driveMotorLeftRearCanId = 8;
-  public static int driveMotorRightFrontCanId = 11;
-  public static int driveMotorRightRearCanId = 12;
+  public static final int jawsMotorRightCanId = 9;
+  public static final int jawsMotorLeftCanId = 10;
 
-  // Digital Input Channel Numbers
-  public static final int jawsIntakeStopLimitSwitchChannel = 0;
-  public static final int ballStorageFrontBeamBreakSensorChannel = 1;
-  public static final int ballStorageRearBeamBreakSensorChannel = 2;
+  public static final int telescopingArmsMotorLeftCanId = 13;
+  public static final int telescopingArmsMotorRightCanId = 14;
+
+  public static final int ballStorageMotorTopCanId = 15;
+  public static final int ballStorageMotorBottomCanId = 16;
+
+
+  // MAXIMUM COMMAND TIMING SETTINGS
+  public static final double maximumClimbTimeOperationSeconds = 4.5;
+  public static final double maximumJawsTimeOperationSeconds = 3.2;
+  public static final double maximumBallStorageTimeOperationSeconds = 1.2;
+  public static final double maximumShooterTimeOperationSeconds = 1.5;
+  public static final double maximumTelescopingArmsTimeOperationSeconds = 3.0;
 
   // MOTOR SETTINGS \\
 
@@ -129,8 +137,11 @@ public final class Constants
   public static TalonFXInvertType driveMotorRightRearDefaultDirection = TalonFXInvertType.FollowMaster;
 
   // jaws arm motors clockwise is elevate
-  public static TalonFXInvertType jawsLeftMotorDefaultDirection = TalonFXInvertType.FollowMaster;
   public static TalonFXInvertType jawsRightMotorDefaultDirection = TalonFXInvertType.Clockwise;
+  public static TalonFXInvertType jawsLeftMotorDefaultDirection = TalonFXInvertType.FollowMaster;
+
+  // angle arms motor clockwise is pull backward
+  public static TalonFXInvertType angleArmsRightMotorDefaultDirection = TalonFXInvertType.Clockwise;
 
   // TIMING AND SPEEDS \\
   // AngleArm timing \\

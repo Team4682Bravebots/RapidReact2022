@@ -30,6 +30,9 @@ import frc.robot.common.MotorUtils;
 
 public class DriveTrain extends SubsystemBase implements Sendable
 {
+  // update this when folks are ready for it
+  private static final double talonFxMotorSpeedReductionFactor = 0.75;
+
   // four matched motors - two for each tank drive side
   private WPI_TalonFX leftFront = new WPI_TalonFX(Constants.driveMotorLeftFrontCanId);
   private WPI_TalonFX leftRear = new WPI_TalonFX(Constants.driveMotorLeftRearCanId);
@@ -71,8 +74,6 @@ public class DriveTrain extends SubsystemBase implements Sendable
   */
   public void arcadeDrive(double yAxisValue, double xAxisValue)
   {
-    //this.initializeMotorsDirectDrive();
-    this.initializeMotorsDirectDrive();
     drive.arcadeDrive(xAxisValue, yAxisValue);
   }
 
@@ -142,12 +143,11 @@ public class DriveTrain extends SubsystemBase implements Sendable
   public void periodic()
   {
     // This method will be called once per scheduler run
-    if(leftRear.getControlMode() == ControlMode.MotionMagic && rightRear.getControlMode() == ControlMode.MotionMagic)
+    if(leftFront.getControlMode() == ControlMode.MotionMagic && rightFront.getControlMode() == ControlMode.MotionMagic)
     {
-      if(Math.abs(leftRear.getClosedLoopError()) < lastMotionMagicTargetError &&
-        Math.abs(rightRear.getClosedLoopError()) < lastMotionMagicTargetError)
+      if(Math.abs(leftFront.getClosedLoopError()) < lastMotionMagicTargetError &&
+        Math.abs(rightFront.getClosedLoopError()) < lastMotionMagicTargetError)
       {
-        this.initializeMotorsDirectDrive();
         leftFront.set(ControlMode.PercentOutput, 0.0);
         rightFront.set(ControlMode.PercentOutput, 0.0);
         motionMagicRunning = false;
@@ -238,18 +238,6 @@ public class DriveTrain extends SubsystemBase implements Sendable
     double leftDeltaEncoderTicks = this.getEncoderUnitsFromTrackDistanceInInches(leftWheelDistanceInches);
     double rightDeltaEncoderTicks = this.getEncoderUnitsFromTrackDistanceInInches(rightWheelDistanceInches);   
 
-    /*
-    // TODO - with trapazoidal, this won't be fast enough - more work here for sure ...
-    double leftAverageVelocityEncoderTicksPer100Milliseconds = leftDeltaEncoderTicks/(targetTimeInSeconds*1000);
-    double rightAverageVelocityEncoderTicksPer100Milliseconds = rightDeltaEncoderTicks/(targetTimeInSeconds*1000);
-
-    // Motion Magic Configurations
-    leftFront.configMotionAcceleration(leftAverageVelocityEncoderTicksPer100Milliseconds, Constants.kTimeoutMs);
-		leftFront.configMotionCruiseVelocity(leftAverageVelocityEncoderTicksPer100Milliseconds, Constants.kTimeoutMs);
-    rightFront.configMotionAcceleration(rightAverageVelocityEncoderTicksPer100Milliseconds, Constants.kTimeoutMs);
-		rightFront.configMotionCruiseVelocity(rightAverageVelocityEncoderTicksPer100Milliseconds, Constants.kTimeoutMs);
-    */
-
     // get ready for error calc
     double onePercentError = (Math.abs(leftDeltaEncoderTicks) + Math.abs(rightDeltaEncoderTicks)) / 2 * 0.01;
     double futureLastMotitionMagicError = onePercentError > halfRotationEncoderTicks ? halfRotationEncoderTicks : onePercentError;
@@ -304,102 +292,82 @@ public class DriveTrain extends SubsystemBase implements Sendable
 
   private void initializeMotorsMotionMagic()
   {
-    /*
     if(this.initalizedForMotionMagic == false)
     {
+      double maxVelocity = Constants.talonMaximumRevolutionsPerMinute * Constants.CtreTalonFx500EncoderTicksPerRevolution / 10.0 * DriveTrain.talonFxMotorSpeedReductionFactor;
+
+      // LEFT MOTORS!
       leftFront.configFactoryDefault();
-      leftRear.configFactoryDefault();
-      rightFront.configFactoryDefault();
-      rightRear.configFactoryDefault();
-        
-      // setup each side with a follower
-      leftRear.follow(leftFront);
-      rightRear.follow(rightFront);
-
-      // LEFT FRONT LEADER
-      // setup the inverted values for each motor
-      leftFront.setInverted(Constants.driveMotorLeftFrontDefaultDirection);
       leftFront.setNeutralMode(NeutralMode.Brake);
-
-      leftFront.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, Constants.kPIDLoopIdx, DriveTrain.motorSettingTimeout);
+      leftFront.setInverted(Constants.jawsRightMotorDefaultDirection);
+      leftFront.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
       leftFront.setSensorPhase(false);
-      leftFront.configNeutralDeadband(0.001, DriveTrain.motorSettingTimeout);
+      leftFront.configNeutralDeadband(0.001, Constants.kTimeoutMs);
+      leftFront.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, Constants.kTimeoutMs);
+      leftFront.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, Constants.kTimeoutMs);
+
+      /* Set the peak and nominal outputs */
+      leftFront.configNominalOutputForward(0.0, Constants.kTimeoutMs);
+      leftFront.configNominalOutputReverse(-0.0, Constants.kTimeoutMs);
+      leftFront.configPeakOutputForward(1.0, Constants.kTimeoutMs);
+      leftFront.configPeakOutputReverse(-1.0, Constants.kTimeoutMs);
+
+      leftFront.selectProfileSlot(Constants.kSlotIdx, Constants.kPIDLoopIdx);
+      leftFront.config_kF(Constants.kSlotIdx, Constants.kGains.kF, Constants.kTimeoutMs);
+      leftFront.config_kP(Constants.kSlotIdx, Constants.kGains.kP, Constants.kTimeoutMs);
+      leftFront.config_kI(Constants.kSlotIdx, Constants.kGains.kI, Constants.kTimeoutMs);
+      leftFront.config_kD(Constants.kSlotIdx, Constants.kGains.kD, Constants.kTimeoutMs);
+      leftFront.configMotionCruiseVelocity(maxVelocity, Constants.kTimeoutMs);
+      leftFront.configMotionAcceleration(maxVelocity, Constants.kTimeoutMs);
+
+      // status frame updates!
       leftFront.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, DriveTrain.motorSettingTimeout);
       leftFront.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, DriveTrain.motorSettingTimeout);
 
-      // Set the peak and nominal outputs
-      leftFront.configNominalOutputForward(0.0, DriveTrain.motorSettingTimeout);
-      leftFront.configNominalOutputReverse(-0.0, DriveTrain.motorSettingTimeout);
-      leftFront.configPeakOutputForward(1.0, DriveTrain.motorSettingTimeout);
-      leftFront.configPeakOutputReverse(-1.0, DriveTrain.motorSettingTimeout);
-
-      leftFront.selectProfileSlot(Constants.kSlotIdx, Constants.kPIDLoopIdx);
-      leftFront.config_kF(Constants.kSlotIdx, Constants.kGains.kF, DriveTrain.motorSettingTimeout);
-      leftFront.config_kP(Constants.kSlotIdx, Constants.kGains.kP, DriveTrain.motorSettingTimeout);
-      leftFront.config_kI(Constants.kSlotIdx, Constants.kGains.kI, DriveTrain.motorSettingTimeout);
-      leftFront.config_kD(Constants.kSlotIdx, Constants.kGains.kD, DriveTrain.motorSettingTimeout);
-
-      leftFront.configMotionCruiseVelocity(25000, DriveTrain.motorSettingTimeout);
-      leftFront.configMotionAcceleration(10000, DriveTrain.motorSettingTimeout);
-
       // current limit enabled | Limit(amp) | Trigger Threshold(amp) | Trigger
       leftFront.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(false, 20, 25, 1.0));
+     
+      // make rear a follower of front
+      leftRear.follow(leftFront);
 
-      // RIGHT FRONT LEADER
-      // setup the inverted values for each motor
-      rightFront.setInverted(Constants.driveMotorRightFrontDefaultDirection);
+
+      // RIGHT MOTORS!
+      rightFront.configFactoryDefault();
       rightFront.setNeutralMode(NeutralMode.Brake);
-
-      rightFront.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, Constants.kPIDLoopIdx, DriveTrain.motorSettingTimeout);
+      rightFront.setInverted(Constants.jawsRightMotorDefaultDirection);
+      rightFront.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
       rightFront.setSensorPhase(false);
-      rightFront.configNeutralDeadband(0.001, DriveTrain.motorSettingTimeout);
+      rightFront.configNeutralDeadband(0.001, Constants.kTimeoutMs);
+      rightFront.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, Constants.kTimeoutMs);
+      rightFront.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, Constants.kTimeoutMs);
+
+      /* Set the peak and nominal outputs */
+      rightFront.configNominalOutputForward(0.0, Constants.kTimeoutMs);
+      rightFront.configNominalOutputReverse(-0.0, Constants.kTimeoutMs);
+      rightFront.configPeakOutputForward(1.0, Constants.kTimeoutMs);
+      rightFront.configPeakOutputReverse(-1.0, Constants.kTimeoutMs);
+
+      rightFront.selectProfileSlot(Constants.kSlotIdx, Constants.kPIDLoopIdx);
+      rightFront.config_kF(Constants.kSlotIdx, Constants.kGains.kF, Constants.kTimeoutMs);
+      rightFront.config_kP(Constants.kSlotIdx, Constants.kGains.kP, Constants.kTimeoutMs);
+      rightFront.config_kI(Constants.kSlotIdx, Constants.kGains.kI, Constants.kTimeoutMs);
+      rightFront.config_kD(Constants.kSlotIdx, Constants.kGains.kD, Constants.kTimeoutMs);
+      rightFront.configMotionCruiseVelocity(maxVelocity, Constants.kTimeoutMs);
+      rightFront.configMotionAcceleration(maxVelocity, Constants.kTimeoutMs);
+
+      // status frame updates!
       rightFront.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, DriveTrain.motorSettingTimeout);
       rightFront.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, DriveTrain.motorSettingTimeout);
 
-      // Set the peak and nominal outputs 
-      rightFront.configNominalOutputForward(0.0, DriveTrain.motorSettingTimeout);
-      rightFront.configNominalOutputReverse(-0.0, DriveTrain.motorSettingTimeout);
-      rightFront.configPeakOutputForward(1.0, DriveTrain.motorSettingTimeout);
-      rightFront.configPeakOutputReverse(-1.0, DriveTrain.motorSettingTimeout);
-
-      rightFront.selectProfileSlot(Constants.kSlotIdx, Constants.kPIDLoopIdx);
-      rightFront.config_kF(Constants.kSlotIdx, Constants.kGains.kF, DriveTrain.motorSettingTimeout);
-      rightFront.config_kP(Constants.kSlotIdx, Constants.kGains.kP, DriveTrain.motorSettingTimeout);
-      rightFront.config_kI(Constants.kSlotIdx, Constants.kGains.kI, DriveTrain.motorSettingTimeout);
-      rightFront.config_kD(Constants.kSlotIdx, Constants.kGains.kD, DriveTrain.motorSettingTimeout);
-
-      rightFront.configMotionCruiseVelocity(25000, DriveTrain.motorSettingTimeout);
-      rightFront.configMotionAcceleration(10000, DriveTrain.motorSettingTimeout);
+      // current limit enabled | Limit(amp) | Trigger Threshold(amp) | Trigger
+      rightFront.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(false, 20, 25, 1.0));
+     
+      // make rear a follower of front
+      rightRear.follow(rightFront);
 
       this.initalizedForMotionMagic = true;
       System.out.println("initalizedForMotionMagic = true");
     }
-    */
-  }
-
-  private void initializeMotorsDirectDrive()
-  {
-    if(this.initalizedForMotionMagic == true)
-    {
-      leftFront.configFactoryDefault();
-      leftRear.configFactoryDefault();
-      rightFront.configFactoryDefault();
-      rightRear.configFactoryDefault();
-  
-      // setup the inverted values for each motor
-      leftFront.setInverted(true);
-      leftRear.setInverted(true);
-      rightFront.setInverted(false);
-      rightRear.setInverted(false);
-
-      // setup each side with a follower
-     leftRear.follow(leftFront);
-     rightRear.follow(rightFront);
-  
-      this.initalizedForMotionMagic = false;
-      System.out.println("initalizedForMotionMagic = false");
-    }
-  }
- 
+  } 
 }
  

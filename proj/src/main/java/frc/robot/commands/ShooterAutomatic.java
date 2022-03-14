@@ -35,22 +35,22 @@ public class ShooterAutomatic extends CommandBase
   {
     // format:
     // jaws position minimum, jaws position maximum, bottom wheel RPM target, bottom wheel RPM tolerance, top wheel RPM target, top wheel RPM tolerance
-    {Constants.jawsIntakePositionAngle - 5.0, Constants.jawsIntakePositionAngle + 5.0, 350.0, 20.0, 350.0, 20.0}, // intake targets
-    {Constants.jawsLowGoalPositionAngle - 5.0, Constants.jawsLowGoalPositionAngle + 5.0, 660.0, 20.0, 600.0, 20.0}, // low ball shooter targets
-    {Constants.jawsHighGoalPositionAngle - 5.0, Constants.jawsHighGoalPositionAngle + 5.0, 2000.0, 20.0, 2000.0, 20.0}, // forward high ball shooter targets
-    {Constants.jawsReverseHighGoalPositionAngle - 5.0, Constants.jawsReverseHighGoalPositionAngle + 5.0, 2200.0, 20.0, 2000.0, 20.0}, // reverse high ball shooter targets
-    {Constants.jawsReverseLowGoalPositionAngle - 5.0, Constants.jawsReverseLowGoalPositionAngle + 5.0, 770.0, 20.0, 700.0, 20.0}, // reverse high ball shooter targets
+    {Constants.jawsIntakePositionAngle - 5.0, Constants.jawsIntakePositionAngle + 5.0, Constants.bottomMotorIntakeSpeedRpm, 20.0, Constants.topMotorIntakeSpeedRpm, 20.0}, // intake targets
+    {Constants.jawsLowGoalPositionAngle - 5.0, Constants.jawsLowGoalPositionAngle + 5.0, Constants.bottomMotorForwardLowGoalSpeedRpm, 20.0, Constants.topMotorForwardLowGoalSpeedRpm, 20.0}, // low ball shooter targets
+    {Constants.jawsHighGoalPositionAngle - 5.0, Constants.jawsHighGoalPositionAngle + 5.0, Constants.bottomMotorForwardHighGoalSpeedRpm, 20.0, Constants.topMotorForwardHighGoalSpeedRpm, 20.0}, // forward high ball shooter targets
+    {Constants.jawsReverseHighGoalPositionAngle - 5.0, Constants.jawsReverseHighGoalPositionAngle + 5.0, Constants.bottomMotorReverseHighGoalSpeedRpm, 20.0, Constants.topMotorReverseHighGoalSpeedRpm, 20.0}, // reverse high ball shooter targets
+    {Constants.jawsReverseLowGoalPositionAngle - 5.0, Constants.jawsReverseLowGoalPositionAngle + 5.0, Constants.bottomMotorReverseLowGoalSpeedRpm, 20.0, Constants.topMotorReverseLowGoalSpeedRpm, 20.0}, // reverse high ball shooter targets
   };
 
   private Shooter shooterSubsystem;
   private BallStorage ballStorageSubsystem;
   private Jaws jawsSubsystem;
   private boolean useShootingDirection = true;
-  private boolean storageUsingBeamBreakSensors = true;
   private Timer timer = new Timer();
-  private boolean timerStarted = false;
   private boolean done = false;
-
+  private boolean jawsTestMode = false;
+  private double jawsTestAngle = 0.0;
+  
   private double bottomShooterTargetVelocityRpm = ShooterAutomatic.defaultVelocityRpm;
   private double bottomShooterVelocityToleranceRpm = ShooterAutomatic.defaultVelocityTolerance;
   private double topShooterTargetVelocityRpm = ShooterAutomatic.defaultVelocityRpm;
@@ -69,8 +69,7 @@ public class ShooterAutomatic extends CommandBase
       Shooter ShooterSubsystem,
       BallStorage BallStorageSubsystem,
       Jaws JawsSubsystem,
-      boolean directionIsShooting,
-      boolean storageHasWorkingBeamBreakSensors)
+      boolean directionIsShooting)
   {
     this.shooterSubsystem = ShooterSubsystem;
     addRequirements(ShooterSubsystem);
@@ -82,7 +81,31 @@ public class ShooterAutomatic extends CommandBase
     addRequirements(JawsSubsystem); 
 
     useShootingDirection = directionIsShooting;
-    storageUsingBeamBreakSensors = storageHasWorkingBeamBreakSensors;
+  }
+
+  // TODO - remove this after testing!!!
+  /**
+   * ONLY USE THIS CTOR DURING TESTING!!!!
+   * @param ShooterSubsystem
+   * @param BallStorageSubsystem
+   * @param directionIsShooting
+   * @param jawsTestAngle
+   */
+  public ShooterAutomatic(
+      Shooter ShooterSubsystem,
+      BallStorage BallStorageSubsystem,
+      boolean directionIsShooting,
+      double jawsTargetTestAngle)
+  {
+    this.shooterSubsystem = ShooterSubsystem;
+    addRequirements(ShooterSubsystem);
+
+    this.ballStorageSubsystem = BallStorageSubsystem;
+    addRequirements(BallStorageSubsystem); 
+
+    useShootingDirection = directionIsShooting;
+    jawsTestMode = true;
+    jawsTestAngle = jawsTargetTestAngle;
   }
 
   // Called when the command is initially scheduled.
@@ -91,10 +114,10 @@ public class ShooterAutomatic extends CommandBase
   {
       boolean useDefault = true;
       done = false;
-      timerStarted = false;
+      timer.stop();
       timer.reset();
-      // determine the target shooter velocities mapped to the current arm angle
-      double currentJawsAngle = jawsSubsystem.getJawsAngle();
+        // determine the target shooter velocities mapped to the current arm angle
+      double currentJawsAngle = jawsTestMode ? jawsTestAngle : jawsSubsystem.getJawsAngle();
       for(int inx = 0; inx < shooterIntakeTargets.length; ++inx)
       {
           double lowBar = shooterIntakeTargets[inx][0];
@@ -116,70 +139,40 @@ public class ShooterAutomatic extends CommandBase
         bottomShooterVelocityToleranceRpm = ShooterAutomatic.defaultVelocityTolerance;
         topShooterTargetVelocityRpm = ShooterAutomatic.defaultVelocityRpm;
         topShooterVelocityToleranceRpm = ShooterAutomatic.defaultVelocityTolerance;
-    }
+      }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute()
   {
-    // when no balls are present and the sensors should be used
-    // ... just mark this as done
-    if(storageUsingBeamBreakSensors == true &&
-      ballStorageSubsystem.getOnboardBallCount() <= 0)
-    {
-      done = true;
-    }
-    else
+    if(done == false)
     {
       shooterSubsystem.setShooterVelocityBottom(this.bottomShooterTargetVelocityRpm);
       shooterSubsystem.setShooterVelocityTop(this.topShooterTargetVelocityRpm);
 
       // when the PID's say speed is at setpoint / with tolerance then call retrieve
-      if(shooterSubsystem.isShooterVelocityUpToSpeedBottom(this.bottomShooterVelocityToleranceRpm) &&
-         shooterSubsystem.isShooterVelocityUpToSpeedTop(this.topShooterVelocityToleranceRpm))
+      if(shooterSubsystem.isShooterVelocityUpToSpeedBottom(this.bottomShooterTargetVelocityRpm, this.bottomShooterVelocityToleranceRpm) &&
+         shooterSubsystem.isShooterVelocityUpToSpeedTop(this.topShooterTargetVelocityRpm, this.topShooterVelocityToleranceRpm))
       {
-        if(timerStarted == false)
+        timer.start();
+        double targetElapsedTime = 0.0;
+        if(this.useShootingDirection)
         {
-          timer.start();
-          timerStarted = true;
-        }
-        // when the ball storage store method returns true a ball has been stored
-        if(storageUsingBeamBreakSensors == true)
-        {
-          if(this.useShootingDirection)
-          {
-            if(ballStorageSubsystem.retrieve())
-            {
-                done = true;
-            }
-          }
-          else
-          {
-            if(ballStorageSubsystem.store())
-            {
-                done = true;
-            }
-          }
+          ballStorageSubsystem.retrieveBallManual();
+          targetElapsedTime = Constants.ballStorageRetrieveTimingSeconds;
         }
         else
         {
-          double elapsedTime = 0.0;
-          if(this.useShootingDirection)
-          {
-            ballStorageSubsystem.retrieveBallManual();
-            elapsedTime = Constants.ballStorageRetrieveTimingSeconds;
-          }
-          else
-          {
-            ballStorageSubsystem.storeBallManual();
-            elapsedTime = Constants.ballStorageStoreTimingSeconds;
-          }
+          ballStorageSubsystem.storeBallManual();
+          targetElapsedTime = Constants.ballStorageStoreTimingSeconds;
+        }
 
-          if (timer.hasElapsed(elapsedTime))
-          {
-            done = true;
-          }
+        if (timer.hasElapsed(targetElapsedTime) || done == true)
+        {
+          done = true;
+          ballStorageSubsystem.stopBallManual();
+          shooterSubsystem.stopShooter();
         }
       }
     }
@@ -189,6 +182,10 @@ public class ShooterAutomatic extends CommandBase
   @Override
   public void end(boolean interrupted)
   {
+    if(interrupted == true)
+    {
+      done = true;
+    }
     ballStorageSubsystem.stopBallManual();
     shooterSubsystem.stopShooter();
   }

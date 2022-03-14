@@ -10,8 +10,6 @@
 
 package frc.robot.subsystems;
 
-import javax.lang.model.util.ElementScanner6;
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
@@ -26,64 +24,31 @@ import frc.robot.common.*;
 
 public class BallStorage extends SubsystemBase implements Sendable
 {
-  private static final int minimumBallPresentSamples = 3;
-
   private WPI_TalonSRX bottomMotor = new WPI_TalonSRX(Constants.ballStorageMotorBottomCanId);
   private WPI_TalonSRX topMotor = new WPI_TalonSRX(Constants.ballStorageMotorTopCanId);
-  private ConsecutiveDigitalInput frontBeamBreakSensor = new ConsecutiveDigitalInput(Constants.ballStorageFrontBeamBreakSensorChannel);
-  private ConsecutiveDigitalInput rearBeamBreakSensor = new ConsecutiveDigitalInput(Constants.ballStorageRearBeamBreakSensorChannel);
-
-  private int onboardBallCount = 0;
-  private int historicOnboardBallCount = 0;
-  
+ 
   /**
   * No argument constructor for the BallStorage subsystem.
   */
   public BallStorage()
   {  
     topMotor.configFactoryDefault();
-    bottomMotor.configFactoryDefault();
     topMotor.setNeutralMode(NeutralMode.Brake);
-    bottomMotor.setNeutralMode(NeutralMode.Brake);
     topMotor.setInverted(true);
+
+    bottomMotor.configFactoryDefault();
+    bottomMotor.setNeutralMode(NeutralMode.Brake);
     CommandScheduler.getInstance().registerSubsystem(this);
   }
 
   @Override
   public void periodic()
   {
-    // establish the next count of onboard balls
-    int nextOnboardBallCount = 0;
-    if(this.isBallInFrontPosition())
-    {
-      ++nextOnboardBallCount;
-    }
-    if(this.isBallInRearPosition())
-    {
-      ++nextOnboardBallCount;
-    }
-
-    // atomic assignment assumed on this roborio here
-    onboardBallCount = nextOnboardBallCount; 
-  }
-
-  /**
-  * A method exposed to callers to retrieve the count of balls in storage
-  *
-  * @return Will return the count of balls that are onboard
-  */
-  public int getOnboardBallCount()
-  {
-    this.periodic();
-    return onboardBallCount;
   }
 
   @Override
   public void initSendable(SendableBuilder builder)
   {
-    builder.addDoubleProperty("OnboardBallCount", this::getOnboardBallCount, null);
-    builder.addBooleanProperty("BallInFrontPosition", this::isBallInFrontPosition, null);
-    builder.addBooleanProperty("BallInRearPosition", this::isBallInRearPosition, null);
     builder.addDoubleProperty("TopMotorSpeedSetting", this::getTopMotorSpeed, null);
     builder.addDoubleProperty("BottomMotorSpeedSetting", this::getBottomMotorSpeed, null);
     builder.addStringProperty("BallStorageDirection", this::getBallStorageDirection, null);
@@ -91,63 +56,21 @@ public class BallStorage extends SubsystemBase implements Sendable
 
   /**
   * A method exposed to callers to retrieve one ball from storage
-  *
-  * @return Will return true once a ball has been retrieved enough to have been ejected from the shooter
   */
-  public boolean retrieve()
+  public void retrieve()
   {
-    boolean rtnVal = false;
-    this.periodic();
-
-    // when the onboard ball count is now lower than our old 
-    // onboard ball count that means we subtracted one or more
-    // this implies that the retrieve operation is complete and we
-    // can tell the caller that we have indeed retrieved a ball
-    if(onboardBallCount < historicOnboardBallCount || onboardBallCount <= 0)
-    {
-      historicOnboardBallCount = onboardBallCount;
-      bottomMotor.set(ControlMode.PercentOutput, 0.0);
-      topMotor.set(ControlMode.PercentOutput, 0.0);
-      rtnVal = true;
-    }
-    else
-    {
-      bottomMotor.set(ControlMode.PercentOutput, Constants.ballRetrieveSpeed);
-      topMotor.set(ControlMode.PercentOutput, Constants.ballRetrieveSpeed);
-    }
-
-    return rtnVal;
+    bottomMotor.set(ControlMode.PercentOutput, Constants.ballRetrieveSpeed);
+    topMotor.set(ControlMode.PercentOutput, Constants.ballRetrieveSpeed);
   }
 
   /**
   * A method exposed to callers to store one ball into storage
-  *
-  * @return Will return true once a ball has been consumed into storage otherwise the motors will keep attempting to store
   */
-  public boolean store()
+  public void store()
   {
-    boolean rtnVal = false;
-    this.periodic();
-
-    // when the onboard ball count is now higher than our old 
-    // onboard ball count that means we added one or more
-    // this implies that the storeage operation is complete and we
-    // can tell the caller that we have indeed stored a ball
-    if(onboardBallCount > historicOnboardBallCount || onboardBallCount >= Constants.maximumStoredBallCount)
-    {
-      historicOnboardBallCount = onboardBallCount;
-      bottomMotor.set(ControlMode.PercentOutput, 0.0);
-      topMotor.set(ControlMode.PercentOutput, 0.0);
-      rtnVal = true;
-    }
-    else
-    {
-      // since motors are followers ok to just set one
-      bottomMotor.set(ControlMode.PercentOutput, Constants.ballStoreSpeed);
-      topMotor.set(ControlMode.PercentOutput, Constants.ballStoreSpeed);
-    }
-
-    return rtnVal;
+    // since motors are followers ok to just set one
+    bottomMotor.set(ControlMode.PercentOutput, Constants.ballStoreSpeed);
+    topMotor.set(ControlMode.PercentOutput, Constants.ballStoreSpeed);
   }
 
   @Override
@@ -211,7 +134,7 @@ public class BallStorage extends SubsystemBase implements Sendable
   private String getBallStorageDirection()
   {
     double topMotorSpeed = this.getTopMotorSpeed();
-    double bottomMotorSpeed = this.getTopMotorSpeed();
+    double bottomMotorSpeed = this.getBottomMotorSpeed();
     if(topMotorSpeed == 0.0 && bottomMotorSpeed == 0.0)
     {
       return "Stopped";
@@ -239,19 +162,4 @@ public class BallStorage extends SubsystemBase implements Sendable
       }
     }
   }
-
-  private boolean isBallInFrontPosition()
-  {
-    // Gets the value of the digital input.  Returns true if the circuit is open.
-    return (frontBeamBreakSensor.get() &&
-      frontBeamBreakSensor.getStatusCount() >= BallStorage.minimumBallPresentSamples);
-  }
-
-  private boolean isBallInRearPosition()
-  {
-    // Gets the value of the digital input.  Returns true if the circuit is open.
-    return (rearBeamBreakSensor.get() &&
-      rearBeamBreakSensor.getStatusCount() >= BallStorage.minimumBallPresentSamples);
-  }
-
 }

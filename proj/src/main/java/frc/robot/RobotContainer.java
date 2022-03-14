@@ -137,9 +137,9 @@ public class RobotContainer
 
   private void initializeManualInputInterfaces()
   {
-    if(InstalledHardware.highLevelButtonBoardInstalled &&
-      InstalledHardware.lowLevelButtonBoardInstalled &&
-      InstalledHardware.coDriverXboxControllerInstalled &&
+    if(InstalledHardware.highLevelButtonBoardInstalled ||
+      InstalledHardware.lowLevelButtonBoardInstalled ||
+      InstalledHardware.coDriverXboxControllerInstalled ||
       InstalledHardware.driverXboxControllerInstalled)
     {
       m_manualInput = new ManualInputInterfaces(m_collection);
@@ -167,8 +167,7 @@ public class RobotContainer
 
   private void initializeAngleArms()
   {
-    if(InstalledHardware.angleArmsToJawsCylinderSolenoidPneumaticsInstalled && 
-      InstalledHardware.angleArmsToChassisCylinderSolenoidPneumaticsInstalled)
+    if(InstalledHardware.angleArmsMotorInstalled)
     {
       m_angleArms = new AngleArms();
       // no need for a default command as buttons control this subsystem
@@ -182,11 +181,8 @@ public class RobotContainer
 
   private void initializeBallStorage()
   {
-    // TODO - update this code soon to add the commeted out code back in
     if(InstalledHardware.bottomBallStorageMotorInstalled && 
-      InstalledHardware.topBallStorageMotorInstalled /* && 
-      InstalledHardware.forwardBallStorageBeamBreakSensorInstalled &&
-      InstalledHardware.rearBallStorageBeamBreakSensorInstalled */)
+      InstalledHardware.topBallStorageMotorInstalled)
     {
       m_ballStorage = new BallStorage();
       System.out.println("SUCCESS: initializeBallStorage");
@@ -199,11 +195,8 @@ public class RobotContainer
 
   private void initializeDriveTrain()
   {
-    // TODO - update this code soon to add the commeted out code back in
-    if(/* InstalledHardware.leftFinalDriveShaftEncoderInstalled && */ 
-      InstalledHardware.leftFrontDriveMotorInstalled && 
+    if(InstalledHardware.leftFrontDriveMotorInstalled && 
       InstalledHardware.leftRearDriveMotorInstalled && 
-      /* InstalledHardware.rightFinalDriveShaftEncoderInstalled && */ 
       InstalledHardware.rightFrontDriveMotorInstalled && 
       InstalledHardware.rightRearDriveMotorInstalled)
     {
@@ -240,9 +233,7 @@ public class RobotContainer
   private void initializeJaws()
   {
     if(InstalledHardware.topJawsDriveMotorInstalled &&
-      InstalledHardware.bottomJawsDriveMotorInstalled &&
-      InstalledHardware.intakeStopJawsLmitSwitchInstalled &&
-      InstalledHardware.jawsClutchCylinderSolenoidPneumaticsInstalled)
+      InstalledHardware.bottomJawsDriveMotorInstalled)
     {
       // JAWS!!!
       m_jaws = new Jaws();
@@ -266,11 +257,6 @@ public class RobotContainer
       InstalledHardware.bottomShooterDriveMotorInstalled)
     {
       m_shooter = new Shooter();
-      m_shooter.setDefaultCommand(
-          new RunCommand(
-            () ->
-            m_shooter.setShooterManual(m_manualInput.getInputShooter()),
-          m_shooter));
       System.out.println("SUCCESS: initializeShooter");
     }
     else
