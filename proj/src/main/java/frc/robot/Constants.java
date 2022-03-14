@@ -83,6 +83,10 @@ public final class Constants
   public static final double jawsDefaultNegativeSpeed = -0.8;
   public static final double jawsReferencePositionMotorEncoderUnits = 141000; // 151972 and 152037
 
+  // Angle Arms reach points \\
+  public static final double angleArmsStorageAngle = 0.0;
+  public static final double angleArmsRetractAngle = 90.0;
+
   // telescoping arms reach points \\
   public static final double telescopingArmsRetractHeightInches = 0.50;
   public static final double telescopingArmsMediumExtendHeightInches = 25.75;
@@ -100,22 +104,24 @@ public final class Constants
   // *********************************************
   // CAN BUS NUMBERS \\
   // *********************************************
+  public static final int angleArmsMotorCanId = 4;
+
   public static final int shooterMotorBottomCanId = 5;
   public static final int shooterMotorTopCanId = 6;
 
-  public static int driveMotorLeftFrontCanId = 7;
-  public static int driveMotorLeftRearCanId = 8;
-  public static int driveMotorRightFrontCanId = 11;
-  public static int driveMotorRightRearCanId = 12;
+  public static final int driveMotorLeftFrontCanId = 7;
+  public static final int driveMotorLeftRearCanId = 8;
+  public static final int driveMotorRightFrontCanId = 11;
+  public static final int driveMotorRightRearCanId = 12;
 
-  public static int jawsMotorRightCanId = 9;
-  public static int jawsMotorLeftCanId = 10;
+  public static final int jawsMotorRightCanId = 9;
+  public static final int jawsMotorLeftCanId = 10;
 
-  public static int telescopingArmsMotorLeftCanId = 13;
-  public static int telescopingArmsMotorRightCanId = 14;
+  public static final int telescopingArmsMotorLeftCanId = 13;
+  public static final int telescopingArmsMotorRightCanId = 14;
 
-  public static int ballStorageMotorTopCanId = 15;
-  public static int ballStorageMotorBottomCanId = 16;
+  public static final int ballStorageMotorTopCanId = 15;
+  public static final int ballStorageMotorBottomCanId = 16;
 
   // MOTOR SETTINGS \\
 
@@ -127,8 +133,11 @@ public final class Constants
   public static TalonFXInvertType driveMotorRightRearDefaultDirection = TalonFXInvertType.FollowMaster;
 
   // jaws arm motors clockwise is elevate
-  public static TalonFXInvertType jawsLeftMotorDefaultDirection = TalonFXInvertType.FollowMaster;
   public static TalonFXInvertType jawsRightMotorDefaultDirection = TalonFXInvertType.Clockwise;
+  public static TalonFXInvertType jawsLeftMotorDefaultDirection = TalonFXInvertType.FollowMaster;
+
+  // angle arms motor clockwise is pull backward
+  public static TalonFXInvertType angleArmsRightMotorDefaultDirection = TalonFXInvertType.Clockwise;
 
   // TIMING AND SPEEDS \\
   // AngleArm timing \\

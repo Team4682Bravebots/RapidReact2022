@@ -220,6 +220,34 @@ public class ManualInputInterfaces
               subsystemCollection.getJawsSubsystem()),
             new ButtonPress("driverController.kStart", "buttonStart.whenPressed")));
       }
+
+      if(subsystemCollection.getAngleArmsSubsystem() != null)
+      {
+        buttonB.whenPressed(
+          new ParallelCommandGroup(
+            new AngleArmsManual(subsystemCollection.getAngleArmsSubsystem(), Constants.angleArmsManualMotorReverseSpeed),
+            new ButtonPress("driverController.kB", "buttonB.whenPressed")));
+        buttonY.whenPressed(
+          new ParallelCommandGroup(
+            new AngleArmsManual(subsystemCollection.getAngleArmsSubsystem(), Constants.angleArmsManualMotorForwardSpeed),
+            new ButtonPress("driverController.kY", "buttonY.whenPressed")));
+        buttonB.whenReleased(
+          new ParallelCommandGroup(
+            new AngleArmsAllStop(subsystemCollection.getAngleArmsSubsystem()),
+            new ButtonPress("driverController.kB", "buttonB.whenReleased")));
+        buttonY.whenReleased(
+          new ParallelCommandGroup(
+            new AngleArmsAllStop(subsystemCollection.getAngleArmsSubsystem()),
+            new ButtonPress("driverController.kY", "buttonY.whenReleased")));
+        buttonX.whenPressed(
+          new ParallelCommandGroup(
+            new AngleArmsAngleVariable(subsystemCollection.getAngleArmsSubsystem(), Constants.angleArmsRetractAngle),
+            new ButtonPress("driverController.kX", "buttonX.whenPressed")));
+        buttonA.whenPressed(
+          new ParallelCommandGroup(
+            new AngleArmsAngleVariable(subsystemCollection.getAngleArmsSubsystem(), Constants.angleArmsStorageAngle),
+            new ButtonPress("driverController.kA", "buttonA.whenPressed")));
+      }
     }
   }
 

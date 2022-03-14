@@ -10,7 +10,6 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
@@ -25,7 +24,6 @@ import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 
 import frc.robot.Constants;
-import frc.robot.common.ConsecutiveDigitalInput;
 import frc.robot.common.MotorUtils;
 
 public class Jaws extends SubsystemBase implements Sendable
@@ -39,14 +37,13 @@ public class Jaws extends SubsystemBase implements Sendable
     private static final double maximumTargetAngle = 150.1;
 
     // update this when folks are ready for it
-    private static final double talonFxMotorSpeedReductionFactor = 1.0;
-
+    private static final double talonFxMotorSpeedReductionFactor = 0.75;
 
     /* *********************************************************************
     MEMBERS
     ************************************************************************/
     private final WPI_TalonFX rightMotor = new WPI_TalonFX(Constants.jawsMotorRightCanId);
-//    private final WPI_TalonFX leftMotor = new WPI_TalonFX(Constants.jawsMotorLeftCanId);
+    private final WPI_TalonFX leftMotor = new WPI_TalonFX(Constants.jawsMotorLeftCanId);
 
     private double motorReferencePosition = 0.0;
     private boolean motorsNeedInit = true;
@@ -74,7 +71,7 @@ public class Jaws extends SubsystemBase implements Sendable
     {
       this.initializeMotors();
       rightMotor.setSelectedSensorPosition(Constants.jawsReferencePositionMotorEncoderUnits);
-  //    leftMotor.setSelectedSensorPosition(Constants.jawsReferencePositionMotorEncoderUnits);
+      leftMotor.setSelectedSensorPosition(Constants.jawsReferencePositionMotorEncoderUnits);
     }
 
     /**
@@ -230,7 +227,7 @@ public class Jaws extends SubsystemBase implements Sendable
         rightMotor.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(false, 20, 25, 1.0));
 
         // make left a follower of right
- //       leftMotor.follow(rightMotor);
+        leftMotor.follow(rightMotor);
         motorsNeedInit = false;
       }
    }
