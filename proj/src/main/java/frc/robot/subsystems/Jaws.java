@@ -34,21 +34,21 @@ public class Jaws extends SubsystemBase implements Sendable
     CONSTANTS
     ************************************************************************/
     private static final double jawsMotorEncoderTicksPerDegree = Constants.CtreTalonFx500EncoderTicksPerRevolution / Constants.DegreesPerRevolution;
-    private static final double jawsSpeedDuringCalibration = -0.8;
     private static final double jawsMotorToArmEffectiveGearRatio = 212; // according to nathan on 02/08/2022
-    private static final int jawsMinimumIsCalibratedConsecutiveCount = 1;
     private static final double minmumTargetAngle = 0.0;
-    private static final double maximumTargetAngle = 161.0;
+    private static final double maximumTargetAngle = 150.1;
+
+    // update this when folks are ready for it
+    private static final double talonFxMotorSpeedReductionFactor = 0.5;
+
 
     /* *********************************************************************
     MEMBERS
     ************************************************************************/
     private final WPI_TalonFX rightMotor = new WPI_TalonFX(Constants.jawsMotorRightCanId);
-    private final WPI_TalonFX leftMotor = new WPI_TalonFX(Constants.jawsMotorLeftCanId);
+//    private final WPI_TalonFX leftMotor = new WPI_TalonFX(Constants.jawsMotorLeftCanId);
 
     private double motorReferencePosition = 0.0;
-    private boolean jawsMotionCurrentlyCalibrating = false;
-    private boolean jawsMotionCalibrated = false;
     private boolean motorsNeedInit = true;
 
     /* *********************************************************************
@@ -74,7 +74,7 @@ public class Jaws extends SubsystemBase implements Sendable
     {
       this.initializeMotors();
       rightMotor.setSelectedSensorPosition(Constants.jawsReferencePositionMotorEncoderUnits);
-      leftMotor.setSelectedSensorPosition(Constants.jawsReferencePositionMotorEncoderUnits);
+  //    leftMotor.setSelectedSensorPosition(Constants.jawsReferencePositionMotorEncoderUnits);
     }
 
     /**
@@ -132,7 +132,6 @@ public class Jaws extends SubsystemBase implements Sendable
     */
     public boolean setJawsAngle(double targetAngleInDegrees, double toleranceInDegrees)
     {
-      this.initializeMotors();
       double trimmedAngle = MotorUtils.truncateValue(targetAngleInDegrees, Jaws.minmumTargetAngle, Jaws.maximumTargetAngle);
 
       // because of follower this will set both motors
@@ -151,28 +150,7 @@ public class Jaws extends SubsystemBase implements Sendable
     */
     public void setJawsSpeedManual(double jawsSpeed)
     {
-      if(this.motorsNeedInit == false)
-      {
-        leftMotor.configFactoryDefault(0);
-        rightMotor.configFactoryDefault(0);
-        leftMotor.follow(rightMotor);
-        this.motorsNeedInit = true;
-      }
       rightMotor.set(TalonFXControlMode.PercentOutput, MotorUtils.truncateValue(jawsSpeed, -1.0, 1.0));
-    }
-
-    /**
-    * a method to start jaws on the path toward calibration
-    */
-    public void startCalibration()
-    {
-      // make sure the clutch is disengaged
-      if(jawsMotionCurrentlyCalibrating == false && jawsMotionCalibrated == false)
-      {
-        // power the motors toward the intake position
-        this.setJawsSpeedManual(Jaws.jawsSpeedDuringCalibration);
-        jawsMotionCurrentlyCalibrating = true;
-      }
     }
 
     /**
@@ -223,15 +201,11 @@ public class Jaws extends SubsystemBase implements Sendable
     {
       if(motorsNeedInit)
       {
-        leftMotor.configFactoryDefault();
+        double maxVelocity = Constants.talonMaximumRevolutionsPerMinute * Constants.CtreTalonFx500EncoderTicksPerRevolution / 10.0 * Jaws.talonFxMotorSpeedReductionFactor;
+
         rightMotor.configFactoryDefault();
-        leftMotor.setNeutralMode(NeutralMode.Brake);
         rightMotor.setNeutralMode(NeutralMode.Brake);
-        leftMotor.setInverted(Constants.jawsLeftMotorDefaultDirection);
         rightMotor.setInverted(Constants.jawsRightMotorDefaultDirection);
-  
-        leftMotor.follow(rightMotor);
-  
         rightMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
         rightMotor.setSensorPhase(false);
         rightMotor.configNeutralDeadband(0.001, Constants.kTimeoutMs);
@@ -249,16 +223,14 @@ public class Jaws extends SubsystemBase implements Sendable
         rightMotor.config_kP(Constants.kSlotIdx, Constants.kGains.kP, Constants.kTimeoutMs);
         rightMotor.config_kI(Constants.kSlotIdx, Constants.kGains.kI, Constants.kTimeoutMs);
         rightMotor.config_kD(Constants.kSlotIdx, Constants.kGains.kD, Constants.kTimeoutMs);
-  
-        rightMotor.setNeutralMode(NeutralMode.Brake);
-  
-        rightMotor.configMotionCruiseVelocity(25000, Constants.kTimeoutMs);
-        rightMotor.configMotionAcceleration(10000, Constants.kTimeoutMs);
+        rightMotor.configMotionCruiseVelocity(maxVelocity, Constants.kTimeoutMs);
+        rightMotor.configMotionAcceleration(maxVelocity, Constants.kTimeoutMs);
   
         // current limit enabled | Limit(amp) | Trigger Threshold(amp) | Trigger
-        // Threshold Time(s) */
         rightMotor.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(false, 20, 25, 1.0));
-   
+
+        // make left a follower of right
+ //       leftMotor.follow(rightMotor);
         motorsNeedInit = false;
       }
    }

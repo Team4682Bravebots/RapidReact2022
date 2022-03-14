@@ -54,20 +54,20 @@ public class InstalledHardware
     public static final boolean rightRearDriveMotorInstalled = false;
 
     // TelescopingArms Related Hardware
-    public static final boolean leftTelescopingArmsDriveMotorInstalled = true;
-    public static final boolean rightTelescopingArmsDriveMotorInstalled = true;
+    public static final boolean leftTelescopingArmsDriveMotorInstalled = false;
+    public static final boolean rightTelescopingArmsDriveMotorInstalled = false;
 
     // Jaws Related Hardware
-    public static final boolean topJawsDriveMotorInstalled = false;
-    public static final boolean bottomJawsDriveMotorInstalled = false;
+    public static final boolean topJawsDriveMotorInstalled = true;
+    public static final boolean bottomJawsDriveMotorInstalled = true;
 
     // Shooter Related Hardware
-    public static final boolean topShooterDriveMotorInstalled = true;
-    public static final boolean bottomShooterDriveMotorInstalled = true;
+    public static final boolean topShooterDriveMotorInstalled = false;
+    public static final boolean bottomShooterDriveMotorInstalled = false;
 
     // Ball Storage Related Hardware
-    public static final boolean topBallStorageMotorInstalled = true;
-    public static final boolean bottomBallStorageMotorInstalled = true;
+    public static final boolean topBallStorageMotorInstalled = false;
+    public static final boolean bottomBallStorageMotorInstalled = false;
 
     // Angle Arms Related Hardware
     public static final boolean angleArmsMotorInstalled = false;

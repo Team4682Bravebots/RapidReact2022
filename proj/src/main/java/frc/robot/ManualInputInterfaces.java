@@ -153,6 +153,9 @@ public class ManualInputInterfaces
       JoystickButton buttonY = new JoystickButton(driverController, XboxController.Button.kY.value);
       JoystickButton bumperLeft = new JoystickButton(driverController, XboxController.Button.kLeftBumper.value);
       JoystickButton bumperRight = new JoystickButton(driverController, XboxController.Button.kRightBumper.value);
+      JoystickButton buttonBack = new JoystickButton(driverController, XboxController.Button.kBack.value);
+      JoystickButton buttonStart = new JoystickButton(driverController, XboxController.Button.kStart.value);
+
       if(subsystemCollection.getBallStorageSubsystem() != null && subsystemCollection.getShooterSubsystem() != null)
       {
         buttonA.whenPressed(
@@ -201,6 +204,20 @@ public class ManualInputInterfaces
             new TelescopingArmExtendMiddle(
               subsystemCollection.getTelescopingArmsSubsystem()),
             new ButtonPress("driverController.kRightBumper", "bumperRight.whenPressed")));
+      }
+
+      if(subsystemCollection.getJawsSubsystem() != null)
+      {
+        buttonBack.whenPressed(
+          new ParallelCommandGroup(
+            new JawsIntake(
+              subsystemCollection.getJawsSubsystem()),
+            new ButtonPress("driverController.kBack", "buttonBack.whenPressed")));
+        buttonStart.whenPressed(
+          new ParallelCommandGroup(
+            new JawsReverseLowGoal(
+              subsystemCollection.getJawsSubsystem()),
+            new ButtonPress("driverController.kStart", "buttonStart.whenPressed")));
       }
     }
   }

@@ -75,7 +75,7 @@ public final class Constants
   public static final double jawsLowGoalPositionAngle = 90.0;
   public static final double jawsHighGoalPositionAngle = 110.0; 
   public static final double jawsReverseHighGoalPositionAngle = 145.0;
-  public static final double jawsReverseLowGoalPositionAngle = 160.0;
+  public static final double jawsReverseLowGoalPositionAngle = 150.0;
   public static final double jawsPositionAngleTolerance = 1.2;
   public static final double jawsAngleArmsEngagePositionAngle = 125.0;
   public static final double jawsAngleArmsEngagePositionTolerance = 0.9;

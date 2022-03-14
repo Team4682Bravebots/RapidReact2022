@@ -56,7 +56,7 @@ public class TelescopingArms extends SubsystemBase implements Sendable
     // Based on discussion with Simeon, this is true
     private static final boolean spoolWindingIsPositiveSparkMaxNeoMotorOutput = true;
 
-    // TODO change this to final speed when everyone is read for it
+    // TODO change this to final speed when everyone is ready for it
     private static final double neoMotorSpeedReductionFactor = 0.5;
 
     /* *********************************************************************
@@ -72,8 +72,6 @@ public class TelescopingArms extends SubsystemBase implements Sendable
     private double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM, maxVel, minVel, maxAcc, allowedErr;
 
     private double motorReferencePosition = 0.0;
-    private ArrayDeque<Double> rightPowerList = new ArrayDeque<Double>();
-    private ArrayDeque<Double> leftPowerList = new ArrayDeque<Double>();
 
     private double motorEncoderTicksAt100 = this.convertTelescopingArmsHeightToMotorEncoderPosition(maximumHeightFromStoredPositionInches * 1.00);
     private double motorEncoderTicksAt75 = this.convertTelescopingArmsHeightToMotorEncoderPosition(maximumHeightFromStoredPositionInches * 0.75);
