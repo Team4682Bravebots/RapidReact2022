@@ -168,7 +168,7 @@ public class ManualInputInterfaces
             new ShooterAutomatic(
               subsystemCollection.getShooterSubsystem(),
               subsystemCollection.getBallStorageSubsystem(),
-              false,
+              true,
               Constants.jawsLowGoalPositionAngle),
               new ButtonPress("driverController.kB", "buttonB.whenPressed")));
         buttonX.whenPressed(
@@ -176,7 +176,7 @@ public class ManualInputInterfaces
             new ShooterAutomatic(
               subsystemCollection.getShooterSubsystem(),
               subsystemCollection.getBallStorageSubsystem(),
-              false,
+              true,
               Constants.jawsHighGoalPositionAngle),
             new ButtonPress("driverController.kX", "buttonX.whenPressed")));
         buttonY.whenPressed(
@@ -184,7 +184,7 @@ public class ManualInputInterfaces
             new ShooterAutomatic(
               subsystemCollection.getShooterSubsystem(),
               subsystemCollection.getBallStorageSubsystem(),
-              false,
+              true,
               Constants.jawsReverseHighGoalPositionAngle),
             new ButtonPress("driverController.kY", "buttonY.whenPressed")));
       }
