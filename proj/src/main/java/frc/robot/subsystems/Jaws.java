@@ -139,7 +139,7 @@ public class Jaws extends SubsystemBase implements Sendable
       double currentAngle = this.getJawsAngle();
 
       boolean result = (currentAngle - toleranceInDegrees >= targetAngleInDegrees && currentAngle + toleranceInDegrees <= targetAngleInDegrees); 
-//      System.out.println("target angle = " + targetAngleInDegrees + " current angle = " + currentAngle + " result = " + result);
+      System.out.println("target angle = " + targetAngleInDegrees + " current angle = " + currentAngle + " result = " + result);
       return result;
     }
 
