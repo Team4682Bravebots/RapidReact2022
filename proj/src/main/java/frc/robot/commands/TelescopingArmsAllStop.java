@@ -11,6 +11,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.TelescopingArms;
 
 public class TelescopingArmsAllStop extends CommandBase
@@ -36,7 +37,7 @@ public class TelescopingArmsAllStop extends CommandBase
   @Override
   public void execute()
   {
-    telescopingArmSubsystem.setTelescopingArmsSpeedManual(0.0);
+    telescopingArmSubsystem.setTelescopingArmsSpeedManual(Constants.telescopingArmsStopSpeed);
     done = true;
 //    System.out.println("Telescoping arms stop all");
   }
