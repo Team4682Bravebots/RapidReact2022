@@ -343,19 +343,19 @@ public class ManualInputInterfaces
         extendAndReady.whenPressed(
           new ParallelCommandGroup(
             ClimbCommandBuilder.buildExtensionAndReadyPosition(subsystemCollection),
-            new ButtonPress("buttonBoardHigh.1", "extendAndReady.whenPressed")));
+            new ButtonPress("buttonBoardHigh.1", "extendAndReady.whenPressed")).withTimeout(Constants.maximumClimbTimeOperationSeconds));
         midBarClimb.whenPressed(
           new ParallelCommandGroup(
             ClimbCommandBuilder.buildMediumBarClimb(subsystemCollection),
-            new ButtonPress("buttonBoardHigh.2", "midBarClimb.whenPressed")));
+            new ButtonPress("buttonBoardHigh.2", "midBarClimb.whenPressed")).withTimeout(Constants.maximumClimbTimeOperationSeconds));
         highBarClimb.whenPressed(
           new ParallelCommandGroup(
             ClimbCommandBuilder.buildHighBarClimb(subsystemCollection),
-            new ButtonPress("buttonBoardHigh.3", "highBarClimb.whenPressed")));
+            new ButtonPress("buttonBoardHigh.3", "highBarClimb.whenPressed")).withTimeout(Constants.maximumClimbTimeOperationSeconds));
         traversalBarClimb.whenPressed(
           new ParallelCommandGroup(
             ClimbCommandBuilder.buildTraversalBarClimb(subsystemCollection),
-            new ButtonPress("buttonBoardHigh.4", "traversalBarClimb.whenPressed")));
+            new ButtonPress("buttonBoardHigh.4", "traversalBarClimb.whenPressed")).withTimeout(Constants.maximumClimbTimeOperationSeconds));
       }
 
       if(subsystemCollection.getShooterSubsystem() != null && 
@@ -369,7 +369,7 @@ public class ManualInputInterfaces
               subsystemCollection.getBallStorageSubsystem(),
               subsystemCollection.getJawsSubsystem(),
               true),
-            new ButtonPress("buttonBoardHigh.5", "shooterShoot.whenPressed")));
+            new ButtonPress("buttonBoardHigh.5", "shooterShoot.whenPressed")).withTimeout(Constants.maximumShooterTimeOperationSeconds));
         shooterIntake.whenPressed(
           new ParallelCommandGroup(
             new ShooterAutomatic(
@@ -377,7 +377,7 @@ public class ManualInputInterfaces
               subsystemCollection.getBallStorageSubsystem(),
               subsystemCollection.getJawsSubsystem(),
               false),
-            new ButtonPress("buttonBoardHigh.6", "shooterIntake.whenPressed")));
+            new ButtonPress("buttonBoardHigh.6", "shooterIntake.whenPressed")).withTimeout(Constants.maximumShooterTimeOperationSeconds));
       }
 
       commandStop.whenPressed(
@@ -390,23 +390,23 @@ public class ManualInputInterfaces
         jawsForwardIntake.whenPressed(
           new ParallelCommandGroup(
             new JawsIntake(subsystemCollection.getJawsSubsystem()),
-            new ButtonPress("buttonBoardHigh.8", "jawsForwardIntake.whenPressed")));
+            new ButtonPress("buttonBoardHigh.8", "jawsForwardIntake.whenPressed")).withTimeout(Constants.maximumJawsTimeOperationSeconds));
         jawsForwardLow.whenPressed(
           new ParallelCommandGroup(
             new JawsForwardLowGoal(subsystemCollection.getJawsSubsystem()),
-            new ButtonPress("buttonBoardHigh.9", "jawsForwardLow.whenPressed")));
+            new ButtonPress("buttonBoardHigh.9", "jawsForwardLow.whenPressed")).withTimeout(Constants.maximumJawsTimeOperationSeconds));
         jawsForwardHigh.whenPressed(
           new ParallelCommandGroup(
             new JawsForwardHighGoal(subsystemCollection.getJawsSubsystem()),
-            new ButtonPress("buttonBoardHigh.10", "jawsForwardHigh.whenPressed")));
+            new ButtonPress("buttonBoardHigh.10", "jawsForwardHigh.whenPressed")).withTimeout(Constants.maximumJawsTimeOperationSeconds));
         jawsReverseHigh.whenPressed(
           new ParallelCommandGroup(
             new JawsReverseHighGoal(subsystemCollection.getJawsSubsystem()),
-            new ButtonPress("buttonBoardHigh.11", "jawsReverseHigh.whenPressed")));
+            new ButtonPress("buttonBoardHigh.11", "jawsReverseHigh.whenPressed")).withTimeout(Constants.maximumJawsTimeOperationSeconds));
         jawsReverseLow.whenPressed(
           new ParallelCommandGroup(
             new JawsReverseLowGoal(subsystemCollection.getJawsSubsystem()),
-            new ButtonPress("buttonBoardHigh.12", "jawsReverseLow.whenPressed")));
+            new ButtonPress("buttonBoardHigh.12", "jawsReverseLow.whenPressed")).withTimeout(Constants.maximumJawsTimeOperationSeconds));
       }
     }
   }
@@ -484,7 +484,7 @@ public class ManualInputInterfaces
         jawsReferencePosition.whenPressed(
           new ParallelCommandGroup(
             new JawsAngleVariable(subsystemCollection.getJawsSubsystem(), subsystemCollection.getJawsSubsystem().getJawsReferencePositionAngle()),
-            new ButtonPress("buttonBoardLow.7", "jawsReferencePosition.whenPressed")));
+            new ButtonPress("buttonBoardLow.7", "jawsReferencePosition.whenPressed")).withTimeout(Constants.maximumJawsTimeOperationSeconds));
       }
     }
   }

@@ -119,6 +119,14 @@ public final class Constants
   public static final int ballStorageMotorTopCanId = 15;
   public static final int ballStorageMotorBottomCanId = 16;
 
+
+  // MAXIMUM COMMAND TIMING SETTINGS
+  public static final double maximumClimbTimeOperationSeconds = 4.5;
+  public static final double maximumJawsTimeOperationSeconds = 3.2;
+  public static final double maximumBallStorageTimeOperationSeconds = 1.2;
+  public static final double maximumShooterTimeOperationSeconds = 1.5;
+  public static final double maximumTelescopingArmsTimeOperationSeconds = 3.0;
+
   // MOTOR SETTINGS \\
 
   // Drive motor magic numbers
