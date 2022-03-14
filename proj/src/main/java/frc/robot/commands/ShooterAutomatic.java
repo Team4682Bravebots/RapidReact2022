@@ -152,8 +152,8 @@ public class ShooterAutomatic extends CommandBase
       shooterSubsystem.setShooterVelocityTop(this.topShooterTargetVelocityRpm);
 
       // when the PID's say speed is at setpoint / with tolerance then call retrieve
-      if(shooterSubsystem.isShooterVelocityUpToSpeedBottom(this.bottomShooterVelocityToleranceRpm) &&
-         shooterSubsystem.isShooterVelocityUpToSpeedTop(this.topShooterVelocityToleranceRpm))
+      if(shooterSubsystem.isShooterVelocityUpToSpeedBottom(this.bottomShooterTargetVelocityRpm, this.bottomShooterVelocityToleranceRpm) &&
+         shooterSubsystem.isShooterVelocityUpToSpeedTop(this.topShooterTargetVelocityRpm, this.topShooterVelocityToleranceRpm))
       {
         timer.start();
         double targetElapsedTime = 0.0;

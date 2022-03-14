@@ -58,6 +58,7 @@ public final class Constants
   public static final double angleArmsReferencePositionMotorEncoderUnits = 0.0;
 
   // Motor magic numbers
+  public static final double defaultMotorSpeedToleranceRpm = 50.0;
   public static final double bottomMotorForwardLowGoalSpeedRpm = 700.0;
   public static final double topMotorForwardLowGoalSpeedRpm = 600.0;
   public static final double bottomMotorForwardHighGoalSpeedRpm = 1300.0;

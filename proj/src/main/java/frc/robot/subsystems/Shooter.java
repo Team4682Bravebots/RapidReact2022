@@ -120,35 +120,41 @@ public class Shooter extends SubsystemBase implements Sendable
   {
     this.setShooterVelocityTop(Constants.topMotorIntakeSpeedRpm);
     this.setShooterVelocityBottom(Constants.bottomMotorIntakeSpeedRpm);
-    return this.isShooterVelocityUpToSpeedTop(Constants.topMotorIntakeSpeedRpm) &&
-     this.isShooterVelocityUpToSpeedBottom(Constants.bottomMotorIntakeSpeedRpm);
+    return this.isShooterVelocityUpToSpeedTop(Constants.topMotorIntakeSpeedRpm, Constants.defaultMotorSpeedToleranceRpm) &&
+     this.isShooterVelocityUpToSpeedBottom(Constants.bottomMotorIntakeSpeedRpm, Constants.defaultMotorSpeedToleranceRpm);
   }
 
   /**
    * Determine if the the bottom shooter motor velocity 
+   * @param targetRpm - the target in rpm
    * @param targetToleranceRpm - the tolerance in rpm 
    * @return true if the error in RPM is within the tolerance else false
    */
-  public boolean isShooterVelocityUpToSpeedBottom(double targetToleranceRpm)
+  public boolean isShooterVelocityUpToSpeedBottom(double targetRpm, double targetToleranceRpm)
   {
     return this.isMotorErrorWithinTolerance(
-      bottomMotor.getClosedLoopError(Shooter.kPIDLoopIdx),
+      bottomMotor.getSelectedSensorVelocity(Shooter.kPIDLoopIdx),
+      targetRpm,
       targetToleranceRpm,
       Shooter.bottomShooterGearRatio);
   }
 
   /**
    * Determine if the the top shooter motor velocity 
+   * @param targetRpm - the target in rpm
    * @param targetToleranceRpm - the tolerance in rpm 
    * @return true if the error in RPM is within the tolerance else false
    */
-  public boolean isShooterVelocityUpToSpeedTop(double targetToleranceRpm)
+  public boolean isShooterVelocityUpToSpeedTop(double targetRpm, double targetToleranceRpm)
   {
     return true;
-//    return this.isMotorErrorWithinTolerance(
-//      topMotor.getClosedLoopError(Shooter.kPIDLoopIdx),
-//      targetToleranceRpm,
-//      Shooter.topShooterGearRatio);
+    /*
+    return this.isMotorErrorWithinTolerance(
+      topMotor.getSelectedSensorVelocity(Shooter.kPIDLoopIdx),
+      targetRpm,
+      targetToleranceRpm,
+      Shooter.topShooterGearRatio);
+    */
   }
 
   @Override
@@ -166,8 +172,8 @@ public class Shooter extends SubsystemBase implements Sendable
   {
     this.setShooterVelocityTop(Constants.topMotorForwardLowGoalSpeedRpm);
     this.setShooterVelocityBottom(Constants.bottomMotorForwardLowGoalSpeedRpm);
-    return this.isShooterVelocityUpToSpeedTop(Constants.topMotorForwardLowGoalSpeedRpm) &&
-     this.isShooterVelocityUpToSpeedBottom(Constants.bottomMotorForwardLowGoalSpeedRpm);
+    return this.isShooterVelocityUpToSpeedTop(Constants.topMotorForwardLowGoalSpeedRpm, Constants.defaultMotorSpeedToleranceRpm) &&
+     this.isShooterVelocityUpToSpeedBottom(Constants.bottomMotorForwardLowGoalSpeedRpm, Constants.defaultMotorSpeedToleranceRpm);
   }
 
   /**
@@ -178,8 +184,8 @@ public class Shooter extends SubsystemBase implements Sendable
   {
     this.setShooterVelocityTop(Constants.topMotorForwardHighGoalSpeedRpm);
     this.setShooterVelocityBottom(Constants.bottomMotorForwardHighGoalSpeedRpm);
-    return this.isShooterVelocityUpToSpeedTop(Constants.topMotorForwardHighGoalSpeedRpm) &&
-     this.isShooterVelocityUpToSpeedBottom(Constants.bottomMotorForwardHighGoalSpeedRpm);
+    return this.isShooterVelocityUpToSpeedTop(Constants.topMotorForwardHighGoalSpeedRpm, Constants.defaultMotorSpeedToleranceRpm) &&
+     this.isShooterVelocityUpToSpeedBottom(Constants.bottomMotorForwardHighGoalSpeedRpm, Constants.defaultMotorSpeedToleranceRpm);
   }
 
   /**
@@ -190,8 +196,8 @@ public class Shooter extends SubsystemBase implements Sendable
   {
     this.setShooterVelocityTop(Constants.topMotorReverseHighGoalSpeedRpm);
     this.setShooterVelocityBottom(Constants.bottomMotorReverseHighGoalSpeedRpm);
-    return this.isShooterVelocityUpToSpeedTop(Constants.topMotorReverseHighGoalSpeedRpm) &&
-     this.isShooterVelocityUpToSpeedBottom(Constants.bottomMotorReverseHighGoalSpeedRpm);
+    return this.isShooterVelocityUpToSpeedTop(Constants.topMotorReverseHighGoalSpeedRpm, Constants.defaultMotorSpeedToleranceRpm) &&
+     this.isShooterVelocityUpToSpeedBottom(Constants.bottomMotorReverseHighGoalSpeedRpm, Constants.defaultMotorSpeedToleranceRpm);
   }
 
   /**
@@ -328,14 +334,16 @@ public class Shooter extends SubsystemBase implements Sendable
     }
   }
 
-  private boolean isMotorErrorWithinTolerance(double motorErrorUnits, double targetToleranceRpm, double gearRatio)
+  private boolean isMotorErrorWithinTolerance(double motorVelocityInMotorUnits, double targetVelocityRpm, double targetToleranceRpm, double gearRatio)
   {
-    double motorErrorUnitsAbs = Math.abs(motorErrorUnits);
-    double targetToleranceRpmInMotorUnits = this.convertShooterRpmToMotorUnitsPer100Ms(Math.abs(targetToleranceRpm), gearRatio);
-    boolean rtnVal = motorErrorUnits < targetToleranceRpmInMotorUnits;
+    double targetVelocityInMotorUnits = this.convertShooterRpmToMotorUnitsPer100Ms(targetToleranceRpm, gearRatio);
+    double targetVelocityToleranceInMotorUnits = this.convertShooterRpmToMotorUnitsPer100Ms(Math.abs(targetToleranceRpm), gearRatio);
+    boolean rtnVal = motorVelocityInMotorUnits > targetVelocityInMotorUnits - targetVelocityToleranceInMotorUnits &&
+      motorVelocityInMotorUnits < targetVelocityInMotorUnits + targetVelocityToleranceInMotorUnits;
     System.out.println(
-      "|MotorUnitsError|=" + motorErrorUnitsAbs +
-      " |MotorUnitsTolerance|=" + targetToleranceRpmInMotorUnits +
+      "motorVelocityInMotorUnits=" + motorVelocityInMotorUnits +
+      " targetVelocityInMotorUnits=" + targetVelocityInMotorUnits +
+      " targetVelocityToleranceInMotorUnits=" + targetVelocityToleranceInMotorUnits +
       (rtnVal ? " within tolerance" : " outside tolerance"));
     return rtnVal;
   }
