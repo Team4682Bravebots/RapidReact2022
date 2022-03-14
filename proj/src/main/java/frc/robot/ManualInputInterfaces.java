@@ -241,11 +241,11 @@ public class ManualInputInterfaces
             new ButtonPress("driverController.kY", "buttonY.whenReleased")));
         buttonX.whenPressed(
           new ParallelCommandGroup(
-            new AngleArmsAngleVariable(subsystemCollection.getAngleArmsSubsystem(), Constants.angleArmsRetractAngle),
+            new AngleArmsAngleVariable(subsystemCollection.getAngleArmsSubsystem(), Constants.angleArmsBarPositionAngle),
             new ButtonPress("driverController.kX", "buttonX.whenPressed")));
         buttonA.whenPressed(
           new ParallelCommandGroup(
-            new AngleArmsAngleVariable(subsystemCollection.getAngleArmsSubsystem(), Constants.angleArmsStorageAngle),
+            new AngleArmsAngleVariable(subsystemCollection.getAngleArmsSubsystem(), Constants.angleArmsMaximumPositionAngle),
             new ButtonPress("driverController.kA", "buttonA.whenPressed")));
       }
     }

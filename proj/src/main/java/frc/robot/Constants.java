@@ -46,7 +46,7 @@ public final class Constants
   // Angle arms magic numbers
   public static final double angleArmsManualMotorStopSpeed = 0.0;
   public static final double angleArmsManualMotorForwardSpeed = 0.8;
-  public static final double angleArmsManualMotorReverseSpeed = 0.8;
+  public static final double angleArmsManualMotorReverseSpeed = -0.8;
   public static final double angleArmsMinimumPositionAngle = -5.0;
   public static final double angleArmsReferencePositionAngle = 0.0;
   public static final double angleArmsMaximumPositionAngle = 90.0;
@@ -82,10 +82,6 @@ public final class Constants
   public static final double jawsDefaultPositiveSpeed = 0.8;
   public static final double jawsDefaultNegativeSpeed = -0.8;
   public static final double jawsReferencePositionMotorEncoderUnits = 141000; // 151972 and 152037
-
-  // Angle Arms reach points \\
-  public static final double angleArmsStorageAngle = 0.0;
-  public static final double angleArmsRetractAngle = 90.0;
 
   // telescoping arms reach points \\
   public static final double telescopingArmsRetractHeightInches = 0.50;
