@@ -138,8 +138,8 @@ public class Jaws extends SubsystemBase implements Sendable
       rightMotor.set(TalonFXControlMode.MotionMagic, convertJawsAngleToMotorEncoderPosition(trimmedAngle));
       double currentAngle = this.getJawsAngle();
 
-      boolean result = (currentAngle - toleranceInDegrees >= targetAngleInDegrees && currentAngle + toleranceInDegrees <= targetAngleInDegrees); 
-      System.out.println("target angle = " + targetAngleInDegrees + " current angle = " + currentAngle + " result = " + result);
+      boolean result = (currentAngle >= targetAngleInDegrees - toleranceInDegrees && currentAngle <= targetAngleInDegrees + toleranceInDegrees); 
+      System.out.println("target angle = " + targetAngleInDegrees + " current angle = " + currentAngle + " tolerance degrees = " + toleranceInDegrees + " result = " + result);
       return result;
     }
 
@@ -150,6 +150,7 @@ public class Jaws extends SubsystemBase implements Sendable
     */
     public void setJawsSpeedManual(double jawsSpeed)
     {
+      System.out.println("Jaws manual speed == " + jawsSpeed);
       rightMotor.set(TalonFXControlMode.PercentOutput, MotorUtils.truncateValue(jawsSpeed, -1.0, 1.0));
     }
 
@@ -158,6 +159,7 @@ public class Jaws extends SubsystemBase implements Sendable
     */
     public void suspendJawMovement()
     {
+      System.out.println("Jaws movement done.");
       rightMotor.set(TalonFXControlMode.PercentOutput, 0.0);
     }
     
