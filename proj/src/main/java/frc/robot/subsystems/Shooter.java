@@ -132,8 +132,9 @@ public class Shooter extends SubsystemBase implements Sendable
    */
   public boolean isShooterVelocityUpToSpeedBottom(double targetRpm, double targetToleranceRpm)
   {
-    return this.isMotorErrorWithinTolerance(
+    return this.isMotorErrorWithinToleranceUsingVelocity(
       bottomMotor.getSelectedSensorVelocity(Shooter.kPIDLoopIdx),
+      bottomMotor.getClosedLoopError(Shooter.kPIDLoopIdx),
       targetRpm,
       targetToleranceRpm,
       Shooter.bottomShooterGearRatio);
@@ -334,15 +335,41 @@ public class Shooter extends SubsystemBase implements Sendable
     }
   }
 
-  private boolean isMotorErrorWithinTolerance(double motorVelocityInMotorUnits, double targetVelocityRpm, double targetToleranceRpm, double gearRatio)
+  private boolean isMotorErrorWithinToleranceUsingVelocity(
+    double motorVelocityInMotorUnits,
+    double motorErrorInMotorUnits,
+    double targetVelocityRpm,
+    double targetToleranceRpm,
+    double gearRatio)
   {
-    double targetVelocityInMotorUnits = this.convertShooterRpmToMotorUnitsPer100Ms(targetToleranceRpm, gearRatio);
+    double actualMotorErrorInMotorUnits = Math.abs(motorErrorInMotorUnits);
+    double targetVelocityInMotorUnits = this.convertShooterRpmToMotorUnitsPer100Ms(targetVelocityRpm, gearRatio);
     double targetVelocityToleranceInMotorUnits = this.convertShooterRpmToMotorUnitsPer100Ms(Math.abs(targetToleranceRpm), gearRatio);
-    boolean rtnVal = motorVelocityInMotorUnits > targetVelocityInMotorUnits - targetVelocityToleranceInMotorUnits &&
+
+    boolean withinErrorBounds = actualMotorErrorInMotorUnits > targetVelocityToleranceInMotorUnits;
+    boolean withinVelocityBounds = motorVelocityInMotorUnits > targetVelocityInMotorUnits - targetVelocityToleranceInMotorUnits &&
       motorVelocityInMotorUnits < targetVelocityInMotorUnits + targetVelocityToleranceInMotorUnits;
     System.out.println(
       "motorVelocityInMotorUnits=" + motorVelocityInMotorUnits +
       " targetVelocityInMotorUnits=" + targetVelocityInMotorUnits +
+      " actualMotorErrorInMotorUnits=" + actualMotorErrorInMotorUnits +
+      " targetVelocityToleranceInMotorUnits=" + targetVelocityToleranceInMotorUnits +
+      " withinVelocityBounds" + (withinVelocityBounds ? " YES" : " NO")
+      " withinErrorBounds" + (withinVelocityBounds ? " YES" : " NO")
+      );
+    return withinErrorBounds && withinVelocityBounds;
+  }
+
+  private boolean isMotorErrorWithinToleranceUsingError(
+    double motorErrorInMotorUnits,
+    double targetToleranceRpm,
+    double gearRatio)
+  {
+    double actualMotorErrorInMotorUnits = Math.abs(motorErrorInMotorUnits);
+    double targetVelocityToleranceInMotorUnits = this.convertShooterRpmToMotorUnitsPer100Ms(Math.abs(targetToleranceRpm), gearRatio);
+    boolean rtnVal = actualMotorErrorInMotorUnits > targetVelocityToleranceInMotorUnits;
+    System.out.println(
+      "actualMotorErrorInMotorUnits=" + actualMotorErrorInMotorUnits +
       " targetVelocityToleranceInMotorUnits=" + targetVelocityToleranceInMotorUnits +
       (rtnVal ? " within tolerance" : " outside tolerance"));
     return rtnVal;
