@@ -92,7 +92,8 @@ public class ManualInputInterfaces
   {
     // TODO - switch this to use the coDriverController soon!!!
     // should be: coDriverController.getLeftY();
-    return driverController.getRightX();
+    double inputValue = driverController.getRightX();
+    return ((inputValue > 0.070 || inputValue < -0.070) ? inputValue : 0.0);
   }
 
   /**

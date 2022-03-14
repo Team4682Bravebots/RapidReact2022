@@ -139,7 +139,7 @@ public class Jaws extends SubsystemBase implements Sendable
       double currentAngle = this.getJawsAngle();
 
       boolean result = (currentAngle >= targetAngleInDegrees - toleranceInDegrees && currentAngle <= targetAngleInDegrees + toleranceInDegrees); 
-      System.out.println("target angle = " + targetAngleInDegrees + " current angle = " + currentAngle + " tolerance degrees = " + toleranceInDegrees + " result = " + result);
+//      System.out.println("target angle = " + targetAngleInDegrees + " current angle = " + currentAngle + " tolerance degrees = " + toleranceInDegrees + " result = " + result);
       return result;
     }
 
@@ -150,7 +150,6 @@ public class Jaws extends SubsystemBase implements Sendable
     */
     public void setJawsSpeedManual(double jawsSpeed)
     {
-      System.out.println("Jaws manual speed == " + jawsSpeed);
       rightMotor.set(TalonFXControlMode.PercentOutput, MotorUtils.truncateValue(jawsSpeed, -1.0, 1.0));
     }
 
@@ -159,7 +158,6 @@ public class Jaws extends SubsystemBase implements Sendable
     */
     public void suspendJawMovement()
     {
-      System.out.println("Jaws movement done.");
       rightMotor.set(TalonFXControlMode.PercentOutput, 0.0);
     }
     
@@ -187,13 +185,13 @@ public class Jaws extends SubsystemBase implements Sendable
 
     private double getAverageMotorEncoderPosition()
     {
-//      return (rightMotor.getSelectedSensorPosition() + leftMotor.getSelectedSensorPosition())/2;
+      // since left is follower we will always uses right
       return rightMotor.getSelectedSensorPosition();
     }
 
     private double getAverageMotorOutput()
     {
-//      return (rightMotor.getMotorOutputPercent() + leftMotor.getMotorOutputPercent())/2;
+      // since left is follower we will always uses right
       return rightMotor.getMotorOutputPercent();
     }
 
