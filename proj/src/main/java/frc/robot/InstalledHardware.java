@@ -38,8 +38,8 @@ public class InstalledHardware
     public static final boolean limelightInstalled = false;
 
     // External Input Hardware
-    public static final boolean highLevelButtonBoardInstalled = false;
-    public static final boolean lowLevelButtonBoardInstalled = false;
+    public static final boolean highLevelButtonBoardInstalled = true;
+    public static final boolean lowLevelButtonBoardInstalled = true;
     public static final boolean driverXboxControllerInstalled = true;
     public static final boolean coDriverXboxControllerInstalled = false;
 
@@ -62,14 +62,14 @@ public class InstalledHardware
     public static final boolean bottomJawsDriveMotorInstalled = false;
 
     // Shooter Related Hardware
-    public static final boolean topShooterDriveMotorInstalled = false;
-    public static final boolean bottomShooterDriveMotorInstalled = false;
+    public static final boolean topShooterDriveMotorInstalled = true;
+    public static final boolean bottomShooterDriveMotorInstalled = true;
 
     // Ball Storage Related Hardware
-    public static final boolean topBallStorageMotorInstalled = false;
-    public static final boolean bottomBallStorageMotorInstalled = false;
+    public static final boolean topBallStorageMotorInstalled = true;
+    public static final boolean bottomBallStorageMotorInstalled = true;
 
     // Angle Arms Related Hardware
-    public static final boolean angleArmsMotorInstalled = true;
+    public static final boolean angleArmsMotorInstalled = false;
    
 }

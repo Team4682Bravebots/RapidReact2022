@@ -146,6 +146,7 @@ public class ManualInputInterfaces
     // *************************************************************
     // TODO - REMOVE THIS WHOLE IF STATEMENT AFTER HOME TESTING!!!!!
     // *************************************************************
+    /*
     if(InstalledHardware.driverXboxControllerInstalled)
     {
       JoystickButton buttonA = new JoystickButton(driverController, XboxController.Button.kA.value);
@@ -249,6 +250,7 @@ public class ManualInputInterfaces
             new ButtonPress("driverController.kA", "buttonA.whenPressed")));
       }
     }
+    */
   }
 
   /**
