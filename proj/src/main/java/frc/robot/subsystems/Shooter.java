@@ -346,16 +346,16 @@ public class Shooter extends SubsystemBase implements Sendable
     double targetVelocityInMotorUnits = this.convertShooterRpmToMotorUnitsPer100Ms(targetVelocityRpm, gearRatio);
     double targetVelocityToleranceInMotorUnits = this.convertShooterRpmToMotorUnitsPer100Ms(Math.abs(targetToleranceRpm), gearRatio);
 
-    boolean withinErrorBounds = actualMotorErrorInMotorUnits > targetVelocityToleranceInMotorUnits;
     boolean withinVelocityBounds = motorVelocityInMotorUnits > targetVelocityInMotorUnits - targetVelocityToleranceInMotorUnits &&
       motorVelocityInMotorUnits < targetVelocityInMotorUnits + targetVelocityToleranceInMotorUnits;
+    boolean withinErrorBounds = actualMotorErrorInMotorUnits > targetVelocityToleranceInMotorUnits;
     System.out.println(
       "motorVelocityInMotorUnits=" + motorVelocityInMotorUnits +
       " targetVelocityInMotorUnits=" + targetVelocityInMotorUnits +
       " actualMotorErrorInMotorUnits=" + actualMotorErrorInMotorUnits +
       " targetVelocityToleranceInMotorUnits=" + targetVelocityToleranceInMotorUnits +
-      " withinVelocityBounds" + (withinVelocityBounds ? " YES" : " NO")
-      " withinErrorBounds" + (withinVelocityBounds ? " YES" : " NO")
+      " withinVelocityBounds" + (withinVelocityBounds ? " YES" : " NO") +
+      " withinErrorBounds" + (withinErrorBounds ? " YES" : " NO")
       );
     return withinErrorBounds && withinVelocityBounds;
   }
