@@ -348,7 +348,7 @@ public class Shooter extends SubsystemBase implements Sendable
 
     boolean withinVelocityBounds = motorVelocityInMotorUnits > targetVelocityInMotorUnits - targetVelocityToleranceInMotorUnits &&
       motorVelocityInMotorUnits < targetVelocityInMotorUnits + targetVelocityToleranceInMotorUnits;
-    boolean withinErrorBounds = actualMotorErrorInMotorUnits > targetVelocityToleranceInMotorUnits;
+    boolean withinErrorBounds = actualMotorErrorInMotorUnits < targetVelocityToleranceInMotorUnits;
     System.out.println(
       "motorVelocityInMotorUnits=" + motorVelocityInMotorUnits +
       " targetVelocityInMotorUnits=" + targetVelocityInMotorUnits +
