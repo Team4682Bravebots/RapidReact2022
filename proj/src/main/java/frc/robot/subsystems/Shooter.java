@@ -349,6 +349,7 @@ public class Shooter extends SubsystemBase implements Sendable
     boolean withinVelocityBounds = motorVelocityInMotorUnits > targetVelocityInMotorUnits - targetVelocityToleranceInMotorUnits &&
       motorVelocityInMotorUnits < targetVelocityInMotorUnits + targetVelocityToleranceInMotorUnits;
     boolean withinErrorBounds = actualMotorErrorInMotorUnits < targetVelocityToleranceInMotorUnits;
+    /*
     System.out.println(
       "motorVelocityInMotorUnits=" + motorVelocityInMotorUnits +
       " targetVelocityInMotorUnits=" + targetVelocityInMotorUnits +
@@ -357,21 +358,7 @@ public class Shooter extends SubsystemBase implements Sendable
       " withinVelocityBounds" + (withinVelocityBounds ? " YES" : " NO") +
       " withinErrorBounds" + (withinErrorBounds ? " YES" : " NO")
       );
+    */
     return withinErrorBounds && withinVelocityBounds;
-  }
-
-  private boolean isMotorErrorWithinToleranceUsingError(
-    double motorErrorInMotorUnits,
-    double targetToleranceRpm,
-    double gearRatio)
-  {
-    double actualMotorErrorInMotorUnits = Math.abs(motorErrorInMotorUnits);
-    double targetVelocityToleranceInMotorUnits = this.convertShooterRpmToMotorUnitsPer100Ms(Math.abs(targetToleranceRpm), gearRatio);
-    boolean rtnVal = actualMotorErrorInMotorUnits > targetVelocityToleranceInMotorUnits;
-    System.out.println(
-      "actualMotorErrorInMotorUnits=" + actualMotorErrorInMotorUnits +
-      " targetVelocityToleranceInMotorUnits=" + targetVelocityToleranceInMotorUnits +
-      (rtnVal ? " within tolerance" : " outside tolerance"));
-    return rtnVal;
   }
 }
