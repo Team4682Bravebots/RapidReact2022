@@ -40,8 +40,8 @@ public final class Constants
 
   // shooter 
   // inverts - see: https://docs.ctre-phoenix.com/en/stable/ch13_MC.html#talon-fx-specific-inverts
-  public static TalonFXInvertType shooterBottomMotorDefaultDirection = TalonFXInvertType.CounterClockwise;
-  public static TalonFXInvertType shooterTopMotorDefaultDirection = TalonFXInvertType.CounterClockwise;
+  public static TalonFXInvertType shooterBottomMotorDefaultDirection = TalonFXInvertType.Clockwise;
+  public static TalonFXInvertType shooterTopMotorDefaultDirection = TalonFXInvertType.Clockwise;
 
   // Angle arms magic numbers
   public static final double angleArmsManualMotorStopSpeed = 0.0;
@@ -60,15 +60,15 @@ public final class Constants
   // Motor magic numbers
   public static final double defaultMotorSpeedToleranceRpm = 50.0;
   public static final double bottomMotorForwardLowGoalSpeedRpm = 1700.0;
-  public static final double topMotorForwardLowGoalSpeedRpm = 1600.0;
-  public static final double bottomMotorForwardHighGoalSpeedRpm = 3300.0;
-  public static final double topMotorForwardHighGoalSpeedRpm = 3000.0;
-  public static final double bottomMotorReverseHighGoalSpeedRpm = 3300.0;
-  public static final double topMotorReverseHighGoalSpeedRpm = 3000.0;
-  public static final double bottomMotorReverseLowGoalSpeedRpm = 1700.0;
-  public static final double topMotorReverseLowGoalSpeedRpm = 1600.0;
-  public static final double bottomMotorIntakeSpeedRpm = -1500.0;
-  public static final double topMotorIntakeSpeedRpm = -1500.0;
+  public static final double topMotorForwardLowGoalSpeedRpm = 1400.0;
+  public static final double bottomMotorForwardHighGoalSpeedRpm = 2300.0;
+  public static final double topMotorForwardHighGoalSpeedRpm = 1900.0;
+  public static final double bottomMotorReverseHighGoalSpeedRpm = 1700.0;
+  public static final double topMotorReverseHighGoalSpeedRpm = 1400.0;
+  public static final double bottomMotorReverseLowGoalSpeedRpm = 700.0;
+  public static final double topMotorReverseLowGoalSpeedRpm = 600.0;
+  public static final double bottomMotorIntakeSpeedRpm = -1700.0;
+  public static final double topMotorIntakeSpeedRpm = -1400.0;
   
   // Jaws reach points \\
   public static final double jawsIntakePositionAngle = 0.0;
@@ -124,7 +124,7 @@ public final class Constants
   public static final double maximumClimbTimeOperationSeconds = 4.5;
   public static final double maximumJawsTimeOperationSeconds = 3.2;
   public static final double maximumBallStorageTimeOperationSeconds = 1.2;
-  public static final double maximumShooterTimeOperationSeconds = 1.5;
+  public static final double maximumShooterTimeOperationSeconds = 2.5;
   public static final double maximumTelescopingArmsTimeOperationSeconds = 3.0;
 
   // MOTOR SETTINGS \\
@@ -148,7 +148,7 @@ public final class Constants
   public static final double angleArmTimingSeconds = 0.3;
 
   // BallStorage timing \\
-  public static final double ballStorageStoreTimingSeconds = 0.5;
+  public static final double ballStorageStoreTimingSeconds = 1.0;
   public static final double ballStorageRetrieveTimingSeconds = 1.5;
 
   // HIDS \\

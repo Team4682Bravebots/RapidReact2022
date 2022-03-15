@@ -311,7 +311,7 @@ public class DriveTrain extends SubsystemBase implements Sendable
 
       // LEFT MOTORS!
       leftFront.configFactoryDefault();
-      leftFront.setNeutralMode(NeutralMode.Brake);
+      leftFront.setNeutralMode(NeutralMode.Coast);
       leftFront.setInverted(Constants.jawsRightMotorDefaultDirection);
       leftFront.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
       leftFront.setSensorPhase(false);
@@ -346,7 +346,7 @@ public class DriveTrain extends SubsystemBase implements Sendable
 
       // RIGHT MOTORS!
       rightFront.configFactoryDefault();
-      rightFront.setNeutralMode(NeutralMode.Brake);
+      rightFront.setNeutralMode(NeutralMode.Coast);
       rightFront.setInverted(Constants.jawsRightMotorDefaultDirection);
       rightFront.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
       rightFront.setSensorPhase(false);

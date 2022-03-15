@@ -139,7 +139,7 @@ public class RobotContainer
   {
     if(InstalledHardware.highLevelButtonBoardInstalled ||
       InstalledHardware.lowLevelButtonBoardInstalled ||
-      InstalledHardware.coDriverXboxControllerInstalled ||
+      /* InstalledHardware.coDriverXboxControllerInstalled || */
       InstalledHardware.driverXboxControllerInstalled)
     {
       m_manualInput = new ManualInputInterfaces(m_collection);

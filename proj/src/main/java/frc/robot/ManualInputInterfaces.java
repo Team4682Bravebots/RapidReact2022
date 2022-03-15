@@ -120,7 +120,7 @@ public class ManualInputInterfaces
     {
       this.bindHighLevelCommandsToButtonBoardButtons();
     }
-    if(InstalledHardware.highLevelButtonBoardInstalled)
+    if(InstalledHardware.lowLevelButtonBoardInstalled)
     {
       this.bindLowLevelCommandsToButtonBoardButtons();
     }
@@ -361,9 +361,18 @@ public class ManualInputInterfaces
       }
 
       if(subsystemCollection.getShooterSubsystem() != null && 
-         subsystemCollection.getBallStorageSubsystem() != null &&
-         subsystemCollection.getJawsSubsystem() != null)
+         subsystemCollection.getBallStorageSubsystem() != null /*&&
+         subsystemCollection.getJawsSubsystem() != null */)
       {
+        shooterShoot.whenPressed(
+          new ParallelCommandGroup(
+            new ShooterAutomatic(
+              subsystemCollection.getShooterSubsystem(),
+              subsystemCollection.getBallStorageSubsystem(),
+              true,
+              Constants.jawsHighGoalPositionAngle),
+            new ButtonPress("buttonBoardHigh.5", "shooterShoot.whenPressed")).withTimeout(Constants.maximumShooterTimeOperationSeconds));
+        /*
         shooterShoot.whenPressed(
           new ParallelCommandGroup(           
             new ShooterAutomatic(
@@ -372,13 +381,22 @@ public class ManualInputInterfaces
               subsystemCollection.getJawsSubsystem(),
               true),
             new ButtonPress("buttonBoardHigh.5", "shooterShoot.whenPressed")).withTimeout(Constants.maximumShooterTimeOperationSeconds));
-        shooterIntake.whenPressed(
+          */
+        shooterIntake.whileHeld(
           new ParallelCommandGroup(
-            new ShooterAutomatic(
+            new ShooterManual(
               subsystemCollection.getShooterSubsystem(),
-              subsystemCollection.getBallStorageSubsystem(),
-              subsystemCollection.getJawsSubsystem(),
-              false),
+              Constants.topMotorIntakeSpeedRpm,
+              Constants.bottomMotorForwardHighGoalSpeedRpm),
+            new BallStorageStoreManual(
+              subsystemCollection.getBallStorageSubsystem()),
+            new ButtonPress("buttonBoardHigh.6", "shooterIntake.whenPressed")).withTimeout(Constants.maximumShooterTimeOperationSeconds));
+        shooterIntake.whenReleased(
+          new ParallelCommandGroup(
+            new ShooterAllStop(
+              subsystemCollection.getShooterSubsystem()),
+            new BallStorageAllStopManual(
+              subsystemCollection.getBallStorageSubsystem()),
             new ButtonPress("buttonBoardHigh.6", "shooterIntake.whenPressed")).withTimeout(Constants.maximumShooterTimeOperationSeconds));
       }
 
