@@ -62,7 +62,8 @@
               "Y-axis/Automatic bounds": true,
               "Y-axis/Upper bound": 1.0,
               "Y-axis/Lower bound": -1.0,
-              "Y-axis/Unit": "Output"
+              "Y-axis/Unit": "Output",
+              "Visible data/LiveWindow/DriveTrain/DriveTrainAverageLeftMotorOutput": true
             }
           },
           "0,4": {
@@ -79,7 +80,8 @@
               "Y-axis/Automatic bounds": true,
               "Y-axis/Upper bound": 1.0,
               "Y-axis/Lower bound": -1.0,
-              "Y-axis/Unit": "output"
+              "Y-axis/Unit": "output",
+              "Visible data/LiveWindow/DriveTrain/DriveTrainAverageRightMotorOutput": true
             }
           },
           "3,0": {
@@ -146,20 +148,7 @@
               "_title": "R. TeleArm Desc."
             }
           },
-          "5,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///LiveWindow/BallStorage/BallInFrontPosition",
-              "_title": "Ball Front",
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
-            }
-          },
-          "5,5": {
+          "5,4": {
             "size": [
               1,
               1
@@ -170,20 +159,7 @@
               "_title": "Ball Handling"
             }
           },
-          "6,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///LiveWindow/BallStorage/BallInRearPosition",
-              "_title": "Ball Rear",
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
-            }
-          },
-          "5,3": {
+          "5,2": {
             "size": [
               2,
               2
@@ -197,7 +173,7 @@
               "Visuals/Show value": true
             }
           },
-          "5,1": {
+          "5,0": {
             "size": [
               2,
               2
@@ -289,7 +265,8 @@
               "Y-axis/Automatic bounds": true,
               "Y-axis/Upper bound": 1.0,
               "Y-axis/Lower bound": -1.0,
-              "Y-axis/Unit": "output"
+              "Y-axis/Unit": "output",
+              "Visible data/LiveWindow/DriveTrain/DriveTrainAverageLeftMotorOutput": true
             }
           },
           "3,1": {
@@ -328,7 +305,8 @@
               "Y-axis/Automatic bounds": true,
               "Y-axis/Upper bound": 1.0,
               "Y-axis/Lower bound": -1.0,
-              "Y-axis/Unit": "output"
+              "Y-axis/Unit": "output",
+              "Visible data/LiveWindow/DriveTrain/DriveTrainAverageRightMotorOutput": true
             }
           },
           "3,2": {
@@ -395,7 +373,8 @@
               "Y-axis/Automatic bounds": true,
               "Y-axis/Upper bound": 1.0,
               "Y-axis/Lower bound": -1.0,
-              "Y-axis/Unit": "output"
+              "Y-axis/Unit": "output",
+              "Visible data/LiveWindow/Jaws/JawsAverageMotorOutput": true
             }
           }
         }
@@ -412,32 +391,6 @@
         "vgap": 16.0,
         "titleType": 0,
         "tiles": {
-          "1,3": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///LiveWindow/BallStorage/BallInFrontPosition",
-              "_title": "Ball Front",
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
-            }
-          },
-          "2,3": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///LiveWindow/BallStorage/BallInRearPosition",
-              "_title": "Ball Rear",
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
-            }
-          },
           "0,3": {
             "size": [
               1,
@@ -463,18 +416,8 @@
               "Y-axis/Automatic bounds": true,
               "Y-axis/Upper bound": 1.0,
               "Y-axis/Lower bound": -1.0,
-              "Y-axis/Unit": "motor speed"
-            }
-          },
-          "3,3": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///LiveWindow/BallStorage/OnboardBallCount",
-              "_title": "Ball Count"
+              "Y-axis/Unit": "motor speed",
+              "Visible data/LiveWindow/BallStorage/BottomMotorSpeedSetting": true
             }
           },
           "3,0": {
@@ -491,7 +434,8 @@
               "Y-axis/Automatic bounds": true,
               "Y-axis/Upper bound": 1.0,
               "Y-axis/Lower bound": -1.0,
-              "Y-axis/Unit": "motor speed"
+              "Y-axis/Unit": "motor speed",
+              "Visible data/LiveWindow/BallStorage/TopMotorSpeedSetting": true
             }
           }
         }
@@ -508,28 +452,6 @@
         "vgap": 16.0,
         "titleType": 0,
         "tiles": {
-          "5,0": {
-            "size": [
-              2,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///LiveWindow/TelescopingArms/TelescopingArmsAverageClimberHeightInInches",
-              "_title": "Average Height (in)"
-            }
-          },
-          "5,1": {
-            "size": [
-              2,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///LiveWindow/TelescopingArms/TelescopingArmsAverageEncoderPosition",
-              "_title": "Average Encoder Position"
-            }
-          },
           "3,0": {
             "size": [
               1,
@@ -555,7 +477,8 @@
               "Y-axis/Automatic bounds": true,
               "Y-axis/Upper bound": 1.0,
               "Y-axis/Lower bound": -1.0,
-              "Y-axis/Unit": "output"
+              "Y-axis/Unit": "output",
+              "Visible data/LiveWindow/TelescopingArms/TelescopingArmsLeftMotorSpeed": true
             }
           },
           "3,3": {
@@ -583,7 +506,52 @@
               "Y-axis/Automatic bounds": true,
               "Y-axis/Upper bound": 1.0,
               "Y-axis/Lower bound": -1.0,
-              "Y-axis/Unit": "output"
+              "Y-axis/Unit": "output",
+              "Visible data/LiveWindow/TelescopingArms/TelescopingArmsRightMotorSpeed": true
+            }
+          },
+          "4,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///LiveWindow/TelescopingArms/TelescopingArmsLeftClimberHeightInInches",
+              "_title": "LiveWindow/TelescopingArms/TelescopingArmsLeftClimberHeightInInches"
+            }
+          },
+          "4,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///LiveWindow/TelescopingArms/TelescopingArmsRightClimberHeightInInches",
+              "_title": "LiveWindow/TelescopingArms/TelescopingArmsRightClimberHeightInInches"
+            }
+          },
+          "5,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///LiveWindow/TelescopingArms/TelescopingArmsLeftMotorSpeed",
+              "_title": "LiveWindow/TelescopingArms/TelescopingArmsLeftMotorSpeed"
+            }
+          },
+          "5,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///LiveWindow/TelescopingArms/TelescopingArmsRightMotorSpeed",
+              "_title": "LiveWindow/TelescopingArms/TelescopingArmsRightMotorSpeed"
             }
           }
         }
@@ -639,7 +607,8 @@
               "Y-axis/Automatic bounds": true,
               "Y-axis/Upper bound": 1.0,
               "Y-axis/Lower bound": -1.0,
-              "Y-axis/Unit": "output"
+              "Y-axis/Unit": "output",
+              "Visible data/LiveWindow/AngleArms/AngleArmsAverageMotorOutput": true
             }
           }
         }
@@ -748,6 +717,48 @@
                   "_title": "DigitalInput[1]/Value",
                   "Colors/Color when true": "#7CFC00FF",
                   "Colors/Color when false": "#8B0000FF"
+                },
+                {
+                  "_type": "Motor Controller",
+                  "_source0": "network_table:///LiveWindow/Ungrouped/Talon FX [5]",
+                  "_title": "LiveWindow/Ungrouped/Talon FX [5]",
+                  "Visuals/Orientation": "HORIZONTAL"
+                },
+                {
+                  "_type": "Motor Controller",
+                  "_source0": "network_table:///LiveWindow/Ungrouped/Talon SRX [15]",
+                  "_title": "LiveWindow/Ungrouped/Talon SRX [15]",
+                  "Visuals/Orientation": "HORIZONTAL"
+                },
+                {
+                  "_type": "Motor Controller",
+                  "_source0": "network_table:///LiveWindow/Ungrouped/Talon FX [6]",
+                  "_title": "LiveWindow/Ungrouped/Talon FX [6]",
+                  "Visuals/Orientation": "HORIZONTAL"
+                },
+                {
+                  "_type": "Motor Controller",
+                  "_source0": "network_table:///LiveWindow/Ungrouped/Talon SRX [16]",
+                  "_title": "LiveWindow/Ungrouped/Talon SRX [16]",
+                  "Visuals/Orientation": "HORIZONTAL"
+                },
+                {
+                  "_type": "Motor Controller",
+                  "_source0": "network_table:///LiveWindow/Ungrouped/Talon FX [10]",
+                  "_title": "LiveWindow/Ungrouped/Talon FX [10]",
+                  "Visuals/Orientation": "HORIZONTAL"
+                },
+                {
+                  "_type": "Motor Controller",
+                  "_source0": "network_table:///LiveWindow/Ungrouped/Talon FX [9]",
+                  "_title": "LiveWindow/Ungrouped/Talon FX [9]",
+                  "Visuals/Orientation": "HORIZONTAL"
+                },
+                {
+                  "_type": "Motor Controller",
+                  "_source0": "network_table:///LiveWindow/Ungrouped/Talon FX [4]",
+                  "_title": "LiveWindow/Ungrouped/Talon FX [4]",
+                  "Visuals/Orientation": "HORIZONTAL"
                 }
               ]
             }
@@ -841,6 +852,26 @@
                   "_type": "Text View",
                   "_source0": "network_table:///LiveWindow/TelescopingArms/TelescopingArmsAverageClimberHeightInInches",
                   "_title": "TelescopingArmsAverageClimberHeightInInches"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///LiveWindow/TelescopingArms/TelescopingArmsLeftClimberHeightInInches",
+                  "_title": "TelescopingArmsLeftClimberHeightInInches"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///LiveWindow/TelescopingArms/TelescopingArmsLeftEncoderPosition",
+                  "_title": "TelescopingArmsLeftEncoderPosition"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///LiveWindow/TelescopingArms/TelescopingArmsRightClimberHeightInInches",
+                  "_title": "TelescopingArmsRightClimberHeightInInches"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///LiveWindow/TelescopingArms/TelescopingArmsRightEncoderPosition",
+                  "_title": "TelescopingArmsRightEncoderPosition"
                 }
               ]
             }
@@ -949,6 +980,61 @@
                   "_title": "JawsAverageMotorOutput"
                 }
               ]
+            }
+          },
+          "0,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///LiveWindow/Shooter/ShooterTopRevolutionsPerMinute",
+              "_title": "Shooter/ShooterTopRevolutionsPerMinute"
+            }
+          },
+          "1,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///LiveWindow/Shooter/ShooterIntakeDescription",
+              "_title": "Shooter/ShooterIntakeDescription"
+            }
+          },
+          "2,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///LiveWindow/Shooter/ShooterBottomMotorSpeed",
+              "_title": "Shooter/ShooterBottomMotorSpeed"
+            }
+          },
+          "3,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///LiveWindow/Shooter/ShooterTopMotorSpeed",
+              "_title": "Shooter/ShooterTopMotorSpeed"
+            }
+          },
+          "4,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///LiveWindow/Shooter/ShooterBottomRevolutionsPerMinute",
+              "_title": "Shooter/ShooterBottomRevolutionsPerMinute"
             }
           }
         }
