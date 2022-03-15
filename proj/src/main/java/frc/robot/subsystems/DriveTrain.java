@@ -103,11 +103,24 @@ public class DriveTrain extends SubsystemBase implements Sendable
   
   /**
    * Determines if the motors are performing drive movement
-   * @return
+   * @return true if an automated drive movement is currently happening
    */
   public boolean isCurrentlyPerformingDriveMovement()
   {
     return motionMagicRunning;
+  }
+
+  /**
+   * stops performing drive movement if the motion magic is running
+   */
+  public void stopPerformingDriveMovement()
+  {
+    if(motionMagicRunning)
+    {
+      leftFront.set(ControlMode.PercentOutput, 0.0);
+      rightFront.set(ControlMode.PercentOutput, 0.0);
+      motionMagicRunning = false;
+    }
   }
 
   /**

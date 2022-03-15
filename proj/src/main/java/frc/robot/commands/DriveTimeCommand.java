@@ -67,6 +67,10 @@ public class DriveTimeCommand extends CommandBase
   public void end(boolean interrupted)
   {
     this.driveTrain.arcadeDrive(0.0, 0.0);
+    if(interrupted)
+    {
+      done = true;      
+    }
   }
 
   // Returns true when the command should end.

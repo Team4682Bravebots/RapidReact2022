@@ -46,7 +46,8 @@ public class DriveCommand extends CommandBase
   @Override
   public void initialize()
   {
-   done = false; 
+    started = false;
+    done = false; 
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -59,13 +60,21 @@ public class DriveCommand extends CommandBase
         targetDistanceInInches,
         targetRotationInDegrees,
         targetTimeInSeconds);
+      started = true;
     }
     done = driveTrain.isCurrentlyPerformingDriveMovement();
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted)
+  {
+    if(interrupted)
+    {
+      driveTrain.stopPerformingDriveMovement();
+      done = true;
+    }
+  }
 
   // Returns true when the command should end.
   @Override
