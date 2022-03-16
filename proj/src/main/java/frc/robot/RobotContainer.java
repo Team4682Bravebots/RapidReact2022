@@ -94,7 +94,8 @@ public class RobotContainer
    */
   public Command getAutonomousCommand()
   {
-    return AutonomousCommandBuilder.buildSimpleShootHighAndForwardDriveDistance(m_collection);
+//    return AutonomousCommandBuilder.buildSimpleForwardDriveDistance(m_collection);
+    return AutonomousCommandBuilder.buildSimpleForwardDrive(m_collection);
   }
 
   public void resetRobotWhenFmsNotPresent()

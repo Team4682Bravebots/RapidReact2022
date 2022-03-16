@@ -166,15 +166,15 @@ public class AutonomousCommandBuilder
 
         if(collection.getDriveTrainSubsystem() != null)
         {
-            // 1. move forward 
-            DriveCommand driveCommand = new DriveCommand(
+            // move forward 
+            DriveCommand driveCommand1 = new DriveCommand(
                 collection.getDriveTrainSubsystem(),
                 36.0,
                 0.0,
-                2.0);
-
+                1.0);
+        
             // 3. build the command group
-            commandGroup.addCommands(driveCommand);
+            commandGroup.addCommands(driveCommand1.withTimeout(1.0));
         }
         
         return commandGroup;
