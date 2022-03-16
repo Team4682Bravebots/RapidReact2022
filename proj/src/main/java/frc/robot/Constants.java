@@ -59,16 +59,16 @@ public final class Constants
 
   // Motor magic numbers
   public static final double defaultMotorSpeedToleranceRpm = 50.0;
-  public static final double bottomMotorForwardLowGoalSpeedRpm = 1700.0;
-  public static final double topMotorForwardLowGoalSpeedRpm = 1400.0;
-  public static final double bottomMotorForwardHighGoalSpeedRpm = 2300.0;
-  public static final double topMotorForwardHighGoalSpeedRpm = 1900.0;
-  public static final double bottomMotorReverseHighGoalSpeedRpm = 1700.0;
-  public static final double topMotorReverseHighGoalSpeedRpm = 1400.0;
-  public static final double bottomMotorReverseLowGoalSpeedRpm = 700.0;
-  public static final double topMotorReverseLowGoalSpeedRpm = 600.0;
-  public static final double bottomMotorIntakeSpeedRpm = -1700.0;
-  public static final double topMotorIntakeSpeedRpm = -1400.0;
+  public static final double bottomMotorForwardLowGoalSpeedRpm = -1700.0;
+  public static final double topMotorForwardLowGoalSpeedRpm = -1400.0;
+  public static final double bottomMotorForwardHighGoalSpeedRpm = -2300.0;
+  public static final double topMotorForwardHighGoalSpeedRpm = -1900.0;
+  public static final double bottomMotorReverseHighGoalSpeedRpm = -1700.0;
+  public static final double topMotorReverseHighGoalSpeedRpm = -1400.0;
+  public static final double bottomMotorReverseLowGoalSpeedRpm = -1700.0;
+  public static final double topMotorReverseLowGoalSpeedRpm = -1400.0;
+  public static final double bottomMotorIntakeSpeedRpm = 1700.0;
+  public static final double topMotorIntakeSpeedRpm = 1400.0;
   
   // Jaws reach points \\
   public static final double jawsIntakePositionAngle = 0.0;
@@ -124,7 +124,7 @@ public final class Constants
   public static final double maximumClimbTimeOperationSeconds = 4.5;
   public static final double maximumJawsTimeOperationSeconds = 3.2;
   public static final double maximumBallStorageTimeOperationSeconds = 1.2;
-  public static final double maximumShooterTimeOperationSeconds = 2.5;
+  public static final double maximumShooterTimeOperationSeconds = 4.5;
   public static final double maximumTelescopingArmsTimeOperationSeconds = 3.0;
 
   // MOTOR SETTINGS \\
