@@ -76,11 +76,11 @@ public class ManualInputInterfaces
   {
     if(driverController.getLeftTriggerAxis() > driverController.getRightTriggerAxis())
     {
-      return driverController.getLeftTriggerAxis();
+      return driverController.getLeftTriggerAxis() * -1.0;
     }
     else
     {
-      return driverController.getRightTriggerAxis() * -1.0;
+      return driverController.getRightTriggerAxis();
     }
   }
 

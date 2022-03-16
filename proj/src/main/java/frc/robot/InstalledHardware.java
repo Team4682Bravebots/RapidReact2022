@@ -44,18 +44,18 @@ public class InstalledHardware
     public static final boolean coDriverXboxControllerInstalled = false;
 
     // DriveTrain Related Hardware
-    public static final boolean leftFrontDriveMotorInstalled = false;
-    public static final boolean leftRearDriveMotorInstalled = false;
-    public static final boolean rightFrontDriveMotorInstalled = false;
-    public static final boolean rightRearDriveMotorInstalled = false;
+    public static final boolean leftFrontDriveMotorInstalled = true;
+    public static final boolean leftRearDriveMotorInstalled = true;
+    public static final boolean rightFrontDriveMotorInstalled = true;
+    public static final boolean rightRearDriveMotorInstalled = true;
 
     // TelescopingArms Related Hardware
     public static final boolean leftTelescopingArmsDriveMotorInstalled = false;
     public static final boolean rightTelescopingArmsDriveMotorInstalled = false;
 
     // Jaws Related Hardware
-    public static final boolean topJawsDriveMotorInstalled = false;
-    public static final boolean bottomJawsDriveMotorInstalled = false;
+    public static final boolean topJawsDriveMotorInstalled = true;
+    public static final boolean bottomJawsDriveMotorInstalled = true;
 
     // Shooter Related Hardware
     public static final boolean topShooterDriveMotorInstalled = true;
@@ -66,6 +66,6 @@ public class InstalledHardware
     public static final boolean bottomBallStorageMotorInstalled = true;
 
     // Angle Arms Related Hardware
-    public static final boolean angleArmsMotorInstalled = false;
+    public static final boolean angleArmsMotorInstalled = true;
    
 }

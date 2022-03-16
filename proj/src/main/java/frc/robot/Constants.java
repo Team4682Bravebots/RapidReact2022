@@ -132,9 +132,9 @@ public final class Constants
   // Drive motor magic numbers
   // inverts - see: https://docs.ctre-phoenix.com/en/stable/ch13_MC.html#talon-fx-specific-inverts
   public static TalonFXInvertType driveMotorLeftFrontDefaultDirection = TalonFXInvertType.CounterClockwise;
-  public static TalonFXInvertType driveMotorLeftRearDefaultDirection = TalonFXInvertType.FollowMaster;
+  public static TalonFXInvertType driveMotorLeftRearDefaultDirection = TalonFXInvertType.CounterClockwise;
   public static TalonFXInvertType driveMotorRightFrontDefaultDirection = TalonFXInvertType.Clockwise;
-  public static TalonFXInvertType driveMotorRightRearDefaultDirection = TalonFXInvertType.FollowMaster;
+  public static TalonFXInvertType driveMotorRightRearDefaultDirection = TalonFXInvertType.Clockwise;
 
   // jaws arm motors clockwise is elevate
   public static TalonFXInvertType jawsRightMotorDefaultDirection = TalonFXInvertType.Clockwise;

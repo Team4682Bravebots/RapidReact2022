@@ -82,7 +82,7 @@ public class DriveTrain extends SubsystemBase implements Sendable
    */
   public void forceSensorReset()
   {
-    this.initializeMotorsMotionMagic();
+    this.initializeMotorsManual();
     leftFront.setSelectedSensorPosition(0.0);
     leftRear.setSelectedSensorPosition(0.0);
     rightFront.setSelectedSensorPosition(0.0);
@@ -303,6 +303,20 @@ public class DriveTrain extends SubsystemBase implements Sendable
     return rightFront.getMotorOutputPercent() / 100.0;
   }
 
+  private void initializeMotorsManual()
+  {
+    if(this.initalizedForMotionMagic == true)
+    {
+      leftFront.configFactoryDefault();
+      leftRear.configFactoryDefault();
+      leftRear.follow(leftFront);
+      rightFront.configFactoryDefault();
+      rightRear.configFactoryDefault();
+      rightRear.follow(rightFront);
+      this.initalizedForMotionMagic = false;
+    }
+  }
+
   private void initializeMotorsMotionMagic()
   {
     if(this.initalizedForMotionMagic == false)
@@ -310,9 +324,10 @@ public class DriveTrain extends SubsystemBase implements Sendable
       double maxVelocity = Constants.talonMaximumRevolutionsPerMinute * Constants.CtreTalonFx500EncoderTicksPerRevolution / 10.0 * DriveTrain.talonFxMotorSpeedReductionFactor;
 
       // LEFT MOTORS!
+      // FRONT
       leftFront.configFactoryDefault();
       leftFront.setNeutralMode(NeutralMode.Coast);
-      leftFront.setInverted(Constants.jawsRightMotorDefaultDirection);
+      leftFront.setInverted(Constants.driveMotorLeftFrontDefaultDirection);
       leftFront.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
       leftFront.setSensorPhase(false);
       leftFront.configNeutralDeadband(0.001, Constants.kTimeoutMs);
@@ -340,14 +355,46 @@ public class DriveTrain extends SubsystemBase implements Sendable
       // current limit enabled | Limit(amp) | Trigger Threshold(amp) | Trigger
       leftFront.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(false, 20, 25, 1.0));
      
+      // REAR
+      leftRear.configFactoryDefault();
+      leftRear.setNeutralMode(NeutralMode.Coast);
+      leftRear.setInverted(Constants.driveMotorLeftRearDefaultDirection);
+      leftRear.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+      leftRear.setSensorPhase(false);
+      leftRear.configNeutralDeadband(0.001, Constants.kTimeoutMs);
+      leftRear.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, Constants.kTimeoutMs);
+      leftRear.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, Constants.kTimeoutMs);
+
+      /* Set the peak and nominal outputs */
+      leftRear.configNominalOutputForward(0.0, Constants.kTimeoutMs);
+      leftRear.configNominalOutputReverse(-0.0, Constants.kTimeoutMs);
+      leftRear.configPeakOutputForward(1.0, Constants.kTimeoutMs);
+      leftRear.configPeakOutputReverse(-1.0, Constants.kTimeoutMs);
+
+      leftRear.selectProfileSlot(Constants.kSlotIdx, Constants.kPIDLoopIdx);
+      leftRear.config_kF(Constants.kSlotIdx, Constants.kGains.kF, Constants.kTimeoutMs);
+      leftRear.config_kP(Constants.kSlotIdx, Constants.kGains.kP, Constants.kTimeoutMs);
+      leftRear.config_kI(Constants.kSlotIdx, Constants.kGains.kI, Constants.kTimeoutMs);
+      leftRear.config_kD(Constants.kSlotIdx, Constants.kGains.kD, Constants.kTimeoutMs);
+      leftRear.configMotionCruiseVelocity(maxVelocity, Constants.kTimeoutMs);
+      leftRear.configMotionAcceleration(maxVelocity, Constants.kTimeoutMs);
+
+      // status frame updates!
+      leftRear.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, DriveTrain.motorSettingTimeout);
+      leftRear.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, DriveTrain.motorSettingTimeout);
+
+      // current limit enabled | Limit(amp) | Trigger Threshold(amp) | Trigger
+      leftRear.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(false, 20, 25, 1.0));
+
       // make rear a follower of front
       leftRear.follow(leftFront);
 
 
       // RIGHT MOTORS!
+      // FRONT
       rightFront.configFactoryDefault();
       rightFront.setNeutralMode(NeutralMode.Coast);
-      rightFront.setInverted(Constants.jawsRightMotorDefaultDirection);
+      rightFront.setInverted(Constants.driveMotorRightFrontDefaultDirection);
       rightFront.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
       rightFront.setSensorPhase(false);
       rightFront.configNeutralDeadband(0.001, Constants.kTimeoutMs);
@@ -375,6 +422,37 @@ public class DriveTrain extends SubsystemBase implements Sendable
       // current limit enabled | Limit(amp) | Trigger Threshold(amp) | Trigger
       rightFront.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(false, 20, 25, 1.0));
      
+      // FRONT
+      rightRear.configFactoryDefault();
+      rightRear.setNeutralMode(NeutralMode.Coast);
+      rightRear.setInverted(Constants.driveMotorRightRearDefaultDirection);
+      rightRear.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+      rightRear.setSensorPhase(false);
+      rightRear.configNeutralDeadband(0.001, Constants.kTimeoutMs);
+      rightRear.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, Constants.kTimeoutMs);
+      rightRear.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, Constants.kTimeoutMs);
+
+      /* Set the peak and nominal outputs */
+      rightRear.configNominalOutputForward(0.0, Constants.kTimeoutMs);
+      rightRear.configNominalOutputReverse(-0.0, Constants.kTimeoutMs);
+      rightRear.configPeakOutputForward(1.0, Constants.kTimeoutMs);
+      rightRear.configPeakOutputReverse(-1.0, Constants.kTimeoutMs);
+
+      rightRear.selectProfileSlot(Constants.kSlotIdx, Constants.kPIDLoopIdx);
+      rightRear.config_kF(Constants.kSlotIdx, Constants.kGains.kF, Constants.kTimeoutMs);
+      rightRear.config_kP(Constants.kSlotIdx, Constants.kGains.kP, Constants.kTimeoutMs);
+      rightRear.config_kI(Constants.kSlotIdx, Constants.kGains.kI, Constants.kTimeoutMs);
+      rightRear.config_kD(Constants.kSlotIdx, Constants.kGains.kD, Constants.kTimeoutMs);
+      rightRear.configMotionCruiseVelocity(maxVelocity, Constants.kTimeoutMs);
+      rightRear.configMotionAcceleration(maxVelocity, Constants.kTimeoutMs);
+
+      // status frame updates!
+      rightRear.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, DriveTrain.motorSettingTimeout);
+      rightRear.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, DriveTrain.motorSettingTimeout);
+
+      // current limit enabled | Limit(amp) | Trigger Threshold(amp) | Trigger
+      rightRear.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(false, 20, 25, 1.0));
+
       // make rear a follower of front
       rightRear.follow(rightFront);
 
