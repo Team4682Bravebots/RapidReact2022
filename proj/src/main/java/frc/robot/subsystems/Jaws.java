@@ -200,6 +200,7 @@ public class Jaws extends SubsystemBase implements Sendable
       {
         double maxVelocity = Constants.talonMaximumRevolutionsPerMinute * Constants.CtreTalonFx500EncoderTicksPerRevolution / 10.0 * Jaws.talonFxMotorSpeedReductionFactor;
 
+        // RIGHT MOTOR
         rightMotor.configFactoryDefault();
         rightMotor.setNeutralMode(NeutralMode.Brake);
         rightMotor.setInverted(Constants.jawsRightMotorDefaultDirection);
@@ -225,6 +226,33 @@ public class Jaws extends SubsystemBase implements Sendable
   
         // current limit enabled | Limit(amp) | Trigger Threshold(amp) | Trigger
         rightMotor.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(false, 20, 25, 1.0));
+
+        // LEFT MOTOR
+        leftMotor.configFactoryDefault();
+        leftMotor.setNeutralMode(NeutralMode.Brake);
+        leftMotor.setInverted(Constants.jawsLeftMotorDefaultDirection);
+        leftMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+        leftMotor.setSensorPhase(false);
+        leftMotor.configNeutralDeadband(0.001, Constants.kTimeoutMs);
+        leftMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, Constants.kTimeoutMs);
+        leftMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, Constants.kTimeoutMs);
+  
+        /* Set the peak and nominal outputs */
+        leftMotor.configNominalOutputForward(0.0, Constants.kTimeoutMs);
+        leftMotor.configNominalOutputReverse(-0.0, Constants.kTimeoutMs);
+        leftMotor.configPeakOutputForward(1.0, Constants.kTimeoutMs);
+        leftMotor.configPeakOutputReverse(-1.0, Constants.kTimeoutMs);
+  
+        leftMotor.selectProfileSlot(Constants.kSlotIdx, Constants.kPIDLoopIdx);
+        leftMotor.config_kF(Constants.kSlotIdx, Constants.kGains.kF, Constants.kTimeoutMs);
+        leftMotor.config_kP(Constants.kSlotIdx, Constants.kGains.kP, Constants.kTimeoutMs);
+        leftMotor.config_kI(Constants.kSlotIdx, Constants.kGains.kI, Constants.kTimeoutMs);
+        leftMotor.config_kD(Constants.kSlotIdx, Constants.kGains.kD, Constants.kTimeoutMs);
+        leftMotor.configMotionCruiseVelocity(maxVelocity, Constants.kTimeoutMs);
+        leftMotor.configMotionAcceleration(maxVelocity, Constants.kTimeoutMs);
+  
+        // current limit enabled | Limit(amp) | Trigger Threshold(amp) | Trigger
+        leftMotor.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(false, 20, 25, 1.0));
 
         // make left a follower of right
         leftMotor.follow(rightMotor);

@@ -94,7 +94,8 @@ public class RobotContainer
    */
   public Command getAutonomousCommand()
   {
-    return AutonomousCommandBuilder.buildSimpleShootHighAndForwardDriveDistance(m_collection);
+//    return AutonomousCommandBuilder.buildSimpleForwardDriveDistance(m_collection);
+    return AutonomousCommandBuilder.buildSimpleForwardDrive(m_collection);
   }
 
   public void resetRobotWhenFmsNotPresent()
@@ -139,7 +140,7 @@ public class RobotContainer
   {
     if(InstalledHardware.highLevelButtonBoardInstalled ||
       InstalledHardware.lowLevelButtonBoardInstalled ||
-      InstalledHardware.coDriverXboxControllerInstalled ||
+      /* InstalledHardware.coDriverXboxControllerInstalled || */
       InstalledHardware.driverXboxControllerInstalled)
     {
       m_manualInput = new ManualInputInterfaces(m_collection);

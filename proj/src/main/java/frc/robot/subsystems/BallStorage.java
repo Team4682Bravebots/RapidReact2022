@@ -38,6 +38,7 @@ public class BallStorage extends SubsystemBase implements Sendable
 
     bottomMotor.configFactoryDefault();
     bottomMotor.setNeutralMode(NeutralMode.Brake);
+    bottomMotor.setInverted(false);
     CommandScheduler.getInstance().registerSubsystem(this);
   }
 

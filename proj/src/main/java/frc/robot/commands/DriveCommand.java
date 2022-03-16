@@ -40,6 +40,9 @@ public class DriveCommand extends CommandBase
     // Use addRequirements() here to declare subsystem dependencies.
     this.driveTrain = driveTrainSubsystem;
     addRequirements(driveTrain);
+    targetDistanceInInches = distanceInInches;
+    targetRotationInDegrees = rotationInDegrees;
+    targetTimeInSeconds = timeInSeconds;
   }
 
   // Called when the command is initially scheduled.

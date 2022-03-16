@@ -14,26 +14,29 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
-import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
-import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
-import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import frc.robot.Constants;
 import frc.robot.InstalledHardware;
 import frc.robot.common.MotorUtils;
 
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.SparkMaxRelativeEncoder;
+import com.revrobotics.CANSparkMax.*;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 public class AngleArms extends SubsystemBase implements Sendable
 {
-    // update this when folks are ready for it
-    private static final double talonFxMotorSpeedReductionFactor = 0.75;
-    
-    private final WPI_TalonFX rightMotor = new WPI_TalonFX(Constants.angleArmsMotorCanId);
-    private boolean motorsNeedInit = true;
+    // TODO change this to final speed when everyone is ready for it
+    private static final double neoMotorSpeedReductionFactor = 0.5;
+
+    private CANSparkMax rightMotor = new CANSparkMax(Constants.angleArmsMotorCanId, MotorType.kBrushless);
+    private SparkMaxPIDController rightPidController;
+    private RelativeEncoder rightEncoder;
+    private double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM, maxVel, minVel, maxAcc, allowedErr;
+    private boolean motorsInitalizedForSmartMotion = false;
 
     /**
      * The constructor for AngleArms
@@ -49,8 +52,8 @@ public class AngleArms extends SubsystemBase implements Sendable
      */
     public void forceSensorReset()
     {
-      this.initializeMotors();
-      rightMotor.setSelectedSensorPosition(Constants.angleArmsReferencePositionMotorEncoderUnits);
+      this.initializeMotorsSmartMotion();
+      rightEncoder.setPosition(0.0);
     }
 
     /**
@@ -94,11 +97,12 @@ public class AngleArms extends SubsystemBase implements Sendable
     */
     public boolean setAngleArmsAngle(double targetAngleInDegrees, double toleranceInDegrees)
     {
-        this.initializeMotors();
         double trimmedAngle = MotorUtils.truncateValue(targetAngleInDegrees, Constants.angleArmsMinimumPositionAngle, Constants.angleArmsMaximumPositionAngle);
 
         // because of follower this will set both motors
-        rightMotor.set(TalonFXControlMode.MotionMagic, convertAngleArmsAngleToMotorEncoderPosition(trimmedAngle));
+        rightPidController.setReference(
+          this.convertAngleArmsAngleToMotorEncoderPosition(trimmedAngle),
+          ControlType.kSmartMotion);
         double currentAngle = this.getCurrentAngleArmsAngle();
 
         boolean result = (currentAngle >= targetAngleInDegrees - toleranceInDegrees && currentAngle <= targetAngleInDegrees + toleranceInDegrees); 
@@ -113,12 +117,7 @@ public class AngleArms extends SubsystemBase implements Sendable
     */
     public void setAngleArmsSpeedManual(double angleArmsSpeed)
     {
-        if(this.motorsNeedInit == false)
-        {
-            rightMotor.configFactoryDefault(0);
-            this.motorsNeedInit = true;
-        }
-        rightMotor.set(TalonFXControlMode.PercentOutput, MotorUtils.truncateValue(angleArmsSpeed, -1.0, 1.0));
+        rightMotor.set(MotorUtils.truncateValue(angleArmsSpeed, -1.0, 1.0));
     }
 
     /* *********************************************************************
@@ -144,50 +143,56 @@ public class AngleArms extends SubsystemBase implements Sendable
 
     private double getAverageMotorEncoderPosition()
     {
-      return rightMotor.getSelectedSensorPosition();
+      return rightEncoder.getPosition();
     }
 
     private double getAverageMotorOutput()
     {
-      return rightMotor.getMotorOutputPercent();
+      return rightMotor.getAppliedOutput();
     }
 
     // a method devoted to establishing proper startup of the jaws motors
     // this method sets all of the key settings that will help in motion magic
-    private void initializeMotors()
+    private void initializeMotorsSmartMotion()
     {
-      if(motorsNeedInit)
-      {
-        double maxVelocity = Constants.talonMaximumRevolutionsPerMinute * Constants.CtreTalonFx500EncoderTicksPerRevolution / 10.0 * AngleArms.talonFxMotorSpeedReductionFactor;
+      if(motorsInitalizedForSmartMotion == false)
+      { 
+        // PID coefficients
+        kP = 5e-5; 
+        kI = 1e-6;
+        kD = 0; 
+        kIz = 0; 
+        kFF = 0.000156; 
+        kMaxOutput = 1; 
+        kMinOutput = -1;
+        maxRPM = Constants.neoMaximumRevolutionsPerMinute;
+        int smartMotionSlot = 0;
+    
+        // Smart Motion Coefficients
+        maxVel = maxRPM * neoMotorSpeedReductionFactor; // rpm
+        maxAcc = maxVel; // 1 second to get up to full speed
 
-        rightMotor.configFactoryDefault();
-        rightMotor.setNeutralMode(NeutralMode.Brake);
-        rightMotor.setInverted(Constants.angleArmsRightMotorDefaultDirection);
-        rightMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
-        rightMotor.setSensorPhase(false);
-        rightMotor.configNeutralDeadband(0.001, Constants.kTimeoutMs);
-        rightMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, Constants.kTimeoutMs);
-        rightMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, Constants.kTimeoutMs);
-  
-        /* Set the peak and nominal outputs */
-        rightMotor.configNominalOutputForward(0.0, Constants.kTimeoutMs);
-        rightMotor.configNominalOutputReverse(-0.0, Constants.kTimeoutMs);
-        rightMotor.configPeakOutputForward(1.0, Constants.kTimeoutMs);
-        rightMotor.configPeakOutputReverse(-1.0, Constants.kTimeoutMs);
-  
-        rightMotor.selectProfileSlot(Constants.kSlotIdx, Constants.kPIDLoopIdx);
-        rightMotor.config_kF(Constants.kSlotIdx, Constants.kGains.kF, Constants.kTimeoutMs);
-        rightMotor.config_kP(Constants.kSlotIdx, Constants.kGains.kP, Constants.kTimeoutMs);
-        rightMotor.config_kI(Constants.kSlotIdx, Constants.kGains.kI, Constants.kTimeoutMs);
-        rightMotor.config_kD(Constants.kSlotIdx, Constants.kGains.kD, Constants.kTimeoutMs);
-        rightMotor.configMotionCruiseVelocity(maxVelocity, Constants.kTimeoutMs);
-        rightMotor.configMotionAcceleration(maxVelocity, Constants.kTimeoutMs);
-  
-        // current limit enabled | Limit(amp) | Trigger Threshold(amp) | Trigger
-        rightMotor.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(false, 20, 25, 1.0));
+        rightMotor.restoreFactoryDefaults();
+        rightMotor.setIdleMode(IdleMode.kBrake);
+        rightPidController = rightMotor.getPIDController();
+        rightEncoder = rightMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, Constants.countPerRevHallSensor);
+        rightEncoder.setPositionConversionFactor((double)Constants.RevNeoEncoderTicksPerRevolution);
+   
+        // set PID coefficients
+        rightPidController.setP(kP);
+        rightPidController.setI(kI);
+        rightPidController.setD(kD);
+        rightPidController.setIZone(kIz);
+        rightPidController.setFF(kFF);
+        rightPidController.setOutputRange(kMinOutput, kMaxOutput);
+    
+        rightPidController.setSmartMotionMaxVelocity(maxVel, smartMotionSlot);
+        rightPidController.setSmartMotionMinOutputVelocity(minVel, smartMotionSlot);
+        rightPidController.setSmartMotionMaxAccel(maxAcc, smartMotionSlot);
+        rightPidController.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot);
 
-        motorsNeedInit = false;
+        this.motorsInitalizedForSmartMotion = true;
       }
-   }
+    }
 
 }
