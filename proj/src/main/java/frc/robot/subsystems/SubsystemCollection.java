@@ -20,7 +20,7 @@ public class SubsystemCollection
     // declaring and init subsystems  
     private AngleArms angleArms = null;
     private BallStorage ballStorage = null;
-    private DriveTrain driveTrain = null;
+    private DriveTrainAuto driveTrain = null;
     private Jaws jaws = null;
     private Shooter shooter = null;
     private TelescopingArms telescopingArms = null;
@@ -37,8 +37,8 @@ public class SubsystemCollection
     public BallStorage getBallStorageSubsystem() { return ballStorage; }
     public void setBallStorageSubsystem(BallStorage value) { ballStorage = value; }
 
-    public DriveTrain getDriveTrainSubsystem() { return driveTrain; }
-    public void setDriveTrainSubsystem(DriveTrain value) { driveTrain = value; }
+    public DriveTrainAuto getDriveTrainSubsystem() { return driveTrain; }
+    public void setDriveTrainSubsystem(DriveTrainAuto value) { driveTrain = value; }
 
     public Jaws getJawsSubsystem() { return jaws; }
     public void setJawsSubsystem(Jaws value) { jaws = value; }

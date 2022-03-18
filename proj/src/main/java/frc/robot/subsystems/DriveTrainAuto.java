@@ -24,11 +24,12 @@ import edu.wpi.first.wpilibj.drive.*;
 import edu.wpi.first.wpilibj.motorcontrol.*;
 
 import frc.robot.Constants;
+import frc.robot.AutoConstants;
 import frc.robot.OnboardInputInterfaces;
 import frc.robot.common.MotorUtils;
 
-// see ramsetecontroller
-// https://github.com/wpilibsuite/allwpilib/tree/main/wpilibjExamples/src/main/java/edu/wpi/first/wpilibj/examples/ramsetecontroller
+// see ramsete command
+// https://github.com/wpilibsuite/allwpilib/tree/main/wpilibjExamples/src/main/java/edu/wpi/first/wpilibj/examples/ramsetecommand
 
 // https://docs.wpilib.org/en/stable/docs/software/kinematics-and-odometry/differential-drive-kinematics.html
 // https://docs.wpilib.org/en/stable/docs/software/kinematics-and-odometry/differential-drive-odometry.html
@@ -83,6 +84,58 @@ public class DriveTrainAuto extends SubsystemBase implements Sendable
         currentPosition);
   }
 
+  /**
+   * Returns the current wheel speeds of the robot.
+   *
+   * @return The current wheel speeds.
+   */
+  public DifferentialDriveWheelSpeeds getWheelSpeeds()
+  {
+    return new DifferentialDriveWheelSpeeds(m_leftEncoder.getRate(), m_rightEncoder.getRate());
+  }
+
+  /**
+   * Resets the odometry to the specified pose.
+   *
+   * @param pose The pose to which to set the odometry.
+   */
+  public void resetOdometry(Pose2d pose)
+  {
+    resetEncoders();
+    m_odometry.resetPosition(pose, m_gyro.getRotation2d());
+  }
+
+  /**
+   * Drives the robot using arcade controls.
+   *
+   * @param fwd the commanded forward movement
+   * @param rot the commanded rotation
+   */
+  public void arcadeDrive(double fwd, double rot)
+  {
+    m_drive.arcadeDrive(fwd, rot);
+  }
+
+  /**
+   * Controls the left and right sides of the drive directly with voltages.
+   *
+   * @param leftVolts the commanded left output
+   * @param rightVolts the commanded right output
+   */
+  public void tankDriveVolts(double leftVolts, double rightVolts)
+  {
+    m_leftMotors.setVoltage(leftVolts);
+    m_rightMotors.setVoltage(rightVolts);
+    m_drive.feed();
+  }
+
+  /** Resets the drive encoders to currently read a position of 0. */
+  public void resetEncoders()
+  {
+    m_leftEncoder.reset();
+    m_rightEncoder.reset();
+  }
+  
   /**arcade
   * A method to take in x and y stick inputs and turn them into right and left motor speeds
   * considering arcade style driving
@@ -93,6 +146,15 @@ public class DriveTrainAuto extends SubsystemBase implements Sendable
   public void arcadeDrive(double yAxisValue, double xAxisValue)
   {
     drive.arcadeDrive(xAxisValue, yAxisValue);
+  }
+
+  /**
+   * Function to get the current position of the robot.
+   * @return a Pose2d object describing the position of the robot
+   */
+  public Pose2d getCurrentPosition()
+  {
+    return currentPosition;
   }
 
   /**
