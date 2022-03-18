@@ -90,9 +90,7 @@ public class ManualInputInterfaces
    */
   public double getInputJaws()
   {
-    // TODO - switch this to use the coDriverController soon!!!
-    // should be: coDriverController.getLeftY();
-    double inputValue = driverController.getRightX();
+    double inputValue = coDriverController.getRightX();
     return ((inputValue > 0.070 || inputValue < -0.070) ? inputValue : 0.0);
   }
 
@@ -102,7 +100,7 @@ public class ManualInputInterfaces
    */
   public double getInputTelescopingArms()
   {
-    XboxController theControllerToUse = driverController;
+    XboxController theControllerToUse = coDriverController;
     // need to invert the y for all xbox controllers due to xbox controler having up as negative y axis
     double input = theControllerToUse.getRightY() * -1.0;
     // avoid xbox controller shadow input drift
