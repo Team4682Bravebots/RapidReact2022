@@ -20,7 +20,8 @@ import frc.robot.subsystems.Jaws;
 
 public class ShooterAutomatic extends CommandBase
 {
-  private static final double defaultVelocityRpm = 100.0;
+  private static final double defaultVelocityBottomRpm = Constants.bottomMotorForwardHighGoalSpeedRpm;
+  private static final double defaultVelocityTopRpm = Constants.topMotorForwardHighGoalSpeedRpm;
   private static final double defaultVelocityTolerance = 20.0;
 
   // target the shooter 
@@ -51,9 +52,9 @@ public class ShooterAutomatic extends CommandBase
   private boolean jawsTestMode = false;
   private double jawsTestAngle = 0.0;
   
-  private double bottomShooterTargetVelocityRpm = ShooterAutomatic.defaultVelocityRpm;
+  private double bottomShooterTargetVelocityRpm = ShooterAutomatic.defaultVelocityBottomRpm;
   private double bottomShooterVelocityToleranceRpm = ShooterAutomatic.defaultVelocityTolerance;
-  private double topShooterTargetVelocityRpm = ShooterAutomatic.defaultVelocityRpm;
+  private double topShooterTargetVelocityRpm = ShooterAutomatic.defaultVelocityTopRpm;
   private double topShooterVelocityToleranceRpm = ShooterAutomatic.defaultVelocityTolerance;
 
   /**
@@ -135,9 +136,9 @@ public class ShooterAutomatic extends CommandBase
       }
       if(useDefault)
       {
-        bottomShooterTargetVelocityRpm = ShooterAutomatic.defaultVelocityRpm;
+        bottomShooterTargetVelocityRpm = ShooterAutomatic.defaultVelocityBottomRpm;
         bottomShooterVelocityToleranceRpm = ShooterAutomatic.defaultVelocityTolerance;
-        topShooterTargetVelocityRpm = ShooterAutomatic.defaultVelocityRpm;
+        topShooterTargetVelocityRpm = ShooterAutomatic.defaultVelocityTopRpm;
         topShooterVelocityToleranceRpm = ShooterAutomatic.defaultVelocityTolerance;
       }
   }
