@@ -342,6 +342,7 @@ public class ManualInputInterfaces
         subsystemCollection.getJawsSubsystem() != null &&
         subsystemCollection.getTelescopingArmsSubsystem() != null)
       {
+        /*
         extendAndReady.whenPressed(
           new ParallelCommandGroup(
             ClimbCommandBuilder.buildExtensionAndReadyPosition(subsystemCollection),
@@ -358,6 +359,7 @@ public class ManualInputInterfaces
           new ParallelCommandGroup(
             ClimbCommandBuilder.buildTraversalBarClimb(subsystemCollection),
             new ButtonPress("buttonBoardHigh.4", "traversalBarClimb.whenPressed")).withTimeout(Constants.maximumClimbTimeOperationSeconds));
+          */
       }
 
       if(subsystemCollection.getShooterSubsystem() != null && 
