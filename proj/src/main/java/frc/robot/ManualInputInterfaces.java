@@ -90,7 +90,7 @@ public class ManualInputInterfaces
    */
   public double getInputJaws()
   {
-    double inputValue = coDriverController.getRightX();
+    double inputValue = driverController.getRightX();
     return ((inputValue > 0.070 || inputValue < -0.070) ? inputValue : 0.0);
   }
 

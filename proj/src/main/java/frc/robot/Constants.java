@@ -71,7 +71,7 @@ public final class Constants
   public static final double topMotorIntakeSpeedRpm = 1400.0;
   
   // Jaws reach points \\
-  public static final double jawsIntakePositionAngle = 0.0;
+  public static final double jawsIntakePositionAngle = 1.0;
   public static final double jawsLowGoalPositionAngle = 90.0;
   public static final double jawsHighGoalPositionAngle = 110.0; 
   public static final double jawsReverseHighGoalPositionAngle = 145.0;
