@@ -154,11 +154,11 @@ public class RobotContainer
   }
 
   private void initializeOnboardInputInterfaces()
-  {
-    // TODO - when limelight comes online add it here
+  {   
     if(InstalledHardware.navxInstalled /* && InstalledHardware.limelightInstalled */)
     {
       m_onboardInput = new OnboardInputInterfaces();
+      // TODO - when limelight comes online add it here
       System.out.println("SUCCESS: initalizeOnboardInputInterfaces");
     }
     else

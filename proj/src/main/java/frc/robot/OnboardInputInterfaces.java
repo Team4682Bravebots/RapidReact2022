@@ -192,6 +192,24 @@ public class OnboardInputInterfaces implements Sendable
         return rtnVal;
     }
 
+    /**
+     * use this in auto
+     * @return - a double value associated with the cumulative yaw
+     */
+    public double getAccumulatedYawAngle()
+    {
+        return navigationSensor.getAngle();
+    }
+
+    /**
+     * To get it in radians
+     * @return
+     */
+    public double getYawAngleRadians()
+    {
+        return getYawAngle()/57.1957795;
+    }
+
     @Override
     public void initSendable(SendableBuilder builder)
     {
