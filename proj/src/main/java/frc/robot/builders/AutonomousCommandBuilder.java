@@ -174,7 +174,7 @@ public class AutonomousCommandBuilder
                 1.0);
         
             // 3. build the command group
-            commandGroup.addCommands(driveCommand1.withTimeout(1.0));
+            commandGroup.addCommands(driveCommand1.withTimeout(2.0));
         }
         
         return commandGroup;
@@ -185,7 +185,7 @@ public class AutonomousCommandBuilder
      * @param collection - The grouping of subystems and input content necessary to control various operations in the robot
      * @return The command that represents a succession of commands/steps that form the action associated with this method  
      */
-    public static Command buildSimpleShootHighAndForwardDriveDistance(SubsystemCollection collection)
+    public static Command buildSimpleShootHighAndReverseDrive(SubsystemCollection collection)
     {
         SequentialCommandGroup commandGroup = new SequentialCommandGroup();
 
@@ -195,7 +195,8 @@ public class AutonomousCommandBuilder
            collection.getShooterSubsystem() != null)
         {
             // 1. shoot first ball
-            JawsForwardHighGoal jawsToForwardLowGoal = new JawsForwardHighGoal(collection.getJawsSubsystem());
+            ButtonPress startButton = new ButtonPress("autonomous", "start");
+            JawsForwardHighGoal jawsToForwardHighGoal = new JawsForwardHighGoal(collection.getJawsSubsystem());
             ShooterAutomatic shootForwardHighGoal = new ShooterAutomatic(
                 collection.getShooterSubsystem(),
                 collection.getBallStorageSubsystem(),
@@ -205,12 +206,19 @@ public class AutonomousCommandBuilder
             // 2. move toward the second ball 
             DriveTimeCommand driveTimeCommand = new DriveTimeCommand(
                 collection.getDriveTrainSubsystem(),
-                0.7,
+                -0.7,
                 0.0,
                 2.0);
 
+            ButtonPress endButton = new ButtonPress("autonomous", "end");
+
             // 3. build the command group
-            commandGroup.addCommands(jawsToForwardLowGoal, shootForwardHighGoal, driveTimeCommand);
+            commandGroup.addCommands(
+                startButton.withTimeout(0.5),
+                jawsToForwardHighGoal.withTimeout(2.0),
+                shootForwardHighGoal.withTimeout(5.0),
+                driveTimeCommand.withTimeout(5.0),
+                endButton.withTimeout(0.5));
         }
         
         return commandGroup;
@@ -221,21 +229,28 @@ public class AutonomousCommandBuilder
      * @param collection - The grouping of subystems and input content necessary to control various operations in the robot
      * @return The command that represents a succession of commands/steps that form the action associated with this method  
      */
-    public static Command buildSimpleForwardDrive(SubsystemCollection collection)
+    public static Command buildSimpleReverseDrive(SubsystemCollection collection)
     {
         SequentialCommandGroup commandGroup = new SequentialCommandGroup();
 
         if(collection.getDriveTrainSubsystem() != null)
         {
+            ButtonPress startButton = new ButtonPress("autonomous", "start");
+
             // 2. move toward the second ball 
             DriveTimeCommand driveTimeCommand = new DriveTimeCommand(
                 collection.getDriveTrainSubsystem(),
-                0.7,
+                -0.7,
                 0.0,
                 2.0);
 
+            ButtonPress endButton = new ButtonPress("autonomous", "end");
+
             // 3. build the command group
-            commandGroup.addCommands(driveTimeCommand);
+            commandGroup.addCommands(
+                startButton.withTimeout(0.5),
+                driveTimeCommand.withTimeout(5.0),
+                endButton.withTimeout(0.5));
         }
         
         return commandGroup;

@@ -365,15 +365,6 @@ public class ManualInputInterfaces
          subsystemCollection.getJawsSubsystem() != null */)
       {
         shooterShoot.whenPressed(
-          new ParallelCommandGroup(
-            new ShooterAutomatic(
-              subsystemCollection.getShooterSubsystem(),
-              subsystemCollection.getBallStorageSubsystem(),
-              true,
-              Constants.jawsLowGoalPositionAngle),
-            new ButtonPress("buttonBoardHigh.5", "shooterShoot.whenPressed")).withTimeout(Constants.maximumShooterTimeOperationSeconds));
-        /*
-        shooterShoot.whenPressed(
           new ParallelCommandGroup(           
             new ShooterAutomatic(
               subsystemCollection.getShooterSubsystem(),
@@ -381,7 +372,6 @@ public class ManualInputInterfaces
               subsystemCollection.getJawsSubsystem(),
               true),
             new ButtonPress("buttonBoardHigh.5", "shooterShoot.whenPressed")).withTimeout(Constants.maximumShooterTimeOperationSeconds));
-          */
         shooterIntake.whileHeld(
           new ParallelCommandGroup(
             new ShooterManual(
