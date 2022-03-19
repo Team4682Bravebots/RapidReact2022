@@ -40,7 +40,7 @@ public final class Constants
 
   // shooter 
   // inverts - see: https://docs.ctre-phoenix.com/en/stable/ch13_MC.html#talon-fx-specific-inverts
-  public static TalonFXInvertType shooterBottomMotorDefaultDirection = TalonFXInvertType.Clockwise;
+  public static TalonFXInvertType shooterBottomMotorDefaultDirection = TalonFXInvertType.CounterClockwise;
   public static TalonFXInvertType shooterTopMotorDefaultDirection = TalonFXInvertType.Clockwise;
 
   // Angle arms magic numbers
