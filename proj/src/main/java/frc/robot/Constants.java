@@ -61,10 +61,10 @@ public final class Constants
   public static final double defaultMotorSpeedToleranceRpm = 50.0;
   public static final double bottomMotorForwardLowGoalSpeedRpm = -1700.0;
   public static final double topMotorForwardLowGoalSpeedRpm = -1400.0;
-  public static final double bottomMotorForwardHighGoalSpeedRpm = -2300.0;
-  public static final double topMotorForwardHighGoalSpeedRpm = -1900.0;
-  public static final double bottomMotorReverseHighGoalSpeedRpm = -1700.0;
-  public static final double topMotorReverseHighGoalSpeedRpm = -1400.0;
+  public static final double bottomMotorForwardHighGoalSpeedRpm = -2400.0;
+  public static final double topMotorForwardHighGoalSpeedRpm = -2000.0;
+  public static final double bottomMotorReverseHighGoalSpeedRpm = -2400.0;
+  public static final double topMotorReverseHighGoalSpeedRpm = -2000.0;
   public static final double bottomMotorReverseLowGoalSpeedRpm = -1700.0;
   public static final double topMotorReverseLowGoalSpeedRpm = -1400.0;
   public static final double bottomMotorIntakeSpeedRpm = 1700.0;
@@ -73,7 +73,7 @@ public final class Constants
   // Jaws reach points \\
   public static final double jawsIntakePositionAngle = 1.0;
   public static final double jawsLowGoalPositionAngle = 90.0;
-  public static final double jawsHighGoalPositionAngle = 110.0; 
+  public static final double jawsHighGoalPositionAngle = 125.0; 
   public static final double jawsReverseHighGoalPositionAngle = 145.0;
   public static final double jawsReverseLowGoalPositionAngle = 150.0;
   public static final double jawsPositionAngleTolerance = 1.2;
