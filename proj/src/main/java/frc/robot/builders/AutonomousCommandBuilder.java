@@ -208,7 +208,7 @@ public class AutonomousCommandBuilder
                 collection.getDriveTrainSubsystem(),
                 -0.7,
                 0.0,
-                2.0);
+                1.0);
 
             ButtonPress endButton = new ButtonPress("autonomous", "end");
 
@@ -242,7 +242,7 @@ public class AutonomousCommandBuilder
                 collection.getDriveTrainSubsystem(),
                 -0.7,
                 0.0,
-                2.0);
+                1.0);
 
             ButtonPress endButton = new ButtonPress("autonomous", "end");
 
