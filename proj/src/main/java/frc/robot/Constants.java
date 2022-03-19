@@ -28,7 +28,7 @@ public final class Constants
 {
   public static final double DegreesPerRevolution = 360.0;
   // Talon maximum RPM 
-  public static final double neoMaximumRevolutionsPerMinute = 6380;
+  public static final double neoMaximumRevolutionsPerMinute = 5676;
   // Talon maximum RPM 
   public static final double talonMaximumRevolutionsPerMinute = 6380;
   // this uses the on-motor quadratrue encoder

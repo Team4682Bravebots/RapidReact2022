@@ -37,7 +37,7 @@ public class Jaws extends SubsystemBase implements Sendable
     private static final double maximumTargetAngle = 150.1;
 
     // update this when folks are ready for it
-    private static final double talonFxMotorSpeedReductionFactor = 0.30;
+    private static final double talonFxMotorSpeedReductionFactor = 0.35;
 
     /* *********************************************************************
     MEMBERS

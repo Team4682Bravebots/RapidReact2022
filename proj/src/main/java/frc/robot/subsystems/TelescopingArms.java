@@ -374,7 +374,7 @@ public class TelescopingArms extends SubsystemBase implements Sendable
     
         // Smart Motion Coefficients
         maxVel = maxRPM * neoMotorSpeedReductionFactor; // rpm
-        maxAcc = maxVel; // 1 second to get up to full speed
+        maxAcc = maxVel * 2; // 1/2 second to get up to full speed
 
         leftMotor.restoreFactoryDefaults();
         leftMotor.setIdleMode(IdleMode.kBrake);
