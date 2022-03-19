@@ -85,7 +85,7 @@ public final class Constants
 
   // telescoping arms reach points \\
   public static final double telescopingArmsRetractHeightInches = 0.50;
-  public static final double telescopingArmsMediumExtendHeightInches = 25.75;
+  public static final double telescopingArmsMediumExtendHeightInches = 31.0;
   public static final double telescopingArmsHighExtendHeightInches = 20.0;
   public static final double telescopingArmsToleranceInches = 0.10;
   public static final double telescopingArmsDefaultExtendSpeed = 0.7;
@@ -121,11 +121,11 @@ public final class Constants
 
 
   // MAXIMUM COMMAND TIMING SETTINGS
-  public static final double maximumClimbTimeOperationSeconds = 4.5;
+  public static final double maximumClimbTimeOperationSeconds = 8.5;
   public static final double maximumJawsTimeOperationSeconds = 3.2;
   public static final double maximumBallStorageTimeOperationSeconds = 1.2;
   public static final double maximumShooterTimeOperationSeconds = 4.5;
-  public static final double maximumTelescopingArmsTimeOperationSeconds = 3.0;
+  public static final   double maximumTelescopingArmsTimeOperationSeconds = 3.0;
 
   // MOTOR SETTINGS \\
 
