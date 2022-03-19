@@ -325,8 +325,8 @@ public class ManualInputInterfaces
     {
       JoystickButton extendAndReady = new JoystickButton(highLevelButtonBoard, 1);
       JoystickButton midBarClimb = new JoystickButton(highLevelButtonBoard, 2);
-      JoystickButton highBarClimb = new JoystickButton(highLevelButtonBoard, 3);
-      JoystickButton traversalBarClimb = new JoystickButton(highLevelButtonBoard, 4);
+      JoystickButton telescopingArmsReferencePosition = new JoystickButton(highLevelButtonBoard, 3);
+      JoystickButton telescopingArmsMaxHeight = new JoystickButton(highLevelButtonBoard, 4);
       JoystickButton shooterShoot = new JoystickButton(highLevelButtonBoard, 5);
       JoystickButton shooterIntake = new JoystickButton(highLevelButtonBoard, 6);
       JoystickButton commandStop = new JoystickButton(highLevelButtonBoard, 7);
@@ -360,9 +360,21 @@ public class ManualInputInterfaces
           */
       }
 
+      if(subsystemCollection.getTelescopingArmsSubsystem() != null)
+      {
+        telescopingArmsReferencePosition.whenPressed(
+          new ParallelCommandGroup(
+            new TelescopingArmRetract(subsystemCollection.getTelescopingArmsSubsystem()),
+            new ButtonPress("buttonBoardHigh.3", "telescopingArmsReferencePosition.whenPressed")).withTimeout(Constants.maximumClimbTimeOperationSeconds));
+            telescopingArmsMaxHeight.whenPressed(
+          new ParallelCommandGroup(
+            new TelescopingArmExtendMiddle(subsystemCollection.getTelescopingArmsSubsystem()),
+            new ButtonPress("buttonBoardHigh.4", "telescopingArmsReferencePosition.whenPressed")).withTimeout(Constants.maximumClimbTimeOperationSeconds));
+      }
+
       if(subsystemCollection.getShooterSubsystem() != null && 
-         subsystemCollection.getBallStorageSubsystem() != null /*&&
-         subsystemCollection.getJawsSubsystem() != null */)
+         subsystemCollection.getBallStorageSubsystem() != null &&
+         subsystemCollection.getJawsSubsystem() != null)
       {
         shooterShoot.whenPressed(
           new ParallelCommandGroup(           

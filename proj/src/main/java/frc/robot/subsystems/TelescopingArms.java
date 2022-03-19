@@ -57,7 +57,7 @@ public class TelescopingArms extends SubsystemBase implements Sendable
     private static final boolean spoolWindingIsPositiveSparkMaxNeoMotorOutput = true;
 
     // TODO change this to final speed when everyone is ready for it
-    private static final double neoMotorSpeedReductionFactor = 0.5;
+    private static final double neoMotorSpeedReductionFactor = 0.25;
 
     /* *********************************************************************
     MEMBERS
