@@ -553,6 +553,28 @@
               "_source0": "network_table:///LiveWindow/TelescopingArms/TelescopingArmsRightMotorSpeed",
               "_title": "LiveWindow/TelescopingArms/TelescopingArmsRightMotorSpeed"
             }
+          },
+          "6,0": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///LiveWindow/TelescopingArms/TelescopingArmsLeftEncoderPosition",
+              "_title": "LiveWindow/TelescopingArms/TelescopingArmsLeftEncoderPosition"
+            }
+          },
+          "6,3": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///LiveWindow/TelescopingArms/TelescopingArmsRightEncoderPosition",
+              "_title": "LiveWindow/TelescopingArms/TelescopingArmsRightEncoderPosition"
+            }
           }
         }
       }
@@ -1036,15 +1058,54 @@
               "_source0": "network_table:///LiveWindow/Shooter/ShooterBottomRevolutionsPerMinute",
               "_title": "Shooter/ShooterBottomRevolutionsPerMinute"
             }
+          },
+          "10,0": {
+            "size": [
+              2,
+              4
+            ],
+            "content": {
+              "_type": "Subsystem Layout",
+              "_source0": "network_table:///LiveWindow/Shooter",
+              "_title": "Shooter",
+              "Layout/Label position": "BOTTOM",
+              "_children": [
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///LiveWindow/Shooter/ShooterTopRevolutionsPerMinute",
+                  "_title": "ShooterTopRevolutionsPerMinute"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///LiveWindow/Shooter/ShooterBottomRevolutionsPerMinute",
+                  "_title": "ShooterBottomRevolutionsPerMinute"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///LiveWindow/Shooter/ShooterIntakeDescription",
+                  "_title": "ShooterIntakeDescription"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///LiveWindow/Shooter/ShooterBottomMotorSpeed",
+                  "_title": "ShooterBottomMotorSpeed"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///LiveWindow/Shooter/ShooterTopMotorSpeed",
+                  "_title": "ShooterTopMotorSpeed"
+                }
+              ]
+            }
           }
         }
       }
     }
   ],
   "windowGeometry": {
-    "x": -7.333333492279053,
-    "y": -7.333333492279053,
-    "width": 1518.6666259765625,
-    "height": 977.3333129882812
+    "x": -7.0,
+    "y": -7.0,
+    "width": 1519.0,
+    "height": 978.0
   }
 }
