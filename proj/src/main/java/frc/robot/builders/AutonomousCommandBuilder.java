@@ -292,6 +292,12 @@ public class AutonomousCommandBuilder
         {
             stopCommands.addCommands(new AngleArmsAllStop(collection.getAngleArmsSubsystem()));
         }
+
+        if(collection.getTelescopingArmsSubsystem() != null)
+        {
+            stopCommands.addCommands(new TelescopingArmsAllStop(collection.getTelescopingArmsSubsystem()));
+        }
+        
         return stopCommands;
     }
 }
