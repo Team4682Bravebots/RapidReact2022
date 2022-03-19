@@ -77,7 +77,7 @@ public final class Constants
   public static final double jawsReverseHighGoalPositionAngle = 145.0;
   public static final double jawsReverseLowGoalPositionAngle = 150.0;
   public static final double jawsPositionAngleTolerance = 1.2;
-  public static final double jawsAngleArmsEngagePositionAngle = 125.0;
+  public static final double jawsAngleArmsEngagePositionAngle = 117.5; // based on match on 03/19/2022 @ ~3:30pm pacific
   public static final double jawsAngleArmsEngagePositionTolerance = 0.9;
   public static final double jawsDefaultPositiveSpeed = 0.8;
   public static final double jawsDefaultNegativeSpeed = -0.8;

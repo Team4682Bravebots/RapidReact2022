@@ -60,7 +60,7 @@ public class DriveTimeCommand extends CommandBase
     {
       done = true;
     }
-}
+  }
 
   // Called once the command ends or is interrupted.
   @Override
