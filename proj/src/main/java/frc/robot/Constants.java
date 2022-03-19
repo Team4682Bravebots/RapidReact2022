@@ -119,9 +119,8 @@ public final class Constants
   public static final int ballStorageMotorTopCanId = 15;
   public static final int ballStorageMotorBottomCanId = 16;
 
-
   // MAXIMUM COMMAND TIMING SETTINGS
-  public static final double maximumClimbTimeOperationSeconds = 8.5;
+  public static final double maximumClimbTimeOperationSeconds = 5.5;
   public static final double maximumJawsTimeOperationSeconds = 3.2;
   public static final double maximumBallStorageTimeOperationSeconds = 1.2;
   public static final double maximumShooterTimeOperationSeconds = 4.5;

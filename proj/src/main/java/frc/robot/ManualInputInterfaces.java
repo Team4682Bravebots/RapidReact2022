@@ -90,7 +90,7 @@ public class ManualInputInterfaces
    */
   public double getInputJaws()
   {
-    double inputValue = driverController.getRightX();
+    double inputValue = coDriverController.getRightX();
     return ((inputValue > 0.070 || inputValue < -0.070) ? inputValue : 0.0);
   }
 
@@ -392,14 +392,14 @@ public class ManualInputInterfaces
               Constants.bottomMotorIntakeSpeedRpm),
             new BallStorageStoreManual(
               subsystemCollection.getBallStorageSubsystem()),
-            new ButtonPress("buttonBoardHigh.6", "shooterIntake.whenPressed")));
+            new ButtonPress("buttonBoardHigh.6", "shooterIntake.whileHeld")));
         shooterIntake.whenReleased(
           new ParallelCommandGroup(
             new ShooterAllStop(
               subsystemCollection.getShooterSubsystem()),
             new BallStorageAllStopManual(
               subsystemCollection.getBallStorageSubsystem()),
-            new ButtonPress("buttonBoardHigh.6", "shooterIntake.whenPressed")).withTimeout(Constants.maximumShooterTimeOperationSeconds));
+            new ButtonPress("buttonBoardHigh.6", "shooterIntake.whenReleased")).withTimeout(Constants.maximumShooterTimeOperationSeconds));
       }
 
       commandStop.whenPressed(
@@ -487,14 +487,14 @@ public class ManualInputInterfaces
 
       if(subsystemCollection.getJawsSubsystem() != null)
       {
-        jawsPositive.whenPressed(
+        jawsPositive.whileHeld(
           new ParallelCommandGroup(
             new JawsManual(subsystemCollection.getJawsSubsystem(), Constants.jawsDefaultPositiveSpeed),
-            new ButtonPress("buttonBoardLow.5", "jawsPositive.whenPressed")));
-        jawsNegative.whenPressed(
+            new ButtonPress("buttonBoardLow.5", "jawsPositive.whileHeld")));
+        jawsNegative.whileHeld(
           new ParallelCommandGroup(
             new JawsManual(subsystemCollection.getJawsSubsystem(), Constants.jawsDefaultNegativeSpeed),
-            new ButtonPress("buttonBoardLow.6", "jawsNegative.whenPressed")));
+            new ButtonPress("buttonBoardLow.6", "jawsNegative.whileHeld")));
         jawsPositive.whenReleased(
           new ParallelCommandGroup(
             new JawsAllStop(subsystemCollection.getJawsSubsystem()),
