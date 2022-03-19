@@ -41,8 +41,10 @@ public class TelescopingArms extends SubsystemBase implements Sendable
 
     // important - this should be the maximum extension of the arms and it must also be the length of the wire on the spool - in inches!
     // TODO - must get this from Simeon/Carter soon-ish
-    private static final double minimumArmHeightInches = 7.0 + 0.0;
-    private static final double maximumArmHeightInches = 33.0 + 0.0;
+    private static final double minimumOverageArmHeightInches = -0.1;
+    private static final double minimumArmHeightInches = 0.0;
+    private static final double maximumArmHeightInches = 31.0;
+    private static final double maximumOverageArmHeightInches = 31.1;
     private static final double maximumHeightFromStoredPositionInches = maximumArmHeightInches - minimumArmHeightInches;
     // measurements of spool diameter in 4 discrete ranges
     // intended to be an average measurement of wire/chord on the spool when the spool is 'fractionaly wound'
@@ -57,7 +59,7 @@ public class TelescopingArms extends SubsystemBase implements Sendable
     private static final boolean spoolWindingIsPositiveSparkMaxNeoMotorOutput = true;
 
     // TODO change this to final speed when everyone is ready for it
-    private static final double neoMotorSpeedReductionFactor = 0.5;
+    private static final double neoMotorSpeedReductionFactor = 1.0;
 
     /* *********************************************************************
     MEMBERS
@@ -153,18 +155,24 @@ public class TelescopingArms extends SubsystemBase implements Sendable
         TelescopingArms.maximumHeightFromStoredPositionInches);
 
       // left
+      double leftEncoderTicksTarget = this.convertTelescopingArmsHeightToMotorEncoderPosition(trimmedHeight);
       leftPidController.setReference(
-        this.convertTelescopingArmsHeightToMotorEncoderPosition(trimmedHeight),
+        leftEncoderTicksTarget,
         ControlType.kSmartMotion);
       double leftHeight = this.getLeftClimberHeightInInches();
-      boolean isLeftDone =  (leftHeight >= telescopingArmsHeightInInches - toleranceInInches  && leftHeight <= telescopingArmsHeightInInches + toleranceInInches);
+      boolean isLeftDone =  (leftHeight >= telescopingArmsHeightInInches - toleranceInInches  && leftHeight <= telescopingArmsHeightInInches + toleranceInInches) ||
+        leftHeight >= TelescopingArms.minimumOverageArmHeightInches || leftHeight <= TelescopingArms.maximumOverageArmHeightInches;
 
       // right
+      double rightEncoderTicksTarget = this.convertTelescopingArmsHeightToMotorEncoderPosition(trimmedHeight);
       rightPidController.setReference(
-        this.convertTelescopingArmsHeightToMotorEncoderPosition(trimmedHeight),
+        rightEncoderTicksTarget,
         ControlType.kSmartMotion);
       double rightHeight = this.getRightClimberHeightInInches();
-      boolean isRightDone =  (rightHeight >= telescopingArmsHeightInInches - toleranceInInches  && rightHeight <= telescopingArmsHeightInInches + toleranceInInches);
+      boolean isRightDone =  (rightHeight >= telescopingArmsHeightInInches - toleranceInInches  && rightHeight <= telescopingArmsHeightInInches + toleranceInInches) ||
+        rightHeight >= TelescopingArms.maximumOverageArmHeightInches || rightHeight <= TelescopingArms.minimumOverageArmHeightInches;
+
+//      System.out.println("Target height = " + telescopingArmsHeightInInches + " Target Ticks = " + leftEncoderTicksTarget);
 
       return isLeftDone && isRightDone;
     }
@@ -366,7 +374,7 @@ public class TelescopingArms extends SubsystemBase implements Sendable
     
         // Smart Motion Coefficients
         maxVel = maxRPM * neoMotorSpeedReductionFactor; // rpm
-        maxAcc = maxVel; // 1 second to get up to full speed
+        maxAcc = maxVel * 2; // 1/2 second to get up to full speed
 
         leftMotor.restoreFactoryDefaults();
         leftMotor.setIdleMode(IdleMode.kBrake);
