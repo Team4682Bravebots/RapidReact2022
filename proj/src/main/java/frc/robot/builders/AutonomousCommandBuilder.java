@@ -196,7 +196,7 @@ public class AutonomousCommandBuilder
         {
             // 1. shoot first ball
             ButtonPress startButton = new ButtonPress("autonomous", "start");
-            JawsForwardHighGoal jawsToForwardHighGoal = new JawsForwardHighGoal(collection.getJawsSubsystem());
+//            JawsForwardHighGoal jawsToForwardHighGoal = new JawsForwardHighGoal(collection.getJawsSubsystem());
             ShooterAutomatic shootForwardHighGoal = new ShooterAutomatic(
                 collection.getShooterSubsystem(),
                 collection.getBallStorageSubsystem(),
@@ -215,7 +215,7 @@ public class AutonomousCommandBuilder
             // 3. build the command group
             commandGroup.addCommands(
                 startButton.withTimeout(0.5),
-                jawsToForwardHighGoal.withTimeout(2.0),
+//                jawsToForwardHighGoal.withTimeout(2.0),
                 shootForwardHighGoal.withTimeout(5.0),
                 driveTimeCommand.withTimeout(5.0),
                 endButton.withTimeout(0.5));

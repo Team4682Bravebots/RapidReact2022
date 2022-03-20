@@ -61,10 +61,10 @@ public final class Constants
   public static final double defaultMotorSpeedToleranceRpm = 50.0;
   public static final double bottomMotorForwardLowGoalSpeedRpm = -1700.0;
   public static final double topMotorForwardLowGoalSpeedRpm = -1400.0;
-  public static final double bottomMotorForwardHighGoalSpeedRpm = -2400.0;
-  public static final double topMotorForwardHighGoalSpeedRpm = -2000.0;
-  public static final double bottomMotorReverseHighGoalSpeedRpm = -2400.0;
-  public static final double topMotorReverseHighGoalSpeedRpm = -2000.0;
+  public static final double bottomMotorForwardHighGoalSpeedRpm = -2600.0;
+  public static final double topMotorForwardHighGoalSpeedRpm = -2200.0;
+  public static final double bottomMotorReverseHighGoalSpeedRpm = -2600.0;
+  public static final double topMotorReverseHighGoalSpeedRpm = -2200.0;
   public static final double bottomMotorReverseLowGoalSpeedRpm = -1700.0;
   public static final double topMotorReverseLowGoalSpeedRpm = -1400.0;
   public static final double bottomMotorIntakeSpeedRpm = 1700.0;

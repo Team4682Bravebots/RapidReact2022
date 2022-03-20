@@ -44,7 +44,11 @@ public class DriveTrain extends SubsystemBase implements Sendable
   private WPI_TalonFX rightRear = new WPI_TalonFX(Constants.driveMotorRightRearCanId);
   private MotorControllerGroup left = new MotorControllerGroup(leftFront, leftRear);
   private MotorControllerGroup right = new MotorControllerGroup(rightFront, rightRear);
-  private DifferentialDrive drive = new DifferentialDrive(left, right);
+  private DifferentialDrive forwardDrive = new DifferentialDrive(left, right);
+  private DifferentialDrive reverseDrive = new DifferentialDrive(right, left);
+
+  private DifferentialDrive currentDrive = forwardDrive;
+  private boolean isCurrentDriveForward = true;
 
   // TODO - get this info from Greyson / John
   private static final double robotTrackWidthInches = 21.7;
@@ -83,7 +87,7 @@ public class DriveTrain extends SubsystemBase implements Sendable
   */
   public void arcadeDrive(double powerValue, double spinValue)
   {
-    drive.arcadeDrive(powerValue * this.arcadeMotorPowerReductionFactor, spinValue);
+    currentDrive.arcadeDrive(powerValue * this.arcadeMotorPowerReductionFactor, spinValue);
   }
 
   /**
@@ -101,6 +105,24 @@ public class DriveTrain extends SubsystemBase implements Sendable
   public double getArcadePowerFactor()
   {
     return this.arcadeMotorPowerReductionFactor;
+  }
+
+  /**
+   * Get the manual power fraction
+   * @return
+   */
+  public void toggleDriveDirection()
+  {
+    if(this.isCurrentDriveForward == true)
+    {
+      this.currentDrive = this.reverseDrive;
+      this.isCurrentDriveForward = false;
+    }
+    else
+    {
+      this.currentDrive = this.forwardDrive;
+      this.isCurrentDriveForward = true;
+    }
   }
 
   /**
