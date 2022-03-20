@@ -376,11 +376,15 @@ public class DriveTrain extends SubsystemBase implements Sendable
       leftRear.configFactoryDefault();
       leftFront.setInverted(Constants.driveMotorLeftFrontDefaultDirection);
       leftRear.setInverted(Constants.driveMotorLeftRearDefaultDirection);
+      leftFront.setNeutralMode(NeutralMode.Brake);
+      leftRear.setNeutralMode(NeutralMode.Brake);
       leftRear.follow(leftFront);
       rightFront.configFactoryDefault();
       rightRear.configFactoryDefault();
       rightFront.setInverted(Constants.driveMotorRightFrontDefaultDirection);
       rightRear.setInverted(Constants.driveMotorRightRearDefaultDirection);
+      rightFront.setNeutralMode(NeutralMode.Brake);
+      rightRear.setNeutralMode(NeutralMode.Brake);
       rightRear.follow(rightFront);
       this.initalizedForMotionMagic = false;
     }
