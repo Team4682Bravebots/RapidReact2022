@@ -13,11 +13,12 @@ package frc.robot;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.PS4Controller.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.builders.AutonomousCommandBuilder;
 import frc.robot.builders.ClimbCommandBuilder;
 import frc.robot.commands.*;
+import frc.robot.common.PowerFactorIncrementDirection;
+import frc.robot.common.TelescopingArmSide;
 import frc.robot.subsystems.*;
 
 public class ManualInputInterfaces
@@ -141,114 +142,31 @@ public class ManualInputInterfaces
    */
   private void bindCommandsToDriverXboxButtons()
   {
-    // *************************************************************
-    // TODO - REMOVE THIS WHOLE IF STATEMENT AFTER HOME TESTING!!!!!
-    // *************************************************************
-    /*
     if(InstalledHardware.driverXboxControllerInstalled)
     {
-      JoystickButton buttonA = new JoystickButton(driverController, XboxController.Button.kA.value);
-      JoystickButton buttonB = new JoystickButton(driverController, XboxController.Button.kB.value);
-      JoystickButton buttonX = new JoystickButton(driverController, XboxController.Button.kX.value);
-      JoystickButton buttonY = new JoystickButton(driverController, XboxController.Button.kY.value);
       JoystickButton bumperLeft = new JoystickButton(driverController, XboxController.Button.kLeftBumper.value);
       JoystickButton bumperRight = new JoystickButton(driverController, XboxController.Button.kRightBumper.value);
-      JoystickButton buttonBack = new JoystickButton(driverController, XboxController.Button.kBack.value);
-      JoystickButton buttonStart = new JoystickButton(driverController, XboxController.Button.kStart.value);
 
-      if(subsystemCollection.getBallStorageSubsystem() != null && subsystemCollection.getShooterSubsystem() != null)
-      {
-        buttonA.whenPressed(
-          new ParallelCommandGroup(
-            new ShooterAutomatic(
-              subsystemCollection.getShooterSubsystem(),
-              subsystemCollection.getBallStorageSubsystem(),
-              false,
-              Constants.jawsIntakePositionAngle),
-            new ButtonPress("driverController.kA", "buttonA.whenPressed")));
-        buttonB.whenPressed(
-          new ParallelCommandGroup(
-            new ShooterAutomatic(
-              subsystemCollection.getShooterSubsystem(),
-              subsystemCollection.getBallStorageSubsystem(),
-              true,
-              Constants.jawsLowGoalPositionAngle),
-              new ButtonPress("driverController.kB", "buttonB.whenPressed")));
-        buttonX.whenPressed(
-          new ParallelCommandGroup(
-            new ShooterAutomatic(
-              subsystemCollection.getShooterSubsystem(),
-              subsystemCollection.getBallStorageSubsystem(),
-              true,
-              Constants.jawsHighGoalPositionAngle),
-            new ButtonPress("driverController.kX", "buttonX.whenPressed")));
-        buttonY.whenPressed(
-          new ParallelCommandGroup(
-            new ShooterAutomatic(
-              subsystemCollection.getShooterSubsystem(),
-              subsystemCollection.getBallStorageSubsystem(),
-              true,
-              Constants.jawsReverseHighGoalPositionAngle),
-            new ButtonPress("driverController.kY", "buttonY.whenPressed")));
-      }
-
-      if(subsystemCollection.getTelescopingArmsSubsystem() != null)
+      if(subsystemCollection.getDriveTrainSubsystem() != null)
       {
         bumperLeft.whenPressed(
           new ParallelCommandGroup(
-            new TelescopingArmRetract(
-              subsystemCollection.getTelescopingArmsSubsystem()),
+            new DriveArcadeIncrementPowerFactor(
+              subsystemCollection.getDriveTrainSubsystem(),
+              this.getGtaInputArcadeDriveY(),
+              this.getGtaInputArcadeDriveX(),
+              PowerFactorIncrementDirection.Down),
             new ButtonPress("driverController.kLeftBumper", "bumperLeft.whenPressed")));
         bumperRight.whenPressed(
           new ParallelCommandGroup(
-            new TelescopingArmExtendMiddle(
-              subsystemCollection.getTelescopingArmsSubsystem()),
+            new DriveArcadeIncrementPowerFactor(
+              subsystemCollection.getDriveTrainSubsystem(),
+              this.getGtaInputArcadeDriveY(),
+              this.getGtaInputArcadeDriveX(),
+              PowerFactorIncrementDirection.Up),
             new ButtonPress("driverController.kRightBumper", "bumperRight.whenPressed")));
       }
-
-      if(subsystemCollection.getJawsSubsystem() != null)
-      {
-        buttonBack.whenPressed(
-          new ParallelCommandGroup(
-            new JawsIntake(
-              subsystemCollection.getJawsSubsystem()),
-            new ButtonPress("driverController.kBack", "buttonBack.whenPressed")));
-        buttonStart.whenPressed(
-          new ParallelCommandGroup(
-            new JawsReverseLowGoal(
-              subsystemCollection.getJawsSubsystem()),
-            new ButtonPress("driverController.kStart", "buttonStart.whenPressed")));
-      }
-
-      if(subsystemCollection.getAngleArmsSubsystem() != null)
-      {
-        buttonB.whenPressed(
-          new ParallelCommandGroup(
-            new AngleArmsManual(subsystemCollection.getAngleArmsSubsystem(), Constants.angleArmsManualMotorReverseSpeed),
-            new ButtonPress("driverController.kB", "buttonB.whenPressed")));
-        buttonY.whenPressed(
-          new ParallelCommandGroup(
-            new AngleArmsManual(subsystemCollection.getAngleArmsSubsystem(), Constants.angleArmsManualMotorForwardSpeed),
-            new ButtonPress("driverController.kY", "buttonY.whenPressed")));
-        buttonB.whenReleased(
-          new ParallelCommandGroup(
-            new AngleArmsAllStop(subsystemCollection.getAngleArmsSubsystem()),
-            new ButtonPress("driverController.kB", "buttonB.whenReleased")));
-        buttonY.whenReleased(
-          new ParallelCommandGroup(
-            new AngleArmsAllStop(subsystemCollection.getAngleArmsSubsystem()),
-            new ButtonPress("driverController.kY", "buttonY.whenReleased")));
-        buttonX.whenPressed(
-          new ParallelCommandGroup(
-            new AngleArmsAngleVariable(subsystemCollection.getAngleArmsSubsystem(), Constants.angleArmsBarPositionAngle),
-            new ButtonPress("driverController.kX", "buttonX.whenPressed")));
-        buttonA.whenPressed(
-          new ParallelCommandGroup(
-            new AngleArmsAngleVariable(subsystemCollection.getAngleArmsSubsystem(), Constants.angleArmsMaximumPositionAngle),
-            new ButtonPress("driverController.kA", "buttonA.whenPressed")));
-      }
     }
-    */
   }
 
   /**
@@ -323,10 +241,10 @@ public class ManualInputInterfaces
   {
     if(InstalledHardware.highLevelButtonBoardInstalled)
     {
-      JoystickButton extendAndReady = new JoystickButton(highLevelButtonBoard, 1);
-      JoystickButton midBarClimb = new JoystickButton(highLevelButtonBoard, 2);
-      JoystickButton telescopingArmsReferencePosition = new JoystickButton(highLevelButtonBoard, 3);
-      JoystickButton telescopingArmsMaxHeight = new JoystickButton(highLevelButtonBoard, 4);
+      JoystickButton telescopingArmLeftManualExtend = new JoystickButton(highLevelButtonBoard, 1);
+      JoystickButton telescopingArmLeftManualRetract = new JoystickButton(highLevelButtonBoard, 2);
+      JoystickButton telescopingArmRightManualExtend = new JoystickButton(highLevelButtonBoard, 3);
+      JoystickButton telescopingArmRightManualRetract = new JoystickButton(highLevelButtonBoard, 4);
       JoystickButton shooterShoot = new JoystickButton(highLevelButtonBoard, 5);
       JoystickButton shooterIntake = new JoystickButton(highLevelButtonBoard, 6);
       JoystickButton commandStop = new JoystickButton(highLevelButtonBoard, 7);
@@ -336,40 +254,64 @@ public class ManualInputInterfaces
       JoystickButton jawsReverseHigh = new JoystickButton(highLevelButtonBoard, 11);
       JoystickButton jawsReverseLow = new JoystickButton(highLevelButtonBoard, 12);
 
-      if(subsystemCollection.getAngleArmsSubsystem() != null &&
-        subsystemCollection.getJawsSubsystem() != null &&
-        subsystemCollection.getTelescopingArmsSubsystem() != null)
-      {
-        /*
-        extendAndReady.whenPressed(
-          new ParallelCommandGroup(
-            ClimbCommandBuilder.buildExtensionAndReadyPosition(subsystemCollection),
-            new ButtonPress("buttonBoardHigh.1", "extendAndReady.whenPressed")).withTimeout(Constants.maximumClimbTimeOperationSeconds));
-        midBarClimb.whenPressed(
-          new ParallelCommandGroup(
-            ClimbCommandBuilder.buildMediumBarClimb(subsystemCollection),
-            new ButtonPress("buttonBoardHigh.2", "midBarClimb.whenPressed")).withTimeout(Constants.maximumClimbTimeOperationSeconds));
-        highBarClimb.whenPressed(
-          new ParallelCommandGroup(
-            ClimbCommandBuilder.buildHighBarClimb(subsystemCollection),
-            new ButtonPress("buttonBoardHigh.3", "highBarClimb.whenPressed")).withTimeout(Constants.maximumClimbTimeOperationSeconds));
-        traversalBarClimb.whenPressed(
-          new ParallelCommandGroup(
-            ClimbCommandBuilder.buildTraversalBarClimb(subsystemCollection),
-            new ButtonPress("buttonBoardHigh.4", "traversalBarClimb.whenPressed")).withTimeout(Constants.maximumClimbTimeOperationSeconds));
-          */
-      }
-
       if(subsystemCollection.getTelescopingArmsSubsystem() != null)
       {
-        telescopingArmsReferencePosition.whenPressed(
+        telescopingArmLeftManualExtend.whileHeld(
           new ParallelCommandGroup(
-            new TelescopingArmRetract(subsystemCollection.getTelescopingArmsSubsystem()),
-            new ButtonPress("buttonBoardHigh.3", "telescopingArmsReferencePosition.whenPressed")).withTimeout(Constants.maximumClimbTimeOperationSeconds));
-            telescopingArmsMaxHeight.whenPressed(
+            new TelescopingArmsSingleManual(
+              subsystemCollection.getTelescopingArmsSubsystem(),
+              TelescopingArmSide.Left,
+              Constants.telescopingArmsDefaultExtendSpeed),
+            new ButtonPress("buttonBoardHigh.1", "telescopingArmLeftManualExtend.whileHeld")));
+        telescopingArmLeftManualExtend.whenReleased(
           new ParallelCommandGroup(
-            new TelescopingArmExtendMiddle(subsystemCollection.getTelescopingArmsSubsystem()),
-            new ButtonPress("buttonBoardHigh.4", "telescopingArmsReferencePosition.whenPressed")).withTimeout(Constants.maximumClimbTimeOperationSeconds));
+            new TelescopingArmsSingleManual(
+              subsystemCollection.getTelescopingArmsSubsystem(),
+              TelescopingArmSide.Left,
+              Constants.telescopingArmsStopSpeed),
+            new ButtonPress("buttonBoardHigh.1", "telescopingArmLeftManualExtend.whenReleased")));
+        telescopingArmLeftManualRetract.whileHeld(
+          new ParallelCommandGroup(
+            new TelescopingArmsSingleManual(
+              subsystemCollection.getTelescopingArmsSubsystem(),
+              TelescopingArmSide.Left,
+              Constants.telescopingArmsDefaultRetractSpeed),
+            new ButtonPress("buttonBoardHigh.2", "telescopingArmLeftManualRetract.whileHeld")));
+        telescopingArmLeftManualRetract.whenReleased(
+          new ParallelCommandGroup(
+            new TelescopingArmsSingleManual(
+              subsystemCollection.getTelescopingArmsSubsystem(),
+              TelescopingArmSide.Left,
+              Constants.telescopingArmsStopSpeed),
+            new ButtonPress("buttonBoardHigh.2", "telescopingArmLeftManualRetract.whenReleased")));
+        telescopingArmRightManualExtend.whileHeld(
+          new ParallelCommandGroup(
+            new TelescopingArmsSingleManual(
+              subsystemCollection.getTelescopingArmsSubsystem(),
+              TelescopingArmSide.Right,
+              Constants.telescopingArmsDefaultExtendSpeed),
+            new ButtonPress("buttonBoardHigh.3", "telescopingArmRightManualExtend.whileHeld")));
+        telescopingArmRightManualExtend.whenReleased(
+          new ParallelCommandGroup(
+            new TelescopingArmsSingleManual(
+              subsystemCollection.getTelescopingArmsSubsystem(),
+              TelescopingArmSide.Right,
+              Constants.telescopingArmsStopSpeed),
+            new ButtonPress("buttonBoardHigh.3", "telescopingArmRightManualExtend.whenReleased")));
+        telescopingArmRightManualRetract.whileHeld(
+          new ParallelCommandGroup(
+            new TelescopingArmsSingleManual(
+              subsystemCollection.getTelescopingArmsSubsystem(),
+              TelescopingArmSide.Right,
+              Constants.telescopingArmsDefaultRetractSpeed),
+            new ButtonPress("buttonBoardHigh.4", "telescopingArmRightManualRetract.whileHeld")));
+        telescopingArmRightManualRetract.whenReleased(
+          new ParallelCommandGroup(
+            new TelescopingArmsSingleManual(
+              subsystemCollection.getTelescopingArmsSubsystem(),
+              TelescopingArmSide.Right,
+              Constants.telescopingArmsStopSpeed),
+            new ButtonPress("buttonBoardHigh.4", "telescopingArmRightManualRetract.whenReleased")));
       }
 
       if(subsystemCollection.getShooterSubsystem() != null && 

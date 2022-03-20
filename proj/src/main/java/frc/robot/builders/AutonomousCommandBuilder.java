@@ -206,7 +206,7 @@ public class AutonomousCommandBuilder
             // 2. move toward the second ball 
             DriveTimeCommand driveTimeCommand = new DriveTimeCommand(
                 collection.getDriveTrainSubsystem(),
-                -0.7,
+                -1.0,
                 0.0,
                 1.0);
 
@@ -240,7 +240,7 @@ public class AutonomousCommandBuilder
             // 2. move toward the second ball 
             DriveTimeCommand driveTimeCommand = new DriveTimeCommand(
                 collection.getDriveTrainSubsystem(),
-                -0.7,
+                -1.0,
                 0.0,
                 1.0);
 
