@@ -40,7 +40,7 @@ public final class Constants
 
   // shooter 
   // inverts - see: https://docs.ctre-phoenix.com/en/stable/ch13_MC.html#talon-fx-specific-inverts
-  public static TalonFXInvertType shooterBottomMotorDefaultDirection = TalonFXInvertType.Clockwise;
+  public static TalonFXInvertType shooterBottomMotorDefaultDirection = TalonFXInvertType.CounterClockwise;
   public static TalonFXInvertType shooterTopMotorDefaultDirection = TalonFXInvertType.Clockwise;
 
   // Angle arms magic numbers
@@ -61,10 +61,10 @@ public final class Constants
   public static final double defaultMotorSpeedToleranceRpm = 50.0;
   public static final double bottomMotorForwardLowGoalSpeedRpm = -1700.0;
   public static final double topMotorForwardLowGoalSpeedRpm = -1400.0;
-  public static final double bottomMotorForwardHighGoalSpeedRpm = -2300.0;
-  public static final double topMotorForwardHighGoalSpeedRpm = -1900.0;
-  public static final double bottomMotorReverseHighGoalSpeedRpm = -1700.0;
-  public static final double topMotorReverseHighGoalSpeedRpm = -1400.0;
+  public static final double bottomMotorForwardHighGoalSpeedRpm = -2600.0;
+  public static final double topMotorForwardHighGoalSpeedRpm = -2200.0;
+  public static final double bottomMotorReverseHighGoalSpeedRpm = -2600.0;
+  public static final double topMotorReverseHighGoalSpeedRpm = -2200.0;
   public static final double bottomMotorReverseLowGoalSpeedRpm = -1700.0;
   public static final double topMotorReverseLowGoalSpeedRpm = -1400.0;
   public static final double bottomMotorIntakeSpeedRpm = 1700.0;
@@ -73,7 +73,7 @@ public final class Constants
   // Jaws reach points \\
   public static final double jawsIntakePositionAngle = 1.0;
   public static final double jawsLowGoalPositionAngle = 90.0;
-  public static final double jawsHighGoalPositionAngle = 110.0; 
+  public static final double jawsHighGoalPositionAngle = 117.5; // based on match on 03/19/2022 @ ~3:30pm pacific
   public static final double jawsReverseHighGoalPositionAngle = 145.0;
   public static final double jawsReverseLowGoalPositionAngle = 150.0;
   public static final double jawsPositionAngleTolerance = 1.2;

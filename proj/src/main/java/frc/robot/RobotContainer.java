@@ -94,9 +94,9 @@ public class RobotContainer
    */
   public Command getAutonomousCommand()
   {
-    return AutonomousCommandBuilder.buildSimpleReverseDrive(m_collection);
+//    return AutonomousCommandBuilder.buildSimpleReverseDrive(m_collection);
     // TODO - the commented out line below is something we would like to test once the robot is ready!
-//    return AutonomousCommandBuilder.buildSimpleShootHighAndReverseDrive(m_collection);
+    return AutonomousCommandBuilder.buildSimpleShootHighAndReverseDrive(m_collection);
 }
 
   public void resetRobotWhenFmsNotPresent()

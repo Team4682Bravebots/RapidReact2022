@@ -44,7 +44,11 @@ public class DriveTrain extends SubsystemBase implements Sendable
   private WPI_TalonFX rightRear = new WPI_TalonFX(Constants.driveMotorRightRearCanId);
   private MotorControllerGroup left = new MotorControllerGroup(leftFront, leftRear);
   private MotorControllerGroup right = new MotorControllerGroup(rightFront, rightRear);
-  private DifferentialDrive drive = new DifferentialDrive(left, right);
+  private DifferentialDrive forwardDrive = new DifferentialDrive(left, right);
+  private DifferentialDrive reverseDrive = new DifferentialDrive(right, left);
+
+  private DifferentialDrive currentDrive = forwardDrive;
+  private boolean isCurrentDriveForward = true;
 
   // TODO - get this info from Greyson / John
   private static final double robotTrackWidthInches = 21.7;
@@ -63,6 +67,8 @@ public class DriveTrain extends SubsystemBase implements Sendable
   private double leftTargetEncoderTicksError = 0;
   private double rightTargetEncoderTicksError = 0;
 
+  private double arcadeMotorPowerReductionFactor = 0.7;
+
   /**
   * No argument constructor for the DriveTrain subsystem.
   */
@@ -76,12 +82,47 @@ public class DriveTrain extends SubsystemBase implements Sendable
   * A method to take in x and y stick inputs and turn them into right and left motor speeds
   * considering arcade style driving
   *
-  * @param  yAxisValue - left motor speed, range -1.0 to 1.0 where positive values are forward
-  * @param  xAxisValue - right motor speed, range -1.0 to 1.0 where positive values are forward
+  * @param  powerValue - power forward backward speed, range -1.0 to 1.0 where positive values are forward
+  * @param  spinValue - spin componet, range -1.0 to 1.0 where positive values are forward
   */
-  public void arcadeDrive(double yAxisValue, double xAxisValue)
+  public void arcadeDrive(double powerValue, double spinValue)
   {
-    drive.arcadeDrive(xAxisValue, yAxisValue);
+    currentDrive.arcadeDrive(powerValue * this.arcadeMotorPowerReductionFactor, spinValue);
+  }
+
+  /**
+   * Set the manual power fraction that will be used in arcade
+   * @param arcadePowerFraction
+   */
+  public void setArcadePowerFactor(double arcadePowerFraction)
+  {
+    this.arcadeMotorPowerReductionFactor = MotorUtils.truncateValue(arcadePowerFraction, 0.1, 1.0);
+  }
+  /**
+   * Get the manual power fraction
+   * @return
+   */
+  public double getArcadePowerFactor()
+  {
+    return this.arcadeMotorPowerReductionFactor;
+  }
+
+  /**
+   * Get the manual power fraction
+   * @return
+   */
+  public void toggleDriveDirection()
+  {
+    if(this.isCurrentDriveForward == true)
+    {
+      this.currentDrive = this.reverseDrive;
+      this.isCurrentDriveForward = false;
+    }
+    else
+    {
+      this.currentDrive = this.forwardDrive;
+      this.isCurrentDriveForward = true;
+    }
   }
 
   /**
@@ -333,9 +374,17 @@ public class DriveTrain extends SubsystemBase implements Sendable
     {
       leftFront.configFactoryDefault();
       leftRear.configFactoryDefault();
+      leftFront.setInverted(Constants.driveMotorLeftFrontDefaultDirection);
+      leftRear.setInverted(Constants.driveMotorLeftRearDefaultDirection);
+      leftFront.setNeutralMode(NeutralMode.Brake);
+      leftRear.setNeutralMode(NeutralMode.Brake);
       leftRear.follow(leftFront);
       rightFront.configFactoryDefault();
       rightRear.configFactoryDefault();
+      rightFront.setInverted(Constants.driveMotorRightFrontDefaultDirection);
+      rightRear.setInverted(Constants.driveMotorRightRearDefaultDirection);
+      rightFront.setNeutralMode(NeutralMode.Brake);
+      rightRear.setNeutralMode(NeutralMode.Brake);
       rightRear.follow(rightFront);
       this.initalizedForMotionMagic = false;
     }

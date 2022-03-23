@@ -188,6 +188,26 @@ public class TelescopingArms extends SubsystemBase implements Sendable
       rightMotor.set(MotorUtils.truncateValue(telescopingArmsSpeed, -1.0, 1.0));
     }
 
+    /**
+    * a method to drive the telescopingArms motors manually
+    *
+    * @param  telescopingArmsSpeed - the target jaws speed
+    */
+    public void setTelescopingArmLeftSpeedManual(double telescopingArmsSpeed)
+    {
+      leftMotor.set(MotorUtils.truncateValue(telescopingArmsSpeed, -1.0, 1.0));
+    }
+
+    /**
+    * a method to drive the telescopingArms motors manually
+    *
+    * @param  telescopingArmsSpeed - the target jaws speed
+    */
+    public void setTelescopingArmRightSpeedManual(double telescopingArmsSpeed)
+    {
+      rightMotor.set(MotorUtils.truncateValue(telescopingArmsSpeed, -1.0, 1.0));
+    }
+
     /* *********************************************************************
     PRIVATE METHODS
     ************************************************************************/
